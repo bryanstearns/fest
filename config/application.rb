@@ -67,6 +67,7 @@ module Fest
     config.assets.version = '1.0'
 
     config.generators do |g|
+      g.stylesheet_engine :sass
       g.test_framework :rspec
       g.view_specs false
       g.helper_specs false
