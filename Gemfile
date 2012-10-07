@@ -4,6 +4,7 @@ gem 'rails', '3.2.8'
 
 gem 'jquery-rails'
 gem 'mysql2'
+gem 'turbolinks'
 
 group :development do
   gem 'debugger' unless ENV['RM_INFO'] # don't if we're in RubyMine
