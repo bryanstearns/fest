@@ -24,4 +24,5 @@ group :test do
   gem 'email_spec'
   gem 'factory_girl_rails'
   gem 'rspec-rails'
+  gem 'shoulda-matchers'
 end
