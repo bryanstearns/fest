@@ -5,6 +5,7 @@ gem 'rails', '3.2.8'
 gem 'jquery-rails'
 gem 'bootstrap-sass'
 gem 'mysql2'
+gem 'simple_form'
 gem 'turbolinks'
 
 group :development do
