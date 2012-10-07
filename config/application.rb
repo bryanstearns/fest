@@ -66,6 +66,9 @@ module Fest
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
+    # Generate SASS please
+    config.sass.preferred_syntax = :sass
+
     config.generators do |g|
       g.stylesheet_engine :sass
       g.test_framework :rspec
