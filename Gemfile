@@ -7,6 +7,7 @@ gem 'mysql2'
 
 group :development do
   gem 'debugger' unless ENV['RM_INFO'] # don't if we're in RubyMine
+  gem 'mailcatcher'
 end
 
 group :assets do
