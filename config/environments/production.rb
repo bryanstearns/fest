@@ -51,6 +51,9 @@ Fest::Application.configure do
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
 
+  # Make sure URLs in emails will work
+  config.action_mailer.default_url_options = { host: 'festivalfanatic.com' }
+
   # Enable threaded mode
   # config.threadsafe!
 

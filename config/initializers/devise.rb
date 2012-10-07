@@ -4,7 +4,7 @@ Devise.setup do |config|
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class with default "from" parameter.
-  config.mailer_sender = "please-change-me-at-config-initializers-devise@example.com"
+  config.mailer_sender = "festfan@festivalfanatic.com"
 
   # Configure the class responsible to send e-mails.
   # config.mailer = "Devise::Mailer"
@@ -82,7 +82,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 10
 
   # Setup a pepper to generate the encrypted password.
-  # config.pepper = "249078dfe4a0135177a0f79924828ddcb0878e63d4e88da65d4666e24fd60aca1fc70ff86f2124be88da6acf764fff23b2989169070ba0e770e5d34816c3fbc3"
+  config.pepper = "249078dfe4a0135177a0f79924828ddcb0878e63d4e88da65d4666e24fd60aca1fc70ff86f2124be88da6acf764fff23b2989169070ba0e770e5d34816c3fbc3"
 
   # ==> Configuration for :confirmable
   # A period that the user is allowed to access the website even without
@@ -144,6 +144,7 @@ Devise.setup do |config|
   # :both  = Enables both strategies
   # :none  = No unlock strategy. You should handle unlocking by yourself.
   # config.unlock_strategy = :both
+  config.unlock_strategy = :time
 
   # Number of authentication tries before locking an account if lock_strategy
   # is failed attempts.
@@ -200,7 +201,7 @@ Devise.setup do |config|
   # config.navigational_formats = ["*/*", :html]
 
   # The default HTTP method used to sign out a resource. Default is :delete.
-  config.sign_out_via = :delete
+  config.sign_out_via = [:delete, :get] # (Adding :get allows tests to pass)
 
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
