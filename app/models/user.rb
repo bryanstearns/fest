@@ -4,4 +4,6 @@ class User < ActiveRecord::Base
          :validatable
 
   attr_accessible :name, :email, :password, :password_confirmation, :remember_me
+
+  validates :name, :presence => true
 end
