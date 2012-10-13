@@ -135,6 +135,9 @@ When /^I look at the list of users$/ do
 end
 
 ### THEN ###
+def field(field)
+  page.find("div.control-group.#{field}")
+end
 
 Then /^I should see the Sign Up button$/ do
   page.should have_content "Sign up"
@@ -165,19 +168,19 @@ Then /^I should see a confirmation email message$/ do
 end
 
 Then /^I should see an invalid email message$/ do
-  page.should have_content "Email is invalid"
+  field('email').should have_content "is invalid"
 end
 
 Then /^I should see a missing password message$/ do
-  page.should have_content "Password can't be blank"
+  field('password').should have_content "can't be blank"
 end
 
 Then /^I should see a missing password confirmation message$/ do
-  page.should have_content "Password doesn't match confirmation"
+  field('password').should have_content "doesn't match confirmation"
 end
 
 Then /^I should see a mismatched password message$/ do
-  page.should have_content "Password doesn't match confirmation"
+  field('password').should have_content "doesn't match confirmation"
 end
 
 Then /^I should see a signed out message$/ do
