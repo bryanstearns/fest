@@ -1,0 +1,43 @@
+<h1>Listing festivals</h1>
+
+<table>
+  <tr>
+    <th>Slug</th>
+    <th>Slug group</th>
+    <th>Name</th>
+    <th>Location</th>
+    <th>Main url</th>
+    <th>Updates url</th>
+    <th>Starts on</th>
+    <th>Ends on</th>
+    <th>Public</th>
+    <th>Scheduled</th>
+    <th>Revised at</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @festivals.each do |festival| %>
+  <tr>
+    <td><%= festival.slug %></td>
+    <td><%= festival.slug_group %></td>
+    <td><%= festival.name %></td>
+    <td><%= festival.location %></td>
+    <td><%= festival.main_url %></td>
+    <td><%= festival.updates_url %></td>
+    <td><%= festival.starts_on %></td>
+    <td><%= festival.ends_on %></td>
+    <td><%= festival.public %></td>
+    <td><%= festival.scheduled %></td>
+    <td><%= festival.revised_at %></td>
+    <td><%= link_to 'Show', festival %></td>
+    <td><%= link_to 'Edit', edit_festival_path(festival) %></td>
+    <td><%= link_to 'Destroy', festival, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Festival', new_festival_path %>

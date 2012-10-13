@@ -11,7 +11,26 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121007232246) do
+ActiveRecord::Schema.define(:version => 20121013183350) do
+
+  create_table "festivals", :force => true do |t|
+    t.string   "slug"
+    t.string   "slug_group"
+    t.string   "name"
+    t.string   "location"
+    t.string   "main_url"
+    t.string   "updates_url"
+    t.date     "starts_on"
+    t.date     "ends_on"
+    t.boolean  "public"
+    t.boolean  "scheduled"
+    t.datetime "revised_at"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "festivals", ["slug"], :name => "index_festivals_on_slug", :unique => true
+  add_index "festivals", ["slug_group"], :name => "index_festivals_on_slug_group"
 
   create_table "users", :force => true do |t|
     t.string   "name",                   :default => "", :null => false

@@ -1,4 +1,6 @@
 Fest::Application.routes.draw do
+  resources :festivals
+
   devise_for :users
 
   root to: "home#index"
