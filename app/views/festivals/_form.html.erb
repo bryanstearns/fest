@@ -7,8 +7,8 @@
     <%= f.input :location %>
     <%= f.input :main_url %>
     <%= f.input :updates_url %>
-    <%= f.input :starts_on %>
-    <%= f.input :ends_on %>
+    <%= f.input :starts_on, as: 'string' %>
+    <%= f.input :ends_on, as: 'string' %>
     <%= f.input :public %>
     <%= f.input :scheduled %>
     <%= f.input :revised_at %>
