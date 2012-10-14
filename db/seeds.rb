@@ -16,3 +16,10 @@ unless User.where(email: 'bryanstearns@gmail.com').any?
   me.sign_in_count = 1
   me.save!
 end
+
+Festival.where(slug_group: 'example').delete_all
+Festival.create!(name: 'Example International Film Festival',
+                 location: "Long Name City, Longstatename",
+                 slug_group: 'example',
+                 starts_on: 2.days.ago, ends_on: 2.days.from_now,
+                 public: true, scheduled: true)
