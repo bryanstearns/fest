@@ -3,3 +3,9 @@
 
 en:
   hello: "Hello world"
+  date:
+    formats:
+      # Range parts
+      mdy: "%b %e, %Y"
+      md: "%b %e"
+      dy: "%e, %Y"
