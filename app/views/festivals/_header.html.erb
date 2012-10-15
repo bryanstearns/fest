@@ -1,0 +1,16 @@
+<% unless @festival.new_record? %>
+  <header class="festival">
+    <div>
+      <h3 class="navbar-text lead"><%= @festival.name %></h3>
+      <%= safe_join [festival_dates(@festival), @festival.location].compact, ' &mdash; '.html_safe %>
+    </div>
+    <ul class="nav nav-tabs">
+      <%= link_in_list_to "1. Your Film Priorities", root_path %>
+      <%= link_in_list_to "2. Scheduling Assistant", root_path %>
+      <%= link_in_list_to "3. Your Festival Schedule", festival_path(@festival) %>
+      <%= link_in_list_to("Edit", edit_festival_path(@festival)) if current_user_is_admin? %>
+    </ul>
+  </header>
+<% else %>
+  <h2>New Festival</h2>
+<% end %>

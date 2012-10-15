@@ -1,0 +1,16 @@
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span2">
+      <ul class="nav nav-tabs nav-stacked">
+        <%= link_in_list_to "Festival", edit_festival_path(@festival) %>
+        <%= link_in_list_to "Venues", root_path %>
+        <%= link_in_list_to "Films", festival_path(@festival) %>
+      </ul>
+    </div>
+    <div class="span10">
+      <% if current_page?(edit_festival_path(@festival)) %>
+        <%= render 'festivals/form' %>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -19,7 +19,7 @@
         <div class="row">
           <div class="span12">
             <%= render 'layouts/messages' %>
-            <%= yield %>
+            <%= content_for?(:content) ? yield(:content) : yield %>
           </div>
         </div>
         <footer>
