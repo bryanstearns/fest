@@ -54,4 +54,22 @@ describe ApplicationHelper do
       it { should be_nil }
     end
   end
+
+  context "A link in a list that might be active" do
+    subject { helper.link_in_list_to("Title", "some_target") }
+    context "when on the current page" do
+      it "should produce a li with class 'active'" do
+        helper.stub(:current_page? => true)
+        helper.should_receive(:content_tag).with(:li, anything, class: "active")
+        subject
+      end
+    end
+    context "when not on the current page" do
+      it "should produce a li without class 'active'" do
+        helper.stub(:current_page? => false)
+        helper.should_not_receive(:content_tag).with(:li, anything, class: "active")
+        subject
+      end
+    end
+  end
 end

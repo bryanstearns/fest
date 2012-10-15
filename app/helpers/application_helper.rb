@@ -21,4 +21,10 @@ module ApplicationHelper
       localize(ends, format: end_format).gsub(/  /, ' ').strip
     ]
   end
+
+  def link_in_list_to(title, target)
+    options = {}
+    options[:class] = 'active' if current_page?(target)
+    content_tag(:li, link_to(title, target), options)
+  end
 end
