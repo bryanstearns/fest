@@ -4,8 +4,8 @@ class Festival < ActiveRecord::Base
 
   before_validation :update_slug
 
-  validates :name, :slug, presence: true, uniqueness: true
-  validates :location, :slug_group, :starts_on, :ends_on, presence: true
+  validates :slug, presence: true, uniqueness: true
+  validates :location, :name, :slug_group, :starts_on, :ends_on, presence: true
   validate :date_range_ordering
 
 private

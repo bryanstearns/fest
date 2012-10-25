@@ -18,6 +18,5 @@ class CreateFestivals < ActiveRecord::Migration
     add_index :festivals, [:slug, :public]
     add_index :festivals, [:ends_on, :public]
     add_index :festivals, [:slug_group, :public]
-    add_index :festivals, :name, :unique => true
   end
 end

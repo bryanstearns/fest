@@ -30,7 +30,6 @@ ActiveRecord::Schema.define(:version => 20121013183350) do
   end
 
   add_index "festivals", ["ends_on", "public"], :name => "index_festivals_on_ends_on_and_public"
-  add_index "festivals", ["name"], :name => "index_festivals_on_name", :unique => true
   add_index "festivals", ["slug", "public"], :name => "index_festivals_on_slug_and_public"
   add_index "festivals", ["slug"], :name => "index_festivals_on_slug", :unique => true
   add_index "festivals", ["slug_group", "public"], :name => "index_festivals_on_slug_group_and_public"
