@@ -1,0 +1,10 @@
+
+<%= content_tag_for(:li, festival, class: 'festival') do %>
+  <%= link_to festival_dates(festival), festival, :class => "show" %>
+  <% if current_user_is_admin? %>
+    <span class="actions">
+      <%= link_to 'Edit', edit_festival_path(festival), :class => "edit" %>
+      <%= link_to 'Destroy', festival, method: :delete, data: { confirm: 'Are you sure?' }, :class => "destroy" %>
+    </span>
+  <% end %>
+<% end %>

@@ -1,0 +1,9 @@
+<div class="festival-group" id="group-<%= festival_group.slug %>">
+  <h3><%= festival_group.name %></h3>
+
+  <ul>
+    <%= render :partial => 'festivals/in_group', :collection => festival_group.festivals,
+               :as => :festival %>
+  </ul>
+
+</div>

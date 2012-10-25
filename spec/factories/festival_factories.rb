@@ -4,7 +4,7 @@ FactoryGirl.define do
     sequence(:slug_group) {|n| "fest#{n}" }
     name {|f| "Festival #{f.slug_group}" }
     starts_on 2.days.ago
-    ends_on {|f| f.starts_on + 2.days }
+    ends_on {|f| f.starts_on.to_date + 2.days }
 
     trait :upcoming do
       sequence(:slug_group) {|n| "soon#{n}" }

@@ -14,7 +14,7 @@ private
   end
 
   def date_range_ordering
-    return true unless starts_on && ends_on && ends_on < starts_on
+    return true unless (ends_on < starts_on rescue false)
 
     errors.add(:ends_on, "cannot be before the start date")
     false

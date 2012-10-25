@@ -1,0 +1,25 @@
+When /^there are three festivals in two groups$/ do
+  @grouped_festivals_with_dates = {
+    'piff' => {
+      'Mar 2 - 4, 2011' => create(:festival, :slug_group => 'piff', :starts_on => '2011-03-02'),
+      'Mar 1 - 3, 2012' => create(:festival, :slug_group => 'piff', :starts_on => '2012-03-01'),
+    },
+    'reel' => {
+      'Jun 30 - Jul 2, 2012' => create(:festival, :slug_group => 'reel', :starts_on => '2012-06-30')
+    }
+  }
+end
+
+When /^I visit the festivals index page$/ do
+  visit festivals_path
+end
+
+Then /^I should see the festivals listed in groups$/ do
+  @grouped_festivals_with_dates.each do |slug, festivals_with_dates|
+    group_element = page.find(".festival-group#group-#{slug}")
+    festivals_with_dates.each do |dates, festival|
+      group_element.should have_content(festival.name)
+      group_element.find("#festival_#{festival.id}").text.strip.should eq(dates)
+    end
+  end
+end
