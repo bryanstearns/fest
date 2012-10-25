@@ -16,9 +16,9 @@ module ApplicationHelper
     end
 
     safe_join [
-      localize(starts, format: start_format),
-      " &ndash; ".html_safe,
-      localize(ends, format: end_format)
+      localize(starts, format: start_format).gsub(/  /, ' ').strip,
+      " - ".html_safe,
+      localize(ends, format: end_format).gsub(/  /, ' ').strip
     ]
   end
 end

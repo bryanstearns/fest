@@ -36,17 +36,17 @@ describe ApplicationHelper do
 
     context "for dates within a month" do
       let(:end_on) { start_on + 3 }
-      it { should == "Nov 20 &ndash; 23, 2015" }
+      it { should == "Nov 20 - 23, 2015" }
     end
 
     context "for cross-month dates within a year" do
       let(:end_on) { start_on + 30 }
-      it { should == "Nov 20 &ndash; Dec 20, 2015" }
+      it { should == "Nov 20 - Dec 20, 2015" }
     end
 
     context "for cross-year dates" do
       let(:end_on) { start_on + 60 }
-      it { should == "Nov 20, 2015 &ndash; Jan 19, 2016" }
+      it { should == "Nov 20, 2015 - Jan 19, 2016" }
     end
 
     context "for unset dates" do
