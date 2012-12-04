@@ -10,7 +10,7 @@ gem 'simple_form'
 gem 'turbolinks'
 
 group :development do
-  gem 'debugger' unless ENV['RM_INFO'] # don't if we're in RubyMine
+  gem 'debugger' unless ENV['RM_INFO'] # do when bundling, don't when in RubyMine
   gem 'mailcatcher'
 end
 
