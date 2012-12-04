@@ -34,8 +34,8 @@ def sign_up
   visit '/users/sign_up'
   fill_in "Name", :with => @visitor[:name]
   fill_in "Email", :with => @visitor[:email]
-  fill_in "Password", :with => @visitor[:password]
-  fill_in "Password confirmation", :with => @visitor[:password_confirmation]
+  fill_in "user_password", :with => @visitor[:password]
+  fill_in "user_password_confirmation", :with => @visitor[:password_confirmation]
   click_button "Sign up"
   find_user
 end
@@ -172,15 +172,15 @@ Then /^I should see an invalid email message$/ do
 end
 
 Then /^I should see a missing password message$/ do
-  field('password').should have_content "can't be blank"
+  field('js-password').should have_content "can't be blank"
 end
 
 Then /^I should see a missing password confirmation message$/ do
-  field('password').should have_content "doesn't match confirmation"
+  field('js-password').should have_content "doesn't match confirmation"
 end
 
 Then /^I should see a mismatched password message$/ do
-  field('password').should have_content "doesn't match confirmation"
+  field('js-password').should have_content "doesn't match confirmation"
 end
 
 Then /^I should see a signed out message$/ do
