@@ -11,6 +11,7 @@ gem 'turbolinks'
 
 group :development do
   gem 'mailcatcher'
+  gem 'quiet_assets'
 
   if ENV['RM_INFO'] # Don't use the debugger when running under Rubymine
     gem 'debugger', require: false
