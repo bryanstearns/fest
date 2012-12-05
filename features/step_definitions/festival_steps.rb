@@ -23,3 +23,20 @@ Then /^I should see the festivals listed in groups$/ do
     end
   end
 end
+
+Given /^a festival/ do
+  @festival = create(:festival)
+end
+
+When /^I visit the festival page$/ do
+  visit festival_path(@festival)
+end
+
+Then /^I should( not)? see an Edit link$/ do |notness|
+  festival_nav = page.find("header.festival")
+  if notness != ' not'
+    festival_nav.should have_link "Edit"
+  else
+    festival_nav.should_not have_link "Edit"
+  end
+end

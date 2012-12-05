@@ -57,6 +57,11 @@ Given /^I am logged in$/ do
   sign_in
 end
 
+Given /^I am( not)? an administrator/ do |notness|
+  @user.admin = notness != ' not'
+  @user.save!
+end
+
 Given /^I exist as a user$/ do
   create_user
 end
