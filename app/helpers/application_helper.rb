@@ -22,9 +22,9 @@ module ApplicationHelper
     ]
   end
 
-  def link_in_list_to(title, target)
-    options = {}
-    options[:class] = 'active' if current_page?(target)
+  def link_in_list_to(title, target, options={})
+    options[:class] = [options[:class], 'active'].compact.join(' ') \
+      if current_page?(target)
     content_tag(:li, link_to(title, target), options)
   end
 end
