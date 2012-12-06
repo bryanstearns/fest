@@ -11,7 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121013183350) do
+ActiveRecord::Schema.define(:version => 20121206020637) do
+
+  create_table "festival_locations", :force => true do |t|
+    t.integer  "festival_id"
+    t.integer  "location_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
 
   create_table "festivals", :force => true do |t|
     t.string   "slug",                           :null => false
@@ -33,6 +40,12 @@ ActiveRecord::Schema.define(:version => 20121013183350) do
   add_index "festivals", ["slug", "public"], :name => "index_festivals_on_slug_and_public"
   add_index "festivals", ["slug"], :name => "index_festivals_on_slug", :unique => true
   add_index "festivals", ["slug_group", "public"], :name => "index_festivals_on_slug_group_and_public"
+
+  create_table "locations", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "name",                   :default => "", :null => false
@@ -62,5 +75,15 @@ ActiveRecord::Schema.define(:version => 20121013183350) do
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["unlock_token"], :name => "index_users_on_unlock_token", :unique => true
+
+  create_table "venues", :force => true do |t|
+    t.string   "name"
+    t.string   "abbreviation"
+    t.integer  "location_id",  :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "venues", ["location_id"], :name => "index_venues_on_location_id"
 
 end

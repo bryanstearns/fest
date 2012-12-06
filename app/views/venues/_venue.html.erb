@@ -1,0 +1,10 @@
+<%= content_tag_for(:li, venue) do %>
+  <h3>
+    <%= venue.name %> (<%= venue.abbreviation %>)
+
+    <span class="actions">
+      <%= link_to 'Edit', edit_venue_path(venue) %>
+      <%= link_to 'Destroy', venue, method: :delete, data: { confirm: 'Are you sure?' } %>
+    </span>
+  </h3>
+<% end %>

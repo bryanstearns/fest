@@ -1,6 +1,11 @@
 Fest::Application.routes.draw do
   resources :festivals
 
+  resources :locations do
+    resources :venues, :only => [:new, :create]
+  end
+  resources :venues, :only => [:edit, :update, :destroy]
+
   devise_for :users
 
   root to: "home#index"

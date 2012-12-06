@@ -62,6 +62,11 @@ Given /^I am( not)? an administrator/ do |notness|
   @user.save!
 end
 
+Given /^I am logged in as an administrator/ do
+  steps "Given I am logged in"
+  steps "And I am an administrator"
+end
+
 Given /^I exist as a user$/ do
   create_user
 end
