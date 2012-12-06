@@ -12,6 +12,7 @@
     <%= f.input :public %>
     <%= f.input :scheduled %>
     <%= f.input :revised_at, as: 'string' %>
+    <%= f.association :locations, as: :check_boxes %>
   </div>
 
   <div class="form-actions">
