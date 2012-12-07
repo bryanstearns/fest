@@ -23,8 +23,9 @@ module ApplicationHelper
   end
 
   def link_in_list_to(title, target, options={})
+    current = options.delete(:current)
     options[:class] = [options[:class], 'active'].compact.join(' ') \
-      if current_page?(target)
+      if (current || current_page?(target))
     content_tag(:li, link_to(title, target), options)
   end
 

@@ -1,5 +1,8 @@
 Fest::Application.routes.draw do
-  resources :festivals
+  resources :festivals do
+    resources :films, :only => [:index, :new, :create]
+  end
+  resources :films, :only => [:show, :edit, :update, :destroy]
 
   resources :locations do
     resources :venues, :only => [:new, :create]

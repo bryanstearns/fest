@@ -1,5 +1,7 @@
 class FestivalsController < ApplicationController
   before_filter :authenticate_admin!, except: [:index, :show]
+  layout 'festivals_admin', :only => [:edit]
+
   # GET /festivals
   # GET /festivals.json
   def index

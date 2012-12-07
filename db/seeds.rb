@@ -39,3 +39,7 @@ loc = example.locations.create!(name: "Exampleplex")
 (1..3).each do |i|
   loc.venues.create!(name: "ExamplePlex #{i}", abbreviation: "EP#{i}")
 end
+example.films.create!(name: "Vertigo", duration: 90, page: 12.1)
+example.films.create!(name: "Psycho", duration: 100, page: 8.1)
+example.films.create!(name: "The Birds", duration: 110, page: 10.1)
+example.films.create!(name: "Blackmail", duration: 80, page: 10.2)

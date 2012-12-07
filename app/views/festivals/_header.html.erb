@@ -8,7 +8,9 @@
       <%= link_in_list_to "1. Your Film Priorities", root_path %>
       <%= link_in_list_to "2. Scheduling Assistant", root_path %>
       <%= link_in_list_to "3. Your Festival Schedule", festival_path(@festival) %>
-      <%= link_in_list_to("Edit", edit_festival_path(@festival), class: 'admin') \
+      <%= link_in_list_to("Edit", edit_festival_path(@festival),
+                          class: 'admin',
+                          current: festival_editing_current?(@festival, @film)) \
             if current_user_is_admin? %>
     </ul>
   </header>

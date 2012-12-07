@@ -15,5 +15,12 @@ FactoryGirl.define do
       sequence(:slug_group) {|n| "past#{n}" }
       starts_on 40.days.ago
     end
+
+    factory :festival_with_films do
+      ignore { film_count 3 }
+      after(:create) do |festival, ev|
+        FactoryGirl.create_list(:film, ev.film_count, festival: festival)
+      end
+    end
   end
 end

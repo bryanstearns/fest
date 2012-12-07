@@ -11,11 +11,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121206020637) do
+ActiveRecord::Schema.define(:version => 20121206051228) do
 
   create_table "festival_locations", :force => true do |t|
-    t.integer  "festival_id"
-    t.integer  "location_id"
+    t.integer  "festival_id", :null => false
+    t.integer  "location_id", :null => false
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
@@ -40,6 +40,21 @@ ActiveRecord::Schema.define(:version => 20121206020637) do
   add_index "festivals", ["slug", "public"], :name => "index_festivals_on_slug_and_public"
   add_index "festivals", ["slug"], :name => "index_festivals_on_slug", :unique => true
   add_index "festivals", ["slug_group", "public"], :name => "index_festivals_on_slug_group_and_public"
+
+  create_table "films", :force => true do |t|
+    t.integer  "festival_id",  :null => false
+    t.string   "name"
+    t.text     "description"
+    t.string   "url_fragment"
+    t.integer  "duration"
+    t.string   "countries"
+    t.float    "page"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "films", ["festival_id", "name"], :name => "index_films_on_festival_id_and_name"
+  add_index "films", ["festival_id", "page", "name"], :name => "index_films_on_festival_id_and_page_and_name"
 
   create_table "locations", :force => true do |t|
     t.string   "name"

@@ -1,0 +1,8 @@
+<%= content_tag_for(:tr, film) do %>
+  <td><%= link_to film.name, film %></td>
+  <td><%= film.countries %></td>
+  <td><%= film.duration %></td>
+  <td><%= film.page %></td>
+  <td><%= film.url_fragment %></td>
+  <td>0<%# film.screenings.count %></td>
+<% end %>
