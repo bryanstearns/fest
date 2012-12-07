@@ -27,17 +27,10 @@ describe FestivalsController do
     attributes_for(:festival)
   end
 
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # FestivalsController. Be sure to keep this updated too.
-  def valid_session
-    {}
-  end
-
   describe "GET index" do
     it "assigns all festivals as @festivals" do
       festival = create(:festival)
-      get :index, {}, valid_session
+      get :index, {}
       assigns(:festivals).should eq([festival])
     end
   end
@@ -45,42 +38,45 @@ describe FestivalsController do
   describe "GET show" do
     it "assigns the requested festival as @festival" do
       festival = create(:festival)
-      get :show, {:id => festival.to_param}, valid_session
+      get :show, {:id => festival.to_param}
       assigns(:festival).should eq(festival)
     end
   end
 
   describe "GET new" do
+    login_admin
     it "assigns a new festival as @festival" do
-      get :new, {}, valid_session
+      get :new, {}
       assigns(:festival).should be_a_new(Festival)
     end
   end
 
   describe "GET edit" do
+    login_admin
     it "assigns the requested festival as @festival" do
       festival = create(:festival)
-      get :edit, {:id => festival.to_param}, valid_session
+      get :edit, {:id => festival.to_param}
       assigns(:festival).should eq(festival)
     end
   end
 
   describe "POST create" do
+    login_admin
     describe "with valid params" do
       it "creates a new Festival" do
         expect {
-          post :create, {:festival => valid_attributes}, valid_session
+          post :create, {:festival => valid_attributes}
         }.to change(Festival, :count).by(1)
       end
 
       it "assigns a newly created festival as @festival" do
-        post :create, {:festival => valid_attributes}, valid_session
+        post :create, {:festival => valid_attributes}
         assigns(:festival).should be_a(Festival)
         assigns(:festival).should be_persisted
       end
 
       it "redirects to the created festival" do
-        post :create, {:festival => valid_attributes}, valid_session
+        post :create, {:festival => valid_attributes}
         response.should redirect_to(Festival.last)
       end
     end
@@ -89,20 +85,21 @@ describe FestivalsController do
       it "assigns a newly created but unsaved festival as @festival" do
         # Trigger the behavior that occurs when invalid params are submitted
         Festival.any_instance.stub(:save).and_return(false)
-        post :create, {:festival => {}}, valid_session
+        post :create, {:festival => {}}
         assigns(:festival).should be_a_new(Festival)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         Festival.any_instance.stub(:save).and_return(false)
-        post :create, {:festival => {}}, valid_session
+        post :create, {:festival => {}}
         response.should render_template("new")
       end
     end
   end
 
   describe "PUT update" do
+    login_admin
     describe "with valid params" do
       it "updates the requested festival" do
         festival = create(:festival)
@@ -111,18 +108,18 @@ describe FestivalsController do
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
         Festival.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, {:id => festival.to_param, :festival => {'these' => 'params'}}, valid_session
+        put :update, {:id => festival.to_param, :festival => {'these' => 'params'}}
       end
 
       it "assigns the requested festival as @festival" do
         festival = create(:festival)
-        put :update, {:id => festival.to_param, :festival => valid_attributes}, valid_session
+        put :update, {:id => festival.to_param, :festival => valid_attributes}
         assigns(:festival).should eq(festival)
       end
 
       it "redirects to the festival" do
         festival = create(:festival)
-        put :update, {:id => festival.to_param, :festival => valid_attributes}, valid_session
+        put :update, {:id => festival.to_param, :festival => valid_attributes}
         response.should redirect_to(festival)
       end
     end
@@ -132,7 +129,7 @@ describe FestivalsController do
         festival = create(:festival)
         # Trigger the behavior that occurs when invalid params are submitted
         Festival.any_instance.stub(:save).and_return(false)
-        put :update, {:id => festival.to_param, :festival => {}}, valid_session
+        put :update, {:id => festival.to_param, :festival => {}}
         assigns(:festival).should eq(festival)
       end
 
@@ -140,25 +137,25 @@ describe FestivalsController do
         festival = create(:festival)
         # Trigger the behavior that occurs when invalid params are submitted
         Festival.any_instance.stub(:save).and_return(false)
-        put :update, {:id => festival.to_param, :festival => {}}, valid_session
+        put :update, {:id => festival.to_param, :festival => {}}
         response.should render_template("edit")
       end
     end
   end
 
   describe "DELETE destroy" do
+    login_admin
     it "destroys the requested festival" do
       festival = create(:festival)
       expect {
-        delete :destroy, {:id => festival.to_param}, valid_session
+        delete :destroy, {:id => festival.to_param}
       }.to change(Festival, :count).by(-1)
     end
 
     it "redirects to the festivals list" do
       festival = create(:festival)
-      delete :destroy, {:id => festival.to_param}, valid_session
+      delete :destroy, {:id => festival.to_param}
       response.should redirect_to(festivals_url)
     end
   end
-
 end

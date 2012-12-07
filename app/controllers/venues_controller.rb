@@ -1,4 +1,5 @@
 class VenuesController < ApplicationController
+  before_filter :authenticate_admin!
   before_filter :load_location, only: [:new, :create]
 
   # GET /locations/1/venues/new
@@ -17,8 +18,8 @@ class VenuesController < ApplicationController
     @venue = Venue.find(params[:id])
   end
 
-  # POST /venues
-  # POST /venues.json
+  # POST /locations/1/venues
+  # POST /locations/1/venues.json
   def create
     @venue = @location.venues.build(params[:venue])
 

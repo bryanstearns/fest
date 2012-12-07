@@ -10,6 +10,10 @@ class ApplicationController < ActionController::Base
   after_filter(:log_memory_usage) unless Rails.env.test?
 
 protected
+  def authenticate_admin!
+    authenticate_user!
+    raise ActiveRecord::RecordNotFound unless current_user.admin?
+  end
 
   def log_session_state
     session_key = Rails.application.config.session_options[:key]

@@ -7,6 +7,10 @@ FactoryGirl.define do
 
     factory :confirmed_user do
       confirmed_at Time.zone.parse("2000-01-01")
+
+      factory :confirmed_admin_user do
+        admin true
+      end
     end
   end
 end
