@@ -4,7 +4,6 @@
   <% if current_user_is_admin? %>
     <span class="actions">
       <%= link_to 'Edit', edit_festival_path(festival), :class => "edit" %>
-      <%= link_to 'Destroy', festival, method: :delete, data: { confirm: 'Are you sure?' }, :class => "destroy" %>
     </span>
   <% end %>
 <% end %>

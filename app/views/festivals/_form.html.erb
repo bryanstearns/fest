@@ -17,7 +17,7 @@
 
   <div class="form-actions">
     <%= f.button :submit %>
-    &nbsp;
-    <%= link_to "Cancel", @festival.new_record? ? festivals_path : festival_path(@festival) %>
+    <%= cancel_link(@festival) %>
+    <%= destroy_button(@festival) %>
   </div>
 <% end %>

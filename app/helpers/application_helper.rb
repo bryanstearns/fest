@@ -27,4 +27,27 @@ module ApplicationHelper
       if current_page?(target)
     content_tag(:li, link_to(title, target), options)
   end
+
+  def cancel_link(model, options={})
+    path = if model.respond_to?(:model_name)
+      model_name = model.model_name
+      if model.new_record?
+        # eg festivals_path
+        options[:new] || send("#{model_name.route_key}_path")
+      else
+        # festival_path(festival)
+        options[:existing] || send("#{model_name.singular_route_key}_path", model)
+      end
+    else
+      model
+    end
+    link_to "Cancel", path
+  end
+
+  def destroy_button(model)
+    link_to('Destroy', model, method: :delete,
+                data: { confirm: 'Are you sure?' },
+                class: 'btn destroy') \
+          unless model.new_record?
+  end
 end

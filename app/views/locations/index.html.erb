@@ -1,6 +1,7 @@
+<%= link_to 'New Location', new_location_path,
+            class: 'admin btn btn-small' %>
 <h1>Listing locations</h1>
 
 <ul id="locations">
   <%= render @locations %>
-  <li class="actions"><%= link_to 'New Location', new_location_path %></li>
 </ul>

@@ -3,8 +3,8 @@
     <%= venue.name %> (<%= venue.abbreviation %>)
 
     <span class="actions">
-      <%= link_to 'Edit', edit_venue_path(venue) %>
-      <%= link_to 'Destroy', venue, method: :delete, data: { confirm: 'Are you sure?' } %>
+      <%= link_to 'Edit', edit_venue_path(venue),
+                  class: 'btn btn-small' %>
     </span>
   </h3>
 <% end %>

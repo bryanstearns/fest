@@ -8,7 +8,7 @@
 
   <div class="form-actions">
     <%= f.button :submit %>
-    &nbsp;
-    <%= link_to "Cancel", locations_path %>
+    <%= cancel_link(locations_path) %>
+    <%= destroy_button(@venue) %>
   </div>
 <% end %>
