@@ -4,5 +4,14 @@ FactoryGirl.define do
     duration 90
     countries "us"
     association :festival
+
+    factory :film_with_screenings do
+      ignore { screening_count 3 }
+      after(:create) do |film, ev|
+        FactoryGirl.create_list(:screening, ev.screening_count,
+                                film: film, festival: film.festival)
+      end
+    end
+
   end
 end
