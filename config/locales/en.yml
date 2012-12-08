@@ -9,3 +9,6 @@ en:
       mdy: "%b %e, %Y"
       md: "%b %e"
       dy: "%e, %Y"
+  time:
+    formats:
+      mdy_hms: "%-d/%-m/%Y %k:%M:%S"

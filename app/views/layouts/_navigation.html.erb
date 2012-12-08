@@ -10,6 +10,7 @@
             <% if current_user_is_admin? %>
               <li><%= link_to "Admin", admin_path %></li>
             <% end %>
+            <li><%= link_to "My Account", edit_user_registration_path %></li>
             <li id="sign_out"><%= link_to "Sign out", destroy_user_session_path %></li>
           <% else %>
             <li id="sign_up"><%= link_to "Sign up", new_user_registration_path %></li>

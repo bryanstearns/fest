@@ -3,6 +3,10 @@ module ApplicationHelper
     user_signed_in? && current_user.admin?
   end
 
+  def mdy_hms(time, null_value='')
+    time ? l(time, format: :mdy_hms) : null_value
+  end
+
   def date_range(starts, ends)
     return nil unless starts && ends # unset
     return l(starts, format: :mdy) if starts == ends # it's one day
@@ -26,7 +30,8 @@ module ApplicationHelper
     current = options.delete(:current)
     options[:class] = [options[:class], 'active'].compact.join(' ') \
       if (current || current_page?(target))
-    content_tag(:li, link_to(title, target), options)
+    link_options = options.delete(:link_options)
+    content_tag(:li, link_to(title, target, link_options), options)
   end
 
   def cancel_link(model, options={})
@@ -48,7 +53,7 @@ module ApplicationHelper
   def destroy_button(model)
     link_to('Destroy', model, method: :delete,
                 data: { confirm: 'Are you sure?' },
-                class: 'btn destroy') \
+                class: 'btn extra-action') \
           unless model.new_record?
   end
 end

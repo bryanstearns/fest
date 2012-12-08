@@ -9,6 +9,10 @@ Fest::Application.routes.draw do
   end
   resources :venues, :only => [:edit, :update, :destroy]
 
+  scope '/admin' do
+    resources :users
+  end
+
   devise_for :users
 
   root to: "home#index"

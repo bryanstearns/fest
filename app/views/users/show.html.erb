@@ -1,0 +1,86 @@
+<%= link_to 'Edit', edit_user_path(@user), class: 'btn btn-small extra-action' %>
+
+<table class="table">
+  <tbody>
+    <tr>
+      <td>Name</td>
+      <td><%= @user.name %></td>
+    </tr>
+    <tr>
+      <td>Email</td>
+      <td><%= @user.email %></td>
+    </tr>
+    <tr>
+      <td>Reset Password Token</td>
+      <td><%= @user.reset_password_token %></td>
+    </tr>
+    <tr>
+      <td>Reset Password Sent At</td>
+      <td><%= mdy_hms(@user.reset_password_sent_at) %></td>
+    </tr>
+    <tr>
+      <td>Remember Created At</td>
+      <td><%= mdy_hms(@user.remember_created_at) %></td>
+    </tr>
+    <tr>
+      <td>Reset Password Sent At</td>
+      <td><%= mdy_hms(@user.reset_password_sent_at) %></td>
+    </tr>
+    <tr>
+      <td>Sign-in Count</td>
+      <td><%= @user.sign_in_count %></td>
+    </tr>
+    <tr>
+      <td>Current Sign-in At</td>
+      <td><%= mdy_hms(@user.current_sign_in_at) %></td>
+    </tr>
+    <tr>
+      <td>Current Sign-in IP</td>
+      <td><%= @user.current_sign_in_ip %></td>
+    </tr>
+    <tr>
+      <td>Last Sign-in At</td>
+      <td><%= mdy_hms(@user.last_sign_in_at) %></td>
+    </tr>
+    <tr>
+      <td>Last Sign-in IP</td>
+      <td><%= @user.last_sign_in_ip %></td>
+    </tr>
+    <tr>
+      <td>Confirmation Token</td>
+      <td><%= @user.confirmation_token %></td>
+    </tr>
+    <tr>
+      <td>Confirmation Sent At</td>
+      <td><%= mdy_hms(@user.confirmation_sent_at) %></td>
+    </tr>
+    <tr>
+      <td>Unconfirmed Email</td>
+      <td><%= @user.unconfirmed_email %></td>
+    </tr>
+    <tr>
+      <td>Failed Attempts</td>
+      <td><%= @user.failed_attempts %></td>
+    </tr>
+    <tr>
+      <td>Unlock Token</td>
+      <td><%= @user.unlock_token %></td>
+    </tr>
+    <tr>
+      <td>Locked At</td>
+      <td><%= mdy_hms(@user.locked_at) %></td>
+    </tr>
+    <tr>
+      <td>Admin</td>
+      <td><%= @user.admin.inspect %></td>
+    </tr>
+    <tr>
+      <td>Created At</td>
+      <td><%= mdy_hms(@user.created_at) %></td>
+    </tr>
+    <tr>
+      <td>Updated At</td>
+      <td><%= mdy_hms(@user.updated_at) %></td>
+    </tr>
+  </tbody>
+</table>
