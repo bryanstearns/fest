@@ -3,8 +3,9 @@ class Festival < ActiveRecord::Base
   has_many :locations, through: :festival_locations
   has_many :films, dependent: :destroy
 
-  attr_accessible :ends_on, :location, :main_url, :name, :public, :revised_at,
-                  :scheduled, :slug, :slug_group, :starts_on, :updates_url
+  attr_accessible :ends_on, :location, :location_ids, :main_url, :name, :public,
+                  :revised_at, :scheduled, :slug, :slug_group, :starts_on,
+                  :updates_url
 
   before_validation :update_slug
 
