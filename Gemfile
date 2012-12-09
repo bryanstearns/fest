@@ -12,6 +12,8 @@ gem 'turbolinks'
 group :development do
   gem 'mailcatcher'
   gem 'quiet_assets'
+  gem 'better_errors'
+  gem 'binding_of_caller' # better_errors wants this
 
   if ENV['RM_INFO'] # Don't use the debugger when running under Rubymine
     gem 'debugger', require: false
