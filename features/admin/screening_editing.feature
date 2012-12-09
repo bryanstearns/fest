@@ -6,5 +6,5 @@ Feature: Film editing
   Scenario: List screenings on a film
     Given a film with screenings
     And I am logged in as an administrator
-    When I visit the film edit page
+    When I visit the film page
     Then I should see the screenings listed

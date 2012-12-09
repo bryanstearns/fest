@@ -1,9 +1,8 @@
 FactoryGirl.define do
   factory :screening do
-    sequence(:name) {|n| "Jaws #{n}" }
-    duration 90
-    countries "us"
     association :film
-    festival {|s| s.film.festival }
+    association :venue
+    starts_at 2.days.ago.change(hour: 15, minute: 0, second: 0)
+    press false
   end
 end

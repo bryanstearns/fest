@@ -1,6 +1,7 @@
 class Festival < ActiveRecord::Base
   has_many :festival_locations, dependent: :destroy
   has_many :locations, through: :festival_locations
+  has_many :venues, through: :locations
   has_many :films, dependent: :destroy
 
   attr_accessible :ends_on, :location, :location_ids, :main_url, :name, :public,

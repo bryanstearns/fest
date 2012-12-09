@@ -22,5 +22,21 @@ FactoryGirl.define do
         FactoryGirl.create_list(:film, ev.film_count, festival: festival)
       end
     end
+
+    trait :with_venues do
+      ignore do
+        location_count 1
+        venue_count 1
+      end
+      after(:create) do |festival, ev|
+        FactoryGirl.create_list(:festival_location,
+                                ev.location_count,
+                                festival: festival).each do |fest_loc|
+          FactoryGirl.create_list(:venue,
+                                  ev.venue_count,
+                                  location: fest_loc.location)
+        end
+      end
+    end
   end
 end

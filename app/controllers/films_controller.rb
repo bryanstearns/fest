@@ -6,7 +6,7 @@ class FilmsController < ApplicationController
   # GET /festivals/1/films
   # GET /festivals/1/films.json
   def index
-    @films = @festival.films.all
+    @films = @festival.films.includes(:screenings).all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -17,7 +17,7 @@ class FilmsController < ApplicationController
   # GET /films/1
   # GET /films/1.json
   def show
-    @film = Film.includes(:festival).find(params[:id])
+    @film = Film.includes(:festival, screenings: :venue).find(params[:id])
     @festival = @film.festival
 
     respond_to do |format|

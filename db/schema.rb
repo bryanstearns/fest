@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121206051228) do
+ActiveRecord::Schema.define(:version => 20121208215955) do
 
   create_table "festival_locations", :force => true do |t|
     t.integer  "festival_id", :null => false
@@ -62,10 +62,25 @@ ActiveRecord::Schema.define(:version => 20121206051228) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "screenings", :force => true do |t|
+    t.integer  "festival_id",                    :null => false
+    t.integer  "film_id",                        :null => false
+    t.integer  "venue_id",                       :null => false
+    t.integer  "location_id",                    :null => false
+    t.datetime "starts_at"
+    t.datetime "ends_at"
+    t.boolean  "press",       :default => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
+  end
+
+  add_index "screenings", ["festival_id", "starts_at", "press"], :name => "index_screenings_on_festival_id_and_starts_at_and_press"
+  add_index "screenings", ["film_id", "starts_at", "press"], :name => "index_screenings_on_film_id_and_starts_at_and_press"
+
   create_table "users", :force => true do |t|
-    t.string   "name",                   :default => "", :null => false
-    t.string   "email",                  :default => "", :null => false
-    t.string   "encrypted_password",     :default => "", :null => false
+    t.string   "name",                   :default => "",    :null => false
+    t.string   "email",                  :default => "",    :null => false
+    t.string   "encrypted_password",     :default => "",    :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
@@ -81,9 +96,9 @@ ActiveRecord::Schema.define(:version => 20121206051228) do
     t.integer  "failed_attempts",        :default => 0
     t.string   "unlock_token"
     t.datetime "locked_at"
-    t.boolean  "admin"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.boolean  "admin",                  :default => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true

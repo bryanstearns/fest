@@ -11,4 +11,6 @@ en:
       dy: "%e, %Y"
   time:
     formats:
-      mdy_hms: "%-d/%-m/%Y %k:%M:%S"
+      mdy_hms: "%-m/%-d/%Y %k:%M:%S"
+      dmdy_hm: "%a, %b %-d, %k:%M"
+      hm: "%k:%M"

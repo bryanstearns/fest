@@ -2,12 +2,14 @@ Given /^a film( with .*)?$/ do |with_stuff|
   @film = create("film#{with_stuff}".gsub(' ', '_').to_sym)
 end
 
-When /^I visit the film edit page$/ do
-  visit edit_film_path(@film)
+When /^I visit the film page$/ do
+  visit film_path(@film)
 end
 
 Then /^I should see the screenings listed$/ do
-  rows = page.all("tr.film td:first")
+  rows = page.all("table#screenings tr.screening")
   rows.should have_at_least(2).items
-  rows.map(&:text).should eq(@festival.films.map(&:name))
+  @film.screenings.zip(rows).each do |screening, row|
+    row.find("td:first-child a")["href"].should eq(edit_screening_path(screening))
+  end
 end

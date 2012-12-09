@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Festival:</b>
+  <%= @screening.festival %>
+</p>
+
+<p>
+  <b>Film:</b>
+  <%= @screening.film %>
+</p>
+
+<p>
+  <b>Venue:</b>
+  <%= @screening.venue %>
+</p>
+
+<p>
+  <b>Location:</b>
+  <%= @screening.location %>
+</p>
+
+<p>
+  <b>Starts at:</b>
+  <%= @screening.starts_at %>
+</p>
+
+<p>
+  <b>Ends at:</b>
+  <%= @screening.ends_at %>
+</p>
+
+<p>
+  <b>Press:</b>
+  <%= @screening.press %>
+</p>
+
+
+<%= link_to 'Edit', edit_screening_path(@screening) %> |
+<%= link_to 'Back', screenings_path %>

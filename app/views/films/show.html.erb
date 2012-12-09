@@ -1,7 +1,7 @@
 <%= link_to 'Edit', edit_film_path(@film), class: 'btn btn-small extra-action' %>
 <h1><%= @film.name %></h1>
 
-<table class="table table-condensed">
+<table id="film" class="table table-condensed">
   <tbody>
     <tr>
       <td>Duration</td>
@@ -23,5 +23,20 @@
       <td>Description</td>
       <td><%= @film.description %></td>
     </tr>
+  </tbody>
+</table>
+
+<table id="screenings" class="table table-condensed">
+  <thead>
+    <th>
+      <%= pluralize(@film.screenings.count, "Screening") %>
+      <%= link_to('New Screening', new_film_screening_path(@film),
+                  class: 'btn btn-small', id: 'new_film_screening') %>
+    </th>
+    <th>Venue</th>
+    <th>Press?</th>
+  </thead>
+  <tbody>
+  <%= render partial: "screenings/screening", collection: @film.screenings %>
   </tbody>
 </table>

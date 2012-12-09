@@ -29,17 +29,47 @@ Festival.where(slug_group: 'example').destroy_all
 Location.where('not exists (select 1 from festival_locations ' +
                'where locations.id = festival_locations.location_id)').destroy_all
 
-example = \
+starts_at = 2.days.ago.change(hour: 18, minute: 0, second: 0)
+ends_at = 2.days.from_now.change(hour: 22, minute: 30, second: 0)
+
+fest = \
   Festival.create!(name: 'Example International Film Festival',
                    location: "Long Name City, Longstatename",
                    slug_group: 'example',
-                   starts_on: 2.days.ago, ends_on: 2.days.from_now,
+                   starts_on: starts_at, ends_on: ends_at,
                    public: true, scheduled: true)
-loc = example.locations.create!(name: "Exampleplex")
-(1..3).each do |i|
+loc = fest.locations.create!(name: "Exampleplex")
+venues = (1..3).map do |i|
   loc.venues.create!(name: "ExamplePlex #{i}", abbreviation: "EP#{i}")
 end
-example.films.create!(name: "Vertigo", duration: 90, page: 12.1)
-example.films.create!(name: "Psycho", duration: 100, page: 8.1)
-example.films.create!(name: "The Birds", duration: 110, page: 10.1)
-example.films.create!(name: "Blackmail", duration: 80, page: 10.2)
+films = [
+    fest.films.create!(name: "Family Plot", duration: 120, page: 12.1),
+    fest.films.create!(name: "Frenzy", duration: 116, page: 12.2),
+    fest.films.create!(name: "Topaz", duration: 143, page: 12.3),
+    fest.films.create!(name: "Marnie", duration: 130, page: 11.1),
+    fest.films.create!(name: "The Birds", duration: 119, page: 10.1),
+    fest.films.create!(name: "Psycho", duration: 109, page: 8.1),
+    fest.films.create!(name: "North by Northwest", duration: 136, page: 9.1),
+    fest.films.create!(name: "Vertigo", duration: 128, page: 9.2),
+    fest.films.create!(name: "The Wrong Man", duration: 105, page: 10.2),
+    fest.films.create!(name: "Blackmail", duration: 84, page: 10.3)
+]
+t = starts_at
+while t < ends_at
+  puts "Starting #{t.to_date}"
+  limit = t.change(hour: ends_at.hour, minute: ends_at.min,
+                   second: ends_at.sec)
+  venues.each_with_index do |venue, i|
+    tv = t + (5 * rand(3)).minutes
+    puts "  #{i}: Venue #{venue.name}, starting at #{tv}"
+    while tv < limit
+      film = films.sample
+      puts "    Added #{film.name} at #{I18n.l tv, format: :mdy_hms}"
+      Screening.create!(film: film, venue: venue, starts_at: tv,
+                        press: tv.to_date == starts_at.to_date)
+      tv += (film.duration + 10).minutes
+    end
+  end
+  t = (t + 1.day).change(hour: starts_at.hour, minute: starts_at.min,
+                         second: starts_at.sec)
+end
