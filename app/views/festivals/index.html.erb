@@ -1,3 +1,5 @@
-<h2>All Festivals</h2>
-<%= link_to('New Festival', new_festival_path) if current_user_is_admin? %>
+<%= link_to('New Festival', new_festival_path,
+            class: 'btn btn-small extra-action') \
+      if current_user_is_admin? %>
+<h1>All Festivals</h1>
 <%= render in_groups(@festivals) %>
