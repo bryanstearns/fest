@@ -16,7 +16,14 @@ FactoryGirl.define do
       starts_on 40.days.ago
     end
 
-    factory :festival_with_films do
+    trait :with_films_and_screenings do
+      ignore { film_count 3 }
+      after(:create) do |festival, ev|
+        FactoryGirl.create_list(:film, ev.film_count, :with_screenings, festival: festival)
+      end
+    end
+
+    trait :with_films do
       ignore { film_count 3 }
       after(:create) do |festival, ev|
         FactoryGirl.create_list(:film, ev.film_count, festival: festival)

@@ -1,7 +1,3 @@
-Given /^a location with venues/ do
-  @location = create(:location_with_venues)
-  @location.venues.should have_at_least(2).items
-end
 
 When /^I visit the locations page$/ do
   visit locations_path

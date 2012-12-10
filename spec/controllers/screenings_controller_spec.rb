@@ -22,7 +22,7 @@ describe ScreeningsController do
   login_admin
 
   let(:festival) {
-    create(:festival_with_films, :with_venues, film_count: 1)
+    create(:festival, :with_films, :with_venues, film_count: 1)
   }
   let(:venue) { festival.venues.first }
   let(:film) { festival.films.first }

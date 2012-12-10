@@ -24,10 +24,6 @@ Then /^I should see the festivals listed in groups$/ do
   end
 end
 
-Given /^a festival( with .*)?$/ do |with_stuff|
-  @festival = create("festival#{with_stuff}".gsub(' ', '_').to_sym)
-end
-
 When /^I visit the festival page$/ do
   visit festival_path(@festival)
 end

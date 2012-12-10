@@ -1,7 +1,3 @@
-Given /^a film( with .*)?$/ do |with_stuff|
-  @film = create("film#{with_stuff}".gsub(' ', '_').to_sym)
-end
-
 When /^I visit the film page$/ do
   visit film_path(@film)
 end
