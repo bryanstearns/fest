@@ -29,8 +29,8 @@ Festival.where(slug_group: 'example').destroy_all
 Location.where('not exists (select 1 from festival_locations ' +
                'where locations.id = festival_locations.location_id)').destroy_all
 
-starts_at = 2.days.ago.change(hour: 18, minute: 0, second: 0)
-ends_at = 2.days.from_now.change(hour: 22, minute: 30, second: 0)
+starts_at = 2.days.ago.at("18:00")
+ends_at = 2.days.from_now.at("22:30")
 
 fest = \
   Festival.create!(name: 'Example International Film Festival',
@@ -57,8 +57,7 @@ films = [
 t = starts_at
 while t < ends_at
   puts "Starting #{t.to_date}"
-  limit = t.change(hour: ends_at.hour, minute: ends_at.min,
-                   second: ends_at.sec)
+  limit = t.at(ends_at)
   venues.each_with_index do |venue, i|
     tv = t + (5 * rand(3)).minutes
     puts "  #{i}: Venue #{venue.name}, starting at #{tv}"
@@ -70,6 +69,5 @@ while t < ends_at
       tv += (film.duration + 10).minutes
     end
   end
-  t = (t + 1.day).change(hour: starts_at.hour, minute: starts_at.min,
-                         second: starts_at.sec)
+  t = (t + 1.day).at(starts_at)
 end
