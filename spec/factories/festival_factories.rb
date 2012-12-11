@@ -65,14 +65,16 @@ class FakeFestivalGenerator
       day_venues.each_with_index do |venue, i|
         tv = t + (5 * rand(3)).minutes
         puts "  #{i}: Venue #{venue.name}, starting at #{tv}" if verbose
-        while tv < limit
+        loop do
           film = films.sample
+          starts_at = tv
+          tv += (film.duration + 10).minutes
+          break if tv > limit
           puts "    Added #{film.name} at #{I18n.l tv, format: :mdy_hms}" \
                 if verbose
           FactoryGirl.create(:screening, film: film, venue: venue,
-                             starts_at: tv, festival: festival,
+                             starts_at: starts_at, festival: festival,
                              press: press && day_index == 0)
-          tv += (film.duration + 10).minutes
         end
       end
     end
