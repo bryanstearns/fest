@@ -39,3 +39,7 @@ Then /^I should( not)? see an Edit link$/ do |notness|
     festival_nav.should_not have_link "Edit"
   end
 end
+
+Then /^I should see the last\-revised time of the festival$/ do
+  page.find("#as-of").should have_content("Festival as of ")
+end

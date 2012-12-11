@@ -12,5 +12,5 @@ en:
   time:
     formats:
       mdy_hms: "%-m/%-d/%Y %k:%M:%S"
-      dmdy_hm: "%a, %b %-d, %k:%M"
+      dmdy_hm: "%a, %b %-d, %l:%M %p"
       hm: "%k:%M"

@@ -10,6 +10,16 @@ describe Festival do
     it { should validate_presence_of(:starts_on) }
     it { should validate_presence_of(:ends_on) }
 
+    # it { should validate_presence_of(:revised_at) }
+    # Can't do the above because we've got a before_validation on: :create
+    # that defaults it. Instead, check after it's been saved.
+    it "should validate presence of revised_at" do
+      subject.save!
+      subject.revised_at = nil
+      subject.should_not be_valid
+      subject.errors.should have_key(:revised_at)
+    end
+
     it "should validate that dates are sequential" do
       subject.should be_valid
       subject.ends_on = subject.starts_on - 2

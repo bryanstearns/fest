@@ -53,3 +53,7 @@
   <b>Revised at:</b>
   <%= @festival.revised_at %>
 </p>
+
+<div id="as-of">
+  Festival as of <%=l @festival.revised_at, format: :dmdy_hm %>
+</div>

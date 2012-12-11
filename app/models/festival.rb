@@ -9,14 +9,20 @@ class Festival < ActiveRecord::Base
                   :updates_url
 
   before_validation :update_slug
+  before_validation :default_revised_at, on: :create
 
   validates :slug, presence: true, uniqueness: true
-  validates :location, :name, :slug_group, :starts_on, :ends_on, presence: true
+  validates :ends_on, :location, :name, :revised_at, :slug_group, :starts_on,
+            presence: true
   validate :date_range_ordering
 
 private
   def update_slug
     self.slug = "#{slug_group}_#{starts_on.strftime("%Y")}" if slug_group && starts_on
+  end
+
+  def default_revised_at
+    self.revised_at ||= Time.current
   end
 
   def date_range_ordering
