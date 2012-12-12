@@ -36,3 +36,32 @@ describe 'Date#at' do
       eq(subject.to_time_in_current_zone.change(hour: 15, min: 17, sec: 0))
   end
 end
+
+describe 'Time#to_minutes' do
+  it "should know how many minutes into today we are" do
+    Time.current.at("12:30:59").to_minutes.should == ((12 * 60) + 30)
+    Time.current.at("0").to_minutes.should == 0
+  end
+end
+
+describe 'Time rounding' do
+  subject { Time.current.at("12:40") }
+  it "should round up, to the next hour by default" do
+    subject.round_up.should == subject.at("13:00")
+  end
+  it "should round down, to the previous hour by default" do
+    subject.round_down.should == subject.at("12:00")
+  end
+  it "should round up, to a specified increment" do
+    subject.round_up(15).should == subject.at("12:45")
+  end
+  it "should round down, to a specified increment" do
+    subject.round_down(15).should == subject.at("12:30")
+  end
+  it "shouldn't change when already rounded (up)" do
+    subject.round_up(10).should == subject
+  end
+  it "shouldn't change when already rounded (down)" do
+    subject.round_down(10).should == subject
+  end
+end
