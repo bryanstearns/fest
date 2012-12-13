@@ -1,58 +1,5 @@
 
-<p>
-  <b>Slug:</b>
-  <%= @festival.slug %>
-</p>
-
-<p>
-  <b>Slug group:</b>
-  <%= @festival.slug_group %>
-</p>
-
-<p>
-  <b>Name:</b>
-  <%= @festival.name %>
-</p>
-
-<p>
-  <b>Location:</b>
-  <%= @festival.location %>
-</p>
-
-<p>
-  <b>Main url:</b>
-  <%= @festival.main_url %>
-</p>
-
-<p>
-  <b>Updates url:</b>
-  <%= @festival.updates_url %>
-</p>
-
-<p>
-  <b>Starts on:</b>
-  <%= @festival.starts_on %>
-</p>
-
-<p>
-  <b>Ends on:</b>
-  <%= @festival.ends_on %>
-</p>
-
-<p>
-  <b>Public:</b>
-  <%= @festival.public %>
-</p>
-
-<p>
-  <b>Scheduled:</b>
-  <%= @festival.scheduled %>
-</p>
-
-<p>
-  <b>Revised at:</b>
-  <%= @festival.revised_at %>
-</p>
+<%= render partial: "day", collection: days(@festival) %>
 
 <div id="as-of">
   Festival as of <%=l @festival.revised_at, format: :dmdy_hm %>

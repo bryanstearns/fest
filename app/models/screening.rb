@@ -15,6 +15,11 @@ class Screening < ActiveRecord::Base
 
   before_validation :assign_denormalized_ids, :assign_ends_at
 
+  scope :on, lambda {|date|
+    t = date.to_date.to_time_in_current_zone
+    where(['(screenings.starts_at >= ? and screenings.ends_at <= ?)',
+           t.beginning_of_day, t.end_of_day])
+  }
 protected
   def assign_denormalized_ids
     self.festival_id = film.festival_id unless festival_id || !film

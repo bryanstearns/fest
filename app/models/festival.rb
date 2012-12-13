@@ -3,6 +3,7 @@ class Festival < ActiveRecord::Base
   has_many :locations, through: :festival_locations
   has_many :venues, through: :locations
   has_many :films, dependent: :destroy
+  has_many :screenings
 
   attr_accessible :ends_on, :location, :location_ids, :main_url, :name, :public,
                   :revised_at, :scheduled, :slug, :slug_group, :starts_on,
@@ -15,6 +16,10 @@ class Festival < ActiveRecord::Base
   validates :ends_on, :location, :name, :revised_at, :slug_group, :starts_on,
             presence: true
   validate :date_range_ordering
+
+  def screenings_by_date
+    screenings.order(:starts_at).group_by {|s| s.starts_at.to_date }
+  end
 
 private
   def update_slug

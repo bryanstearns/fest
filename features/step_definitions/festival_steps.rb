@@ -40,6 +40,11 @@ Then /^I should( not)? see an Edit link$/ do |notness|
   end
 end
 
+Then /^I should see a grid for each day of the festival$/ do
+  days = page.all("table.day")
+  days.should have_at_least(1).items
+end
+
 Then /^I should see the last\-revised time of the festival$/ do
   page.find("#as-of").should have_content("Festival as of ")
 end

@@ -27,4 +27,10 @@ module FestivalsHelper
       edit_film_path(film)
     ].any? {|p| current_page?(p) }
   end
+
+  def days(festival)
+    festival.screenings_by_date.map do |date, screenings|
+      Day.new(date, screenings)
+    end
+  end
 end
