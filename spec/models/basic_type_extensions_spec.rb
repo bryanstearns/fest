@@ -37,13 +37,6 @@ describe 'Date#at' do
   end
 end
 
-describe 'Time#to_minutes' do
-  it "should know how many minutes into today we are" do
-    Time.current.at("12:30:59").to_minutes.should == ((12 * 60) + 30)
-    Time.current.at("0").to_minutes.should == 0
-  end
-end
-
 describe 'Time rounding' do
   subject { Time.current.at("12:40") }
   it "should round up, to the next hour by default" do
@@ -63,5 +56,20 @@ describe 'Time rounding' do
   end
   it "shouldn't change when already rounded (down)" do
     subject.round_down(10).should == subject
+  end
+end
+
+describe 'Time#to_minutes' do
+  it "should know how many minutes into today we are" do
+    Time.current.at("12:30:59").to_minutes.should == ((12 * 60) + 30)
+    Time.current.at("0").to_minutes.should == 0
+  end
+end
+
+describe 'Float#to_minutes' do
+  it "Should calculate minutes from a duration" do
+    now = Time.current
+    earlier = now - 30.minutes
+    (now - earlier).to_minutes.should eq(30)
   end
 end

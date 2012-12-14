@@ -37,3 +37,9 @@ class Date
     self.to_time_in_current_zone.at(time)
   end
 end
+
+class Float
+  def to_minutes
+    (self / 60.0).to_i
+  end
+end
