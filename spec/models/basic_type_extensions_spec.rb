@@ -66,6 +66,12 @@ describe 'Time#to_minutes' do
   end
 end
 
+describe 'Fixnum#to_minutes' do
+  it "Should just divide by 60" do
+    (130 * 60).to_minutes.should eq(130)
+  end
+end
+
 describe 'Float#to_minutes' do
   it "Should calculate minutes from a duration" do
     now = Time.current

@@ -38,6 +38,12 @@ class Date
   end
 end
 
+class Fixnum
+  def to_minutes
+    (self + 59) / 60
+  end
+end
+
 class Float
   def to_minutes
     (self / 60.0).to_i
