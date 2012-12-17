@@ -20,6 +20,13 @@ class Screening < ActiveRecord::Base
     where(['(screenings.starts_at >= ? and screenings.ends_at <= ?)',
            t.beginning_of_day, t.end_of_day])
   }
+
+  delegate :name, to: :film
+
+  def duration
+    (ends_at - starts_at) rescue film.try(:duration)
+  end
+
 protected
   def assign_denormalized_ids
     self.festival_id = film.festival_id unless festival_id || !film

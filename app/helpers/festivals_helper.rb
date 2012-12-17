@@ -29,8 +29,8 @@ module FestivalsHelper
   end
 
   def days(festival)
-    festival.screenings_by_date.map do |date, screenings|
+    Day.paginate(festival.screenings_by_date.map do |date, screenings|
       Day.new(date, screenings)
-    end
+    end)
   end
 end

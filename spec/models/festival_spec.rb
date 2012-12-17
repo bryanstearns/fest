@@ -31,7 +31,7 @@ describe Festival do
       subject.slug.should == "#{subject.slug_group}_#{subject.starts_on.strftime("%Y")}"
     end
 
-    it "should group screenings by date" do
+    it "should group screenings by date in date order" do
       festival = build_stubbed(:festival)
       s1 = build_stubbed(:screening, film: nil, venue: nil,
                          starts_at: festival.starts_on.at("12"))

@@ -25,5 +25,13 @@ describe Screening do
       subject.should be_valid
       subject.ends_at.should eq(subject.starts_at + subject.film.duration.minutes)
     end
+
+    it "should know its duration" do
+      subject.duration.should eq(subject.film.duration)
+    end
+
+    it "should know its film's name" do
+      subject.name.should eq(subject.film.name)
+    end
   end
 end

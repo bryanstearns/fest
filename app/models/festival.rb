@@ -18,6 +18,8 @@ class Festival < ActiveRecord::Base
   validate :date_range_ordering
 
   def screenings_by_date
+    # NB: Since group_by returns an ordered hash, and we're feeding it screenings
+    # in start-time order, the keys of the resulting hash will be in order.
     screenings.order(:starts_at).group_by {|s| s.starts_at.to_date }
   end
 

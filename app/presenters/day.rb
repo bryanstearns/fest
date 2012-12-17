@@ -1,22 +1,50 @@
+
+class TooManyVenueConflicts < ArgumentError; end
+
 class Day
   # Presentation geometry for one day's screenings
 
   include ActiveModel::Conversion
   extend ActiveModel::Naming
 
-  attr_accessor :date, :screenings
+  attr_reader :date, :screenings
+  attr_accessor :page_break_before
+
+  # Geometry
+  HOUR_HEIGHT = 50.0 # height of one hour in pixels
+  MINUTE_HEIGHT = HOUR_HEIGHT / 60.0
+  PADDING_HEIGHT = 9.0 # Padding we add around the screening
+  PAGE_HEIGHT = 1000 # height of a page in pixels, for pagination
+  DAY_HEADER_HEIGHT = 100 # slop we add to the grid height when paginating
 
   def initialize(date, screenings)
     @date = date
     @screenings = screenings
+    @page_break_before = false
   end
 
   def starts_at
-    @starts_at ||= screenings.map{|s| s.starts_at }.min.round_down
+    @starts_at ||= screenings.map {|s| s.starts_at }.min.round_down
   end
 
   def ends_at
-    @ends_at ||= screenings.map{|s| s.ends_at }.max.round_up
+    @ends_at ||= screenings.map(&:ends_at).max.round_up
+  end
+
+  def viewings_for(venue_key)
+    viewings && @viewings[venue_key]
+  end
+
+  def venue_keys
+    viewings && @viewings.keys
+  end
+
+  def grid_height
+    (ends_at - starts_at).to_minutes * MINUTE_HEIGHT
+  end
+
+  def column_width
+    100 / viewings.keys.length
   end
 
   # Make dom_id happy
@@ -25,4 +53,55 @@ class Day
     I18n.l(date, format: :ymd)
   end
   alias_method :id, :to_param
+
+  def self.paginate(days, page_height = PAGE_HEIGHT)
+    page_height = 0
+    days.each do |day|
+      page_height += day.grid_height + DAY_HEADER_HEIGHT
+      if page_height > page_height
+        day.page_break_before = true
+        page_height = day.grid_height
+      end
+    end
+    days
+  end
+
+private
+  Viewing = Struct.new(:screening, :space_before, :height)
+
+  def viewings
+    @viewings ||= ActiveSupport::OrderedHash.new() do |h,k|
+      h[k] = []
+    end.tap do |viewings|
+      positioner = ViewingPositioner.new(starts_at)
+      screenings.each do |screening|
+        venue_key, time_before = positioner.position_for(screening)
+        viewings[venue_key] <<
+            Viewing.new(screening, time_before * MINUTE_HEIGHT,
+                        (screening.duration.to_minutes * MINUTE_HEIGHT) -
+                          PADDING_HEIGHT)
+      end
+    end
+  end
+end
+
+class ViewingPositioner
+  MAX_ROOMS = 10
+  def initialize(day_start)
+    @day_start = day_start.to_minutes
+    @next_time = {}
+  end
+
+  def position_for(screening)
+    room_index = -1
+    start = screening.starts_at.to_minutes
+    begin
+      room_index += 1
+      raise(TooMenuVenueConflicts) if room_index > MAX_ROOMS
+      venue_key = [screening.venue, room_index]
+      time_before = start - @next_time.fetch(venue_key, @day_start)
+    end while @next_time.has_key?(venue_key) and (time_before < 0)
+    @next_time[venue_key] = start + screening.duration.to_minutes
+    [venue_key, time_before]
+  end
 end
