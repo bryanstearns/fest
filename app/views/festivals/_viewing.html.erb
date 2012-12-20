@@ -1,0 +1,12 @@
+<%= div_for(viewing.screening, class: "unranked",
+            style: "height: #{viewing.height}px; " +
+                   "margin-top: #{viewing.space_before}px") do %>
+  <a name="s<%= viewing.screening.id %>"></a>
+  <h3>
+    <%= viewing.name %>
+    <span class="priority"></span>
+  </h3>
+  <div class="times">
+    <%= viewing.times %>
+  </div>
+<% end %>

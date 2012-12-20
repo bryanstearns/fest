@@ -36,7 +36,7 @@ describe Day do
       let(:p1) { subject.position_for(s1) }
 
       it "should position it correctly" do
-        p1.should eq([["v1", 0], 5])
+        p1.should eq([ColumnKey.new("v1", 0), 5])
       end
 
       context "and another screening in the same venue, unconflicting" do
@@ -45,7 +45,7 @@ describe Day do
                           venue: "v1") }
         let(:p2) { subject.position_for(s2) }
         it "should position them in the same venue & room" do
-          p1.first.should eq(p2.first)
+          p1.first.venue.should eq(p2.first.venue)
         end
       end
 
@@ -55,8 +55,8 @@ describe Day do
                           venue: "v1") }
         let(:p2) { subject.position_for(s2) }
         it "should position them in the different rooms of the same venue" do
-          p1.first.first.should eq(p2.first.first)
-          p1.first.last.should_not eq(p2.first.last)
+          p1.first.venue.should eq(p2.first.venue)
+          p1.first.index.should_not eq(p2.first.index)
         end
       end
 
@@ -66,7 +66,7 @@ describe Day do
                           venue: "v2") }
         let(:p2) { subject.position_for(s2) }
         it "should position them in different venues" do
-          p1.first.first.should_not eq(p2.first.first)
+          p1.first.venue.should_not eq(p2.first.venue)
         end
       end
     end
@@ -85,15 +85,15 @@ describe Day do
       subject.ends_at.should eq(screenings.map(&:ends_at).max.round_up)
     end
 
-    it "should know its venue keys, in order" do
-      venues = subject.venue_keys.map {|vk| vk.first.name }.uniq
-      venues.should eq(subject.screenings.map{|s| s.venue.name }.uniq)
+    it "should know its column names, in order" do
+      # this only tests the case where we're not mapping to virtual venues...
+      subject.column_names.should eq(subject.screenings.map {|s| s.venue.name }.uniq)
     end
 
     it "should produce each venue's viewings" do
-      subject.venue_keys.each do |venue, index|
-        subject.viewings_for([venue, index]).map(&:screening).should eq(
-          subject.screenings.select {|s| s.venue == venue })
+      subject.column_viewings do |viewings|
+        viewings.map(&:screening).should \
+          eq(subject.screenings.select {|s| s.venue == venue })
       end
     end
 
@@ -104,7 +104,7 @@ describe Day do
     end
 
     it "should know the column width percentage" do
-      subject.column_width.should eq(100 / subject.venue_keys.count)
+      subject.column_width.should eq(100 / subject.column_names.count)
     end
   end
 end

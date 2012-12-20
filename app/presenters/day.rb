@@ -31,20 +31,20 @@ class Day
     @ends_at ||= screenings.map(&:ends_at).max.round_up
   end
 
-  def viewings_for(venue_key)
-    viewings && @viewings[venue_key]
-  end
-
-  def venue_keys
-    viewings && @viewings.keys
-  end
-
   def grid_height
     (ends_at - starts_at).to_minutes * MINUTE_HEIGHT
   end
 
+  def column_names
+    viewings.keys.map {|column_key| column_key.venue_name }
+  end
+
+  def column_viewings
+    viewings.values
+  end
+
   def column_width
-    100 / viewings.keys.length
+    100 / viewings.length
   end
 
   # Make dom_id happy
@@ -67,21 +67,40 @@ class Day
   end
 
 private
-  Viewing = Struct.new(:screening, :space_before, :height)
-
   def viewings
     @viewings ||= ActiveSupport::OrderedHash.new() do |h,k|
       h[k] = []
     end.tap do |viewings|
       positioner = ViewingPositioner.new(starts_at)
       screenings.each do |screening|
-        venue_key, time_before = positioner.position_for(screening)
-        viewings[venue_key] <<
+        column_key, time_before = positioner.position_for(screening)
+        viewings[column_key] <<
             Viewing.new(screening, time_before * MINUTE_HEIGHT,
                         (screening.duration.to_minutes * MINUTE_HEIGHT) -
                           PADDING_HEIGHT)
       end
     end
+  end
+end
+
+class Viewing
+  attr_reader :height, :screening, :space_before
+  def initialize(screening, space_before, height)
+    @screening = screening
+    @space_before = space_before
+    @height = height
+  end
+
+  delegate :name, to: :screening
+
+  def times
+    "timegoeshere"
+  end
+end
+
+ColumnKey = Struct.new(:venue, :index) do
+  def venue_name
+    venue.name
   end
 end
 
@@ -98,10 +117,10 @@ class ViewingPositioner
     begin
       room_index += 1
       raise(TooMenuVenueConflicts) if room_index > MAX_ROOMS
-      venue_key = [screening.venue, room_index]
-      time_before = start - @next_time.fetch(venue_key, @day_start)
-    end while @next_time.has_key?(venue_key) and (time_before < 0)
-    @next_time[venue_key] = start + screening.duration.to_minutes
-    [venue_key, time_before]
+      column_key = ColumnKey.new(screening.venue, room_index)
+      time_before = start - @next_time.fetch(column_key, @day_start)
+    end while @next_time.has_key?(column_key) and (time_before < 0)
+    @next_time[column_key] = start + screening.duration.to_minutes
+    [column_key, time_before]
   end
 end

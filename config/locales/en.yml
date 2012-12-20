@@ -16,3 +16,4 @@ en:
       mdy_hms: "%-m/%-d/%Y %k:%M:%S"
       dmdy_hm: "%a, %b %-d, %l:%M %p"
       hm: "%k:%M"
+      hp: "%l %p"

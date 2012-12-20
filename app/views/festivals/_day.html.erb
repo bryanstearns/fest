@@ -1,6 +1,36 @@
 
-<a id="<%=l day.date, format: :ymd %>"></a>
+<%= content_tag(:a, '',
+                id: l(day.date, format: :ymd),
+                class: day.page_break_before ? 'page-break' : nil) %>
+<a id="<%= %>"></a>
 <h2><%=l day.date, format: :dmd %></h2>
 
 <%= content_tag_for(:table, day) do %>
+  <thead>
+    <tr>
+      <th width="30"><%# time header %></th>
+      <% day.column_names.each do |column_name| %>
+        <th class="venuename" width="<%= day.column_width %>%">
+          <%= column_name %>
+        </th>
+      <% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td class="times">
+        <%= hour_steps(day.starts_at, day.ends_at) do |t| %>
+          <div style="height: <%= (Day::HOUR_HEIGHT - 1) %>px">
+            <%= hour_label(t) %>
+          </div>
+        <% end %>
+      </td>
+      <% day.column_viewings.each do |viewings| %>
+        <td>
+          <%= render partial: "viewing", collection: viewings %>
+        </td>
+      <% end %>
+    </tr>
+  </tbody>
 <% end %>
