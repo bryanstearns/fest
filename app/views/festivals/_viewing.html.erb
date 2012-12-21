@@ -2,11 +2,11 @@
             style: "height: #{viewing.height}px; " +
                    "margin-top: #{viewing.space_before}px") do %>
   <a name="s<%= viewing.screening.id %>"></a>
-  <h3>
+  <div class="title">
     <%= viewing.name %>
     <span class="priority"></span>
-  </h3>
+  </div>
   <div class="times">
-    <%= viewing.times %>
+    <%= screening_times(viewing.screening) %>
   </div>
 <% end %>

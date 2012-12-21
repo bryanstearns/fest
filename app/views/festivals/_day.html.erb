@@ -8,9 +8,9 @@
 <%= content_tag_for(:table, day) do %>
   <thead>
     <tr>
-      <th width="30"><%# time header %></th>
+      <th class="times"><%# time header %></th>
       <% day.column_names.each do |column_name| %>
-        <th class="venuename" width="<%= day.column_width %>%">
+        <th class="venue" width="<%= day.column_width %>%">
           <%= column_name %>
         </th>
       <% end %>
@@ -21,13 +21,13 @@
     <tr>
       <td class="times">
         <%= hour_steps(day.starts_at, day.ends_at) do |t| %>
-          <div style="height: <%= (Day::HOUR_HEIGHT - 1) %>px">
+          <div>
             <%= hour_label(t) %>
           </div>
         <% end %>
       </td>
       <% day.column_viewings.each do |viewings| %>
-        <td>
+        <td class="screenings">
           <%= render partial: "viewing", collection: viewings %>
         </td>
       <% end %>

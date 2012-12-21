@@ -1,0 +1,36 @@
+
+@import "bootstrap"
+
+// One day's grid
+table.day
+  td,th
+    padding: 0px
+    vertical-align: top
+
+  th.venue
+    font-size: 85%
+    font-style: italic
+
+  td.times
+    div
+      border-top: 1px solid #DDD
+      white-space: nowrap
+      font-size: 85%
+      font-weight: bold
+      font-style: italic
+      text-align: right
+      padding-left: 4px
+      padding-right: 4px
+      height: <%= Day::HOUR_HEIGHT - 1 %>px
+
+  div.screening
+    @include border-radius(4px)
+    border: 1px solid #ff1493
+    margin: 1px
+    padding: 3px
+
+    cursor: pointer
+    overflow: hidden
+    .title
+      font-weight: bold
+      font-size: 1.1em

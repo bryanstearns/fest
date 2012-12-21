@@ -92,10 +92,6 @@ class Viewing
   end
 
   delegate :name, to: :screening
-
-  def times
-    "timegoeshere"
-  end
 end
 
 ColumnKey = Struct.new(:venue, :index) do
