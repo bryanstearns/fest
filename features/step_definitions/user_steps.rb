@@ -1,8 +1,6 @@
 # User steps cribbed from
 # https://raw.github.com/RailsApps/rails3-devise-rspec-cucumber/master/features/step_definitions/user_steps.rb
 
-require 'debugger'
-
 def create_visitor
   @visitor ||= attributes_for(:user)
 end
