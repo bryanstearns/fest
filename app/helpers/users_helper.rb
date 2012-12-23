@@ -23,23 +23,42 @@ module UsersHelper
       content_tag(:ul, safe_join(items))
     end
 
+  protected
     def summarize
+      add_current_sign_in
+      add_last_sign_in
+      add_remembering
+      add_reset_sent
+      add_confirmation
+      add_failed_sign_in_attempts
+      add_locked
+    end
+
+    def add_current_sign_in_visit
       add_visit(user.sign_in_count, user.current_sign_in_at,
                 user.current_sign_in_ip) \
         if user.current_sign_in_at?
+    end
 
+    def add_last_sign_in
       add_visit(user.sign_in_count - 1, user.last_sign_in_at,
                 user.last_sign_in_ip) \
         if user.last_sign_in_at? and user.sign_in_count > 1
+    end
 
+    def add_remembering
       add("remembering since #{t user.remember_created_at}",
           user.remember_created_at) \
         if user.remember_created_at?
+    end
 
+    def add_reset_sent
       add("reset sent #{t user.reset_password_sent_at}",
           user.reset_password_sent_at) \
         if user.reset_password_sent_at?
+    end
 
+    def add_confirmation
       if user.confirmed?
         add("active since #{t user.confirmed_at}",
             user.confirmed_at)
@@ -49,10 +68,14 @@ module UsersHelper
       else
         add('unconfirmed, no confirmation sent')
       end
+    end
 
+    def add_failed_sign_in_attempts
       add(pluralize(user.failed_attempts, "failed attempt")) \
         if user.failed_attempts > 0
+    end
 
+    def add_locked
       add("locked at #{t user.locked_at}") \
         if user.locked_at?
     end
