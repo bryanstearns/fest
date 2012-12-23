@@ -1,17 +1,13 @@
 class FilmsController < ApplicationController
   before_filter :authenticate_admin!
   before_filter :load_festival, only: [:index, :new, :create]
+  respond_to :html, :json
   layout 'festivals_admin'
 
   # GET /festivals/1/films
   # GET /festivals/1/films.json
   def index
-    @films = @festival.films.includes(:screenings).all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @films }
-    end
+    respond_with(@films = @festival.films.includes(:screenings).all)
   end
 
   # GET /films/1
@@ -19,44 +15,30 @@ class FilmsController < ApplicationController
   def show
     @film = Film.includes(:festival, screenings: :venue).find(params[:id])
     @festival = @film.festival
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @film }
-    end
+    respond_with(@film)
   end
 
   # GET /festivals/1/films/new
   # GET /festivals/1/films/new.json
   def new
-    @film = @festival.films.build
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @film }
-    end
+    respond_with(@film = @festival.films.build)
   end
 
   # GET /films/1/edit
   def edit
     @film = Film.includes(:festival).find(params[:id])
     @festival = @film.festival
+    respond_with(@film)
   end
 
   # POST /festivals/1/films
   # POST /festivals/1/films.json
   def create
     @film = @festival.films.build(params[:film])
-
-    respond_to do |format|
-      if @film.save
-        format.html { redirect_to festival_films_path(@festival), notice: 'Film was successfully created.' }
-        format.json { render json: @film, status: :created, location: @film }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @film.errors, status: :unprocessable_entity }
-      end
+    if @film.save
+      flash[:notice] = 'Film was successfully created.'
     end
+    respond_with(@film, location: festival_films_path(@festival))
   end
 
   # PUT /films/1
@@ -64,16 +46,10 @@ class FilmsController < ApplicationController
   def update
     @film = Film.includes(:festival).find(params[:id])
     @festival = @film.festival
-
-    respond_to do |format|
-      if @film.update_attributes(params[:film])
-        format.html { redirect_to festival_films_path(@film.festival), notice: 'Film was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @film.errors, status: :unprocessable_entity }
-      end
+    if @film.update_attributes(params[:film])
+      flash[:notice] = 'Film was successfully updated.'
     end
+    respond_with(@film, location: festival_films_path(@festival))
   end
 
   # DELETE /films/1
@@ -81,11 +57,8 @@ class FilmsController < ApplicationController
   def destroy
     @film = Film.find(params[:id])
     @film.destroy
-
-    respond_to do |format|
-      format.html { redirect_to festival_films_path(@film.festival) }
-      format.json { head :no_content }
-    end
+    flash[:notice] = 'Film was successfully destroyed.'
+    respond_with(@film, location: festival_films_path(@film.festival))
   end
 
 protected

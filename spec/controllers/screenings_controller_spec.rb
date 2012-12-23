@@ -109,7 +109,6 @@ describe ScreeningsController do
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Screening.any_instance.stub(:save).and_return(false)
         post :create, {
             :film_id => film.to_param,
             :screening => { "starts_at" => "" }
@@ -153,7 +152,6 @@ describe ScreeningsController do
 
       it "re-renders the 'edit' template" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Screening.any_instance.stub(:save).and_return(false)
         put :update, {:id => screening.to_param, :screening => { "starts_at" => "" }}
         response.should render_template("edit")
       end

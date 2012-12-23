@@ -82,6 +82,7 @@ describe LocationsController do
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         Location.any_instance.stub(:save).and_return(false)
+        Location.any_instance.stub(:errors).and_return(some: ['errors'])
         post :create, {:location => { "name" => "" }}
         response.should render_template("new")
       end
@@ -126,6 +127,7 @@ describe LocationsController do
         location = Location.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Location.any_instance.stub(:save).and_return(false)
+        Location.any_instance.stub(:errors).and_return(some: ['errors'])
         put :update, {:id => location.to_param, :location => { "name" => "" }}
         response.should render_template("edit")
       end

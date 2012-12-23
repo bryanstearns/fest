@@ -3,81 +3,56 @@ class ScreeningsController < ApplicationController
   before_filter :load_film_and_festival, only: [:index, :new, :create]
   before_filter :load_screening_film_and_festival, except: [:index, :new, :create]
   before_filter :load_venues_for_select, only: [:new, :edit]
+  respond_to :html, :json
 
   # GET /films/1/screenings
   # GET /films/1screenings.json
   def index
-    @screenings = @film.screenings.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @screenings }
-    end
+    respond_with(@screenings = @film.screenings.all)
   end
 
   # GET /screenings/1
   # GET /screenings/1.json
   def show
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @screening }
-    end
+    respond_with(@screening)
   end
 
   # GET /films/1/screenings/new
   # GET /films/1/screenings/new.json
   def new
-    @screening = @film.screenings.build(festival: @festival)
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @screening }
-    end
+    respond_with(@screening = @film.screenings.build(festival: @festival))
   end
 
   # GET /screenings/1/edit
   def edit
+    respond_with(@screening)
   end
 
   # POST /films/1/screenings
   # POST /films/1/screenings.json
   def create
     @screening = @film.screenings.build(params[:screening])
-
-    respond_to do |format|
-      if @screening.save
-        format.html { redirect_to @film, notice: 'Screening was successfully created.' }
-        format.json { render json: @screening, status: :created, location: @screening }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @screening.errors, status: :unprocessable_entity }
-      end
+    if @screening.save
+      flash[:notice] = 'Screening was successfully created.'
     end
+    respond_with(@screening, location: @film)
   end
 
   # PUT /screenings/1
   # PUT /screenings/1.json
   def update
-    respond_to do |format|
-      if @screening.update_attributes(params[:screening])
-        format.html { redirect_to @film, notice: 'Screening was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @screening.errors, status: :unprocessable_entity }
-      end
+    if @screening.update_attributes(params[:screening])
+      flash[:notice] = 'Screening was successfully updated.'
     end
+    respond_with(@screening, location: @film)
   end
 
   # DELETE /screenings/1
   # DELETE /screenings/1.json
   def destroy
     @screening.destroy
-
-    respond_to do |format|
-      format.html { redirect_to @film }
-      format.json { head :no_content }
-    end
+    flash[:notice] = 'Screening was successfully destroyed.'
+    respond_with(@screening, location: @film)
   end
 
 protected

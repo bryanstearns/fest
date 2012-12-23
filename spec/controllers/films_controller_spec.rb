@@ -104,6 +104,7 @@ describe FilmsController do
         festival = create(:festival)
         # Trigger the behavior that occurs when invalid params are submitted
         Film.any_instance.stub(:save).and_return(false)
+        Film.any_instance.stub(:errors).and_return(some: ['errors'])
         post :create, { festival_id: festival.to_param,
                         film: { "name" => "" } }
         response.should render_template("new")
@@ -151,6 +152,7 @@ describe FilmsController do
         film = create(:film)
         # Trigger the behavior that occurs when invalid params are submitted
         Film.any_instance.stub(:save).and_return(false)
+        Film.any_instance.stub(:errors).and_return(some: ['errors'])
         put :update, {:id => film.to_param, :film => { "name" => "" }}
         response.should render_template("edit")
       end

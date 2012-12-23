@@ -92,6 +92,7 @@ describe FestivalsController do
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         Festival.any_instance.stub(:save).and_return(false)
+        Festival.any_instance.stub(:errors).and_return(some: ['errors'])
         post :create, {:festival => {}}
         response.should render_template("new")
       end
@@ -137,6 +138,7 @@ describe FestivalsController do
         festival = create(:festival)
         # Trigger the behavior that occurs when invalid params are submitted
         Festival.any_instance.stub(:save).and_return(false)
+        Festival.any_instance.stub(:errors).and_return(some: ['errors'])
         put :update, {:id => festival.to_param, :festival => {}}
         response.should render_template("edit")
       end

@@ -91,7 +91,6 @@ describe VenuesController do
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         location = create(:location)
-        Venue.any_instance.stub(:save).and_return(false)
         post :create, { :location_id => location.to_param,
                         :venue => { "name" => "" } }
         response.should render_template("new")
@@ -136,7 +135,6 @@ describe VenuesController do
       it "re-renders the 'edit' template" do
         venue = create(:venue)
         # Trigger the behavior that occurs when invalid params are submitted
-        Venue.any_instance.stub(:save).and_return(false)
         put :update, {:id => venue.to_param, :venue => { "name" => "" }}
         response.should render_template("edit")
       end
