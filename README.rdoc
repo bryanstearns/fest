@@ -1,6 +1,9 @@
 
 === Festival Fanatic
 
+{<img src="https://travis-ci.org/bryanstearns/fest.png?branch=master" alt="Build Status" />}[https://travis-ci.org/bryanstearns/fest]
+{<img src="https://codeclimate.com/badge.png" />}[https://codeclimate.com/github/bryanstearns/fest]
+
 Festival Fanatic is a Ruby on Rails web application that helps its users manage their
 film-festival attendance.
 
