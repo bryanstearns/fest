@@ -1,6 +1,14 @@
 
 @import "bootstrap"
 
+// Colors used for screening status
+$lowpriority_color: #ddd
+$unranked_color: #ddd
+$unscheduled_color: #fff396 // yellowish
+$scheduled_color: #8FDB8F // bb9966 // darker green
+$scheduled_border_color: darken($scheduled_color, 30)
+$other_scheduled_color: lighten($scheduled_color, 10)
+
 // One day's grid
 table.day
   td,th
@@ -23,9 +31,25 @@ table.day
       padding-right: 4px
       height: <%= Day::HOUR_HEIGHT - 1 %>px
 
+  .lowprio
+    background-color: $lowpriority_color
+    border: 3px solid $lowpriority_color
+  .unranked
+    background-color: $unranked_color
+    border: 3px solid $unranked_color
+  .unscheduled
+    background-color: $unscheduled_color
+    border: 3px solid $unscheduled_color
+  .scheduled
+    background-color: $scheduled_color
+    border: 3px solid $scheduled_border_color
+    padding: 2px
+  .otherscheduled
+    background-color: $other_scheduled_color
+    border: 3px solid $other_scheduled_color
+
   div.screening
     @include border-radius(4px)
-    border: 1px solid #ff1493
     margin: 1px
     padding: 3px
 
