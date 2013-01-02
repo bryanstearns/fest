@@ -1,4 +1,16 @@
 namespace :fest2 do
+  desc "Import old Fest2 data"
+  task import: :environment do
+    require 'fest2_importer'
+    ActiveRecord::Base.transaction do
+      Fest2Importer.import
+      if ENV["DRY_RUN"]
+        puts "rolling back"
+        raise ActiveRecord::Rollback
+      end
+    end
+  end
+
   desc "Download data from fest2 production into fest2_snapshot"
   task download: :environment do
     # The old database is latin1-encoded, but contains UTF8 data (!)...

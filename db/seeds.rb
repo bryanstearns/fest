@@ -7,6 +7,9 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 require 'factory_girl_rails'
+require 'fest2_importer'
+
+Fest2Importer.import
 
 unless User.where(email: 'bryanstearns@gmail.com').any?
   me = User.new(name: 'Bryan Stearns', email: 'bryanstearns@gmail.com',
