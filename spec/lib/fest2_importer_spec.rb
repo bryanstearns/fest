@@ -11,6 +11,15 @@ module Fest2Importer
   end
 end
 
+describe Fest2Importer::Importable do
+  it 'stores values for faking time and slug' do
+    subject.fake_slug = 'fake'
+    subject.fake_slug.should eq('fake')
+    subject.time_offset = 5.minutes
+    subject.time_offset.should eq(5.minutes)
+  end
+end
+
 describe 'An importable model class' do
   subject { Fest2Importer::Dummy }
 

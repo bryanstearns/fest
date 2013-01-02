@@ -9,6 +9,20 @@ module Fest2Importer
       raise NotImplementedError, "#{self.class.name} needs to implement #import!"
     end
 
+    def self.fake_slug
+      @@fake_slug ||= nil
+    end
+    def self.fake_slug=(x)
+      @@fake_slug = x
+    end
+
+    def self.time_offset
+      @@time_offset ||= 0.seconds
+    end
+    def self.time_offset=(t)
+      @@time_offset = t
+    end
+
     module ClassMethods
       def import_all
         order(:id).all.each {|instance| instance.import }
@@ -77,6 +91,9 @@ module Fest2Importer
   end
 
   class Festival < ImportableModel
+    has_many :films
+    has_many :screenings
+
     def import
       Rails.logger.info "Creating festival #{slug}"
       f = ::Festival.create!({
@@ -86,8 +103,8 @@ module Fest2Importer
           public: public,
           scheduled: scheduled,
           location: location,
-          starts_on: starts,
-          ends_on: ends
+          starts_on: starts + Importable::time_offset,
+          ends_on: ends + Importable::time_offset
         },
         without_protection: true)
       Location.find_all_by_festival_id(id).each do |location|
@@ -95,6 +112,10 @@ module Fest2Importer
         Rails.logger.info "Subscribing #{f.slug} to location #{location_name}"
         f.locations << ::Location.find_by_name(location_name)
       end
+    end
+
+    def slug
+      Importable::fake_slug || read_attribute(:slug)
     end
   end
 
@@ -114,6 +135,10 @@ module Fest2Importer
       @@festivals[festival.slug]
     end
 
+    def self.clear_caches
+      @@festivals = nil
+    end
+
     def import
       new_festival.films.create(attributes_to_copy,
                                 without_protection: true)
@@ -129,8 +154,8 @@ module Fest2Importer
     def attributes_to_copy
       {
           film: new_film,
-          starts_at: starts,
-          ends_at: ends,
+          starts_at: starts + Importable::time_offset,
+          ends_at: ends + Importable::time_offset,
           press: press,
           location: new_venue.location,
           venue: new_venue,
@@ -154,6 +179,11 @@ module Fest2Importer
       end
       @@venues[fix_name(self.venue.name)]
     end
+
+    def self.clear_caches
+      @@films = @@venues = nil
+    end
+
     def import
       new_film.festival.screenings.create!(attributes_to_copy,
                                            without_protection: true)
@@ -165,6 +195,19 @@ module Fest2Importer
     [Location, Venue, Festival, Film, Screening].each do |klass|
       klass.import_all
     end
+
+    # Import last year's PIFF as though it's this year's
+    Film.clear_caches
+    Screening.clear_caches
+    Importable::time_offset = 364.days
+    Importable::fake_slug = 'piff_2013'
+    piff12 = Festival.find_by_slug('piff_2012')
+    piff12.import
+    piff12.films.find_each {|f| f.import }
+    piff12.screenings.find_each {|s| s.import }
+    Importable::time_offset = 0.seconds
+    Importable::fake_slug = nil
+
     Rails.logger.info "Done importing Fest2 data..."
   end
 end
