@@ -100,7 +100,7 @@ FactoryGirl.define do
 
     trait :past do
       sequence(:slug_group) {|n| "past#{n}" }
-      starts_on 1.year.ago.to_date
+      starts_on 367.days.ago.to_date
     end
 
     trait :with_films_and_screenings do
