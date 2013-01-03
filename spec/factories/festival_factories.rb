@@ -14,7 +14,7 @@ class FakeFestivalGenerator
       "Vertigo" => 128,
       "The Wrong Man" => 105,
       "Blackmail" => 84
-  }
+  } unless defined?(HITCHCOCK_FILMS)
 
   def initialize(festival, film_count, press)
     @festival = festival
