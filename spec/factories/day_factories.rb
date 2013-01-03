@@ -3,9 +3,12 @@ FactoryGirl.define do
     ignore { festival nil }
     ignore { screenings nil }
     initialize_with do
-      festival ||= create(:festival, :with_films_and_screenings, day_count: 1)
-      screenings ||= festival.screenings.on(festival.starts_on)
-      new(screenings.first.starts_at.to_date, screenings)
+      my_screenings = screenings || begin
+        my_festival = festival || \
+          create(:festival, :with_films_and_screenings, day_count: 1)
+        my_festival.screenings.on(my_festival.starts_on)
+      end
+      new(my_screenings.first.starts_at.to_date, my_screenings)
     end
   end
 end
