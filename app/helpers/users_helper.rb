@@ -34,7 +34,7 @@ module UsersHelper
       add_locked
     end
 
-    def add_current_sign_in_visit
+    def add_current_sign_in
       add_visit(user.sign_in_count, user.current_sign_in_at,
                 user.current_sign_in_ip) \
         if user.current_sign_in_at?

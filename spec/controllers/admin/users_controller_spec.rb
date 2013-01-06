@@ -18,7 +18,7 @@ require 'spec_helper'
 # Message expectations are only used when there is no simpler way to specify
 # that an instance is receiving a specific message.
 
-describe UsersController do
+describe Admin::UsersController do
   login_admin
 
   # This should return the minimal set of attributes required to create a valid
@@ -76,7 +76,7 @@ describe UsersController do
 
       it "redirects to the created user" do
         post :create, {:user => valid_attributes}
-        response.should redirect_to(User.last)
+        response.should redirect_to(admin_user_url(User.last))
       end
     end
 
@@ -117,7 +117,7 @@ describe UsersController do
       it "redirects to the user" do
         user = User.create! valid_attributes
         put :update, {:id => user.to_param, :user => valid_attributes}
-        response.should redirect_to(user)
+        response.should redirect_to(admin_user_url(user))
       end
     end
 
@@ -150,7 +150,7 @@ describe UsersController do
     it "redirects to the users list" do
       user = User.create! valid_attributes
       delete :destroy, {:id => user.to_param}
-      response.should redirect_to(users_url)
+      response.should redirect_to(admin_users_url)
     end
   end
 
