@@ -1,3 +1,5 @@
+require 'securerandom'
+
 module Fest2Importer
   module Importable
     extend ActiveSupport::Concern
@@ -27,6 +29,11 @@ module Fest2Importer
       def import_all
         order(:id).all.each {|instance| instance.import }
       end
+
+      def seen?(key)
+        @seen ||= Set.new
+        @seen.include?(key).tap { @seen << key }
+      end
     end
   end
 
@@ -38,9 +45,57 @@ module Fest2Importer
       name
     end
 
-    def fixed_name?(name)
+    def bad_name?(name)
       ['Field\'s Ballroom', 'Newmark Theater',
        'California Theater'].include?(name)
+    end
+  end
+
+  module MapsToNew
+    extend ActiveSupport::Concern
+    module ClassMethods
+      # Make a "new_(thing)" method that finds corresponding new instances of
+      # related models
+      def new_cache
+        @@cache ||= {}
+      end
+
+      def maps_to_new(klass, options={})
+        thing_name = klass.name.underscore
+        things_sym = klass.name.pluralize.underscore.to_sym
+        define_method("new_#{thing_name}") do
+          self.class.new_cache[things_sym] ||= begin
+            new_things = case options[:includes]
+            when nil
+              klass
+            when Array
+              klass.includes(*options[:includes])
+            else
+              klass.includes(options[:includes])
+            end
+            new_things.all.inject({}) do |h, new_thing|
+              save_key = if block_given?
+                           debugger unless new_thing
+                           yield new_thing
+                         else
+                           new_thing.id
+                         end
+              h[save_key] = new_thing
+              h
+            end
+          end
+          key = block_given? ? yield(self.send(thing_name)) : id
+          key && self.class.new_cache[things_sym][key]
+        end
+      end
+
+      def clear_cache(*thing_syms)
+        if thing_syms.empty?
+          @@cache = {}
+        else
+          thing_syms.each {|k| @@cache.delete(k) }
+        end
+      end
     end
   end
 
@@ -49,44 +104,37 @@ module Fest2Importer
     include Fest2Importer::Importable
     extend NameFixes
     include NameFixes
+    include MapsToNew
+
+    def fixed_name
+      @fixed_name ||= bad_name?(name) ? fix_name(name) : name
+    end
   end
 
   class Location < ImportableModel
-    def self.import_all
-      Location.all.map(&:name).uniq.each do |name|
-        next if fixed_name?(name)
-        Rails.logger.info "Creating Location: #{name}"
-        ::Location.create!(name: name)
-      end
+    def import
+      return if Location.seen?(fixed_name)
+      Rails.logger.info "Creating Location: #{fixed_name}"
+      ::Location.create!({ name: fixed_name,
+                           created_at: created_at,
+                           updated_at: updated_at },
+                         without_protection: true)
     end
   end
 
   class Venue < ImportableModel
     belongs_to :location
+    maps_to_new(::Location) {|location| fix_name(location.name) }
 
-    def self.import_all
-      locations = ::Location.all.inject({}) {|h, l| h[l.name] = l; h }
-      venues = {}
-      Venue.all.each do |venue|
-        venue_name = fix_name(venue.name)
-        location_name = fix_name(venue.location.name)
-        venues[[location_name, venue_name]] ||= begin
-          location = locations[location_name]
-          unless location
-            debugger
-            raise "Couldn't find imported location #{location_name} for old venue #{venue.inspect}"
-          end
-          if location.venues.where(name: venue_name).any?
-            Rails.logger.info "Venue exists: #{venue_name}, #{venue.abbrev} in Location: #{location.name}"
-            nil # already exists
-          else
-            Rails.logger.info "Creating Venue: #{venue_name}, #{venue.abbrev} in Location: #{location.name}"
-            location.venues.create!(
-              name: venue_name,
-              abbreviation: venue.abbrev)
-          end
-        end
-      end
+    def import
+      return if Venue.seen?([fix_name(location.name), fixed_name])
+      new_location.venues.create!({
+                                    name: fixed_name,
+                                    abbreviation: abbrev,
+                                    created_at: created_at,
+                                    updated_at: updated_at
+                                  },
+                                  without_protection: true)
     end
   end
 
@@ -94,19 +142,26 @@ module Fest2Importer
     has_many :films
     has_many :screenings
 
+    def attributes_to_copy
+      {
+        name: name,
+        slug_group: slug_group,
+        main_url: url,
+        public: public,
+        scheduled: scheduled,
+        location: location,
+        starts_on: starts + Importable::time_offset,
+        ends_on: ends + Importable::time_offset,
+        revised_at: revised_at? ? (revised_at + Importable::time_offset) : nil,
+        created_at: created_at + Importable::time_offset,
+        updated_at: updated_at + Importable::time_offset
+      }
+    end
+
     def import
       Rails.logger.info "Creating festival #{slug}"
-      f = ::Festival.create!({
-          name: name,
-          slug_group: slug_group,
-          main_url: url,
-          public: public,
-          scheduled: scheduled,
-          location: location,
-          starts_on: starts + Importable::time_offset,
-          ends_on: ends + Importable::time_offset
-        },
-        without_protection: true)
+      f = ::Festival.create!(attributes_to_copy,
+                             without_protection: true)
       Location.find_all_by_festival_id(id).each do |location|
         location_name = fix_name(location.name)
         Rails.logger.info "Subscribing #{f.slug} to location #{location_name}"
@@ -122,21 +177,13 @@ module Fest2Importer
   class Film < ImportableModel
     belongs_to :festival
 
+    maps_to_new(::Festival) {|festival| festival.slug }
+
     def attributes_to_copy
       attributes.except(*%w[id festival_id updated_at created_at duration])\
-                .merge(duration: duration / 60)
-    end
-
-    def new_festival
-      @@festivals ||= ::Festival.all.inject({}) do |h, festival|
-        h[festival.slug] = festival
-        h
-      end
-      @@festivals[festival.slug]
-    end
-
-    def self.clear_caches
-      @@festivals = nil
+                .merge(duration: duration / 60,
+                       created_at: created_at + Importable::time_offset,
+                       updated_at: updated_at + Importable::time_offset)
     end
 
     def import
@@ -151,6 +198,9 @@ module Fest2Importer
     belongs_to :venue
     belongs_to :location
 
+    maps_to_new(::Film, includes: :festival) {|film| [film.festival.slug, film.name]}
+    maps_to_new(::Venue, includes: :location) {|venue| fix_name(venue.name) }
+
     def attributes_to_copy
       {
           film: new_film,
@@ -159,29 +209,9 @@ module Fest2Importer
           press: press,
           location: new_venue.location,
           venue: new_venue,
+          created_at: created_at + Importable::time_offset,
+          updated_at: updated_at + Importable::time_offset
       }
-    end
-
-    def new_film
-      @@films ||= ::Film.includes(:festival)\
-          .all.inject({}) do |h, film|
-        festival = film.festival
-        h[[film.festival.slug, film.name]] = film
-        h
-      end
-      @@films[[self.festival.slug, self.film.name]]
-    end
-
-    def new_venue
-      @@venues ||= ::Venue.includes(:location).all.inject({}) do |h, venue|
-        h[fix_name(venue.name)] = venue
-        h
-      end
-      @@venues[fix_name(self.venue.name)]
-    end
-
-    def self.clear_caches
-      @@films = @@venues = nil
     end
 
     def import
@@ -190,15 +220,44 @@ module Fest2Importer
     end
   end
 
+  class User < ImportableModel
+
+    def attributes_to_copy
+      {
+          name: username,
+          email: email,
+          admin: admin,
+          password: random_password,
+          password_confirmation: random_password,
+          confirmation_sent_at: created_at,
+          confirmed_at: created_at,
+          created_at: created_at,
+          updated_at: updated_at
+          # TODO: mail_opt_out!
+      }
+    end
+
+    def import
+      unless User.seen?(email)
+        ::User.create!(attributes_to_copy,
+                       without_protection: true)
+      end
+    end
+
+    def random_password
+      @random_password ||= SecureRandom.uuid
+    end
+  end
+
   def self.import
     Rails.logger.info "Importing Fest2 data..."
-    [Location, Venue, Festival, Film, Screening].each do |klass|
+    [Location, Venue, Festival, Film, Screening, User].each do |klass|
       klass.import_all
     end
 
     # Import last year's PIFF as though it's this year's
-    Film.clear_caches
-    Screening.clear_caches
+    Film.clear_cache
+    Screening.clear_cache
     Importable::time_offset = 364.days
     Importable::fake_slug = 'piff_2013'
     piff12 = Festival.find_by_slug('piff_2012')

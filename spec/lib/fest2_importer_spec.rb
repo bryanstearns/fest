@@ -12,6 +12,10 @@ module Fest2Importer
 end
 
 describe Fest2Importer::Importable do
+  after(:each) do
+    subject.fake_slug = nil
+    subject.time_offset = 0.seconds
+  end
   it 'stores values for faking time and slug' do
     subject.fake_slug = 'fake'
     subject.fake_slug.should eq('fake')
@@ -44,26 +48,33 @@ describe 'Importing a Festival' do
         'location'=>'Portland, Oregon',
         'url'=>'http://myfest.example.com/',
         'film_url_format'=>'http://myfest.example.com/films/*',
-        'starts'=>'Thu, 07 Feb 2008',
-        'ends'=>'Sat, 23 Feb 2008',
+        'starts'=> Date.parse('Thu, 07 Feb 2008'),
+        'ends'=> Date.parse('Sat, 23 Feb 2008'),
         'public'=>true,
         'scheduled'=>true,
-        'slug_group'=>'my'
+        'slug_group'=>'my',
+        'revised_at'=> Time.zone.parse('2008-01-05 16:37:58'),
+        'created_at'=> Time.zone.parse('2008-01-04 16:37:58'),
+        'updated_at'=> Time.zone.parse('2008-01-06 16:37:58'),
+        'updates_url' => nil
     }
   }
   let(:new_attributes) {
     old_attributes.except('starts', 'ends', 'url',
-                          'film_url_format', 'slug')\
+                          'film_url_format')\
                   .merge('starts_on' => old_attributes['starts'],
                          'ends_on' => old_attributes['ends'],
-                         'main_url' => old_attributes['url'])
+                         'main_url' => old_attributes['url'],
+                         'slug_group' => 'my')
   }
   subject { Fest2Importer::Festival.new(old_attributes,
                                         without_protection: true) }
 
-  it 'creates a new festival' do
+  it 'creates a new festival with the right attributes' do
     lambda {
       subject.import
     }.should change(Festival, :count).by(1)
+
+    Festival.last.attributes.except('id').should eq(new_attributes)
   end
 end
