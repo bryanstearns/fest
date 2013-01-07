@@ -8,7 +8,7 @@ guard 'spork', :cucumber_env => { 'RAILS_ENV' => 'test' }, :rspec_env => { 'RAIL
   watch(%r{features/support/}) { :cucumber }
 end
 
-guard 'rspec', :cli => '--drb -r rspec/instafail -f RSpec::Instafail' do
+guard 'rspec', :cli => '--drb -d -r rspec/instafail -f RSpec::Instafail' do
   watch('spec/spec_helper.rb') { "spec" }
   watch('app/controllers/application_controller.rb') { "spec/controllers" }
   watch('config/routes.rb') { "spec/routing" }
