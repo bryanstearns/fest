@@ -5,12 +5,12 @@ module FestivalsHelper
   end
 
   def in_groups(festivals)
-    # Return a list of festival groups in order, with festivals in reverse
-    # chronological order within each group
+    # Return a list of festival groups, ordered by each group's last festival;
+    # Within each group, festivals are latest first.
     festivals.inject({}) do |h, festival|
       (h[festival.slug_group] ||= FestivalGroup.new) << festival
       h
-    end.values.sort_by(&:name)
+    end.values.sort.reverse
   end
 
   def festival_editing_current?(festival, film)

@@ -40,4 +40,13 @@ class FestivalGroup
   def to_partial_path
     "festival_groups/festival_group"
   end
+
+  def latest_festival_start
+    festivals.first.starts_on
+  end
+
+  def <=>(other)
+    latest_festival_start <=> other.latest_festival_start
+  end
+  include Comparable
 end
