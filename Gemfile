@@ -8,6 +8,7 @@ gem 'devise'
 gem 'mysql2'
 gem 'simple_form'
 gem 'turbolinks'
+gem 'jquery-turbolinks'
 
 group :development do
   gem 'mailcatcher'

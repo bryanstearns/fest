@@ -15,6 +15,7 @@
 //= require jquery.ui.datepicker
 //= require turbolinks
 //= require bootstrap
+//= require jquery.turbolinks
 //= require jquery.cookie
 //= require jquery.raty
 //= require_tree .
