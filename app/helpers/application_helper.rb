@@ -56,4 +56,8 @@ module ApplicationHelper
                 class: 'btn extra-action') \
           unless model.new_record?
   end
+
+  def ajax_progress(options={})
+    content_tag(:div, '', options.merge(class: 'ajax-progress'))
+  end
 end
