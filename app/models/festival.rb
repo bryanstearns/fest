@@ -17,6 +17,8 @@ class Festival < ActiveRecord::Base
             presence: true
   validate :date_range_ordering
 
+  scope :public, where(public: true)
+
   def screenings_by_date
     # NB: Since group_by returns an ordered hash, and we're feeding it screenings
     # in start-time order, the keys of the resulting hash will be in order.

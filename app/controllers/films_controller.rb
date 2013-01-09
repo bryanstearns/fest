@@ -64,5 +64,6 @@ class FilmsController < ApplicationController
 protected
   def load_festival
     @festival = Festival.find(params[:festival_id])
+    check_festival_access
   end
 end

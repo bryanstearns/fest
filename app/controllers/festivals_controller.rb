@@ -6,13 +6,15 @@ class FestivalsController < ApplicationController
   # GET /festivals
   # GET /festivals.json
   def index
-    respond_with(@festivals = Festival.all)
+    respond_with(@festivals = Festival.public)
   end
 
   # GET /festivals/1
   # GET /festivals/1.json
   def show
-    respond_with(@festival = Festival.find(params[:id]))
+    @festival = Festival.find(params[:id])
+    check_festival_access
+    respond_with(@festival)
   end
 
   # GET /festivals/new

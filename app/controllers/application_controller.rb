@@ -9,6 +9,18 @@ class ApplicationController < ActionController::Base
   before_filter :log_session_state
   after_filter(:log_memory_usage) unless Rails.env.test?
 
+  delegate :current_user_is_admin?, to: :view_context
+
+  def check_festival_access
+    # Called by unprivileged operations: does nothing on public festivals, but
+    # raises if the festival isn't public and the user doesn't have access.
+    raise(ActiveRecord::RecordNotFound) \
+      unless @festival \
+        && (@festival.public || current_user_is_admin? #|| \
+            #(logged_in? && (current_user.subscription_for(@festival).admin \
+                            #rescue false))
+           )
+  end
 protected
   def authenticate_admin!
     authenticate_user!
