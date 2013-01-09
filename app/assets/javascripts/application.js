@@ -17,5 +17,6 @@
 //= require bootstrap
 //= require jquery.turbolinks
 //= require jquery.cookie
+//= require jquery.form
 //= require jquery.raty
 //= require_tree .
