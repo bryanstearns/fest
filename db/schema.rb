@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121208215955) do
+ActiveRecord::Schema.define(:version => 20130102230633) do
 
   create_table "festival_locations", :force => true do |t|
     t.integer  "festival_id", :null => false
@@ -61,6 +61,19 @@ ActiveRecord::Schema.define(:version => 20121208215955) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "picks", :force => true do |t|
+    t.integer  "user_id",      :null => false
+    t.integer  "festival_id",  :null => false
+    t.integer  "film_id",      :null => false
+    t.integer  "screening_id"
+    t.integer  "priority"
+    t.integer  "rating"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "picks", ["user_id", "festival_id", "film_id"], :name => "index_picks_on_user_id_and_festival_id_and_film_id", :unique => true
 
   create_table "screenings", :force => true do |t|
     t.integer  "festival_id",                    :null => false

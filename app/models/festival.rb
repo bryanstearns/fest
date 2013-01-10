@@ -4,6 +4,11 @@ class Festival < ActiveRecord::Base
   has_many :venues, through: :locations
   has_many :films, dependent: :destroy
   has_many :screenings
+  has_many :picks do
+    def for_user(user)
+      where(user_id: user.id)
+    end
+  end
 
   attr_accessible :ends_on, :location, :location_ids, :main_url, :name, :public,
                   :revised_at, :scheduled, :slug, :slug_group, :starts_on,

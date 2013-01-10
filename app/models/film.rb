@@ -1,6 +1,7 @@
 class Film < ActiveRecord::Base
   belongs_to :festival
   has_many :screenings, dependent: :destroy
+  has_many :picks, dependent: :destroy
 
   attr_accessible :countries, :description, :duration, :name, :page, :url_fragment
 

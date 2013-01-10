@@ -5,7 +5,7 @@
       <%= safe_join [festival_dates(@festival), @festival.location].compact, ' &mdash; '.html_safe %>
     </div>
     <ul class="nav nav-tabs">
-      <%= link_in_list_to "1. Your Film Priorities", root_path %>
+      <%= link_in_list_to "1. Your Film Priorities", festival_priorities_path(@festival) %>
       <%= link_in_list_to "2. Scheduling Assistant", root_path %>
       <%= link_in_list_to "3. Your Festival Schedule", festival_path(@festival) %>
       <%= link_to("Edit", edit_festival_path(@festival),

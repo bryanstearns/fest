@@ -1,0 +1,7 @@
+<%# Hidden form, modified and sent by picks.js.coffee.erb %>
+<%= form_for([film, Pick.new], id: :pick_form) do |f| %>
+  <%= hidden_field_tag 'attribute', 'priority' %>
+  <%= f.hidden_field :priority %>
+  <%= f.hidden_field :rating %>
+  <%= f.hidden_field :screening %>
+<% end %>

@@ -1,12 +1,11 @@
 Fest::Application.routes.draw do
-  resources :screenings
-
-
   resources :festivals do
     resources :films, :only => [:index, :new, :create]
+    match 'priorities' => "picks#index"
   end
   resources :films, :only => [:show, :edit, :update, :destroy] do
     resources :screenings, :only => [:index, :new, :create]
+    resources :picks, :only => [:create]
   end
   resources :screenings, :only => [:show, :edit, :update, :destroy]
 

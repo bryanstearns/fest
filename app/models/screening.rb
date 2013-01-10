@@ -3,6 +3,7 @@ class Screening < ActiveRecord::Base
   belongs_to :film
   belongs_to :location
   belongs_to :venue
+  has_many :picks, dependent: :nullify
 
   attr_accessible :ends_at, :festival, :film, :location, :press, :starts_at,
                   :venue_id

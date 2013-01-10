@@ -249,9 +249,39 @@ module Fest2Importer
     end
   end
 
+  class Pick < ImportableModel
+    belongs_to :festival
+    belongs_to :film
+    belongs_to :screening
+    belongs_to :user
+
+    maps_to_new(::Screening, includes: { film: :festival }) \
+      {|screening| screening && [screening.film.festival.slug, screening.film.name] }
+    maps_to_new(::Film, includes: :festival) \
+      {|film| [film.festival.slug, film.name] }
+    maps_to_new(::User) {|user| user.email.downcase }
+
+    def attributes_to_copy
+      {
+          user: new_user,
+          screening: new_screening,
+          film: new_film,
+          festival: new_film.festival,
+          priority: priority,
+          rating: rating,
+          created_at: created_at,
+          updated_at: updated_at
+      }
+    end
+    def import
+      ::Pick.create!(attributes_to_copy,
+                     without_protection: true)
+    end
+  end
+
   def self.import
     Rails.logger.info "Importing Fest2 data..."
-    [Location, Venue, Festival, Film, Screening, User].each do |klass|
+    [Location, Venue, Festival, Film, Screening, User, Pick].each do |klass|
       klass.import_all
     end
 
