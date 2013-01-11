@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.11'
 
+gem 'cache_digests'
 gem 'jquery-rails'
 gem 'bootstrap-sass'
 gem 'devise'
