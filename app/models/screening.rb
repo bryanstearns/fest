@@ -16,6 +16,8 @@ class Screening < ActiveRecord::Base
 
   before_validation :assign_denormalized_ids, :assign_ends_at
 
+  default_scope order(:starts_at)
+
   scope :on, lambda {|date|
     t = date.to_date.to_time_in_current_zone
     where(['(screenings.starts_at >= ? and screenings.ends_at <= ?)',

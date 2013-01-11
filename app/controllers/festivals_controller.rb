@@ -12,7 +12,7 @@ class FestivalsController < ApplicationController
   # GET /festivals/1
   # GET /festivals/1.json
   def show
-    @festival = Festival.find(params[:id])
+    @festival = Festival.includes(screenings: [:venue, :film]).find(params[:id])
     check_festival_access
     respond_with(@festival)
   end
