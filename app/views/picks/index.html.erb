@@ -1,25 +1,27 @@
-<h1>Your film priorities</h1>
-<table id="picks">
-  <thead>
-    <tr>
-      <th class="rating_column">
-        Choose priority:<br/>
-        (lower … higher)
-      </th>
-      <th class="rating_column">
-        or rate the films<br/>
-        you've seen:
-      </th>
-      <th id="progress_column">
-      </th>
-      <th>
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <%= render partial: 'picks/film', collection: @films %>
-  </tbody>
-</table>
+<% cache @festival do %>
+  <h1>Your film priorities</h1>
+  <table id="picks">
+    <thead>
+      <tr>
+        <th class="rating_column">
+          Choose priority:<br/>
+          (lower … higher)
+        </th>
+        <th class="rating_column">
+          or rate the films<br/>
+          you've seen:
+        </th>
+        <th id="progress_column">
+        </th>
+        <th>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render partial: 'picks/film', collection: @films %>
+    </tbody>
+  </table>
+<% end %>
 
 
 <%= render partial: 'picks/form', locals: { film: @films.first } %>
