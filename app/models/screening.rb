@@ -1,6 +1,6 @@
 class Screening < ActiveRecord::Base
   belongs_to :festival
-  belongs_to :film
+  belongs_to :film, touch: true
   belongs_to :location
   belongs_to :venue
   has_many :picks, dependent: :nullify

@@ -1,5 +1,5 @@
 class Film < ActiveRecord::Base
-  belongs_to :festival
+  belongs_to :festival, touch: true
   has_many :screenings, dependent: :destroy
   has_many :picks, dependent: :destroy
 
