@@ -1,3 +1,5 @@
+class SiteClosed < StandardError; end
+
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
@@ -6,10 +8,16 @@ class ApplicationController < ActionController::Base
   include ActionView::Helpers::NumberHelper
   include ActionView::Helpers::OutputSafetyHelper
 
+  before_filter :are_we_open
   before_filter :log_session_state
   after_filter(:log_memory_usage) unless Rails.env.test?
 
-  delegate :current_user_is_admin?, to: :view_context
+  delegate :current_user_is_admin?, :current_page?, :enabled?,
+           to: :view_context
+
+  rescue_from SiteClosed do
+    render "home/maintenance", status: :service_unavailable
+  end
 
   def check_festival_access
     # Called by unprivileged operations: does nothing on public festivals, but
@@ -21,7 +29,13 @@ class ApplicationController < ActionController::Base
                             #rescue false))
            )
   end
+
 protected
+  def are_we_open
+    raise SiteClosed unless (enabled?(:site) || current_user_is_admin? ||
+                             current_page?(maintenance_path))
+  end
+
   def authenticate_admin!
     authenticate_user!
     raise ActiveRecord::RecordNotFound unless current_user.admin?
@@ -31,7 +45,6 @@ protected
     session_key = Rails.application.config.session_options[:key]
     size = (cookies[session_key] || "").size
     Rails.logger.info("  Session, #{size} bytes: #{request.session.inspect}")
-    true
   end
 
   def log_memory_usage
