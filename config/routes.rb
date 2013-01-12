@@ -17,6 +17,7 @@ Fest::Application.routes.draw do
   match 'admin' => "home#admin", as: :admin_root
   namespace 'admin' do
     resources :users
+    resources :enabled_flags, :only => [:update]
   end
 
   devise_for :users
