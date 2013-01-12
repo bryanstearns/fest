@@ -1,3 +1,4 @@
+<% minimal ||= false %>
 <header id="topnav" class="navbar navbar-fixed-top navbar-inverse">
   <div class="navbar-inner">
     <div class="container">
@@ -9,7 +10,8 @@
           <% unless @hide_site_navigation_controls %>
             <% if user_signed_in? %>
               <% if current_user_is_admin? %>
-                <li><%= link_to "Admin", admin_root_path %></li>
+                <li><%= link_to "Admin", admin_root_path,
+                                class: (needs_admin_attention? && "attention") %></li>
               <% end %>
               <li><%= link_to "My Account", edit_user_registration_path %></li>
               <li id="sign_out"><%= link_to "Sign out", destroy_user_session_path %></li>

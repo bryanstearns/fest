@@ -1,4 +1,8 @@
 module HomeHelper
+  def needs_admin_attention?
+    !enabled?(:site) || !enabled?(:sign_in) || !enabled?(:sign_up)
+  end
+
   def form_for_flag(flag)
     current_value = enabled?(flag)
     description, new_value = case current_value
