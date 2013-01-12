@@ -8,12 +8,13 @@ class ApplicationController < ActionController::Base
   include ActionView::Helpers::NumberHelper
   include ActionView::Helpers::OutputSafetyHelper
 
+  prepend_before_filter :reset_enabled_flags!
   before_filter :are_we_open
   before_filter :log_session_state
   after_filter(:log_memory_usage) unless Rails.env.test?
 
   delegate :current_user_is_admin?, :current_page?, :enabled?,
-           to: :view_context
+           :reset_enabled_flags!, to: :view_context
 
   rescue_from SiteClosed do
     render "home/maintenance", status: :service_unavailable

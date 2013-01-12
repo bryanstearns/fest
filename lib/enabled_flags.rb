@@ -11,6 +11,10 @@ module EnabledFlags
     end
   end
 
+  def reset_enabled_flags!
+    Thread.current[:enabled_flags] = nil
+  end
+
   def set_enabled_value(key, value)
     raise ArgumentError unless [true, false].include?(value)
     Rails.cache.write("enabled/#{key}", enabled_flags[key] = value.inspect)
