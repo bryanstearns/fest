@@ -6,4 +6,8 @@ class HomeController < ApplicationController
 
   def admin
   end
+
+  def maintenance
+    @hide_site_navigation_controls = true
+  end
 end

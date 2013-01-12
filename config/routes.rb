@@ -25,6 +25,7 @@ Fest::Application.routes.draw do
   end
 
   root to: "home#index"
+  match 'maintenance' => "home#maintenance", as: :maintenance
   match 'admin' => "home#admin", as: :admin
 
   # The priority is based upon order of creation:
