@@ -17,6 +17,7 @@ Spork.prefork do
   Capybara.default_selector = :css
 
   World(FactoryGirl::Syntax::Methods)
+  World(EnabledFlags)
 end
 
 Spork.each_run do
@@ -65,4 +66,8 @@ Spork.each_run do
   # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
   Cucumber::Rails::Database.javascript_strategy = :truncation
 
+  # Make sure everythings enabled all the time.
+  Before do
+    [:site, :sign_in, :sign_up].each {|f| set_enabled_value(f, true) }
+  end
 end
