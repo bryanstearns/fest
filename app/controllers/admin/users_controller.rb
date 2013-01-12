@@ -25,7 +25,7 @@ module Admin
 
     # POST /admin/users
     def create
-      @user = User.new(params[:user])
+      @user = User.new(params[:user], as: :admin)
       if @user.save
         flash[:notice] = 'User was successfully created.'
       end
@@ -35,7 +35,7 @@ module Admin
     # PUT /admin/users/1
     def update
       @user = User.find(params[:id])
-      if @user.update_attributes(params[:user])
+      if @user.update_attributes(params[:user], as: :admin)
         flash[:notice] = 'User was successfully updated.'
       end
       respond_with(:admin, @user)

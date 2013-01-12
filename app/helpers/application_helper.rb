@@ -36,27 +36,37 @@ module ApplicationHelper
     content_tag(:li, link_to(title, target, link_options), options)
   end
 
-  def cancel_link(model, options={})
+  def cancel_link(record, options={})
+    scope, model = extract_scope_and_model(record)
     path = if model.respond_to?(:model_name)
       model_name = model.model_name
       if model.new_record?
         # eg festivals_path
-        options[:new] || send("#{model_name.route_key}_path")
+        options[:new] || send("#{scope}#{model_name.route_key}_path")
       else
         # festival_path(festival)
-        options[:existing] || send("#{model_name.singular_route_key}_path", model)
+        options[:existing] || send("#{scope}#{model_name.singular_route_key}_path", model)
       end
     else
-      model
+      record
     end
     link_to "Cancel", path
   end
 
-  def destroy_button(model)
-    link_to('Destroy', model, method: :delete,
+  def destroy_button(record)
+    ignored_scope, model = extract_scope_and_model(record)
+    link_to('Destroy', record, method: :delete,
                 data: { confirm: 'Are you sure?' },
                 class: 'btn extra-action') \
           unless model.new_record?
+  end
+
+  def extract_scope_and_model(record)
+    if record.is_a? Array
+      ["#{record.first}_", record.last]
+    else
+      [nil, record]
+    end
   end
 
   def ajax_progress(options={})

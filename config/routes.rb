@@ -14,19 +14,15 @@ Fest::Application.routes.draw do
   end
   resources :venues, :only => [:edit, :update, :destroy]
 
-  scope '/admin' do
+  match 'admin' => "home#admin", as: :admin_root
+  namespace 'admin' do
     resources :users
   end
 
   devise_for :users
 
-  namespace :admin do
-    resources :users
-  end
-
   root to: "home#index"
   match 'maintenance' => "home#maintenance", as: :maintenance
-  match 'admin' => "home#admin", as: :admin
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
