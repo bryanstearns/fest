@@ -24,6 +24,7 @@ Fest::Application.routes.draw do
 
   root to: "home#index"
   match 'maintenance' => "home#maintenance", as: :maintenance
+  match 'sign_ups_off' => "home#sign_ups_off", as: :sign_ups_off
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

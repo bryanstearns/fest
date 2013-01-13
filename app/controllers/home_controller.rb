@@ -10,4 +10,7 @@ class HomeController < ApplicationController
   def maintenance
     @hide_site_navigation_controls = true
   end
+
+  def sign_ups_off
+  end
 end
