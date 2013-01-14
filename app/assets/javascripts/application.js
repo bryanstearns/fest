@@ -19,4 +19,5 @@
 //= require jquery.cookie
 //= require jquery.form
 //= require jquery.raty
+//= require bootstrap_modal_rails
 //= require_tree .

@@ -4,6 +4,7 @@ gem 'rails', '3.2.11'
 
 gem 'cache_digests'
 gem 'jquery-rails'
+gem 'bootstrap_modal_rails'
 gem 'bootstrap-sass'
 gem 'devise'
 gem 'mysql2'
