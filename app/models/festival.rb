@@ -4,6 +4,7 @@ class Festival < ActiveRecord::Base
   has_many :venues, through: :locations
   has_many :films, dependent: :destroy
   has_many :screenings
+  has_many :subscriptions, dependent: :destroy
   has_many :picks do
     def for_user(user)
       where(user_id: user.id)

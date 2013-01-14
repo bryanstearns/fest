@@ -1,6 +1,9 @@
 Fest::Application.routes.draw do
+
   resources :festivals do
     resources :films, :only => [:index, :new, :create]
+    resource :subscription, path: 'assistant', controller: :subscriptions,
+             :only => [:show, :update]
     match 'priorities' => "picks#index"
   end
   resources :films, :only => [:show, :edit, :update, :destroy] do
