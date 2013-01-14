@@ -1,8 +1,0 @@
-<%= content_tag_for(:tr, screening) do %>
-  <td>
-    <%= link_to screening_times(screening),
-                edit_screening_path(screening) %>
-  </td>
-  <td><%= screening.venue.abbreviation %></td>
-  <td><%= 'Yes' if screening.press? %></td>
-<% end %>

@@ -1,6 +1,6 @@
 
 When /^I visit the locations page$/ do
-  visit locations_path
+  visit admin_locations_path
 end
 
 Then /^I should see the locations and venues listed in groups$/ do

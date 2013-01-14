@@ -1,0 +1,24 @@
+<%= simple_form_for([:admin, @festival],
+                    html: { class: 'form-horizontal' }) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :name, :autofocus => true %>
+    <%= f.input :slug_group %>
+    <%= f.input :location %>
+    <%= f.input :starts_on, as: 'string' %>
+    <%= f.input :ends_on, as: 'string' %>
+    <%= f.input :main_url, label: 'Main URL' %>
+    <%= f.input :updates_url, label: 'Updates URL' %>
+    <%= f.input :public, hint: 'Include festival in the public list' %>
+    <%= f.input :scheduled, hint: 'Show as "Coming soon" unless checked' %>
+    <%= f.input :revised_at, as: 'string' %>
+    <%= f.association :locations, as: :check_boxes %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+    <%= cancel_link([:admin, @festival]) %>
+    <%= destroy_button([:admin, @festival]) %>
+  </div>
+<% end %>

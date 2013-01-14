@@ -1,0 +1,19 @@
+<%= simple_form_for([:admin, @festival, @film],
+                    html: { class: 'form-horizontal' }) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :name %>
+    <%= f.input :duration %>
+    <%= f.input :countries %>
+    <%= f.input :page %>
+    <%= f.input :url_fragment, label: 'URL Fragment' %>
+    <%= f.input :description, input_html: { rows: 4 } %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+    <%= cancel_link(admin_festival_films_path(@festival)) %>
+    <%= destroy_button([:admin, @film]) %>
+  </div>
+<% end %>

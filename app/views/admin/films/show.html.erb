@@ -1,0 +1,42 @@
+<%= link_to 'Edit', edit_admin_film_path(@film), class: 'btn btn-small extra-action' %>
+<h1><%= @film.name %></h1>
+
+<table id="film" class="table table-condensed">
+  <tbody>
+    <tr>
+      <td>Duration</td>
+      <td><%= @film.duration%> minutes</td>
+    </tr>
+    <tr>
+      <td>Countries</td>
+      <td><%= @film.countries %></td>
+    </tr>
+    <tr>
+      <td>Page</td>
+      <td><%= @film.page %></td>
+    </tr>
+    <tr>
+      <td>URL Fragment</td>
+      <td><%= @film.url_fragment %></td>
+    </tr>
+    <tr>
+      <td>Description</td>
+      <td><%= @film.description %></td>
+    </tr>
+  </tbody>
+</table>
+
+<table id="screenings" class="table table-condensed">
+  <thead>
+    <th>
+      <%= pluralize(@film.screenings.count, "Screening") %>
+      <%= link_to('New Screening', new_admin_film_screening_path(@film),
+                  class: 'btn btn-small', id: 'new_film_screening') %>
+    </th>
+    <th>Venue</th>
+    <th>Press?</th>
+  </thead>
+  <tbody>
+  <%= render partial: "admin/screenings/screening", collection: @film.screenings %>
+  </tbody>
+</table>

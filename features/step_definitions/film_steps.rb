@@ -1,6 +1,6 @@
 
 When /^I visit the festival films page$/ do
-  visit festival_films_path(@festival)
+  visit admin_festival_films_path(@festival)
 end
 Then /^I should see the films listed$/ do
   rows = page.all("tr.film td:first")

@@ -1,5 +1,9 @@
 
 module FestivalsHelper
+  def current_page_in_admin?
+    request.path.start_with?('/admin/')
+  end
+
   def festival_dates(festival)
     date_range(festival.starts_on, festival.ends_on)
   end
