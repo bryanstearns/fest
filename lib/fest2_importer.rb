@@ -162,10 +162,10 @@ module Fest2Importer
       Rails.logger.info "Creating festival #{slug}"
       f = ::Festival.create!(attributes_to_copy,
                              without_protection: true)
-      Location.find_all_by_festival_id(id).each do |location|
+      Location.where(festival_id: id).each do |location|
         location_name = fix_name(location.name)
         Rails.logger.info "Subscribing #{f.slug} to location #{location_name}"
-        f.locations << ::Location.find_by_name(location_name)
+        f.locations << ::Location.where(name: location_name).first
       end
     end
 
@@ -290,7 +290,7 @@ module Fest2Importer
     Screening.clear_cache
     Importable::time_offset = 364.days
     Importable::fake_slug = 'piff_2013'
-    piff12 = Festival.find_by_slug('piff_2012')
+    piff12 = Festival.where(slug: 'piff_2012').first
     piff12.import
     piff12.films.find_each {|f| f.import }
     piff12.screenings.find_each {|s| s.import }
