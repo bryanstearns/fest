@@ -5,6 +5,7 @@
   <div class="title">
     <%= viewing.name %>
     <span class="priority"></span>
+    <span class="flags"><%= flags(viewing.countries) %></span>
   </div>
   <div class="times">
     <%= screening_times(viewing.screening) %>

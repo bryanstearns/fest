@@ -1,0 +1,57 @@
+#!/usr/bin/env ruby
+# encoding: utf-8
+
+leave_words = %w{U.S.}
+entries = {}
+codes_in_order = []
+open("lib/countries.txt") do |f|
+  f.readlines.each_with_index do |s, i|
+    s.strip!
+    next if s == ""
+    next if s[0] == ?#
+    # puts "#{i}: #{s.inspect}"
+    country, code = s.strip.split(";")
+    code.downcase!
+    country = country.split.map do |word|
+      word.capitalize! unless leave_words.include? word
+      word
+    end.join(' ')
+    if File.exists? "/Users/stearns/Downloads/world/#{code}.png"
+      entries[code] = country
+      codes_in_order << code
+    else
+      puts "Image not found for #{code}"
+    end
+  end
+end
+
+open("lib/countries.rb", 'w') do |g|
+  g.puts <<HEADER
+# encoding: utf-8
+module Countries
+  def self.code_to_name(code)
+    CODE_TO_NAME.fetch(code, "")
+  end
+
+  def self.name_to_code(name)
+    NAME_TO_CODE.fetch(name, "")
+  end
+
+  # Names can't have commas in them
+  CODE_TO_NAME = {
+HEADER
+
+  g.puts(codes_in_order.map do |c|
+    "    '#{c}' => #{entries[c].inspect}"
+  end.join(",\n"))
+
+  g.puts <<FOOTER
+  }
+  NAME_TO_CODE = CODE_TO_NAME.invert
+
+  # The list of country codes, sorted alphabetically by country label
+  NAMES = NAME_TO_CODE.keys.sort
+  CODES = CODE_TO_NAME.keys.sort_by {|code| CODE_TO_NAME[code] }
+end
+FOOTER
+end

@@ -72,4 +72,17 @@ describe ApplicationHelper do
       end
     end
   end
+
+  context "generating flag icons" do
+    it "produce a image tags for each country given" do
+      helper.flags("us de").should == \
+        "<img alt=\"United States\" class=\"flag flag-us\" src=\"/assets/blank.gif\" />" +
+          "<img alt=\"Germany\" class=\"flag flag-de\" src=\"/assets/blank.gif\" />"
+    end
+  end
+  context "generating country names" do
+    it "returns a comma-separated list" do
+      helper.country_names("fr ca").should == "France, Canada"
+    end
+  end
 end

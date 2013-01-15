@@ -24,7 +24,7 @@ class Screening < ActiveRecord::Base
            t.beginning_of_day, t.end_of_day])
   }
 
-  delegate :name, to: :film
+  delegate :name, :countries, to: :film
 
   def duration
     (ends_at - starts_at) rescue film.try(:duration)
