@@ -1,6 +1,6 @@
 
 class FakeFestivalGenerator
-  attr_reader :festival, :film_count, :press, :verbose
+  attr_reader :festival, :film_count, :press, :logger
   attr_accessor :day_count, :films, :venues
 
   HITCHCOCK_FILMS = {
@@ -16,16 +16,22 @@ class FakeFestivalGenerator
       "Blackmail" => 84
   } unless defined?(HITCHCOCK_FILMS)
 
-  def initialize(festival, film_count, press)
+  def initialize(festival, film_count, press, logger=nil)
     @festival = festival
     @film_count = film_count
     @press = press
-    @verbose = false
+    @logger = case logger
+    when :stdout
+      ->(msg) { puts msg }
+    when nil
+      nil
+    else
+      ->(msg) { logger.fatal msg }
+    end
 
     # We'll scale things (like venues & films) by the length of the festival
     @day_count = (festival.ends_on.to_date - festival.starts_on.to_date).to_i + 1
-
-    puts "#{day_count} days, #{festival.inspect}" if verbose
+    log { "#{day_count} days, #{festival.inspect}" }
   end
 
   def run
@@ -48,7 +54,7 @@ class FakeFestivalGenerator
     count = film_count || (day_count * 10)
     @films = count.times.zip(HITCHCOCK_FILMS.keys.cycle).map do |i, name|
       suffix = " #{(i / HITCHCOCK_FILMS.count) + 1}" if i > HITCHCOCK_FILMS.count
-      puts "Film #{i}: Creating #{name}#{suffix}" if verbose
+      log { "Film #{i}: Creating #{name}#{suffix}" }
       FactoryGirl.create(:film, festival: festival, name: "#{name}#{suffix}",
                          duration: HITCHCOCK_FILMS[name].minutes)
     end
@@ -58,26 +64,29 @@ class FakeFestivalGenerator
     first_date = festival.starts_on
     first_date -= 1 if press
     (first_date .. festival.ends_on).each_with_index do |date, day_index|
-      puts "Starting #{date}" if verbose
+      log { "Starting #{date}" }
       t = date.at("18:00")
       limit = date.at("23:00")
       day_venues = venues.sample((press && day_index == 0) ? 1 : 3)
       day_venues.each_with_index do |venue, i|
         tv = t + (5 * rand(3)).minutes
-        puts "  #{i}: Venue #{venue.name}, starting at #{tv}" if verbose
+        log {"  #{i}: Venue #{venue.name}, starting at #{tv}" }
         loop do
           film = films.sample
           starts_at = tv
           tv += film.duration + 10.minutes
           break if tv > limit
-          puts "    Added #{film.name} at #{I18n.l tv, format: :mdy_hms}" \
-                if verbose
+          log { "    Added #{film.name} at #{I18n.l tv, format: :mdy_hms}" }
           FactoryGirl.create(:screening, film: film, venue: venue,
                              starts_at: starts_at, festival: festival,
                              press: press && day_index == 0)
         end
       end
     end
+  end
+
+  def log
+    logger && logger.call(yield)
   end
 end
 
