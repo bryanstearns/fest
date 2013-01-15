@@ -1,0 +1,19 @@
+<div class="modal-header">
+  <h3><%= @screening.name %></h3>
+  <h4><%= safe_join([
+            country_names(@screening.countries),
+            hours_and_minutes(@screening.duration)], ", ") %></h4>
+</div>
+<div class="modal-body screening unranked">
+  <ul>
+    <li>Priority: <span class="priority"></span></li>
+    <li>Rating: <span class="rating"></span></li>
+    <div class="times">
+      <%= screening_times(@screening) %>
+    </div>
+  </ul>
+  <button class="btn update">Update</button>
+</div>
+<div class="modal-footer">
+  <button type="button" data-dismiss="modal" class="btn btn-small btn-primary">Done</button>
+</div>

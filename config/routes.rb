@@ -11,6 +11,7 @@ Fest::Application.routes.draw do
   resources :films, only: [] do
     resources :picks, only: [:create]
   end
+  resources :screenings, only: [:show]
 
   root to: "home#index"
   match 'maintenance' => "home#maintenance", as: :maintenance
