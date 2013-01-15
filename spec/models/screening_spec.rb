@@ -23,7 +23,7 @@ describe Screening do
     it "should set ends_at automatically from film duration" do
       subject.ends_at = nil
       subject.should be_valid
-      subject.ends_at.should eq(subject.starts_at + subject.film.duration.minutes)
+      subject.ends_at.should eq(subject.starts_at + subject.film.duration)
     end
 
     it "should know its duration" do

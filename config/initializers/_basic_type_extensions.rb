@@ -28,7 +28,7 @@ class Time
 
   def to_minutes
     # minutes since the start of today
-    (hour * 60) + min
+    hour.minutes + min
   end
 end
 

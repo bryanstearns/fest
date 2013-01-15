@@ -50,7 +50,7 @@ class FakeFestivalGenerator
       suffix = " #{(i / HITCHCOCK_FILMS.count) + 1}" if i > HITCHCOCK_FILMS.count
       puts "Film #{i}: Creating #{name}#{suffix}" if verbose
       FactoryGirl.create(:film, festival: festival, name: "#{name}#{suffix}",
-                         duration: HITCHCOCK_FILMS[name])
+                         duration: HITCHCOCK_FILMS[name].minutes)
     end
   end
 
@@ -68,7 +68,7 @@ class FakeFestivalGenerator
         loop do
           film = films.sample
           starts_at = tv
-          tv += (film.duration + 10).minutes
+          tv += film.duration + 10.minutes
           break if tv > limit
           puts "    Added #{film.name} at #{I18n.l tv, format: :mdy_hms}" \
                 if verbose

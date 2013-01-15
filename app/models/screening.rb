@@ -27,7 +27,7 @@ class Screening < ActiveRecord::Base
   delegate :name, :countries, to: :film
 
   def duration
-    (ends_at - starts_at) rescue film.try(:duration)
+    (ends_at - starts_at).to_i rescue film.try(:duration)
   end
 
 protected
@@ -37,6 +37,6 @@ protected
   end
 
   def assign_ends_at
-    self.ends_at = (starts_at + film.duration.minutes) if starts_at && film
+    self.ends_at = (starts_at + film.duration) if starts_at && film
   end
 end

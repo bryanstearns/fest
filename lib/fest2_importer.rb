@@ -180,9 +180,8 @@ module Fest2Importer
     maps_to_new(::Festival) {|festival| festival.slug }
 
     def attributes_to_copy
-      attributes.except(*%w[id festival_id updated_at created_at duration])\
-                .merge(duration: duration / 60,
-                       created_at: created_at + Importable::time_offset,
+      attributes.except(*%w[id festival_id updated_at created_at])\
+                .merge(created_at: created_at + Importable::time_offset,
                        updated_at: updated_at + Importable::time_offset)
     end
 
