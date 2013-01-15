@@ -59,7 +59,7 @@ describe User do
         let!(:pick) { create(:pick, festival: festival, user: subject,
                              film: film, screening: screening ) }
         it "returns true" do
-          subject.reload.has_screenings_for?(festival).should be_true
+          subject.has_screenings_for?(festival).should be_true
         end
       end
     end
