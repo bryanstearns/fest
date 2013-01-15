@@ -2,7 +2,7 @@
   <header class="festival">
     <div>
       <h3 class="navbar-text lead"><%= @festival.name %></h3>
-      <%= safe_join [festival_dates(@festival), @festival.location].compact, ' &mdash; '.html_safe %>
+      <%= safe_join [date_range(@festival), @festival.location].compact, ' &mdash; '.html_safe %>
     </div>
     <ul class="nav nav-tabs">
       <%= link_in_list_to "1. Your Film Priorities", festival_priorities_path(@festival) %>

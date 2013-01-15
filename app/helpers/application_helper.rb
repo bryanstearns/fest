@@ -10,7 +10,34 @@ module ApplicationHelper
     time ? l(time, format: :mdy_hms) : null_value
   end
 
-  def date_range(starts, ends)
+  def time_range(starts, ends=nil)
+    if ends.nil?
+      if starts.respond_to? :starts_at
+        ends = starts.ends_at
+        starts = starts.starts_at
+      end
+    end
+    return nil unless starts && ends # unset
+    return l(starts, format: :hmp).strip if starts == ends # it's one time
+    same_meridian = (starts.to_date == ends.to_date) &&
+                    ((starts.hour < 12) == (ends.hour < 12))
+    safe_join [
+      localize(starts, format: (same_meridian ? :hm : :hmp)).gsub(/  /, ' ').strip,
+      " - ".html_safe,
+      localize(ends, format: :hmp).gsub(/  /, ' ').strip
+    ]
+  end
+
+  def date_range(starts, ends=nil)
+    if ends.nil?
+      if starts.respond_to? :starts_on
+        ends = starts.ends_on
+        starts = starts.starts_on
+      elsif starts.respond_to? :starts_at
+        ends = starts.ends_at.to_date
+        starts = starts.starts_at.to_date
+      end
+    end
     return nil unless starts && ends # unset
     return l(starts, format: :mdy) if starts == ends # it's one day
 

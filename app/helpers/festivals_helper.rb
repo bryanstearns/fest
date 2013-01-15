@@ -4,10 +4,6 @@ module FestivalsHelper
     request.path.start_with?('/admin/')
   end
 
-  def festival_dates(festival)
-    date_range(festival.starts_on, festival.ends_on)
-  end
-
   def in_groups(festivals)
     # Return a list of festival groups, ordered by each group's last festival;
     # Within each group, festivals are latest first.

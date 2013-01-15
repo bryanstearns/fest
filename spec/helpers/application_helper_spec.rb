@@ -53,6 +53,65 @@ describe ApplicationHelper do
       let(:end_on) { nil }
       it { should be_nil }
     end
+
+    context "when passed an object" do
+      subject { date_range(object) }
+      context "that responds to #starts_on and #ends_on" do
+        let(:object) { stub(:starts_on => start_on,
+                            :ends_on => start_on + 2.days) }
+        it "should ask the object" do
+          subject.should == "Nov 20 - 22, 2015"
+        end
+      end
+      context "that responds to #starts_at and #ends_at" do
+        let(:object) { stub(:starts_at => start_on.at("2:00"),
+                            :ends_at => (start_on + 3.days).at("17:00")) }
+        it "should ask the object" do
+          subject.should == "Nov 20 - 23, 2015"
+        end
+      end
+    end
+  end
+
+  context "A formatted time range, not showing the date" do
+    subject { time_range(start_at, end_at) }
+    let(:start_at) { Time.zone.parse("2015-11-20 9:45") }
+
+    context "for a single time" do
+      let(:end_at) { start_at }
+      it { should == "9:45 am" }
+    end
+
+    context "for times within a meridian" do
+      let(:end_at) { start_at + 30.minutes }
+      it { should == "9:45 - 10:15 am" }
+    end
+
+    context "for cross-meridian dates on the same day" do
+      let(:end_at) { start_at + 5.hours }
+      it { should == "9:45 am - 2:45 pm" }
+    end
+
+    context "for cross-day times" do
+      let(:end_at) { start_at + 17.hours }
+      it { should == "9:45 am - 2:45 am" }
+    end
+
+    context "for unset times" do
+      let(:end_at) { nil }
+      it { should be_nil }
+    end
+
+    context "when passed an object" do
+      subject { time_range(object) }
+      context "that responds to #starts_at and #ends_at" do
+        let(:object) { stub(:starts_at => start_at,
+                            :ends_at => start_at + 2.hours) }
+        it "should ask the object" do
+          subject.should == "9:45 - 11:45 am"
+        end
+      end
+    end
   end
 
   context "A link in a list that might be active" do
