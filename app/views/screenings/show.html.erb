@@ -9,7 +9,7 @@
     <li>Priority: <span class="priority"></span></li>
     <li>Rating: <span class="rating"></span></li>
     <div class="times">
-      <%= screening_times(@screening) %>
+      <%= screening_times(@screening, with_date: true) %>
     </div>
   </ul>
   <button class="btn update">Update</button>
