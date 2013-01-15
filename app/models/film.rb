@@ -7,7 +7,7 @@ class Film < ActiveRecord::Base
 
   validates :duration, :festival_id, :name, presence: true
 
-  scope :by_name, lambda { order(:name) }
+  scope :by_name, -> { order(:name) }
 
   def page_number
     page.to_i if page.present?

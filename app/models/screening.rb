@@ -10,7 +10,7 @@ class Screening < ActiveRecord::Base
 
   validates :film_id, :venue_id, :starts_at, presence: true
   validates :ends_at, presence: true,
-            if: lambda {|x| x.film_id? && x.starts_at? }
+            if: ->(x) { x.film_id? && x.starts_at? }
   validates :festival_id, presence: true, if: :film_id?
   validates :location_id, presence: true, if: :venue_id?
 
@@ -18,7 +18,7 @@ class Screening < ActiveRecord::Base
 
   default_scope order(:starts_at)
 
-  scope :on, lambda {|date|
+  scope :on, ->(date) {
     t = date.to_date.to_time_in_current_zone
     where(['(screenings.starts_at >= ? and screenings.ends_at <= ?)',
            t.beginning_of_day, t.end_of_day])

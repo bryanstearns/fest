@@ -71,7 +71,7 @@ describe 'Importing a Festival' do
                                         without_protection: true) }
 
   it 'creates a new festival with the right attributes' do
-    lambda {
+    -> {
       subject.import
     }.should change(Festival, :count).by(1)
 
