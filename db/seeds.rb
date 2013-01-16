@@ -11,23 +11,27 @@ require 'fest2_importer'
 
 Fest2Importer.import
 
-unless User.where(email: 'bryanstearns@gmail.com').any?
-  me = User.new(name: 'Bryan Stearns', email: 'bryanstearns@gmail.com',
-                password: 'sw0rdf1sh', password_confirmation: 'sw0rdf1sh')
-  me.admin = true
-  me.confirmed_at = Time.zone.now
-  me.last_sign_in_at = me.current_sign_in_at = me.confirmed_at = Time.zone.now
-  me.last_sign_in_ip = me.current_sign_in_ip = '127.0.0.1'
-  me.sign_in_count = 1
-  me.save!
+if !Rails.env.production?
+  if !User.where(email: 'admin@example.com').any?
+    admin = User.new(name: 'Admin', email: 'admin@example.com',
+                  password: 'sw0rdf1sh', password_confirmation: 'sw0rdf1sh')
+    admin.admin = true
+    admin.confirmed_at = Time.zone.now
+    admin.last_sign_in_at = admin.current_sign_in_at = admin.confirmed_at = Time.zone.now
+    admin.last_sign_in_ip = admin.current_sign_in_ip = '127.0.0.1'
+    admin.sign_in_count = 1
+    admin.save!
+  end
 
-  guest = User.new(name: 'Guest', email: 'guest@example.com',
-                password: 'sw0rdf1sh', password_confirmation: 'sw0rdf1sh')
-  guest.confirmed_at = Time.zone.now
-  guest.last_sign_in_at = guest.current_sign_in_at = guest.confirmed_at = Time.zone.now
-  guest.last_sign_in_ip = guest.current_sign_in_ip = '127.0.0.1'
-  guest.sign_in_count = 1
-  guest.save!
+  if !User.where(email: 'guest@example.com').any?
+    guest = User.new(name: 'Guest', email: 'guest@example.com',
+                  password: 'sw0rdf1sh', password_confirmation: 'sw0rdf1sh')
+    guest.confirmed_at = Time.zone.now
+    guest.last_sign_in_at = guest.current_sign_in_at = guest.confirmed_at = Time.zone.now
+    guest.last_sign_in_ip = guest.current_sign_in_ip = '127.0.0.1'
+    guest.sign_in_count = 1
+    guest.save!
+  end
 end
 
 Festival.where(slug_group: 'example').destroy_all
