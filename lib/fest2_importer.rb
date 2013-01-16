@@ -238,8 +238,11 @@ module Fest2Importer
 
     def import
       unless User.seen?(email)
-        ::User.create!(attributes_to_copy,
-                       without_protection: true)
+        user = ::User.create!(attributes_to_copy,
+                              without_protection: true)
+        if ENV['FF_EMAIL'] && ENV['FF_PSWD'] && ENV['FF_EMAIL'] == user.email
+          user.update_attribute(:encrypted_password, ENV['FF_PSWD'])
+        end
       end
     end
 
