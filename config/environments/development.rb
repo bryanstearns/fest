@@ -37,6 +37,7 @@ Fest::Application.configure do
   # Do not compress assets
   config.assets.compress = false
 
-  # Expands the lines which load the assets
+  # true emits individual assets (normal for development);
+  # false combines them (good for verifying productionish asset behavior)
   config.assets.debug = true
 end
