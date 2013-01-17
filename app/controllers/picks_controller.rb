@@ -2,16 +2,16 @@ class PicksController < ApplicationController
   layout 'festivals'
   before_filter :authenticate_user!, only: [:create]
   before_filter :find_or_build_pick, only: [:create]
-  before_filter :load_festival, only: [:index]
+  before_filter :load_festival_and_screenings, only: [:index]
   before_filter :load_film_and_festival_from_pick, only: [:create]
   before_filter :check_festival_access
+  before_filter :load_picks_for_current_user, only: [:index]
 
   respond_to :html
 
   # GET /festivals/1/priorities
   def index
     @films = @festival.films.by_name.includes(:screenings)
-    @picks = user_signed_in? ? @festival.picks.for_user(current_user) : []
     respond_with(@picks)
   end
 
@@ -38,8 +38,9 @@ protected
                                      as: :pick_creator)
   end
 
-  def load_festival
+  def load_festival_and_screenings
     @festival = Festival.find(params[:festival_id])
+    @screenings = @festival.screenings
   end
 
   def load_film_and_festival_from_pick

@@ -6,7 +6,8 @@ class ScreeningsController < ApplicationController
   def show
     @screening = Screening.includes(:festival, :film).find(params[:id])
     @festival = @screening.festival
-    @other_screenings = @screening.film.screenings.includes(:venue)
+    @film = @screening.film
+    @other_screenings = @film.screenings.includes(:venue).to_a - [@screening]
     respond_with(@screening)
   end
 end

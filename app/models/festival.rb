@@ -5,11 +5,7 @@ class Festival < ActiveRecord::Base
   has_many :films, dependent: :destroy
   has_many :screenings
   has_many :subscriptions, dependent: :destroy
-  has_many :picks do
-    def for_user(user)
-      where(user_id: user.id)
-    end
-  end
+  has_many :picks
 
   attr_accessible :ends_on, :location, :location_ids, :main_url, :name, :public,
                   :revised_at, :scheduled, :slug, :slug_group, :starts_on,
@@ -30,6 +26,10 @@ class Festival < ActiveRecord::Base
     # in start-time order (the default for screenings), the keys of the
     # resulting hash will be in order.
     screenings.group_by {|s| s.starts_at.to_date }
+  end
+
+  def picks_for(user)
+    picks.where(user_id: user.id)
   end
 
 private

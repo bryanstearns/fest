@@ -45,6 +45,10 @@ protected
     raise ActiveRecord::RecordNotFound unless current_user.admin?
   end
 
+  def load_picks_for_current_user
+    @picks = user_signed_in? ? @festival.picks_for(current_user) : []
+  end
+
   def log_session_state
     session_key = Rails.application.config.session_options[:key]
     size = (cookies[session_key] || "").size

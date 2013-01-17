@@ -10,10 +10,26 @@ describe FestivalsController do
   end
 
   describe "GET show" do
-    it "assigns the requested festival as @festival" do
-      festival = create(:festival)
-      get :show, {:id => festival.to_param}
-      assigns(:festival).should eq(festival)
+    context "assigns" do
+      it "assigns the requested festival as @festival" do
+        festival = create(:festival)
+        get :show, {:id => festival.to_param}
+        assigns(:festival).should eq(festival)
+      end
+      it "assigns the festival's screenings as @screenings" do
+        festival = create(:festival, :with_films_and_screenings)
+        get :show, {:id => festival.to_param}
+        assigns(:screenings).should eq(festival.screenings)
+      end
+
+      it "assigns the current_user's picks as @picks" do
+        login_user
+        festival = create(:festival)
+        picks = mock
+        Festival.any_instance.stub(:picks_for).and_return(picks)
+        get :show, {:id => festival.to_param}
+        assigns(:picks).should eq(picks)
+      end
     end
   end
 end

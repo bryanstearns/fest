@@ -45,5 +45,11 @@ describe Festival do
         festival.starts_on + 1 => [s3],
       })
     end
+
+    it "collects picks for a given user" do
+      festival = create(:festival, :with_films_and_screenings)
+      pick = create(:pick, festival: festival, film: festival.films.first)
+      festival.picks_for(pick.user).should == [pick]
+    end
   end
 end
