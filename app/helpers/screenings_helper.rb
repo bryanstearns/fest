@@ -3,7 +3,7 @@ module ScreeningsHelper
     result = time_range(screening)
     if options[:with_date]
       result = safe_join [
-        l(screening.starts_at.to_date, format: :mdy),
+        l(screening.starts_at.to_date, format: :dmd),
         ' ',
         result
       ]

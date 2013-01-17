@@ -24,6 +24,7 @@ class Screening < ActiveRecord::Base
            t.beginning_of_day, t.end_of_day])
   }
 
+  delegate :name, to: :venue, prefix: true
   delegate :name, :countries, to: :film
 
   def duration
