@@ -11,7 +11,7 @@ module Admin
 
     # GET /admin/festivals/1/edit
     def edit
-      respond_with(:admin, @festival = Festival.find(params[:id]))
+      respond_with(:admin, @festival = Festival.find_by_slug!(params[:id]))
     end
 
     # POST /admin/festivals
@@ -23,7 +23,7 @@ module Admin
 
     # PUT /admin/festivals/1
     def update
-      @festival = Festival.find(params[:id])
+      @festival = Festival.find_by_slug!(params[:id])
       if @festival.update_attributes(params[:festival])
         flash[:notice] = 'Festival was successfully updated.'
       end
@@ -32,7 +32,7 @@ module Admin
 
     # DELETE /admin/festivals/1
     def destroy
-      @festival = Festival.find(params[:id])
+      @festival = Festival.find_by_slug!(params[:id])
       @festival.destroy
       flash[:notice] = 'Festival was successfully destroyed.'
       respond_with(:admin, @festival, location: festivals_path)

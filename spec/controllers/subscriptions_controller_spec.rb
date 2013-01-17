@@ -7,7 +7,7 @@ describe SubscriptionsController do
     describe "when there's no user signed in" do
       logged_out
       it "builds a dummy subscription" do
-        expect { get :show, { :festival_id => festival.id } }.to \
+        expect { get :show, { :festival_id => festival.to_param } }.to \
           change(Subscription, :count).by(0)
         assigns(:subscription).should be_new_record
       end
@@ -23,7 +23,7 @@ describe SubscriptionsController do
                                      show_press: false) }
 
         it "loads the existing subscription" do
-          expect { get :show, { :festival_id => festival.id } }.to \
+          expect { get :show, { :festival_id => festival.to_param } }.to \
             change(Subscription, :count).by(0)
           assigns(:subscription).should eq(subscription)
         end
@@ -31,7 +31,7 @@ describe SubscriptionsController do
 
       describe "who has no subscription for this festival" do
         it "creates a subscription" do
-          expect { get :show, { :festival_id => festival.id } }.to \
+          expect { get :show, { :festival_id => festival.to_param } }.to \
             change(Subscription, :count).by(1)
           assigns(:subscription).should_not be_new_record
         end
@@ -41,7 +41,7 @@ describe SubscriptionsController do
 
   describe "PUT update" do
     it "requires an authenticated user" do
-      put :update, {:festival_id => festival.id,
+      put :update, {:festival_id => festival.to_param,
                     :subscription => { "show_press" => true } }
       response.should redirect_to(new_user_session_path)
     end
@@ -58,18 +58,18 @@ describe SubscriptionsController do
         it "updates the requested subscription" do
           Subscription.any_instance.should_receive(:update_attributes)\
             .with({ "show_press" => true })
-          put :update, {:festival_id => festival.id,
+          put :update, {:festival_id => festival.to_param,
                         :subscription => { "show_press" => true } }
         end
 
         it "assigns the requested subscription as @subscription" do
-          put :update, { :festival_id => festival.id,
+          put :update, { :festival_id => festival.to_param,
                          :subscription => { "show_press" => false} }
           assigns(:subscription).should eq(subscription)
         end
 
         it "redirects to the festival" do
-          put :update, { :festival_id => festival.id,
+          put :update, { :festival_id => festival.to_param,
                          :subscription => { "show_press" => false} }
           response.should redirect_to(festival_path(subscription.festival))
         end

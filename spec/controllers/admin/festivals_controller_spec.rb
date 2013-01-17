@@ -77,14 +77,16 @@ describe Admin::FestivalsController do
 
       it "assigns the requested festival as @festival" do
         festival = create(:festival)
-        put :update, {:id => festival.to_param, :festival => valid_attributes}
-        assigns(:festival).should eq(festival)
+        put :update, {:id => festival.to_param,
+                      :festival => valid_attributes}
+        assigns(:festival).should eq(festival.reload)
       end
 
       it "redirects to the festival" do
         festival = create(:festival)
-        put :update, {:id => festival.to_param, :festival => valid_attributes}
-        response.should redirect_to(festival)
+        put :update, {:id => festival.to_param,
+                      :festival => valid_attributes}
+        response.should redirect_to(festival.reload)
       end
     end
 

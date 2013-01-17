@@ -39,7 +39,7 @@ protected
   end
 
   def load_festival_and_screenings
-    @festival = Festival.find(params[:festival_id])
+    @festival = Festival.find_by_slug!(params[:festival_id])
     @screenings = @festival.screenings
   end
 

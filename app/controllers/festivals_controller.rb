@@ -16,7 +16,7 @@ class FestivalsController < ApplicationController
 
 protected
   def load_festival_and_screenings
-    @festival = Festival.includes(screenings: [:venue, :film]).find(params[:id])
+    @festival = Festival.includes(screenings: [:venue, :film]).find_by_slug!(params[:id])
     @screenings = @festival.screenings
   end
 end

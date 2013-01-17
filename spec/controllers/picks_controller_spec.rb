@@ -6,7 +6,7 @@ describe PicksController do
   describe "GET index" do
     it "assigns the festival's films as @films" do
       festival = create(:festival, :with_films)
-      get :index, { :festival_id => festival.id }
+      get :index, { :festival_id => festival.to_param }
       assigns(:films).should eq(festival.films.by_name)
     end
   end

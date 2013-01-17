@@ -21,6 +21,10 @@ class Festival < ActiveRecord::Base
 
   scope :public, where(public: true)
 
+  def to_param
+    slug
+  end
+
   def screenings_by_date
     # NB: Since group_by returns an ordered hash, and we're feeding it screenings
     # in start-time order (the default for screenings), the keys of the
