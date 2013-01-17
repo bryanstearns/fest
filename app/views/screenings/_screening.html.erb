@@ -1,5 +1,6 @@
 <li>
   <%= screening_times(screening, with_date: true) %>:
   <%= screening.venue_name %>
+  <%= '(press)' if screening.press? %>
   <span id="<%= dom_id(screening) %>_selected"></span>
 </li>

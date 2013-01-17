@@ -9,5 +9,6 @@
   </div>
   <div class="times">
     <%= screening_times(viewing.screening) %>
+    <%= '(press)' if viewing.press? %>
   </div>
 <% end %>
