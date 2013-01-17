@@ -8,9 +8,12 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
+ * note: we don't require_tree anymore (was after bootstrap-and-extensions);
+ * the local .sass files are imported from within bootstrap-and-extensions
+ * explicitly
+ *
  *= require_self
  *= require bootstrap-and-extensions
- *= require_tree .
  *= require jquery.ui.datepicker
  *= require flags
  */

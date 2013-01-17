@@ -1,0 +1,21 @@
+
+// Our overrides of Bootstrap's defaults
+// see: http://twitter.github.com/bootstrap/customize.html#variables
+$baseFontFamily:  "Droid Sans", sans-serif
+$altFontFamily: "Droid Serif", serif
+$dayHourHeight: <%= Day::HOUR_HEIGHT - 1 %>px
+
+@import "bootstrap"
+
+#main
+  margin-top: 60px
+
+@import "bootstrap-responsive"
+
+// Include the rest of our sass files here, where they can see Bootstrap's
+// variables
+<% Dir.glob("#{File.dirname(__FILE__)}/*.sass")\
+      .select {|f| f !~ /\.css\.sass$/ }\
+      .each do |sass_file| %>
+@import "<%= File.basename(sass_file, '.sass') %>"
+<% end %>

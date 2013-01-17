@@ -2,6 +2,19 @@ module ApplicationHelper
   include EnabledFlags
   include Countries::Helpers
 
+  def webfont_link_tag
+    families = [
+      #"Droid+Serif:400,700,400italic,700italic",
+      "Droid+Sans:400,700"
+    ].join('|')
+    subset = [
+      'latin',
+      'latin-ext',
+    ].join(',')
+    href = "http://fonts.googleapis.com/css?family=#{families}&subset=#{subset}"
+    content_tag(:link, '', href: href.html_safe, rel: :stylesheet, type: 'text/css')
+  end
+
   def current_user_is_admin?
     user_signed_in? && current_user.admin?
   end

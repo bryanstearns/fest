@@ -1,6 +1,4 @@
 
-@import "bootstrap"
-
 // Colors used for screening status
 $lowpriority_color: #ddd
 $unranked_color: #ddd
@@ -29,7 +27,7 @@ table.day
       text-align: right
       padding-left: 4px
       padding-right: 4px
-      height: <%= Day::HOUR_HEIGHT - 1 %>px
+      height: $dayHourHeight
 
   .lowprio
     background-color: $lowpriority_color
@@ -56,5 +54,10 @@ table.day
     cursor: pointer
     overflow: hidden
     .title
+      letter-spacing: -0.05em
       font-weight: bold
-      font-size: 1.1em
+      // font-size: 1.3em
+    .pick_symbols
+      float: right
+    .times
+      font-size: 0.9em
