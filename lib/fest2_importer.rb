@@ -73,15 +73,13 @@ module Fest2Importer
             else
               klass.includes(options[:includes])
             end
-            new_things.all.inject({}) do |h, new_thing|
-              save_key = if block_given?
-                           debugger unless new_thing
-                           yield new_thing
-                         else
-                           new_thing.id
-                         end
-              h[save_key] = new_thing
-              h
+            new_things.all.map_by do |new_thing|
+              if block_given?
+                debugger unless new_thing
+                yield new_thing
+              else
+                new_thing.id
+              end
             end
           end
           key = block_given? ? yield(self.send(thing_name)) : id

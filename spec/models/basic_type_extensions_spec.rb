@@ -79,3 +79,22 @@ describe 'Float#to_minutes' do
     (now - earlier).to_minutes.should eq(30)
   end
 end
+
+describe 'Enumerable#map_by' do
+  let(:a) { mock(x: 5) }
+  let(:b) { mock(x: 12) }
+  let(:c) { mock(x: 7) }
+  let(:enumerable) { [ a, b, c ] }
+  context "when given an symbol" do
+    subject { enumerable.map_by(:x) }
+    it "builds a hash by that attribute" do
+      subject.should == { 5 => a, 12 => b, 7 => c }
+    end
+  end
+  context "when given a block" do
+    subject { enumerable.map_by {|i| i.x * 2 } }
+    it "builds a hash by its result " do
+      subject.should == { 10 => a, 24 => b, 14 => c }
+    end
+  end
+end

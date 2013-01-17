@@ -49,3 +49,15 @@ class Float
     (self / 60.0).to_i
   end
 end
+
+module Enumerable
+  def map_by(symbol=nil)
+    if symbol
+      inject({}) {|h, item| h[item.send(symbol)] = item; h }
+    elsif block_given?
+      inject({}) {|h, item| h[yield(item)] = item; h }
+    else
+      raise ArgumentError, "symbol or block required"
+    end
+  end
+end
