@@ -80,6 +80,26 @@ describe 'Float#to_minutes' do
   end
 end
 
+describe 'Numeric#in_words' do
+  it "should use 'no' for zero" do
+    0.in_words.should == 'no'
+  end
+  it "should use words for small numbers" do
+    5.in_words.should == 'five'
+  end
+  it "should use numbers for large numbers" do
+    11.in_words.should == '11'
+  end
+end
+describe 'Numeric#counted' do
+  it "should pluralize" do
+    2.counted('octopus').should == 'two octopi'
+  end
+  it "should singularize" do
+    1.counted('octopus').should == 'one octopus'
+  end
+end
+
 describe 'Enumerable#map_by' do
   let(:a) { mock(x: 5) }
   let(:b) { mock(x: 12) }

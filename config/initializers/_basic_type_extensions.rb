@@ -50,6 +50,17 @@ class Float
   end
 end
 
+class Numeric
+  WORDS = %w[no one two three four five six seven eight nine ten]
+  def in_words
+    WORDS.fetch(self, self.to_s)
+  end
+  def counted(noun)
+    noun = noun.pluralize if self != 1
+    self.in_words + ' ' + noun
+  end
+end
+
 module Enumerable
   def map_by(symbol=nil)
     if symbol
