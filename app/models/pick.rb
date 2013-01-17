@@ -38,9 +38,6 @@ class Pick < ActiveRecord::Base
       end
     end
   end
-  def self.index_to_priority
-    @@index_to_priority ||= priority_to_index.invert
-  end
 
 protected
   def check_foreign_keys

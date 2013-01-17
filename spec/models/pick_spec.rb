@@ -33,8 +33,7 @@ describe Pick do
     end
   end
 
-  it "produces priority mappings, to & from index" do
+  it "maps priority to index" do
     Pick.priority_to_index.should == { 0 => 0, 1 => 1, 2 => 2, 4 => 3, 8 => 4 }
-    Pick.index_to_priority.should == { 0 => 0, 1 => 1, 2 => 2, 3 => 4, 4 => 8 }
   end
 end

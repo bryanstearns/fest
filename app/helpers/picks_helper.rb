@@ -9,7 +9,8 @@ module PicksHelper
     "{#{Pick::priority_to_index.map {|k,v| "#{k}:#{v}"}.join(", ")}}"
   end
   def pick_index_to_priority_in_javascript
-    "{#{Pick::priority_to_index.map {|k,v| "#{k}:#{v}"}.join(", ")}}"
+    # Note: we're emitting v -> k, not k -> v
+    "{#{Pick::priority_to_index.map {|k,v| "#{v}:#{k}"}.join(", ")}}"
   end
 
   def pick_priority_hints_in_javascript
