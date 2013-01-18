@@ -19,11 +19,11 @@ jQuery ->
   save_pick = (div, attribute, value) ->
     if logged_in()
       film_id = film_id_for(div)
-      pick_form = jQuery('#new_pick')
+      pick_form = jQuery('#pick_form')
       pick_form.attr('action',
         pick_form.attr('action').replace(/\d+/, film_id))
-      pick_form.find('input[name="attribute"]').val(attribute)
-      pick_form.find('input[name="pick[' + attribute + ']"]').val(value)
+      pick_form.find('input#attribute').val(attribute)
+      pick_form.find('input#pick_' + attribute).val(value)
       progress = jQuery("#" + "film_" + film_id + "_progress")
       progress.show()
       pick_form.ajaxSubmit(
@@ -80,3 +80,8 @@ jQuery ->
     click: (score, evt) ->
       save_pick(this, 'rating', score)
   )
+
+  # Apply classes to each screening
+  for status, ids of SCREENING_IDS_BY_STATUS
+    ids = (ids.map (id) -> "#screening_" + id).join(',')
+    jQuery(ids).attr('class', 'screening ' + status)

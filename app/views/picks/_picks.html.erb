@@ -1,0 +1,12 @@
+<%# Hidden form, modified and sent by picks.js.coffee.erb %>
+<%= form_tag(film_picks_path("1"), method: :post, id: :pick_form) do %>
+  <%= hidden_field_tag 'attribute', 'priority' %>
+  <%= hidden_field 'pick', 'priority' %>
+  <%= hidden_field 'pick', 'rating' %>
+  <%= hidden_field 'pick', 'screening' %>
+<% end %>
+
+<%= javascript_tag do %>
+  var PICKS_BY_FILM_ID = <%= raw pick_details_by_film_id(@picks).to_json %>;
+  var SCREENING_IDS_BY_STATUS = <%= raw screening_ids_by_status(@screenings, @picks).to_json %>;
+<% end %>

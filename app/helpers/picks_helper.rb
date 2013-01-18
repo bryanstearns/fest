@@ -31,4 +31,29 @@ module PicksHelper
       h
     end
   end
+
+  def screening_ids_by_status(screenings, picks)
+    raise ArgumentError unless screenings && picks
+    picks_by_film_id = picks.map_by(:film_id)
+    screenings.inject(Hash.new {|h, k| h[k] = []}) do |h, screening|
+      pick = picks_by_film_id[screening.film_id]
+      status = if pick
+        if pick.screening_id == screening.id
+          "scheduled"
+        elsif pick.screening_id
+          "otherscheduled"
+        elsif pick.priority.nil?
+          "unranked"
+        elsif pick.priority > 0
+          "unscheduled"
+        else
+          "lowpriority"
+        end
+      else
+        "unranked"
+      end
+      h[status] << screening.id
+      h
+    end
+  end
 end

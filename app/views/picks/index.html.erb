@@ -23,9 +23,4 @@
   </table>
 <% end %>
 
-
-<%= render partial: 'picks/form', locals: { film: @films.first } %>
-
-<%= javascript_tag do %>
-  var PICKS_BY_FILM_ID = <%= raw pick_details_by_film_id(@picks).to_json %>;
-<% end %>
+<%= render partial: 'picks/picks', object: @picks %>
