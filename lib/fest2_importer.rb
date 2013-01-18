@@ -215,6 +215,10 @@ module Fest2Importer
       new_film.festival.screenings.create!(attributes_to_copy,
                                            without_protection: true)
     end
+
+    # Alias these attributes to their new-world names
+    def starts_at; starts end
+    def ends_at; ends end
   end
 
   class User < ImportableModel
@@ -256,7 +260,7 @@ module Fest2Importer
     belongs_to :user
 
     maps_to_new(::Screening, includes: { film: :festival }) \
-      {|screening| screening && [screening.film.festival.slug, screening.film.name] }
+      {|screening| screening && [screening.film.festival.slug, screening.film.name, screening.starts_at] }
     maps_to_new(::Film, includes: :festival) \
       {|film| [film.festival.slug, film.name] }
     maps_to_new(::User) {|user| user.email.downcase }
