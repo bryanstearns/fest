@@ -87,7 +87,8 @@ describe Day do
 
     it "should know its column names, in order" do
       # this only tests the case where we're not mapping to virtual venues...
-      subject.column_names.should eq(subject.screenings.map {|s| s.venue.name }.uniq)
+      subject.column_names.should \
+        eq(subject.screenings.map {|s| s.venue.name }.uniq.sort)
     end
 
     it "should produce each venue's viewings" do

@@ -35,12 +35,16 @@ class Day
     (ends_at - starts_at).to_minutes * MINUTE_HEIGHT
   end
 
+  def column_keys
+    viewings.keys.sort_by {|column| column.venue_name }
+  end
+
   def column_names
-    viewings.keys.map {|column_key| column_key.venue_name }
+    column_keys.map {|column_key| column_key.venue_name }
   end
 
   def column_viewings
-    viewings.values
+    column_keys.map {|column_key| viewings[column_key] }
   end
 
   def column_width
@@ -68,7 +72,7 @@ class Day
 
 private
   def viewings
-    @viewings ||= ActiveSupport::OrderedHash.new() do |h,k|
+    @viewings ||= Hash.new() do |h,k|
       h[k] = []
     end.tap do |viewings|
       positioner = ViewingPositioner.new(starts_at)
