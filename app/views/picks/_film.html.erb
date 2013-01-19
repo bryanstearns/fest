@@ -1,13 +1,7 @@
 <%= content_tag_for(:tr, film) do %>
-  <td>
-    <div id="<%= dom_id(film) %>_dots" class="dots"></div>
-  </td>
-  <td>
-    <div id="<%= dom_id(film) %>_stars" class="stars"></div>
-  </td>
-  <td>
-    <%= ajax_progress(id: "#{dom_id(film)}_progress") %>
-  </td>
+  <td><%= priority_dots(film) %></td>
+  <td><%= rating_stars(film) %></td>
+  <td><%= film_ajax_progress(film) %></td>
   <td>
     <%= pick_film_heading(film) %>
     <ul class="screenings">

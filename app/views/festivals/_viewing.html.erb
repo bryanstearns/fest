@@ -2,9 +2,9 @@
             style: "height: #{viewing.height}px; " +
                    "margin-top: #{viewing.space_before}px") do %>
   <a name="s<%= viewing.screening.id %>"></a>
+  <%= pick_symbols(viewing.film) %>
   <div class="title">
     <%= viewing.name %>
-    <span class="priority"></span>
     <span class="flags"><%= flags(viewing.countries) %></span>
   </div>
   <div class="times">

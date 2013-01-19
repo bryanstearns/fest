@@ -8,4 +8,21 @@ module FilmsHelper
       result << pluralize(minutes, 'minute') if minutes > 0
     end.join(' ')
   end
+
+  def priority_dots(film)
+    content_tag(:div, '', id: dom_id(film) + '_dots', class: 'dots')
+  end
+
+  def rating_stars(film)
+    content_tag(:div, '', id: dom_id(film) + '_stars', class: 'stars')
+  end
+
+  def pick_symbols(film)
+    content_tag(:div, '', id: dom_id(film) + '_pick', class: 'pick_symbols')
+  end
+
+  def film_ajax_progress(film)
+    ajax_progress(id: dom_id(film) + '_progress')
+  end
+
 end

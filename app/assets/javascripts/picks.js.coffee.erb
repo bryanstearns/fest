@@ -38,7 +38,7 @@ jQuery ->
     else
       not_signed_in()
 
-  # Set up priority dots
+  # Set up the editable priority dots
   priority_to_index = <%= pick_priority_to_index_in_javascript %>
   index_to_priority = <%= pick_index_to_priority_in_javascript %>
   priority_divs = jQuery('.dots')
@@ -62,7 +62,7 @@ jQuery ->
       save_pick(this, 'priority', index_to_priority[score])
   )
 
-  # Set up rating stars
+  # Set up editable rating stars
   rating_divs = jQuery('.stars')
   rating_divs.each (index, div) ->
     pick = PICKS_BY_FILM_ID[film_id_for(div)]
@@ -80,6 +80,29 @@ jQuery ->
     click: (score, evt) ->
       save_pick(this, 'rating', score)
   )
+
+  # Set up the non-editable display of priority or rating
+  pick_symbols = jQuery('.pick_symbols')
+  if pick_symbols.length > 0
+    stars = "<img src=\"<%= image_path('raty/star-on.png') %>\" />"
+    first_dot = "<img src=\"<%= image_path('raty/face-a.png') %>\" />"
+    other_dots = "<img src=\"<%= image_path('raty/face-b.png') %>\" />"
+    pick_symbols.each (index, div) ->
+      pick = PICKS_BY_FILM_ID[film_id_for(div)]
+      if pick
+        star_count = pick.rating
+        if star_count > 0
+          jQuery(div).html(new Array(star_count+1).join(stars))
+        else
+          dot_count = priority_to_index[pick.priority]
+          if dot_count > 0
+            if dot_count == 1
+              dot_html = first_dot
+            else
+              dot_html = new Array(dot_count + 1).join(other_dots)
+            jQuery(div).html(dot_html)
+          else
+            jQuery(div).html('')
 
   # Apply classes to each screening
   for status, ids of SCREENING_IDS_BY_STATUS
