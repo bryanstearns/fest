@@ -10,4 +10,22 @@ module ScreeningsHelper
     end
     result
   end
+
+  def other_screenings_caption(boundary_time, other_screenings)
+    earlier, later = *other_screenings.partition {|s| s.starts_at < boundary_time }\
+                                     .map(&:count)
+    if earlier == 0
+      if later == 0
+        "No other screenings."
+      else
+        later.counted("later screening") + ":"
+      end
+    else
+      if later == 0
+        earlier.counted("earlier screening") + ':'
+      else
+        earlier.in_words + " earlier and " + later.counted("later screening") + ":"
+      end
+    end.capitalize
+  end
 end
