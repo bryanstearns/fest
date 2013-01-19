@@ -16,6 +16,9 @@ Spork.prefork do
   # steps to use the XPath syntax.
   Capybara.default_selector = :css
 
+  # Use the Webkit driver for javascript tests
+  Capybara.javascript_driver = :webkit
+
   World(FactoryGirl::Syntax::Methods)
   World(EnabledFlags)
 end
