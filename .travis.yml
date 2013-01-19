@@ -6,9 +6,9 @@ notifications:
   recipients:
     - festfan@festivalfanatic.com
 script:
-  - RAILS_ENV=test bundle exec rake db:migrate
-  - bundle exec rake db:test:prepare
-  - bundle exec rake
+  - RAILS_ENV=test TRAVIS=1 bundle exec rake db:migrate
+  - TRAVIS=1 bundle exec rake db:test:prepare
+  - TRAVIS=1 bundle exec rake
 before_script:
   - cp config/database.travis.yml config/database.yml
   - mysql -e 'create database fest_test'
