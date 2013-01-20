@@ -111,6 +111,6 @@ module ApplicationHelper
   end
 
   def ajax_progress(options={})
-    content_tag(:div, '', options.merge(class: 'ajax-progress'))
+    content_tag(:div, '', options.merge(class: 'ajax-progress hidden'))
   end
 end

@@ -25,13 +25,13 @@ jQuery ->
       pick_form.find('input#attribute').val(attribute)
       pick_form.find('input#pick_' + attribute).val(value)
       progress = jQuery("#" + "film_" + film_id + "_progress")
-      progress.show()
+      progress.removeClass('hidden')
       pick_form.ajaxSubmit(
         dataType: 'script'
         success: ->
-          progress.hide()
+          progress.addClass('hidden')
         error: (context, xhr, e, status) ->
-          progress.hide()
+          progress.addClass('hidden')
           window.location = "/500.html"
       )
       true
