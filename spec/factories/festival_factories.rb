@@ -48,16 +48,18 @@ class FakeFestivalGenerator
                          location: location)
     end
     @venues = festival.venues
+    add_cycling_to(@venues)
   end
 
   def make_films
-    count = film_count || (day_count * 10)
+    count = film_count || (day_count * 4)
     @films = count.times.zip(HITCHCOCK_FILMS.keys.cycle).map do |i, name|
-      suffix = " #{(i / HITCHCOCK_FILMS.count) + 1}" if i > HITCHCOCK_FILMS.count
+      suffix = " #{(i / HITCHCOCK_FILMS.count) + 1}" if i >= HITCHCOCK_FILMS.count
       log { "Film #{i}: Creating #{name}#{suffix}" }
       FactoryGirl.create(:film, festival: festival, name: "#{name}#{suffix}",
                          duration: HITCHCOCK_FILMS[name].minutes)
     end
+    add_cycling_to(@films)
   end
 
   def make_screenings
@@ -67,12 +69,12 @@ class FakeFestivalGenerator
       log { "Starting #{date}" }
       t = date.at("18:00")
       limit = date.at("23:00")
-      day_venues = venues.sample((press && day_index == 0) ? 1 : 3)
+      day_venues = venues.take_more((press && day_index == 0) ? 1 : 3)
       day_venues.each_with_index do |venue, i|
         tv = t + (5 * rand(3)).minutes
         log {"  #{i}: Venue #{venue.name}, starting at #{tv}" }
         loop do
-          film = films.sample
+          film = films.take_one
           starts_at = tv
           tv += film.duration + 10.minutes
           break if tv > limit
@@ -81,6 +83,26 @@ class FakeFestivalGenerator
                              starts_at: starts_at, festival: festival,
                              press: press && day_index == 0)
         end
+      end
+    end
+  end
+
+  def add_cycling_to(things)
+    class << things
+      def take_more(take_count)
+        @cycling_index ||= 0
+        result = []
+        while take_count > 0
+          available = count - @cycling_index
+          batch_count = take_count > available ? available : take_count
+          result += slice(@cycling_index, batch_count)
+          @cycling_index = (@cycling_index + batch_count) % count
+          take_count -= batch_count
+        end
+        result
+      end
+      def take_one
+        take_more(1).first
       end
     end
   end
