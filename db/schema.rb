@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(:version => 20130113040559) do
     t.datetime "updated_at",   :null => false
   end
 
-  add_index "films", ["festival_id", "name"], :name => "index_films_on_festival_id_and_name"
+  add_index "films", ["festival_id", "name"], :name => "index_films_on_festival_id_and_name", :unique => true
   add_index "films", ["festival_id", "page", "name"], :name => "index_films_on_festival_id_and_page_and_name"
 
   create_table "locations", :force => true do |t|

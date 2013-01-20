@@ -11,7 +11,7 @@ class CreateFilms < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :films, [:festival_id, :name]
+    add_index :films, [:festival_id, :name], unique: true
     add_index :films, [:festival_id, :page, :name]
   end
 end

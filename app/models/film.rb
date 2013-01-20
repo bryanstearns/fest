@@ -6,6 +6,7 @@ class Film < ActiveRecord::Base
   attr_accessible :countries, :description, :duration, :name, :page, :url_fragment
 
   validates :duration, :festival_id, :name, presence: true
+  validates :name, :uniqueness => { scope: :festival_id }
 
   scope :by_name, -> { order(:name) }
 

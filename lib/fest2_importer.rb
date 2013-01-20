@@ -184,8 +184,9 @@ module Fest2Importer
     end
 
     def import
-      new_festival.films.create(attributes_to_copy,
-                                without_protection: true)
+      new_festival.films.create!(attributes_to_copy,
+                                 without_protection: true) \
+        unless new_festival.films.where(name: name).exists?
     end
   end
 
