@@ -7,104 +7,105 @@ jQuery ->
   logged_in = -> jQuery("#sign_out").length == 1
 
   # Set up the Raty plugin to manage priorities and ratings
+  if PICKS_BY_FILM_ID?
+    not_signed_in = ->
+      alert("You're not signed in; you can sign in to prioritize your " +
+            "films, or click the Sign Up link in the upper right corner " +
+            "to get started.")
 
-  not_signed_in = ->
-    alert("You're not signed in; you can sign in to prioritize your " +
-          "films, or click the Sign Up link in the upper right corner " +
-          "to get started.")
+    film_id_for = (div) ->
+      jQuery(div).attr('id').split('_')[1]
 
-  film_id_for = (div) ->
-    jQuery(div).attr('id').split('_')[1]
+    save_pick = (div, attribute, value) ->
+      if logged_in()
+        film_id = film_id_for(div)
+        pick_form = jQuery('#pick_form')
+        pick_form.attr('action',
+          pick_form.attr('action').replace(/\d+/, film_id))
+        pick_form.find('input#attribute').val(attribute)
+        pick_form.find('input#pick_' + attribute).val(value)
+        progress = jQuery("#" + "film_" + film_id + "_progress")
+        progress.removeClass('hidden')
+        pick_form.ajaxSubmit(
+          dataType: 'script'
+          success: ->
+            progress.addClass('hidden')
+          error: (context, xhr, e, status) ->
+            progress.addClass('hidden')
+            window.location = "/500.html"
+        )
+        true
+      else
+        not_signed_in()
 
-  save_pick = (div, attribute, value) ->
-    if logged_in()
-      film_id = film_id_for(div)
-      pick_form = jQuery('#pick_form')
-      pick_form.attr('action',
-        pick_form.attr('action').replace(/\d+/, film_id))
-      pick_form.find('input#attribute').val(attribute)
-      pick_form.find('input#pick_' + attribute).val(value)
-      progress = jQuery("#" + "film_" + film_id + "_progress")
-      progress.removeClass('hidden')
-      pick_form.ajaxSubmit(
-        dataType: 'script'
-        success: ->
-          progress.addClass('hidden')
-        error: (context, xhr, e, status) ->
-          progress.addClass('hidden')
-          window.location = "/500.html"
-      )
-      true
-    else
-      not_signed_in()
-
-  # Set up the editable priority dots
-  priority_to_index = <%= pick_priority_to_index_in_javascript %>
-  index_to_priority = <%= pick_index_to_priority_in_javascript %>
-  priority_divs = jQuery('.dots')
-  priority_divs.each (index, div) ->
-    pick = PICKS_BY_FILM_ID[film_id_for(div)]
-    if pick and pick.priority
-      jQuery(div).attr('data-priority', pick.priority)
-  priority_divs.raty(
-    cancel: true
-    cancelHint: 'Forget this priority'
-    hints: <%= pick_priority_hints_in_javascript %>
-    path: '<%= File.dirname(image_path('raty/face-a.png')) %>'
-    size: 18
-    iconRange: [
-      { range: 1, on: 'face-a.png', off: 'face-a-off.png' }
-      { range: 5, on: 'face-b.png', off: 'face-b-off.png' }
-    ]
-    score: ->
-      priority_to_index[$(this).attr('data-priority')]
-    click: (score, evt) ->
-      save_pick(this, 'priority', index_to_priority[score])
-  )
-
-  # Set up editable rating stars
-  rating_divs = jQuery('.stars')
-  rating_divs.each (index, div) ->
-    pick = PICKS_BY_FILM_ID[film_id_for(div)]
-    if pick and pick.rating
-      jQuery(div).attr('data-rating', pick.rating)
-  rating_divs.raty(
-    cancel: true
-    cancelHint: 'Forget this rating'
-    number: 5,
-    hints: <%= pick_rating_hints_in_javascript %>
-    path: '<%= File.dirname(image_path('raty/face-a.png')) %>'
-    size: 18
-    score: ->
-      $(this).attr('data-rating')
-    click: (score, evt) ->
-      save_pick(this, 'rating', score)
-  )
-
-  # Set up the non-editable display of priority or rating
-  pick_symbols = jQuery('.pick_symbols')
-  if pick_symbols.length > 0
-    stars = "<img src=\"<%= image_path('raty/star-on.png') %>\" />"
-    first_dot = "<img src=\"<%= image_path('raty/face-a.png') %>\" />"
-    other_dots = "<img src=\"<%= image_path('raty/face-b.png') %>\" />"
-    pick_symbols.each (index, div) ->
+    # Set up the editable priority dots
+    priority_to_index = <%= pick_priority_to_index_in_javascript %>
+    index_to_priority = <%= pick_index_to_priority_in_javascript %>
+    priority_divs = jQuery('.dots')
+    priority_divs.each (index, div) ->
       pick = PICKS_BY_FILM_ID[film_id_for(div)]
-      if pick
-        star_count = pick.rating
-        if star_count > 0
-          jQuery(div).html(new Array(star_count+1).join(stars))
-        else
-          dot_count = priority_to_index[pick.priority]
-          if dot_count > 0
-            if dot_count == 1
-              dot_html = first_dot
-            else
-              dot_html = new Array(dot_count + 1).join(other_dots)
-            jQuery(div).html(dot_html)
+      if pick and pick.priority
+        jQuery(div).attr('data-priority', pick.priority)
+    priority_divs.raty(
+      cancel: true
+      cancelHint: 'Forget this priority'
+      hints: <%= pick_priority_hints_in_javascript %>
+      path: '<%= File.dirname(image_path('raty/face-a.png')) %>'
+      size: 18
+      iconRange: [
+        { range: 1, on: 'face-a.png', off: 'face-a-off.png' }
+        { range: 5, on: 'face-b.png', off: 'face-b-off.png' }
+      ]
+      score: ->
+        priority_to_index[$(this).attr('data-priority')]
+      click: (score, evt) ->
+        save_pick(this, 'priority', index_to_priority[score])
+    )
+
+    # Set up editable rating stars
+    rating_divs = jQuery('.stars')
+    rating_divs.each (index, div) ->
+      pick = PICKS_BY_FILM_ID[film_id_for(div)]
+      if pick and pick.rating
+        jQuery(div).attr('data-rating', pick.rating)
+    rating_divs.raty(
+      cancel: true
+      cancelHint: 'Forget this rating'
+      number: 5,
+      hints: <%= pick_rating_hints_in_javascript %>
+      path: '<%= File.dirname(image_path('raty/face-a.png')) %>'
+      size: 18
+      score: ->
+        $(this).attr('data-rating')
+      click: (score, evt) ->
+        save_pick(this, 'rating', score)
+    )
+
+    # Set up the non-editable display of priority or rating
+    pick_symbols = jQuery('.pick_symbols')
+    if pick_symbols.length > 0
+      stars = "<img src=\"<%= image_path('raty/star-on.png') %>\" />"
+      first_dot = "<img src=\"<%= image_path('raty/face-a.png') %>\" />"
+      other_dots = "<img src=\"<%= image_path('raty/face-b.png') %>\" />"
+      pick_symbols.each (index, div) ->
+        pick = PICKS_BY_FILM_ID[film_id_for(div)]
+        if pick
+          star_count = pick.rating
+          if star_count > 0
+            jQuery(div).html(new Array(star_count+1).join(stars))
           else
-            jQuery(div).html('')
+            dot_count = priority_to_index[pick.priority]
+            if dot_count > 0
+              if dot_count == 1
+                dot_html = first_dot
+              else
+                dot_html = new Array(dot_count + 1).join(other_dots)
+              jQuery(div).html(dot_html)
+            else
+              jQuery(div).html('')
 
   # Apply classes to each screening
-  for status, ids of SCREENING_IDS_BY_STATUS
-    ids = (ids.map (id) -> "#screening_" + id).join(',')
-    jQuery(ids).attr('class', 'screening ' + status)
+  if SCREENING_IDS_BY_STATUS?
+    for status, ids of SCREENING_IDS_BY_STATUS
+      ids = (ids.map (id) -> "#screening_" + id).join(',')
+      jQuery(ids).attr('class', 'screening ' + status)
