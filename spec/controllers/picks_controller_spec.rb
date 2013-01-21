@@ -14,7 +14,7 @@ describe PicksController do
   describe "POST create" do
     let(:festival) { create(:festival, :with_films) }
     let(:film_id) { festival.films.first.to_param }
-    subject { post :create, post_params }
+    subject { post :create, post_params.merge(format: :js) }
 
     describe "for a user who'd not previously saved a pick for that film" do
       describe "with valid params" do

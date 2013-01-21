@@ -27,7 +27,7 @@ class PicksController < ApplicationController
       @pick.update_attributes(params[:pick])
     end
 
-    render text: "", status: (saved ? :created : :unprocessable_entity)
+    render :create, status: (saved ? :created : :unprocessable_entity)
   end
 
 protected
