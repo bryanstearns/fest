@@ -1,24 +1,23 @@
 <% cache @film do %>
   <div class="modal-header">
-    <div class="extra-action">
-      <div id="<%= dom_id(@film) %>_dots" class="dots"></div>
-      <div id="<%= dom_id(@film) %>_stars" class="stars"></div>
-      <%= ajax_progress(id: "#{dom_id(@film)}_progress") %>
-    </div>
     <div class="title"><%= @film.name %></div>
   </div>
-  <div class="modal-body screening unranked">
-    <%= render @screening, locals: { tag: :p }  %>
+  <%= div_for(@film, class: 'modal-body screening unranked') do %>
+    <%= render @screening, locals: { tag: :p, film: @film }  %>
     <p><%= safe_join([ country_names(@film.countries),
                        hours_and_minutes(@screening.duration)].compact, ", ") %></p>
     <% unless @other_screenings.empty? %>
       <p><%= other_screenings_caption(@screening.starts_at, @other_screenings) %></p>
       <ul>
-        <%= render @other_screenings %>
+        <%= render @other_screenings, locals: { film: @film } %>
       </ul>
     <% end %>
-    </ul>
-  </div>
+    <div class="actions">
+      <div id="<%= dom_id(@film) %>_dots" class="dots"></div>
+      <div id="<%= dom_id(@film) %>_stars" class="stars"></div>
+      <%= ajax_progress(@film) %>
+    </div>
+  <% end %>
   <div class="modal-footer">
     <button type="button" data-dismiss="modal" class="btn btn-small btn-primary">Done</button>
   </div>

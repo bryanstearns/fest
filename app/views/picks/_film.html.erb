@@ -1,11 +1,12 @@
 <%= content_tag_for(:tr, film) do %>
   <td><%= priority_dots(film) %></td>
   <td><%= rating_stars(film) %></td>
-  <td><%= film_ajax_progress(film) %></td>
+  <td><%= ajax_progress(film) %></td>
   <td>
     <%= pick_film_heading(film) %>
     <ul class="screenings">
-      <%= render(partial: 'screenings/screening', collection: film.screenings) \
+      <%= render(partial: 'screenings/screening', collection: film.screenings,
+                 locals: { film: film }) \
         || "(No scheduled screenings now.)" %>
     </ul>
   </td>

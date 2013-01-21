@@ -3,49 +3,47 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 <% environment.context_class.instance_eval { include PicksHelper } %>
 
-jQuery ->
-  logged_in = -> jQuery("#sign_out").length == 1
+Handlers.register 'Picks', class
+  priority_to_index: <%= pick_priority_to_index_in_javascript %>
+  index_to_priority: <%= pick_index_to_priority_in_javascript %>
 
-  # Set up the Raty plugin to manage priorities and ratings
-  if PICKS_BY_FILM_ID?
-    not_signed_in = ->
-      alert("You're not signed in; you can sign in to prioritize your " +
-            "films, or click the Sign Up link in the upper right corner " +
-            "to get started.")
+  constructor: (el) ->
+    if PICKS_BY_FILM_ID?
+      @setup_priority_divs()
+      @setup_rating_divs()
+      @setup_readonly_displays()
+    if SCREENING_IDS_BY_STATUS?
+      @setup_screenings()
 
-    film_id_for = (div) ->
-      jQuery(div).attr('id').split('_')[1]
+  save_pick: (div, attribute, value, progress) ->
+    if logged_in()
+      film_id = model_id_from(div)
+      pick_form = jQuery('#pick_form')
+      pick_form.attr('action',
+      pick_form.attr('action').replace(/\d+/, film_id))
+      pick_form.find('input#attribute').val(attribute)
+      pick_form.find('input#pick_' + attribute).val(value)
+      progress.removeClass('obscured')
+      pick_form.ajaxSubmit(
+        dataType: 'script'
+        success: ->
+          progress.addClass('obscured')
+        error: (context, xhr, e, status) ->
+          progress.addClass('obscured')
+          window.location = '/500.html'
+      )
+      true
+    else
+      not_signed_in()
 
-    save_pick = (div, attribute, value) ->
-      if logged_in()
-        film_id = film_id_for(div)
-        pick_form = jQuery('#pick_form')
-        pick_form.attr('action',
-          pick_form.attr('action').replace(/\d+/, film_id))
-        pick_form.find('input#attribute').val(attribute)
-        pick_form.find('input#pick_' + attribute).val(value)
-        progress = jQuery("#" + "film_" + film_id + "_progress")
-        progress.removeClass('hidden')
-        pick_form.ajaxSubmit(
-          dataType: 'script'
-          success: ->
-            progress.addClass('hidden')
-          error: (context, xhr, e, status) ->
-            progress.addClass('hidden')
-            window.location = "/500.html"
-        )
-        true
-      else
-        not_signed_in()
-
+  setup_priority_divs: ->
     # Set up the editable priority dots
-    priority_to_index = <%= pick_priority_to_index_in_javascript %>
-    index_to_priority = <%= pick_index_to_priority_in_javascript %>
     priority_divs = jQuery('.dots')
     priority_divs.each (index, div) ->
-      pick = PICKS_BY_FILM_ID[film_id_for(div)]
+      pick = PICKS_BY_FILM_ID[model_id_from(div)]
       if pick and pick.priority
         jQuery(div).attr('data-priority', pick.priority)
+    self = this
     priority_divs.raty(
       cancel: true
       cancelHint: 'Forget this priority'
@@ -57,17 +55,20 @@ jQuery ->
         { range: 5, on: 'face-b.png', off: 'face-b-off.png' }
       ]
       score: ->
-        priority_to_index[$(this).attr('data-priority')]
+        self.priority_to_index[jQuery(this).attr('data-priority')]
       click: (score, evt) ->
-        save_pick(this, 'priority', index_to_priority[score])
+        progress_div = jQuery('#' + jQuery(this).closest('.film').attr('id') + '_progress')
+        self.save_pick(this, 'priority', self.index_to_priority[score], progress_div)
     )
 
+  setup_rating_divs: ->
     # Set up editable rating stars
     rating_divs = jQuery('.stars')
     rating_divs.each (index, div) ->
-      pick = PICKS_BY_FILM_ID[film_id_for(div)]
+      pick = PICKS_BY_FILM_ID[model_id_from(div)]
       if pick and pick.rating
         jQuery(div).attr('data-rating', pick.rating)
+    self = this
     rating_divs.raty(
       cancel: true
       cancelHint: 'Forget this rating'
@@ -76,25 +77,28 @@ jQuery ->
       path: '<%= File.dirname(image_path('raty/face-a.png')) %>'
       size: 18
       score: ->
-        $(this).attr('data-rating')
+        jQuery(this).attr('data-rating')
       click: (score, evt) ->
-        save_pick(this, 'rating', score)
+        progress_div = jQuery('#' + jQuery(this).closest('.film').attr('id') + '_progress')
+        self.save_pick(this, 'rating', score, progress_div)
     )
 
+  setup_readonly_displays: ->
     # Set up the non-editable display of priority or rating
     pick_symbols = jQuery('.pick_symbols')
     if pick_symbols.length > 0
-      stars = "<img src=\"<%= image_path('raty/star-on.png') %>\" />"
-      first_dot = "<img src=\"<%= image_path('raty/face-a.png') %>\" />"
-      other_dots = "<img src=\"<%= image_path('raty/face-b.png') %>\" />"
+      stars = '<img src="<%= image_path('raty/star-on.png') %>" />'
+      first_dot = '<img src="<%= image_path('raty/face-a.png') %>" />'
+      other_dots = '<img src="<%= image_path('raty/face-b.png') %>" />'
+      self = this
       pick_symbols.each (index, div) ->
-        pick = PICKS_BY_FILM_ID[film_id_for(div)]
+        pick = PICKS_BY_FILM_ID[model_id_from(div)]
         if pick
           star_count = pick.rating
           if star_count > 0
             jQuery(div).html(new Array(star_count+1).join(stars))
           else
-            dot_count = priority_to_index[pick.priority]
+            dot_count = self.priority_to_index[pick.priority]
             if dot_count > 0
               if dot_count == 1
                 dot_html = first_dot
@@ -104,8 +108,28 @@ jQuery ->
             else
               jQuery(div).html('')
 
-  # Apply classes to each screening
-  if SCREENING_IDS_BY_STATUS?
+  setup_screenings: ->
     for status, ids of SCREENING_IDS_BY_STATUS
-      ids = (ids.map (id) -> "#screening_" + id).join(',')
-      jQuery(ids).attr('class', 'screening ' + status)
+      # Apply classes to each screening in the grid
+      div_ids = (ids.map (id) -> '#screening_' + id).join(',')
+      jQuery(div_ids).attr('class', 'screening ' + status)
+
+      # Screenings in lists (ie, for a film, either on the priorities page
+      # or in the modal popup) have a button to add or remove it from the
+      # user's schedule - set it up with the right label and data value
+      action_ids = (ids.map (id) -> '#screening_' + id + '_toggle').join(',')
+      self = this
+      jQuery(action_ids)
+        .html(if status == 'scheduled' then '-' else '+')
+        .attr('data-value', status == 'scheduled')
+        .click (evt) ->
+          button = jQuery(this)
+          progress_div = jQuery('#' + jQuery(this).closest('.screening').attr('id') + '_progress')
+          self.save_pick(button.closest('.film'), 'screening_id',
+            if button.attr('data-value') then model_id_from(button) else null,
+            progress_div)
+
+  not_signed_in: ->
+    alert("You're not signed in; you can sign in to prioritize your " +
+    "films, or click the Sign Up link in the upper right corner " +
+    "to get started.")

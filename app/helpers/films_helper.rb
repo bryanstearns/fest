@@ -20,9 +20,4 @@ module FilmsHelper
   def pick_symbols(film)
     content_tag(:div, '', id: dom_id(film) + '_pick', class: 'pick_symbols')
   end
-
-  def film_ajax_progress(film)
-    ajax_progress(id: dom_id(film) + '_progress')
-  end
-
 end

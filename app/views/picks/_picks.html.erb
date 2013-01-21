@@ -1,5 +1,6 @@
 <%# Hidden form, modified and sent by picks.js.coffee.erb %>
-<%= form_tag(film_picks_path("1"), method: :post, id: :pick_form) do %>
+<%= form_tag(film_picks_path("1"), method: :post, id: :pick_form,
+             "data-handler" => "Picks") do %>
   <%= hidden_field_tag 'attribute', 'priority' %>
   <%= hidden_field 'pick', 'priority' %>
   <%= hidden_field 'pick', 'rating' %>
