@@ -34,7 +34,7 @@ Handlers.register 'Picks', class
       )
       true
     else
-      not_signed_in()
+      @not_signed_in()
 
   setup_priority_divs: ->
     # Set up the editable priority dots
@@ -130,6 +130,6 @@ Handlers.register 'Picks', class
             progress_div)
 
   not_signed_in: ->
-    alert("You're not signed in; you can sign in to prioritize your " +
-    "films, or click the Sign Up link in the upper right corner " +
+    alert("You're not signed in; you can sign in to manage your " +
+    "schedule, or click the Sign Up link in the upper right corner " +
     "to get started.")

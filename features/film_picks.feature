@@ -14,7 +14,7 @@ Feature: Festival Film Priorities Page
     And I visit the priorities page
     And I might get an alert
     When I set a film priority
-    Then I should see an alert saying 'sign in to prioritize your films'
+    Then I should see an alert saying 'sign in to manage your schedule'
 
   @javascript
   Scenario: Prioritizing a film
