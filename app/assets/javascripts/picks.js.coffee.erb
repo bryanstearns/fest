@@ -6,6 +6,8 @@
 Handlers.register 'Picks', class
   priority_to_index: <%= pick_priority_to_index_in_javascript %>
   index_to_priority: <%= pick_index_to_priority_in_javascript %>
+  schedule_label: "Schedule"
+  unschedule_label: "Unschedule"
 
   constructor: (el) ->
     console.log("Picks constructed")
@@ -15,7 +17,7 @@ Handlers.register 'Picks', class
       @setup_rating_divs()
       @setup_readonly_displays()
     if window.screening_ids_by_status?
-      @setup_screenings()
+      @setup_screenings(window.screening_ids_by_status)
       @register_for_updates()
 
   save_pick: (div, attribute, value, progress) ->
@@ -111,8 +113,8 @@ Handlers.register 'Picks', class
             else
               jQuery(div).html('')
 
-  setup_screenings: ->
-    for status, ids of window.screening_ids_by_status
+  setup_screenings: (screening_ids_by_status) ->
+    for own status, ids of screening_ids_by_status
       # Apply classes to each screening in the grid
       div_ids = (ids.map (id) -> '#screening_' + id).join(',')
       jQuery(div_ids).attr('class', 'screening ' + status)
@@ -122,21 +124,36 @@ Handlers.register 'Picks', class
       # user's schedule - set it up with the right label and data value
       action_ids = (ids.map (id) -> '#screening_' + id + '_toggle').join(',')
       self = this
+      label = if status == 'scheduled'
+        self.unschedule_label
+      else
+        self.schedule_label
       jQuery(action_ids)
-        .html(if status == 'scheduled' then '-' else '+')
-        .attr('data-value', status == 'scheduled')
+        .html(label)
         .off('click')
         .click (evt) ->
           button = jQuery(this)
           progress_div = jQuery('#' + jQuery(this).closest('.screening').attr('id') + '_progress')
+          new_screening_id = if button.html() == self.schedule_label
+            model_id_from(button)
+          else
+            null
           self.save_pick(button.closest('.film'), 'screening_id',
-            if button.attr('data-value') then model_id_from(button) else null,
-            progress_div)
+            new_screening_id, progress_div)
 
   register_for_updates: ->
     self = this
-    jQuery(document).on 'picks:updated', (event) ->
-      self.setup_screenings()
+    jQuery(document).on 'picks:updated', (event, screening_ids_by_status) ->
+      self.setup_screenings(screening_ids_by_status)
+      if window.screening_ids_by_status?
+        all_ids = _.flatten(_.values(screening_ids_by_status))
+        for own status, values of window.screening_ids_by_status
+          window.screening_ids_by_status[status] =
+            _.difference(values, all_ids)
+        for own status, values of screening_ids_by_status
+          window.screening_ids_by_status[status] =
+            _.union(values, window.screening_ids_by_status[status])
+        true
 
   not_signed_in: ->
     alert("You're not signed in; you can sign in to manage your " +

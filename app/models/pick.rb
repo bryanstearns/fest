@@ -49,10 +49,23 @@ class Pick < ActiveRecord::Base
     end
   end
 
-  def conflicts
-    Pick.where(user_id: user_id,
-               screening_id: conflicting_screening_ids - [id])\
-        .includes(:screening, :film)
+  def conflicting_picks
+    ids = conflicting_screening_ids - [id]
+    ids.empty? ? [] : Pick.where(user_id: user_id, screening_id: ids)\
+                          .includes(:screening, :film)
+  end
+
+  def changed_screening_ids(more=nil)
+    @changed_screening_ids ||= []
+    @changed_screening_ids += more if more
+    @changed_screening_ids
+  end
+
+  def screenings_of_films_of_changed_screenings
+    Screening.includes(film: :screenings)\
+             .find(changed_screening_ids.compact).map do |screening|
+      screening.film.screenings
+    end.flatten
   end
 
 protected
@@ -63,10 +76,12 @@ protected
 
   def deselect_conflicting_screenings
     if screening_id_changed?
-      conflicts = self.conflicts
-      changed_screening_ids = conflicts.map {|p| p.screening_id }
-      conflicts.update_all(screening_id: nil)
-      changed_screening_ids << screening
+      changed_screening_ids(screening_id_change) # both old and new
+      conflicts = conflicting_picks
+      if conflicts.present?
+        changed_screening_ids(conflicts.map {|p| p.screening_id })
+        conflicts.update_all(screening_id: nil)
+      end
     end
   end
 end

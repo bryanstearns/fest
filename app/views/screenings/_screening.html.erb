@@ -1,11 +1,15 @@
 <% tag ||= :li %>
-<% film ||= @film %>
-<%= content_tag_for(tag, screening) do %>
-  <%= screening_times(screening, with_date: true) %>:
-  <%= screening.venue_name %>
-  <%= '(press)' if screening.press? %>
-  <span class="actions">
-    <a id="<%= dom_id(screening) %>_toggle" class="btn btn-mini"></a>
-    <%= ajax_progress(screening) %>
-  </span>
+<% show_actions ||= nil %>
+<% cache [screening, tag, show_actions] do %>
+  <%= content_tag_for(tag, screening) do %>
+    <%= screening_times(screening, with_date: true) %>:
+    <%= screening.venue_name %>
+    <%= '(press)' if screening.press? %>
+    <% if show_actions %>
+      <span class="actions">
+        <%= ajax_progress(screening) %>
+        <a id="<%= dom_id(screening) %>_toggle" class="btn btn-mini"></a>
+      </span>
+    <% end %>
+  <% end %>
 <% end %>

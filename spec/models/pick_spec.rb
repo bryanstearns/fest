@@ -48,7 +48,7 @@ describe Pick do
     it "determines conflicting picks" do
       new_pick = build(:pick, user: user, festival: festival,
                        screening: another_screening)
-      new_pick.conflicts.should eq([pick])
+      new_pick.conflicting_picks.should eq([pick])
     end
     it "deselects conflicting screenings" do
       new_pick = user.picks.find_or_initialize_for(another_screening.film_id)

@@ -1,2 +1,2 @@
-window.screening_ids_by_status = <%= raw({}.to_json) %>
-jQuery(document).triggerHandler('picks:updated', 'body')
+jQuery(document).triggerHandler('picks:updated',
+  <%= raw screening_ids_by_status(@screenings_to_update, @picks).to_json %>)

@@ -5,7 +5,7 @@ class PicksController < ApplicationController
   before_filter :load_festival_and_screenings, only: [:index]
   before_filter :load_film_and_festival_from_pick, only: [:create]
   before_filter :check_festival_access
-  before_filter :load_picks_for_current_user, only: [:index]
+  before_filter :load_picks_for_current_user
 
   respond_to :html
 
@@ -26,7 +26,11 @@ class PicksController < ApplicationController
       params[:pick] = { attribute_name => attribute_value }
       @pick.update_attributes(params[:pick])
     end
-
+    @screenings_to_update = if saved
+      @pick.screenings_of_films_of_changed_screenings
+    else
+      []
+    end
     render :create, status: (saved ? :created : :unprocessable_entity)
   end
 
