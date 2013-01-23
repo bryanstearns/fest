@@ -1,7 +1,7 @@
 class PicksController < ApplicationController
   layout 'festivals'
   before_filter :authenticate_user!, only: [:create]
-  before_filter :find_or_build_pick, only: [:create]
+  before_filter :find_or_initialize_pick, only: [:create]
   before_filter :load_festival_and_screenings, only: [:index]
   before_filter :load_film_and_festival_from_pick, only: [:create]
   before_filter :check_festival_access
@@ -31,11 +31,8 @@ class PicksController < ApplicationController
   end
 
 protected
-  def find_or_build_pick
-    @pick = current_user.picks.includes(film: :festival)\
-                              .where(film_id: params[:film_id]).first ||
-            current_user.picks.build({ film_id: params[:film_id] },
-                                     as: :pick_creator)
+  def find_or_initialize_pick
+    @pick = current_user.picks.find_or_initialize_for(params[:film_id])
   end
 
   def load_festival_and_screenings
