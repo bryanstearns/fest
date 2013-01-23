@@ -142,6 +142,22 @@ FactoryGirl.define do
       end
     end
 
+    trait :with_screening_conflicts do
+      after(:create) do |festival, ev|
+        # Create screenings of two films that conflict
+        screenings = 2.times.map do
+          create(:screening, festival: festival,
+                 film: create(:film, festival: festival),
+                 starts_at: festival.starts_on.at("18:00"))
+        end
+        # Create a later screening of one of those films
+        screenings << create(:screening, film: screenings.first.film,
+                             starts_at: festival.starts_on.at("22:00"))
+        # Create a screening of a third film that conflicts with the later one
+        screenings << create(:screening, starts_at: festival.starts_on.at("22:00"))
+      end
+    end
+
     trait :with_films do
       ignore { film_count 3 }
       after(:create) do |festival, ev|
