@@ -34,4 +34,46 @@ describe Screening do
       subject.name.should eq(subject.film.name)
     end
   end
+
+  describe "testing for conflict" do
+    subject { build(:screening, festival_id: 1).tap {|s| s.send(:assign_ends_at) } }
+    let(:other) do
+      build(:screening,
+            { festival: subject.festival }.merge(other_options)).tap do |s|
+         s.send(:assign_ends_at)
+      end
+    end
+
+    # Better readability...
+    RSpec::Matchers.define :not_conflict_with do |expected|
+      match {|actual| actual.conflicts_with?(expected).should be_false }
+    end
+    RSpec::Matchers.define :conflict_with do |expected|
+      match {|actual| actual.conflicts_with?(expected).should be_true }
+    end
+
+    context "with itself" do
+      it { should not_conflict_with(subject) }
+    end
+    context "with another ending well before this starts" do
+      let(:other_options) { { starts_at: subject.starts_at - 400.minutes } }
+      it { should not_conflict_with(other) }
+    end
+    context "with another starting well after this ends" do
+      let(:other_options) { { starts_at: subject.ends_at + 121.minutes } }
+      it { should not_conflict_with(other) }
+    end
+    context "with another in the same venue" do
+      let(:other_options) { { venue_id: subject.venue_id } }
+      it { should not_conflict_with(other) }
+    end
+    context "with another at a different festival" do
+      let(:other_options) { { festival: nil } }
+      it { should not_conflict_with(other) }
+    end
+    context "with another at a conflicting time" do
+      let(:other_options) { { starts_at: subject.starts_at + 10.minutes } }
+      it { should conflict_with(other) }
+    end
+  end
 end

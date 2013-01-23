@@ -1,4 +1,10 @@
 class Screening < ActiveRecord::Base
+  # Screenings separated by this much can't conflict for anyone
+  MAX_TRAVEL_TIME = 2.hours
+
+  # Until we do travel time for real, use this
+  TRAVEL_TIME = 15.minutes
+
   belongs_to :festival
   belongs_to :film, touch: true
   belongs_to :location
@@ -29,6 +35,18 @@ class Screening < ActiveRecord::Base
 
   def duration
     (ends_at - starts_at).to_i rescue film.try(:duration)
+  end
+
+  def conflicts_with?(other)
+    return false if
+        (self == other) ||
+        (venue_id == other.venue_id) ||
+        (festival_id != other.festival_id)
+    if starts_at < other.starts_at # we go from this to the other
+      (other.starts_at - ends_at) < TRAVEL_TIME
+    else # we go from there to here
+      (starts_at - other.ends_at) < TRAVEL_TIME
+    end
   end
 
 protected
