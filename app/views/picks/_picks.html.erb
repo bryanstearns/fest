@@ -8,6 +8,6 @@
 <% end %>
 
 <%= javascript_tag do %>
-  var PICKS_BY_FILM_ID = <%= raw pick_details_by_film_id(@picks).to_json %>;
-  var SCREENING_IDS_BY_STATUS = <%= raw screening_ids_by_status(@screenings, @picks).to_json %>;
+  window.picks_by_film_id = <%= raw pick_details_by_film_id(@picks).to_json %>;
+  window.screening_ids_by_status = <%= raw screening_ids_by_status(@screenings, @picks).to_json %>;
 <% end %>

@@ -10,12 +10,13 @@ Handlers.register 'Picks', class
   constructor: (el) ->
     console.log("Picks constructed")
 
-    if PICKS_BY_FILM_ID?
+    if window.picks_by_film_id?
       @setup_priority_divs()
       @setup_rating_divs()
       @setup_readonly_displays()
-    if SCREENING_IDS_BY_STATUS?
+    if window.screening_ids_by_status?
       @setup_screenings()
+      @register_for_updates()
 
   save_pick: (div, attribute, value, progress) ->
     if logged_in()
@@ -42,7 +43,7 @@ Handlers.register 'Picks', class
     # Set up the editable priority dots
     priority_divs = jQuery('.dots')
     priority_divs.each (index, div) ->
-      pick = PICKS_BY_FILM_ID[model_id_from(div)]
+      pick = window.picks_by_film_id[model_id_from(div)]
       if pick and pick.priority
         jQuery(div).attr('data-priority', pick.priority)
     self = this
@@ -67,7 +68,7 @@ Handlers.register 'Picks', class
     # Set up editable rating stars
     rating_divs = jQuery('.stars')
     rating_divs.each (index, div) ->
-      pick = PICKS_BY_FILM_ID[model_id_from(div)]
+      pick = window.picks_by_film_id[model_id_from(div)]
       if pick and pick.rating
         jQuery(div).attr('data-rating', pick.rating)
     self = this
@@ -94,7 +95,7 @@ Handlers.register 'Picks', class
       other_dots = '<img src="<%= image_path('raty/face-b.png') %>" />'
       self = this
       pick_symbols.each (index, div) ->
-        pick = PICKS_BY_FILM_ID[model_id_from(div)]
+        pick = window.picks_by_film_id[model_id_from(div)]
         if pick
           star_count = pick.rating
           if star_count > 0
@@ -111,7 +112,7 @@ Handlers.register 'Picks', class
               jQuery(div).html('')
 
   setup_screenings: ->
-    for status, ids of SCREENING_IDS_BY_STATUS
+    for status, ids of window.screening_ids_by_status
       # Apply classes to each screening in the grid
       div_ids = (ids.map (id) -> '#screening_' + id).join(',')
       jQuery(div_ids).attr('class', 'screening ' + status)
@@ -124,12 +125,18 @@ Handlers.register 'Picks', class
       jQuery(action_ids)
         .html(if status == 'scheduled' then '-' else '+')
         .attr('data-value', status == 'scheduled')
+        .off('click')
         .click (evt) ->
           button = jQuery(this)
           progress_div = jQuery('#' + jQuery(this).closest('.screening').attr('id') + '_progress')
           self.save_pick(button.closest('.film'), 'screening_id',
             if button.attr('data-value') then model_id_from(button) else null,
             progress_div)
+
+  register_for_updates: ->
+    self = this
+    jQuery(document).on 'picks:updated', (event) ->
+      self.setup_screenings()
 
   not_signed_in: ->
     alert("You're not signed in; you can sign in to manage your " +
