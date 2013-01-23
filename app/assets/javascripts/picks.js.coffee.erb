@@ -8,6 +8,8 @@ Handlers.register 'Picks', class
   index_to_priority: <%= pick_index_to_priority_in_javascript %>
 
   constructor: (el) ->
+    console.log("Picks constructed")
+
     if PICKS_BY_FILM_ID?
       @setup_priority_divs()
       @setup_rating_divs()

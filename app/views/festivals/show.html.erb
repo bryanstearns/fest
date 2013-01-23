@@ -1,5 +1,7 @@
 
-<%= render partial: "day", collection: days(@festival) %>
+<div class="days" data-handler="Days">
+  <%= render partial: "day", collection: days(@festival) %>
+</div>
 
 <div id="as-of">
   Festival as of <%=l @festival.revised_at, format: :dmdy_hm %>

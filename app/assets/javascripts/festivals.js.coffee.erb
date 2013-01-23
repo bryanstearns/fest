@@ -2,15 +2,18 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
+Handlers.register 'Days', class
+  constructor: (el) ->
+    console.log("Days constructed")
+    jQuery('.day .screening').on('click', ->
+      screening_id = jQuery(this).attr('id').split('_')[1]
+      jQuery('body').modalmanager('loading')
 
-$ ->
-  $(".day .screening").on('click', ->
-    screening_id = jQuery(this).attr('id').split('_')[1]
+      modal = jQuery('#screening-modal')
+      jQuery(document).trigger('handlers:pageUpdating', 'body')
 
-    $('body').modalmanager('loading')
-
-    modal = $('#screening-modal')
-    modal.load('/screenings/' + screening_id, '', ->
-      modal.modal()
+      modal.load('/screenings/' + screening_id, '', ->
+        jQuery(document).trigger('handlers:pageUpdated', 'body')
+        modal.modal()
+      )
     )
-  )
