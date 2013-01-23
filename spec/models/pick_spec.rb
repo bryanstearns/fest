@@ -36,4 +36,24 @@ describe Pick do
   it "maps priority to index" do
     Pick.priority_to_index.should == { 0 => 0, 1 => 1, 2 => 2, 4 => 3, 8 => 4 }
   end
+
+  context "dealing with conflicting stuff" do
+    let(:user) { create(:user) }
+    let(:festival) { create(:festival, :with_screening_conflicts) }
+    let(:initially_selected_screening) { festival.screenings[0] }
+    let(:another_screening) { festival.screenings[1] }
+    let!(:pick) { create(:pick, user: user, festival: festival,
+                         screening: initially_selected_screening) }
+
+    it "determines conflicting picks" do
+      new_pick = build(:pick, user: user, festival: festival,
+                       screening: another_screening)
+      new_pick.conflicts.should eq([pick])
+    end
+    it "deselects conflicting screenings" do
+      new_pick = user.picks.find_or_initialize_for(another_screening.film_id)
+      new_pick.update_attributes(screening: another_screening)
+      pick.reload.screening_id.should be_nil
+    end
+  end
 end

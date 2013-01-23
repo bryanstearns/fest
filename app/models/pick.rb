@@ -25,6 +25,7 @@ class Pick < ActiveRecord::Base
   }
 
   before_validation :check_foreign_keys
+  before_save :deselect_conflicting_screenings
 
   validates :user_id, :film_id, :festival_id, presence: true
   validates :priority, :rating, numericality: true, allow_nil: true
@@ -39,9 +40,33 @@ class Pick < ActiveRecord::Base
     end
   end
 
+
+  def conflicting_screening_ids
+    if screening_id?
+      festival.conflicting_screenings(screening).map {|s| s.id }
+    else
+      []
+    end
+  end
+
+  def conflicts
+    Pick.where(user_id: user_id,
+               screening_id: conflicting_screening_ids - [id])\
+        .includes(:screening, :film)
+  end
+
 protected
   def check_foreign_keys
     self.film ||= screening.film if screening
     self.festival_id ||= film.festival_id if film
+  end
+
+  def deselect_conflicting_screenings
+    if screening_id_changed?
+      conflicts = self.conflicts
+      changed_screening_ids = conflicts.map {|p| p.screening_id }
+      conflicts.update_all(screening_id: nil)
+      changed_screening_ids << screening
+    end
   end
 end
