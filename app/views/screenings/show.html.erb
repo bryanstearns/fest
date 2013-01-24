@@ -1,5 +1,6 @@
 <% cache @film do %>
   <div class="modal-header">
+    <%= pick_symbols(@film) %>
     <div class="title"><%= @film.name %></div>
     <p><%= safe_join([ country_names(@film.countries),
                        hours_and_minutes(@screening.duration)].compact, ", ") %></p>
@@ -12,11 +13,6 @@
         <%= render @other_screenings %>
       </ul>
     <% end %>
-    <div class="actions">
-      <div id="<%= dom_id(@film) %>_dots" class="dots"></div>
-      <div id="<%= dom_id(@film) %>_stars" class="stars"></div>
-      <%= ajax_progress(@film) %>
-    </div>
   <% end %>
   <div class="modal-footer">
     <button type="button" data-dismiss="modal" class="btn btn-small btn-primary">Done</button>
