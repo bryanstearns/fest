@@ -42,7 +42,8 @@ describe SubscriptionsController do
   describe "PUT update" do
     it "requires an authenticated user" do
       put :update, {:festival_id => festival.to_param,
-                    :subscription => { "show_press" => true } }
+                    :subscription => { show_press: true },
+                                       skip_autoscheduler: true }
       response.should redirect_to(new_user_session_path)
     end
 
@@ -55,22 +56,26 @@ describe SubscriptionsController do
                                      user: @signed_in_user,
                                      show_press: false) }
 
-        it "updates the requested subscription" do
+        it 'updates the requested subscription' do
           Subscription.any_instance.should_receive(:update_attributes)\
-            .with({ "show_press" => true })
+            .with({ 'show_press' => true,
+                    'skip_autoscheduler' => true })
           put :update, {:festival_id => festival.to_param,
-                        :subscription => { "show_press" => true } }
+                        :subscription => { 'show_press' => true,
+                                           'skip_autoscheduler' => true } }
         end
 
-        it "assigns the requested subscription as @subscription" do
+        it 'assigns the requested subscription as @subscription' do
           put :update, { :festival_id => festival.to_param,
-                         :subscription => { "show_press" => false} }
+                         :subscription => { 'show_press' => false,
+                                            'skip_autoscheduler' => true } }
           assigns(:subscription).should eq(subscription)
         end
 
-        it "redirects to the festival" do
+        it 'redirects to the festival' do
           put :update, { :festival_id => festival.to_param,
-                         :subscription => { "show_press" => false} }
+                         :subscription => { 'show_press' => false,
+                                            'skip_autoscheduler' => true } }
           response.should redirect_to(festival_path(subscription.festival))
         end
       end
