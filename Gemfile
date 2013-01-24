@@ -13,6 +13,7 @@ gem 'redis-rails'
 gem 'simple_form'
 gem 'turbolinks'
 gem 'jquery-turbolinks'
+gem 'underscore-rails'
 
 group :development do
   gem 'mailcatcher'

@@ -20,6 +20,7 @@
 //= require jquery.form
 //= require jquery.raty
 //= require bootstrap_modal_rails
+//= require underscore
 //= require utilities
 //= require handlers
 //= require_tree .
