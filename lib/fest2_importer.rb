@@ -49,6 +49,11 @@ module Fest2Importer
       ['Field\'s Ballroom', 'Newmark Theater',
        'California Theater'].include?(name)
     end
+
+    def fix_email(email)
+      # 'wood molding@hotmail.com' -> 'wood_molding@hotmail.com'
+      email.downcase.gsub(' ', '_')
+    end
   end
 
   module MapsToNew
@@ -227,7 +232,7 @@ module Fest2Importer
     def attributes_to_copy
       {
           name: username,
-          email: email,
+          email: fix_email(email),
           admin: admin,
           password: random_password,
           password_confirmation: random_password,
@@ -240,7 +245,7 @@ module Fest2Importer
     end
 
     def import
-      unless User.seen?(email)
+      unless User.seen?(fix_email(email))
         user = ::User.create!(attributes_to_copy,
                               without_protection: true)
         if ENV['FF_EMAIL'] && ENV['FF_PSWD'] && ENV['FF_EMAIL'] == user.email
@@ -264,7 +269,7 @@ module Fest2Importer
       {|screening| screening && [screening.film.festival.slug, screening.film.name, screening.starts_at] }
     maps_to_new(::Film, includes: :festival) \
       {|film| [film.festival.slug, film.name] }
-    maps_to_new(::User) {|user| user.email.downcase }
+    maps_to_new(::User) {|user| fix_email(user.email) }
 
     def attributes_to_copy
       {
@@ -281,6 +286,65 @@ module Fest2Importer
     def import
       ::Pick.create!(attributes_to_copy,
                      without_protection: true)
+    end
+
+  end
+
+  class Subscription < ImportableModel
+    belongs_to :user
+    belongs_to :festival
+
+    maps_to_new(::Festival) {|festival| festival.slug }
+    maps_to_new(::User) {|user| fix_email(user.email) }
+
+    def attributes_to_copy
+      {
+          festival: new_festival,
+          user: new_user,
+          show_press: show_press,
+          created_at: created_at,
+          updated_at: updated_at
+      }
+    end
+    def import
+      ::Subscription.create!(attributes_to_copy,
+                             without_protection: true)
+    end
+  end
+
+  def self.drop_bad_accounts
+    bad_domains = [
+        # Had a run of spammers trying to abuse the old site.
+        "126.com", "163.com", "21cn.com", "believesex.com", "brightadult.com",
+        "easystreet.net_expired", "example.com", "eyou.com",
+        "feeladult.com", "ij.net", "kissadulttoys.com", "linkadulttoys.com",
+        "loginadulttoys.com", "mail15.com", "mail333.com", "ngs.ru",
+        "oncesex.com", "onsaleadult.com", "pickadulttoys.com", "tom.com",
+        "yeah.net", "zpzchina.com"
+    ]
+    unsubscribed_users = [
+        # These are patterns so that I don't put actual users' emails on github
+        /.*\@mvmft\.com/,
+        /k.*1968/
+    ]
+    good_domains = [ 'nwfilm.org' ]
+    ::User.find_each do |user|
+      domain = user.email.split('@').last
+      pick_count = user.picks.count
+      festivals = user.picks.map {|p| p.festival.slug}.uniq
+      email = user.email.strip
+      if unsubscribed_users.any? {|p| p =~ email }
+        Rails.logger.info "Destroying unsubscribed user: #{user.name}, #{email}"
+        user.destroy
+      elsif bad_domains.include?(domain) || email.index(' ')
+        Rails.logger.info "Destroying bad_domain user: #{user.name}, #{email}, #{pick_count} in #{festivals.join(', ')}"
+        user.destroy
+      elsif pick_count < 2 and !good_domains.include?(domain)
+        Rails.logger.info "Destroying no-pick user: #{user.name}, #{email}, #{pick_count}"
+        user.destroy
+      else
+        Rails.logger.info "Keeping user: #{user.name}, #{email}, #{pick_count} in #{festivals.join(', ')}"
+      end
     end
   end
 
@@ -301,6 +365,9 @@ module Fest2Importer
     piff12.screenings.find_each {|s| s.import }
     Importable::time_offset = 0.seconds
     Importable::fake_slug = nil
+
+    Rails.logger.info "Dropping bad accounts..."
+    drop_bad_accounts
 
     Rails.logger.info "Done importing Fest2 data..."
   end
