@@ -56,6 +56,35 @@ describe Festival do
       festival = create(:festival, :with_films_and_screenings, press: true)
       festival.screenings_visible_to(create(:user)).should == festival.screenings.where(press: false)
     end
+
+    context 'unselecting screenings' do
+      let(:festival) { create(:festival, :with_films_and_screenings) }
+      let(:screenings) { festival.films.limit(2)\
+                                 .map {|f| f.screenings.first }\
+                                 .sort_by {|s| s.starts_at }}
+      let(:user) { create(:user) }
+      let!(:picks) {
+        screenings.map do |s|
+          create(:pick, user: user, festival: festival, screening: s)
+        end
+      }
+
+      it "unselects all by default" do
+        expect {
+          festival.reset_screenings(user)
+        }.to change {
+          festival.picks_for(user).where('screening_id is not null').count
+        }.by(-2)
+      end
+      it 'unselects just the future ones with a cutoff' do
+        expect {
+          festival.reset_screenings(user,
+                                    screenings.first.starts_at + 1.minute)
+        }.to change {
+          festival.picks_for(user).where('screening_id is not null').count
+        }.by(-1)
+      end
+    end
   end
 
   it "determines conflicting screenings" do

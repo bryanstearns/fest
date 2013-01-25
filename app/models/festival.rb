@@ -41,6 +41,15 @@ class Festival < ActiveRecord::Base
     screenings.all.select {|s| user.can_see?(s, subscription) }
   end
 
+  def reset_screenings(user, after=nil)
+    after = Time.current if after == :now
+    picks_to_reset = picks_for(user).selected
+    picks_to_reset = picks_to_reset.joins(:screening)\
+                                   .where('screenings.starts_at > ?',
+                                               after) if after
+    picks_to_reset.update_all(screening_id: nil)
+  end
+
   def conflicting_screenings(screening)
     screenings.all.select {|s| screening.conflicts_with?(s) }
   end
