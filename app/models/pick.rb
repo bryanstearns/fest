@@ -32,6 +32,8 @@ class Pick < ActiveRecord::Base
   validates :priority, inclusion: { in: PRIORITY_HINTS.keys }, allow_nil: true
   validates :rating, inclusion: { in: RATING_HINTS.keys }, allow_nil: true
 
+  scope :selected, where('picks.screening_id is not null')
+
   def self.priority_to_index
     @@priority_to_index ||= {}.tap do |result|
       PRIORITY_HINTS.keys.each_with_index do |priority, index|
