@@ -1,9 +1,38 @@
 require 'spec_helper'
 
 describe Subscription do
-  context 'autoscheduling' do
-    subject { build(:subscription) }
+  subject { build(:subscription) }
 
+  describe "checking visibility" do
+    let(:festival) { create(:festival, :with_films_and_screenings,
+                            press: true) }
+    let(:screening) { festival.screenings.where(press: is_press).first }
+    context "of normal screenings" do
+      let(:is_press) { false }
+      it "returns true" do
+        subject.can_see?(screening).should be_true
+      end
+    end
+    context "of press screenings" do
+      let(:is_press) { true }
+      it "returns false by default" do
+        subject.can_see?(screening).should be_false
+      end
+      context "and the user does't want press screenings" do
+        it "returns false" do
+          subject.can_see?(screening).should be_false
+        end
+      end
+      context "and the user has asked for press screenings" do
+        subject { build(:subscription, show_press: true) }
+        it "returns true" do
+          subject.can_see?(screening).should be_true
+        end
+      end
+    end
+  end
+
+  context 'autoscheduling' do
     it 'initializes the autoscheduler with the right options' do
       subject.autoscheduler_options.should eq({
         user: subject.user,

@@ -31,6 +31,11 @@ class User < ActiveRecord::Base
     end
   end
 
+  def can_see?(screening, subscription=nil)
+    subscription ||= subscription_for(screening.festival_id)
+    subscription ? subscription.can_see?(screening) : !screening.press
+  end
+
   def has_screenings_for?(festival)
     picks.where(['festival_id = ? and screening_id is not null', festival.id]).any?
   end

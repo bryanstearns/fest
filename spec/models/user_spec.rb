@@ -6,7 +6,7 @@ describe User do
   end
 
   context "festival subscription lookup" do
-    let(:festival) { create(:festival, :with_films_and_screenings) }
+    let(:festival) { create(:festival, :with_films_and_screenings, press: true) }
     subject { create(:user) }
 
     describe "when told to create one for a festival" do
@@ -43,6 +43,34 @@ describe User do
           expect {
             subject.subscription_for(festival).should eq(existing)
           }.to change(subject.subscriptions, :count).by(0)
+        end
+      end
+    end
+
+    describe "checking visibility" do
+      let(:screening) { festival.screenings.where(press: is_press).first }
+      context "of normal screenings" do
+        let(:is_press) { false }
+        it "returns true" do
+          subject.can_see?(screening).should be_true
+        end
+      end
+      context "of press screenings" do
+        let(:is_press) { true }
+        it "returns false by default" do
+          subject.can_see?(screening).should be_false
+        end
+        context "and the user does't want press screenings" do
+          before { subject.stub(:subscription_for).and_return(build(:subscription, user: subject, show_press: false)) }
+          it "returns false" do
+            subject.can_see?(screening).should be_false
+          end
+        end
+        context "and the user has asked for press screenings" do
+          before { subject.stub(:subscription_for).and_return(build(:subscription, user: subject, show_press: true)) }
+          it "returns true" do
+            subject.can_see?(screening).should be_true
+          end
         end
       end
     end

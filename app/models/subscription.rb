@@ -9,6 +9,11 @@ class Subscription < ActiveRecord::Base
 
   before_save :run_autoscheduler, if: :should_autoschedule?
 
+  def can_see?(screening)
+    return false if screening.press && !show_press?
+    true
+  end
+
   def autoscheduler
     @autoscheduler ||= AutoScheduler.new(autoscheduler_options)
   end
