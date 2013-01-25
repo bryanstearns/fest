@@ -36,6 +36,11 @@ class Festival < ActiveRecord::Base
     picks.where(user_id: user.id)
   end
 
+  def screenings_visible_to(user)
+    subscription = user.subscription_for(id)
+    screenings.all.select {|s| user.can_see?(s, subscription) }
+  end
+
   def conflicting_screenings(screening)
     screenings.all.select {|s| screening.conflicts_with?(s) }
   end

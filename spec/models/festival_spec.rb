@@ -51,6 +51,11 @@ describe Festival do
       pick = create(:pick, festival: festival, film: festival.films.first)
       festival.picks_for(pick.user).should == [pick]
     end
+
+    it "collects screenings visible to a given user" do
+      festival = create(:festival, :with_films_and_screenings, press: true)
+      festival.screenings_visible_to(create(:user)).should == festival.screenings.where(press: false)
+    end
   end
 
   it "determines conflicting screenings" do
