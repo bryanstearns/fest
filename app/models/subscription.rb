@@ -2,7 +2,7 @@ class Subscription < ActiveRecord::Base
   belongs_to :festival
   belongs_to :user
 
-  attr_accessor :skip_autoscheduler
+  attr_accessor :skip_autoscheduler, :unselect
 
   attr_accessible :show_press, :skip_autoscheduler
   attr_accessible :festival_id, :show_press, as: :subscription_creator
@@ -30,7 +30,8 @@ class Subscription < ActiveRecord::Base
     {
       user: user,
       festival: festival,
-      show_press: show_press
+      show_press: show_press,
+      unselect: unselect
     }
   end
 end

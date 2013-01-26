@@ -37,7 +37,8 @@ describe Subscription do
       subject.autoscheduler_options.should eq({
         user: subject.user,
         festival: subject.festival,
-        show_press: subject.show_press
+        show_press: subject.show_press,
+        unselect: nil
       })
     end
 
