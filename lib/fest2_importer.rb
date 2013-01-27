@@ -144,6 +144,8 @@ module Fest2Importer
   class Festival < ImportableModel
     has_many :films
     has_many :screenings
+    has_many :subscriptions
+    has_many :picks
 
     def attributes_to_copy
       {
@@ -283,11 +285,12 @@ module Fest2Importer
           updated_at: updated_at
       }
     end
-    def import
-      ::Pick.create!(attributes_to_copy,
+    def import(without_screenings = nil)
+      copying_attributes = attributes_to_copy
+      copying_attributes.delete(:screening) if without_screenings
+      ::Pick.create!(copying_attributes,
                      without_protection: true)
     end
-
   end
 
   class Subscription < ImportableModel
@@ -307,8 +310,12 @@ module Fest2Importer
       }
     end
     def import
-      ::Subscription.create!(attributes_to_copy,
-                             without_protection: true)
+      begin
+        ::Subscription.create!(attributes_to_copy,
+                               without_protection: true)
+      rescue
+        raise if user.email !~ /molding/
+      end
     end
   end
 
@@ -357,12 +364,16 @@ module Fest2Importer
     # Import last year's PIFF as though it's this year's
     Film.clear_cache
     Screening.clear_cache
+    Subscription.clear_cache
+    Pick.clear_cache
     Importable::time_offset = 364.days
     Importable::fake_slug = 'piff_2013'
     piff12 = Festival.where(slug: 'piff_2012').first
     piff12.import
     piff12.films.find_each {|f| f.import }
     piff12.screenings.find_each {|s| s.import }
+    piff12.subscriptions.find_each {|s| s.import }
+    piff12.picks.find_each {|p| p.import(:without_screenings) }
     Importable::time_offset = 0.seconds
     Importable::fake_slug = nil
 
