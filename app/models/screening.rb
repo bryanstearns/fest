@@ -29,6 +29,9 @@ class Screening < ActiveRecord::Base
     where(['(screenings.starts_at >= ? and screenings.ends_at <= ?)',
            t.beginning_of_day, t.end_of_day])
   }
+  scope :starting_after, ->(time) {
+    where('screenings.starts_at > ?', time)
+  }
 
   delegate :name, to: :venue, prefix: true
   delegate :name, :countries, to: :film

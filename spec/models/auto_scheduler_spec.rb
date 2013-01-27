@@ -6,7 +6,6 @@ describe AutoScheduler do
                           starts_on: Date.tomorrow, press: true) }
   let(:now) { Time.current }
   let(:autoscheduler) {
-    # puts "creating AS"
     AutoScheduler.new(festival: festival, user: user,
                       show_press: false, now: now) }
   let(:expected_visible_screenings) { festival.screenings_visible_to(user) }
@@ -38,6 +37,38 @@ describe AutoScheduler do
     end
   end
 
+  context "when asked" do
+    subject { autoscheduler }
+    let(:screening) do
+      festival.screenings.where(press: false).find do |s|
+        festival.conflicting_screenings(s).present?
+      end.tap do |x|
+        # puts "existing screening is #{x.id} for film #{x.film_id}"
+      end
+    end
+    let!(:pick) do
+      create(:pick, user: user, festival: festival, film: screening.film,
+             screening: screening)
+    end
+    let(:screening2) { festival.conflicting_screenings(screening)\
+                                 .find {|s| !s.press } }
+
+    it "reports whether a film is scheduled" do
+      subject.film_id_scheduled?(screening.film_id).should be_true
+      subject.film_id_scheduled?(screening2.film_id).should be_false
+    end
+
+    it "reports whether a screening is scheduled" do
+      subject.screening_id_scheduled?(screening.id).should be_true
+      subject.screening_id_scheduled?(screening2.id).should be_false
+    end
+
+    it "reports whether any of a screening's conflicts is scheduled" do
+      subject.screening_id_conflicts_scheduled?(screening2.id).should be_true
+      subject.screening_id_conflicts_scheduled?(screening.id).should be_false
+    end
+  end
+
   context "when running" do
     subject { autoscheduler }
 
@@ -54,42 +85,33 @@ describe AutoScheduler do
     end
   end
 
-  context "when determining what to schedule" do
-    it "updates all costs and finds the cheapest screening" do
-      autoscheduler.should_receive(:update_screening_cost)\
-        .exactly(autoscheduler.all_screenings.count).times
-      autoscheduler.should_receive(:find_cheapest_screening)
-      autoscheduler.next_best_screening
-    end
-
-    it "updates the cost of a screening" do
-      screening = mock
-      cost = mock
-      costs = mock
-      costs.should_receive(:[]).with(screening).and_return(cost)
-      cost.should_receive(:update)
+  context "finding the cheapest screening" do
+    it "resets costs, then asks each for its cost and picks the smallest" do
+      expensive = mock(total_cost: Cost::UNPICKABLE)
+      middling = mock(total_cost: 5.0)
+      cheapie = mock(total_cost: 1.0)
+      costs = { a: expensive, b: cheapie, c: middling }
       autoscheduler.stub(:costs).and_return(costs)
-      autoscheduler.update_screening_cost(screening)
+      costs.each_value {|cost| cost.should_receive(:reset!).once }
+      autoscheduler.find_minimum_cost.should == cheapie
     end
 
-    context "and finding the cheapest screening" do
-      it "returns the cheapest one if it's pickable" do
-        screening = mock
-        cost = mock(:pickable? => true, :screening => screening)
-        autoscheduler.stub(:find_minimum_cost).and_return(cost)
-        autoscheduler.find_cheapest_screening.should == screening
-      end
+    it "returns the cheapest one if it's pickable" do
+      screening = mock
+      cost = mock(:pickable? => true, :screening => screening)
+      autoscheduler.stub(:find_minimum_cost).and_return(cost)
+      autoscheduler.next_best_screening.should == screening
+    end
 
-      it "returns nil if there aren't any" do
-        autoscheduler.stub(:find_minimum_cost).and_return(nil)
-        autoscheduler.find_cheapest_screening.should be_nil
-      end
+    it "returns nil if there aren't any" do
+      autoscheduler.stub(:find_minimum_cost).and_return(nil)
+      autoscheduler.next_best_screening.should be_nil
+    end
 
-      it "returns nil if the cheapest one isn't pickable" do
-        cost = mock(:pickable? => false)
-        autoscheduler.stub(:find_minimum_cost).and_return(cost)
-        autoscheduler.find_cheapest_screening.should be_nil
-      end
+    it "returns nil if the cheapest one isn't pickable" do
+      cost = mock(:pickable? => false)
+      autoscheduler.stub(:find_minimum_cost).and_return(cost)
+      autoscheduler.next_best_screening.should be_nil
     end
   end
 

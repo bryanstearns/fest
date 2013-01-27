@@ -1,28 +1,6 @@
 class AutoScheduler
   class InternalError < StandardError; end
-  attr_reader :festival, :show_press, :unselect, :user, :now
-  attr_accessor :verbose
-
-  class Cost
-    UNPICKABLE = Float::INFINITY
-
-    def initialize(autoscheduler, screening)
-      @autoscheduler = autoscheduler
-      @screening = screening
-      @local_cost = nil
-    end
-
-    def local_cost
-      @local_cost ||= begin
-        UNPICKABLE
-      end
-    end
-
-    def update
-      return UNPICKABLE if @local_cost == UNPICKABLE
-      local_cost
-    end
-  end
+  attr_reader :festival, :now, :show_press, :unselect, :user, :verbose
 
   def initialize(options)
     @user = options[:user]
@@ -30,6 +8,8 @@ class AutoScheduler
     @show_press = options[:show_press]
     @unselect = options[:unselect] || 'none'
     @now = options[:now] || Time.current
+    @verbose = options[:verbose]
+    puts "Autoscheduler created for #{user.email} at #{festival.slug}" if verbose
   end
 
   def run
@@ -45,26 +25,23 @@ class AutoScheduler
   end
 
   def next_best_screening
-    all_screenings.each {|screening| update_screening_cost(screening) }
-    find_cheapest_screening
-  end
-
-  def update_screening_cost(screening)
-    costs[screening].update
-  end
-
-  def find_cheapest_screening
     cost = find_minimum_cost
     cost.screening if cost && cost.pickable?
   end
 
   def find_minimum_cost
-    costs.values.min_by {|cost| cost.combined_cost }
+    reset_costs
+    costs.values.min_by {|cost| cost.total_cost }
+  end
+
+  def reset_costs
+    costs.each_value {|cost| cost.reset! }
   end
 
   def costs
-    @costs ||= Hash.new do |h, screening|
-      h[screening] = Cost.new(self, screening)
+    @costs ||= all_screenings.inject({}) do |h, s|
+      h[s] = Cost.new(self, s)
+      h
     end
   end
 
