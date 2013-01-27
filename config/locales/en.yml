@@ -9,7 +9,7 @@ en:
       mdy: "%b %e, %Y"
       md: "%b %e"
       dy: "%e, %Y"
-      dmd: "%a, %b %-d"
+      dmd: "%A, %B %e"
       ymd: "%y%m%d"
   time:
     formats:

@@ -3,7 +3,7 @@
                 id: l(day.date, format: :ymd),
                 class: day.page_break_before ? 'page-break' : nil) %>
 <a id="<%= %>"></a>
-<h2><%=l day.date, format: :dmd %></h2>
+<h3><%=l day.date, format: :dmd %></h3>
 
 <%= content_tag_for(:table, day) do %>
   <thead>
