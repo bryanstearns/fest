@@ -382,4 +382,4 @@ module Fest2Importer
 
     Rails.logger.info "Done importing Fest2 data..."
   end
-end
+end unless ENV['TRAVIS']

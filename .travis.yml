@@ -8,7 +8,7 @@ notifications:
 script:
   - RAILS_ENV=test TRAVIS=1 bundle exec rake db:migrate
   - TRAVIS=1 bundle exec rake db:test:prepare
-  - TRAVIS=1 bundle exec rake
+  - TRAVIS=1 xvfb-run bundle exec rake
 before_script:
   - cp config/database.travis.yml config/database.yml
   - mysql -e 'create database fest_test'
