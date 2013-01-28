@@ -3,6 +3,8 @@ source 'https://rubygems.org'
 gem 'rails', '3.2.11'
 
 gem 'cache_digests'
+gem 'capistrano-ext', require: false
+gem 'capistrano-unicorn', require: false
 gem 'jquery-rails'
 gem 'bootstrap_modal_rails'
 gem 'bootstrap-sass'
@@ -14,6 +16,7 @@ gem 'simple_form'
 gem 'turbolinks'
 gem 'jquery-turbolinks'
 gem 'underscore-rails'
+gem 'unicorn'
 
 group :development do
   gem 'mailcatcher'
