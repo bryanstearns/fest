@@ -62,11 +62,12 @@ unless ENV["TRAVIS"]
       }
     }
     let(:new_attributes) {
-      old_attributes.except('starts', 'ends', 'url',
+      old_attributes.except('starts', 'ends', 'public', 'url',
                             'film_url_format')\
                     .merge('starts_on' => old_attributes['starts'],
                            'ends_on' => old_attributes['ends'],
                            'main_url' => old_attributes['url'],
+                           'published' => old_attributes['public'],
                            'slug_group' => 'my')
     }
     subject { Fest2Importer::Festival.new(old_attributes,

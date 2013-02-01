@@ -155,7 +155,7 @@ module Fest2Importer
         name: name,
         slug_group: slug_group,
         main_url: url,
-        public: public,
+        published: public,
         scheduled: scheduled,
         location: location,
         starts_on: starts + Importable::date_offset,

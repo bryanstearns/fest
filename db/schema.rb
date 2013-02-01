@@ -29,17 +29,17 @@ ActiveRecord::Schema.define(:version => 20130113040559) do
     t.string   "updates_url"
     t.date     "starts_on"
     t.date     "ends_on"
-    t.boolean  "public",      :default => false
+    t.boolean  "published",   :default => false
     t.boolean  "scheduled",   :default => false
     t.datetime "revised_at"
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false
   end
 
-  add_index "festivals", ["ends_on", "public"], :name => "index_festivals_on_ends_on_and_public"
-  add_index "festivals", ["slug", "public"], :name => "index_festivals_on_slug_and_public"
+  add_index "festivals", ["ends_on", "published"], :name => "index_festivals_on_ends_on_and_published"
+  add_index "festivals", ["slug", "published"], :name => "index_festivals_on_slug_and_published"
   add_index "festivals", ["slug"], :name => "index_festivals_on_slug", :unique => true
-  add_index "festivals", ["slug_group", "public"], :name => "index_festivals_on_slug_group_and_public"
+  add_index "festivals", ["slug_group", "published"], :name => "index_festivals_on_slug_group_and_published"
 
   create_table "films", :force => true do |t|
     t.integer  "festival_id",  :null => false

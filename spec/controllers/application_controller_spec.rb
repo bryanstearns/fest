@@ -32,7 +32,7 @@ describe ApplicationController do
   end
 
   describe 'checking festival access' do
-    let(:festival) { build(:festival, public: is_public) }
+    let(:festival) { build(:festival, published: is_published) }
     before(:each) do
       Festival.stub(:find_it).and_return(festival)
     end
@@ -45,15 +45,15 @@ describe ApplicationController do
       end
     end
 
-    describe 'on a public festival' do
-      let(:is_public) { true }
+    describe 'on a published festival' do
+      let(:is_published) { true }
       it 'should return quietly' do
         get :index
       end
     end
 
-    describe 'on a non-public festival' do
-      let(:is_public) { false }
+    describe 'on an unpublished festival' do
+      let(:is_published) { false }
       it 'should raise' do
         expect { get :index }.to raise_error(ActiveRecord::RecordNotFound)
       end

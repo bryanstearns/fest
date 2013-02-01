@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
     # raises if the festival isn't public and the user doesn't have access.
     raise(ActiveRecord::RecordNotFound) \
       unless @festival \
-        && (@festival.public || current_user_is_admin? #|| \
+        && (@festival.published || current_user_is_admin? #|| \
             #(logged_in? && (current_user.subscription_for(@festival).admin \
                             #rescue false))
            )

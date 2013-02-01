@@ -6,7 +6,7 @@ class FestivalsController < ApplicationController
 
   # GET /festivals
   def index
-    respond_with(@festivals = Festival.public)
+    respond_with(@festivals = Festival.published)
   end
 
   # GET /festivals/1

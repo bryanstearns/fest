@@ -108,9 +108,9 @@ describe Admin::ScreeningsController do
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
         Screening.any_instance.should_receive(:update_attributes)\
-                              .with({ "public" => true })
+                              .with({ "foo" => true })
         put :update, {:id => screening.to_param,
-                      :screening => { "public" => true }}
+                      :screening => { "foo" => true }}
       end
 
       it "assigns the requested screening as @screening" do

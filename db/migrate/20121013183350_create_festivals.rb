@@ -9,14 +9,14 @@ class CreateFestivals < ActiveRecord::Migration
       t.string :updates_url
       t.date :starts_on
       t.date :ends_on
-      t.boolean :public, default: false
+      t.boolean :published, default: false
       t.boolean :scheduled, default: false
       t.datetime :revised_at
       t.timestamps
     end
     add_index :festivals, :slug, :unique => true
-    add_index :festivals, [:slug, :public]
-    add_index :festivals, [:ends_on, :public]
-    add_index :festivals, [:slug_group, :public]
+    add_index :festivals, [:slug, :published]
+    add_index :festivals, [:ends_on, :published]
+    add_index :festivals, [:slug_group, :published]
   end
 end

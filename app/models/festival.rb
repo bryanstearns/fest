@@ -7,7 +7,7 @@ class Festival < ActiveRecord::Base
   has_many :subscriptions, dependent: :destroy
   has_many :picks
 
-  attr_accessible :ends_on, :location, :location_ids, :main_url, :name, :public,
+  attr_accessible :ends_on, :location, :location_ids, :main_url, :name, :published,
                   :revised_at, :scheduled, :slug, :slug_group, :starts_on,
                   :updates_url
 
@@ -19,7 +19,7 @@ class Festival < ActiveRecord::Base
             presence: true
   validate :date_range_ordering
 
-  scope :public, where(public: true)
+  scope :published, where(published: true)
 
   def to_param
     slug
