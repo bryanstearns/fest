@@ -12,7 +12,8 @@ require 'fest2_importer'
 Fest2Importer.import
 
 if !Rails.env.production?
-  if !User.where(email: 'admin@example.com').any?
+  admin = User.where(email: 'admin@example.com').first
+  unless admin
     admin = User.new(name: 'Admin', email: 'admin@example.com',
                   password: 'sw0rdf1sh', password_confirmation: 'sw0rdf1sh')
     admin.admin = true
@@ -23,7 +24,8 @@ if !Rails.env.production?
     admin.save!
   end
 
-  if !User.where(email: 'guest@example.com').any?
+  guest = User.where(email: 'guest@example.com').first
+  unless guest
     guest = User.new(name: 'Guest', email: 'guest@example.com',
                   password: 'sw0rdf1sh', password_confirmation: 'sw0rdf1sh')
     guest.confirmed_at = Time.zone.now
@@ -32,17 +34,28 @@ if !Rails.env.production?
     guest.sign_in_count = 1
     guest.save!
   end
+
+  Festival.where(slug_group: 'example').destroy_all
+  Location.unused.destroy_all
+
+  example_fest = FactoryGirl.create(:festival, :with_films_and_screenings,
+                                    name: "Example Festival",
+                                    slug_group: 'example',
+                                    day_count: 2, press: true,
+                                    location: "Long Name City, Longstatename")
+  example_fest.films.each do |film|
+    priority = Pick::PRIORITY_HINTS.keys[film.duration.to_minutes % Pick::PRIORITY_HINTS.count]
+    admin.picks.create!({ film: film, priority: priority }, as: :pick_creator)
+  end
+
+  piff_2013 = Festival.find_by_slug('piff_2013')
+  piff_2013.films.each do |film|
+    priority = Pick::PRIORITY_HINTS.keys[film.duration.to_minutes % Pick::PRIORITY_HINTS.count]
+    admin.picks.create!({ film: film, priority: priority }, as: :pick_creator)
+  end
+
+  FactoryGirl.create(:festival, :past,
+                     name: "Example Festival", slug_group: 'example',
+                     day_count: 2,
+                     location: "Long Name City, Longstatename")
 end
-
-Festival.where(slug_group: 'example').destroy_all
-Location.unused.destroy_all
-
-FactoryGirl.create(:festival, :with_films_and_screenings,
-                   name: "Example Festival", slug_group: 'example',
-                   day_count: 4, press: true,
-                   location: "Long Name City, Longstatename")
-
-FactoryGirl.create(:festival, :past,
-                   name: "Example Festival", slug_group: 'example',
-                   day_count: 4,
-                   location: "Long Name City, Longstatename")

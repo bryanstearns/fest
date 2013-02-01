@@ -24,6 +24,9 @@ module Fest2Importer
     def self.time_offset=(t)
       @@time_offset = t
     end
+    def self.date_offset
+      time_offset / 86400
+    end
 
     module ClassMethods
       def import_all
@@ -155,8 +158,8 @@ module Fest2Importer
         public: public,
         scheduled: scheduled,
         location: location,
-        starts_on: starts + Importable::time_offset,
-        ends_on: ends + Importable::time_offset,
+        starts_on: starts + Importable::date_offset,
+        ends_on: ends + Importable::date_offset,
         revised_at: revised_at? ? (revised_at + Importable::time_offset) : nil,
         created_at: created_at + Importable::time_offset,
         updated_at: updated_at + Importable::time_offset
@@ -175,7 +178,9 @@ module Fest2Importer
     end
 
     def slug
-      Importable::fake_slug || read_attribute(:slug)
+      result = Importable::fake_slug || read_attribute(:slug)
+      result = 'piff_2013' if result == 'piff'
+      result
     end
   end
 
@@ -361,21 +366,24 @@ module Fest2Importer
       klass.import_all
     end
 
-    # Import last year's PIFF as though it's this year's
-    Film.clear_cache
-    Screening.clear_cache
-    Subscription.clear_cache
-    Pick.clear_cache
-    Importable::time_offset = 364.days
-    Importable::fake_slug = 'piff_2013'
-    piff12 = Festival.where(slug: 'piff_2012').first
-    piff12.import
-    piff12.films.find_each {|f| f.import }
-    piff12.screenings.find_each {|s| s.import }
-    piff12.subscriptions.find_each {|s| s.import }
-    piff12.picks.find_each {|p| p.import(:without_screenings) }
-    Importable::time_offset = 0.seconds
-    Importable::fake_slug = nil
+    if false
+      # Import last year's PIFF as though it's this year's
+      Film.clear_cache
+      Screening.clear_cache
+      Subscription.clear_cache
+      Pick.clear_cache
+      piff12 = Festival.where(slug: 'piff_2012').first
+      Importable::time_offset = Date.tomorrow.to_time -
+          piff12.screenings.order(:starts).first.starts
+      Importable::fake_slug = 'piff_2013'
+      piff12.import
+      piff12.films.find_each {|f| f.import }
+      piff12.screenings.find_each {|s| s.import }
+      piff12.subscriptions.find_each {|s| s.import }
+      piff12.picks.find_each {|p| p.import(:without_screenings) }
+      Importable::time_offset = 0.seconds
+      Importable::fake_slug = nil
+    end
 
     Rails.logger.info "Dropping bad accounts..."
     drop_bad_accounts
