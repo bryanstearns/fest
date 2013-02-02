@@ -4,7 +4,7 @@ module ScreeningsHelper
     if options[:with_date]
       result = safe_join [
         l(screening.starts_at.to_date, format: :dmd),
-        ' ',
+        ', ',
         result
       ]
     end

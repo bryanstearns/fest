@@ -6,15 +6,16 @@ en:
   date:
     formats:
       # Range parts
-      mdy: "%b %e, %Y"
-      md: "%b %e"
+      mdy: "%B %e, %Y"
+      md: "%B %e"
       dy: "%e, %Y"
       dmd: "%A, %B %e"
       ymd: "%y%m%d"
   time:
     formats:
       mdy_hms: "%-m/%-d/%Y %k:%M:%S"
-      dmdy_hm: "%a, %b %-d, %l:%M %p"
+      dmdy_hm: "%a, %b %-d %Y, %l:%M %p"
+      dmd_hm: "%a, %b %-d, %l:%M %p"
       hm: "%l:%M"
       hp: "%l %p"
       hmp: "%l:%M %p"

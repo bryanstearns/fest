@@ -31,22 +31,22 @@ describe ApplicationHelper do
 
     context "for a single date" do
       let(:end_on) { start_on }
-      it { should == "Nov 20, 2015" }
+      it { should == "November 20, 2015" }
     end
 
     context "for dates within a month" do
       let(:end_on) { start_on + 3 }
-      it { should == "Nov 20 - 23, 2015" }
+      it { should == "November 20 - 23, 2015" }
     end
 
     context "for cross-month dates within a year" do
       let(:end_on) { start_on + 30 }
-      it { should == "Nov 20 - Dec 20, 2015" }
+      it { should == "November 20 - December 20, 2015" }
     end
 
     context "for cross-year dates" do
       let(:end_on) { start_on + 60 }
-      it { should == "Nov 20, 2015 - Jan 19, 2016" }
+      it { should == "November 20, 2015 - January 19, 2016" }
     end
 
     context "for unset dates" do
@@ -60,14 +60,14 @@ describe ApplicationHelper do
         let(:object) { stub(:starts_on => start_on,
                             :ends_on => start_on + 2.days) }
         it "should ask the object" do
-          subject.should == "Nov 20 - 22, 2015"
+          subject.should == "November 20 - 22, 2015"
         end
       end
       context "that responds to #starts_at and #ends_at" do
         let(:object) { stub(:starts_at => start_on.at("2:00"),
                             :ends_at => (start_on + 3.days).at("17:00")) }
         it "should ask the object" do
-          subject.should == "Nov 20 - 23, 2015"
+          subject.should == "November 20 - 23, 2015"
         end
       end
     end

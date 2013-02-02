@@ -1,14 +1,17 @@
 When /^there are three festivals in two groups$/ do
   @grouped_festivals_with_dates = {
     'piff' => {
-      'Mar 2 - 4, 2011' => create(:festival, :slug_group => 'piff', :starts_on => '2011-03-02',
-                                  :day_count => 3),
-      'Mar 1 - 3, 2012' => create(:festival, :slug_group => 'piff', :starts_on => '2012-03-01',
-                                  :day_count => 3),
+      'March 2 - 4, 2011' =>
+          create(:festival, :slug_group => 'piff', :starts_on => '2011-03-02',
+                 :day_count => 3),
+      'March 1 - 3, 2012' =>
+          create(:festival, :slug_group => 'piff', :starts_on => '2012-03-01',
+                 :day_count => 3),
     },
     'reel' => {
-      'Jun 30 - Jul 2, 2012' => create(:festival, :slug_group => 'reel',
-                                       :starts_on => '2012-06-30', :day_count => 3)
+      'June 30 - July 2, 2012' =>
+          create(:festival, :slug_group => 'reel',
+                 :starts_on => '2012-06-30', :day_count => 3)
     }
   }
 end
