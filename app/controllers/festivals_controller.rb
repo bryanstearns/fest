@@ -2,7 +2,7 @@ class FestivalsController < ApplicationController
   respond_to :html
   before_filter :load_festival_and_screenings, only: [:show]
   before_filter :check_festival_access, only: [:show]
-  before_filter :load_picks_for_current_user, only: [:show]
+  before_filter :load_subscription_and_picks_for_current_user, only: [:show]
 
   # GET /festivals
   def index

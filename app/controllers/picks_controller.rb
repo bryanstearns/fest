@@ -5,7 +5,7 @@ class PicksController < ApplicationController
   before_filter :load_festival_and_screenings, only: [:index]
   before_filter :load_film_and_festival_from_pick, only: [:create]
   before_filter :check_festival_access
-  before_filter :load_picks_for_current_user
+  before_filter :load_subscription_and_picks_for_current_user
 
   respond_to :html
 

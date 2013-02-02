@@ -55,10 +55,5 @@ module Admin
       flash[:notice] = 'Film was successfully destroyed.'
       respond_with(:admin, @film, location: admin_festival_films_path(@film.festival))
     end
-
-    protected
-    def load_festival
-      @festival = Festival.find_by_slug!(params[:festival_id])
-    end
   end
 end

@@ -29,10 +29,6 @@ class SubscriptionsController < ApplicationController
   end
 
 protected
-  def load_festival
-    @festival = Festival.find_by_slug!(params[:festival_id])
-  end
-
   def load_subscription
     @subscription = current_user.subscription_for(@festival, create: true)
   end
