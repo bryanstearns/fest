@@ -24,3 +24,8 @@
 <% end %>
 
 <%= render partial: 'picks/picks', object: @picks %>
+
+<div id="continue">
+  <%= link_to "Continue", festival_subscription_path(@festival), class: "btn" %>
+  ... to the Scheduling Assistant page (your choices have already been saved).
+</div>
