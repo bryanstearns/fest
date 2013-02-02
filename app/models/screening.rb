@@ -32,6 +32,9 @@ class Screening < ActiveRecord::Base
   scope :starting_after, ->(time) {
     where('screenings.starts_at > ?', time)
   }
+  scope :with_press, ->(with_press) {
+    with_press ? scoped : where('screenings.press = ?', false)
+  }
 
   delegate :name, to: :venue, prefix: true
   delegate :name, :countries, to: :film

@@ -32,18 +32,22 @@ describe Festival do
     end
 
     it "should group screenings by date in date order" do
-      festival = build_stubbed(:festival)
-      s1 = build_stubbed(:screening, film: nil, venue: nil,
-                         starts_at: festival.starts_on.at("12"))
-      s2 = build_stubbed(:screening, film: nil, venue: nil,
-                         starts_at: festival.starts_on.at("13"))
-      s3 = build_stubbed(:screening, film: nil, venue: nil,
-                         starts_at: festival.starts_on.at("14") + 1.day)
-      festival.should_receive(:screenings).and_return([s1, s2, s3])
-      festival.screenings_by_date.should eq({
-        festival.starts_on => [s1, s2],
-        festival.starts_on + 1 => [s3],
-      })
+      festival = create(:festival, :with_films_and_screenings, press: true)
+      press_day = festival.starts_on - 1
+      press_screenings_on_pre_day = festival.screenings.to_a.select do |s|
+        s.starts_at.to_date == press_day
+      end
+      first_day = festival.starts_on
+      non_press_screenings_on_first_day = festival.screenings.to_a.select do |s|
+        s.starts_at.to_date == first_day
+      end
+
+      with_press = festival.screenings_by_date(press: true)
+      with_press[press_day].should eq(press_screenings_on_pre_day)
+      with_press[first_day].should eq(non_press_screenings_on_first_day)
+      without_press = festival.screenings_by_date(press: false)
+      without_press.should_not have_key(press_day)
+      without_press[first_day].should eq(non_press_screenings_on_first_day)
     end
 
     it "collects picks for a given user" do

@@ -28,8 +28,9 @@ module FestivalsHelper
     ].any? {|p| current_page?(p) }
   end
 
-  def days(festival)
-    Day.paginate(festival.screenings_by_date.map do |date, screenings|
+  def days(festival, options)
+    Day.paginate(festival.screenings_by_date(options)\
+       .map do |date, screenings|
       Day.new(date, screenings)
     end)
   end

@@ -5,7 +5,7 @@
   <td>
     <%= pick_film_heading(film) %>
     <ul class="screenings">
-      <%= render(partial: 'screenings/screening', collection: film.screenings,
+      <%= render(partial: 'screenings/screening', collection: film.screenings.with_press(@show_press),
                  locals: { film: film }) \
         || "(No scheduled screenings now.)" %>
     </ul>

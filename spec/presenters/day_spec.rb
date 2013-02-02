@@ -7,7 +7,7 @@ describe Day do
 
   context "collecting from a festival" do
     subject {
-      helper.days(festival)
+      helper.days(festival, press: true)
     }
     it "should return a day for each date, in order" do
       subject.should have(day_count).items

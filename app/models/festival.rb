@@ -25,11 +25,12 @@ class Festival < ActiveRecord::Base
     slug
   end
 
-  def screenings_by_date
+  def screenings_by_date(options)
     # NB: Since group_by returns an ordered hash, and we're feeding it screenings
     # in start-time order (the default for screenings), the keys of the
     # resulting hash will be in order.
-    screenings.group_by {|s| s.starts_at.to_date }
+    screenings.with_press(options[:press])\
+              .group_by {|s| s.starts_at.to_date }
   end
 
   def picks_for(user)

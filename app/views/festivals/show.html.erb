@@ -1,12 +1,22 @@
 
-<div class="days" data-handler="Days">
-  <%= render partial: "day", collection: days(@festival) %>
-</div>
+<% if Rails.env.development? && @subscription %>
+  <%= simple_form_for([@festival, @subscription], html: { class: 'form-horizontal' }) do |f| %>
+    <%= f.hidden_field :unselect, value: 'none' %>
+    <%= debug_menu %>
+    <%= f.button :submit %>
+  <% end %>
+<% end %>
 
-<div id="as-of">
-  Festival as of <%=l @festival.revised_at, format: :dmdy_hm %>
-</div>
+<% cache [@festival, @show_press] do %>
+  <div class="days" data-handler="Days">
+    <%= render partial: "day", collection: days(@festival, press: @show_press) %>
+  </div>
 
-<div id="screening-modal" class="modal hide fade" tabindex="-1"></div>
+  <div id="as-of">
+    Festival as of <%=l @festival.revised_at, format: :dmdy_hm %>
+  </div>
 
-<%= render partial: 'picks/picks', object: @picks %>
+  <div id="screening-modal" class="modal hide fade" tabindex="-1"></div>
+
+  <%= render partial: 'picks/picks', object: @picks %>
+<% end %>
