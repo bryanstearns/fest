@@ -1,9 +1,9 @@
 
 <%= content_tag_for(:li, festival, class: 'festival') do %>
-  <%= link_to date_range(festival), festival, :class => "show" %>
+  <%= link_to date_range(festival), festival %>
   <% if current_user_is_admin? %>
     <span class="actions">
-      <%= link_to 'Edit', edit_admin_festival_path(festival), :class => "edit" %>
+      <%= link_to 'Edit', edit_admin_festival_path(festival), :class => "btn btn-mini" %>
     </span>
   <% end %>
 <% end %>
