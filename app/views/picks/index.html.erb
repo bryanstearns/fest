@@ -1,5 +1,44 @@
+<h3>Your film priorities</h3>
+
+<div id="instructions">
+  <p>
+    The goal of this site is to help you see the films you really want to see, so
+    you'll start by prioritizing the festival's films: indicate your preference
+    for each film by clicking one of the little circles next to each film &mdash;
+    the scheduling assistant will use these priorities to build a custom schedule
+    for you.
+  </p>
+
+  <p>
+    The highest priority means "<%= Pick::PRIORITY_HINTS[8] %>," and the lowest
+    means "<%= Pick::PRIORITY_HINTS[0] %>;" if you've made a choice and want to
+    remove it for some reason, clicking the "<%= image_tag('raty/cancel-off.png') %>"
+    will forget you ever made a choice.
+  </p>
+
+  <p>
+    If there's a film you've seen already, you can note what you thought of it
+    here by entering a rating from one to five stars; you can also come back and
+    enter ratings later. (I'll be sharing these ratings &mdash; see
+    <%= link_to 'the FAQ page', faq_path %> for details.)
+  </p>
+
+  <% if user_signed_in? %>
+    <p>
+      Each choice is saved as soon as you click. When you're done, click the
+      <span class="nobr">"Continue"</span> button at the bottom to move to the
+      next step. You can come back later if you don't finish now, or if you want to
+      change a priority or add a rating; you can also reset all your priorities and
+      ratings and start over by clicking this button:
+      <%= link_to "Start Over", reset_rankings_festival_path(@festival),
+                  :method => :puts,
+                  :confirm => "Are you sure you want to throw away all your priority settings and ratings?",
+                  :class => "btn btn-small" %>
+    </p>
+  <% end %>
+</div>
+
 <% cache @festival do %>
-  <h3>Your film priorities</h3>
   <table id="picks">
     <thead>
       <tr>

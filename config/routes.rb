@@ -4,6 +4,10 @@ Fest::Application.routes.draw do
 
   # Public stuff
   resources :festivals, only: [:index, :show] do
+    member do
+      put :reset_rankings
+      put :reset_screenings
+    end
     resource :subscription, path: 'assistant', controller: :subscriptions,
              only: [:show, :update]
     match 'priorities' => "picks#index"
