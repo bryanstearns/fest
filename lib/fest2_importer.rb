@@ -337,7 +337,8 @@ module Fest2Importer
     unsubscribed_users = [
         # These are patterns so that I don't put actual users' emails on github
         /.*\@mvmft\.com/,
-        /k.*1968/
+        /k.*1968/,
+        /spur.*net/
     ]
     good_domains = [ 'nwfilm.org' ]
     ::User.find_each do |user|
