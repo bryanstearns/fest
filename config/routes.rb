@@ -16,6 +16,8 @@ Fest::Application.routes.draw do
   root to: "home#index"
   match 'maintenance' => "home#maintenance", as: :maintenance
   match 'sign_ups_off' => "home#sign_ups_off", as: :sign_ups_off
+  match 'faq' => "home#faq", as: :faq
+  match 'feedback' => "home#feedback", as: :feedback # for now
 
   # Admin stuff
   match 'admin' => "home#admin", as: :admin_root

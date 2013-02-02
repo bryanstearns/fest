@@ -9,6 +9,8 @@
         <ul class="nav">
           <% unless @hide_site_navigation_controls %>
             <li><%= link_to "Festivals", festivals_path %></li>
+            <li><%= link_to "Help", faq_path %></li>
+            <li><%= link_to "Feedback", feedback_path %></li>
             <% if user_signed_in? %>
               <% if current_user_is_admin? %>
                 <li><%= link_to "Admin", admin_root_path,

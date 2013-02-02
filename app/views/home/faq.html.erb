@@ -1,0 +1,137 @@
+<% content_for :title do %>Frequently-Asked Questions<% end %>
+
+<h3>Frequently-Asked Questions</h3>
+
+<p>
+  Got a question that isn't answered here? Ask me using the
+  <%= link_to "Feedback Page", feedback_path %>, and I'll
+  get you an answer; maybe I'll add it here!
+</p>
+
+<ul>
+  <li>
+    <h4>What's this all about?</h4>
+    <p><%= link_to "Festival Fanatic", "http://festivalfanatic.com" %>
+      seeks to improve the film festival experience for serious film fans.</p>
+
+    <p>Film festival attendees usually have just a few screening opportunities
+      to see each film, so the Scheduling Assistant can help you see
+      more of the films you really want to see.</p>
+
+    <p>As time goes on, I'll add features for coordinating your schedule with
+      your friends', and for discussing the films you've seen with others. I'd
+      also like to work more closely with festival organizers to promote community
+      among attendees.</p>
+  </li>
+
+  <li>
+    <h4>How do I use this thing?</h4>
+    <p>First, sign up, so I'll know who you are when you come back to the site.</p>
+    <p>Then, click on a festival in the list on the home page; this will take you
+      to the "Your Film Priorities" page for that festival.</p>
+    <p>(This next part is easier if you've got the paper schedule for
+      the festival; alternatively, you can open the festival's own
+      website in another browser window.) For each of the films in the festival,
+      decide how interested you are in seeing that film: you've got five
+      choices, from "I don't want to see this" to "I *really* want to see this".
+      Enter each choice on that Film Priorities page.</p>
+    <p>When you're done prioritizing the films, click the "Scheduling
+      Assistant" tab; if there are times where you can't attend the festival,
+      enter them. Then, click "Schedule Films" - your priorities will be used
+      to select screenings of as many of the films you prioritized as possible.
+    </p>
+    <p>
+      After your schedule's been generated (it takes a moment), you'll see
+      "Your Festival Schedule": your schedule for each day, with the selected
+      screenings color-coded.
+    <p>You can make manual changes to the screening selections by clicking
+      on the grid. If you click on a screening for a film you're scheduled
+      to see at some other time, the other screening will be unselected for
+      you (because why see it twice?); likewise, if you're scheduled for any
+      screenings at the same time as the one you clicked on, they'll be
+      unselected too (because you can't be in two places at once).</p>
+    <p>As the festival proceeds, as you hear good or bad things from your
+      friends,you can revise your priorities, then ask the Scheduling Assistant
+      to rebuild the rest of your schedule. You can also enter ratings for the
+      films you've seen.
+    </p>
+  </li>
+
+  <li>
+    <h4>How does the automatic scheduling really work?</h4>
+    <p>In computer science, there's this thing called the "traveling salesman
+      problem": given a salesman who wants to visit a bunch of cities, how can
+      you determine an optimal route?</p>
+    <p>It turns out that this problem is really hard, and the problem of finding
+      an optimal schedule for seeing preferred movies at a film festival is just
+      as hard.</p>
+    <p>So, this site takes the easy way out, and doesn't try to solve the
+      problem perfectly; it just tries to do a pretty good job: the site makes
+      a list of the films you've ranked, but haven't picked screenings for; it
+      sorts this list
+      by a combination of your ranking and the number of remaining screenings
+      (the fewer remaining, the higher in the list the film goes), then tries to
+      assign screenings in that order, without ever letting two assigned screenings
+      overlap.</p>
+    <p>There are probably better strategies, but this one seems to work pretty
+      well.</p>
+  </li>
+
+  <li>
+    <h4>Do you share my information?</h4>
+    <p>First, I'm not going to share your email address with anyone; I'll only use
+      it to contact you about the site, and I try to notify you if the festival
+      announces a screening change that affects your schedule. Next year, I'll
+      probably let you know when next year's festival's schedule appears here.
+    </p>
+    <p>
+      I've always intended to share anonymized summaries of priorities and
+      ratings with film festival organizers, other filmgoers & filmmakers,
+      and here on the site; I've yet to do this, but I might in the future.
+    </p>
+    <p>
+      Eventually, I also want to add ways for you to contribute comments, links,
+      and background information (what I call "buzz") to films. These details will
+      be public and visible to other users, and attributed to you by username.
+      (More details on this will come before I roll this feature out.)
+    </p>
+  </li>
+
+  <li>
+    <h4>Can I add my own favorite festival?</h4>
+    <p>Not by yourself, just yet. In the meantime, drop
+      me a line on the <%= link_to "Feedback Page", feedback_path %> if you attend
+      a festival that you'd like to be able to schedule here.</p>
+  </li>
+
+  <li>
+    <h4>What other features are you working on?</h4>
+    <p>I'm most excited about the "buzz" features I mentioned above, but the list
+      also includes (in no particular order) better printed formatting, and better
+      features for smartphone users. Again, if you can think of something to add,
+      <%= link_to "I'd love to hear about it", feedback_path %>.
+    </p>
+  </li>
+
+<!--  <li>
+    <h4>Where'd you get the nifty icons?</h4>
+    <p>The flags (<%# %w{us br dk np ke au}.map {|co| flag_icon_tag co }.join(" ") %>)
+      and many of the other icons I use (like <%# image_tag "fam3silk/film_go.png" %>
+      and <%# image_tag "fam3silk/date.png" %>) come from web developer Mark James, who asks only that I
+      <%# link_to "link to his site", "http://www.famfamfam.com/lab/icons/silk/" %> to use them - done, and thanks, Mark!
+    </p>
+  </li>
+-->
+
+  <li>
+    <div id="me">
+      <h4>Who created this, and why?</h4>
+      <%= image_tag "bryanstearns.png", :width => 100, :height => 100, :style => "float: left; padding-right: 10px;" %>
+      <p>I'm Bryan Stearns, a web software developer based in Portland, Oregon.
+        I created Festival Fanatic to get more out of the festivals that I attend, and to help my friends as well.
+        (It's been very successful by this measure &mdash; I've met a lot of great people as a result of this site!)
+        It's free (and will continue to be), and I don't make any money running it.</p>
+    </div>
+  </li>
+
+</ul>
