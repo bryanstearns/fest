@@ -8,6 +8,8 @@ class ScreeningsController < ApplicationController
     @festival = @screening.festival
     @film = @screening.film
     @other_screenings = @film.screenings.includes(:venue).to_a - [@screening]
+    @subscription = current_user.subscription_for(@festival) \
+      if autoscheduler_debugging?
     respond_with(@screening)
   end
 end

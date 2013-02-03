@@ -12,6 +12,9 @@
       <ul>
         <%= render @other_screenings %>
       </ul>
+      <% if autoscheduler_debugging? && @subscription %>
+        <p><%= @subscription.cost(@screening).inspect %></p>
+      <% end %>
     <% end %>
   <% end %>
   <div class="modal-footer">
