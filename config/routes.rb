@@ -17,11 +17,13 @@ Fest::Application.routes.draw do
   end
   resources :screenings, only: [:show]
 
+  resources :questions, only: [:new, :create]
+
   root to: "home#index"
   match 'maintenance' => "home#maintenance", as: :maintenance
   match 'sign_ups_off' => "home#sign_ups_off", as: :sign_ups_off
   match 'faq' => "home#faq", as: :faq
-  match 'feedback' => "home#feedback", as: :feedback # for now
+  match 'feedback' => "questions#new", as: :feedback
 
   # Admin stuff
   match 'admin' => "home#admin", as: :admin_root
@@ -41,5 +43,6 @@ Fest::Application.routes.draw do
 
     resources :users
     resources :enabled_flags, :only => [:update]
+    resources :questions, only: [:index, :show, :edit, :update, :destroy]
   end
 end

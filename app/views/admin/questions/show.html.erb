@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Email:</b>
+  <%= @question.email %>
+</p>
+
+<p>
+  <b>Question:</b>
+  <%= @question.question %>
+</p>
+
+<p>
+  <b>Acknowledged:</b>
+  <%= @question.acknowledged %>
+</p>
+
+<p>
+  <b>Done:</b>
+  <%= @question.done %>
+</p>
+
+
+<%= link_to 'Edit', edit_admin_question_path(@question) %>

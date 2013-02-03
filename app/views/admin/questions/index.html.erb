@@ -1,0 +1,28 @@
+<h1>All feedback</h1>
+
+<table id="questions">
+  <tr>
+    <th>Sent</th>
+    <th>Email</th>
+    <th>Question</th>
+    <th>Acknowledged</th>
+    <th>Done</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @questions.each do |question| %>
+  <tr>
+    <td><%= l question.created_at, format: :mdy_hms %></td>
+    <td><%= question.email %></td>
+    <td><%= question.question %></td>
+    <td><%= question.acknowledged %></td>
+    <td><%= question.done %></td>
+    <td><%= link_to 'Show', admin_question_path(question) %></td>
+    <td><%= link_to 'Edit', edit_admin_question_path(question) %></td>
+    <td><%= link_to 'Destroy', admin_question_path(question),
+                    method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>

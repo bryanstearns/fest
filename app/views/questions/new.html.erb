@@ -1,0 +1,26 @@
+<% content_for :title do %>Feedback<% end %>
+
+<h1>Let me know what you think!</h1>
+
+<% unless user_signed_in? %>
+<p>
+  Your email address is required, but I'll only use it to contact you
+  about this message; I'll never sell or give it to anyone else.
+</p>
+<% end %>
+
+<%= simple_form_for(@question) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :email, label: "Your email address", as: :email,
+                input_html: { readonly: user_signed_in? } %>
+    <%= f.input :question, label: "Your comments, suggestions, requests, or complaints",
+                input_html: { rows: 10, cols: 80 }%>
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit 'Send' %>
+    Thank you!
+  </div>
+<% end %>
