@@ -34,7 +34,8 @@ describe Subscription do
 
   context 'autoscheduling' do
     it 'initializes the autoscheduler with the right options' do
-      subject.autoscheduler_options.should eq({
+      subject.autoscheduler_options\
+             .except(:debug, :up_to_screening_id).should eq({
         user: subject.user,
         festival: subject.festival,
         show_press: subject.show_press,
@@ -67,8 +68,9 @@ describe Subscription do
     end
 
     context 'when skip_autoscheduler is set' do
+      subject { create(:subscription, skip_autoscheduler: true) }
+
       it 'does not run the autoscheduler' do
-        subject.skip_autoscheduler = true
         AutoScheduler.any_instance.should_not_receive(:run)
         subject.save!
       end

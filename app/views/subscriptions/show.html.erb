@@ -5,7 +5,15 @@
 
   <div class="form-inputs">
     <%= f.input :show_press, label: "Show press screenings?" %>
+    <%= unselect_menu if @user_has_screenings %>
   </div>
+
+  <% if autoscheduler_debugging? %>
+    <div class="form-inputs">
+      <%= f.input :up_to_screening_id, label: "Stop at screening ID" %>
+      <%= debug_menu %>
+    </div>
+  <% end %>
 
   <div class="form-actions">
     <%= f.button :submit %>

@@ -1,8 +1,9 @@
 
-<% if Rails.env.development? && @subscription %>
+<% if autoscheduler_debugging? && @subscription %>
   <%= simple_form_for([@festival, @subscription], html: { class: 'form-horizontal' }) do |f| %>
     <%= f.hidden_field :unselect, value: 'none' %>
     <%= debug_menu %>
+    stop at ID: <%= f.text_field :up_to_screening_id, width: 10 %>
     <%= f.button :submit %>
   <% end %>
 <% end %>

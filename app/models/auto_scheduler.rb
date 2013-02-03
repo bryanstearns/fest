@@ -2,7 +2,7 @@ class AutoScheduler
   class InternalError < StandardError; end
 
   include ActionView::Helpers::TextHelper
-  attr_reader :festival, :now, :show_press, :unselect, :user, :verbose,
+  attr_reader :debug, :festival, :now, :show_press, :unselect, :user, :verbose,
               :screenings_scheduled
 
   def initialize(options)
@@ -10,7 +10,9 @@ class AutoScheduler
     @festival = options[:festival]
     @show_press = options[:show_press]
     @unselect = options[:unselect] || 'none'
+    @debug = options[:debug]
     @now = options[:now] || Time.current
+    @up_to_screening_id = options[:up_to_screening_id]
 
     @screenings_scheduled = 0
     @verbose = options[:verbose]
@@ -21,8 +23,11 @@ class AutoScheduler
     log "Run..."
     unselect_screenings(unselect)
     loop do
-      schedule(next_best_screening || break)
       log "Pass #{screenings_scheduled}"
+      screening = next_best_screening
+      break if screening.nil? || debug_limit_screening?(screening)
+      schedule(screening)
+      break if debug_limit_count?
     end
     log "Done; #{screenings_scheduled} scheduled."
   end
@@ -30,6 +35,15 @@ class AutoScheduler
   def unselect_screenings(unselect)
     festival.reset_screenings(user, unselect == 'future') \
       unless unselect == 'none'
+  end
+
+  def debug_limit_screening?(screening)
+    (screening.id.to_s == @up_to_screening_id.to_s) ||
+      (debug == 'free' && costs[screening].total_cost >= -1.0)
+  end
+
+  def debug_limit_count?
+    debug == 'one'
   end
 
   def message
@@ -84,7 +98,7 @@ class AutoScheduler
   end
 
   def check_for_conflict!(screening)
-    raise(InternalError, "oops: scheduling against a picked screening") \
+    raise(InternalError, "oops: scheduling #{screening.id} against a picked screening") \
       if screening_id_conflicts_scheduled?(screening.id)
   end
 
