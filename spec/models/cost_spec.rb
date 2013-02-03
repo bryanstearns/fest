@@ -14,30 +14,35 @@ describe Cost do
   let(:cost) { Cost.new(autoscheduler, screening) }
   subject { cost }
 
-  context "resetting the cost" do
+  context "resetting cached costs" do
     subject do
-      cost.instance_variable_set(:@cost, existing_cost)
+      cost.instance_variable_set(:@total_cost, existing_cost)
       cost.reset!
-      cost.instance_variable_get(:@cost)
+      cost
     end
     context "when the existing cost is 'unpickable'" do
       let(:existing_cost) { Cost::UNPICKABLE }
       it "leaves the cost alone" do
-        subject.should == Cost::UNPICKABLE
+        subject.instance_variable_get(:@total_cost).should == Cost::UNPICKABLE
+      end
+      it "sets the cost-as-conflict to nil" do
+        subject.instance_variable_get(:@cost_as_conflict).should be_nil
       end
     end
-    context "when the existing cost is 0" do
-      let(:existing_cost) { 0 }
-      it "leaves the cost alone" do
-        subject.should == 0
-      end
-    end
-    context "when the existing cost is not unpickable or nil" do
-      let(:existing_cost) { 23 }
+    context "when the existing cost is not unpickable" do
+      let(:existing_cost) { 23.0 }
       it "sets it to nil to force recalculation" do
-        subject.should be_nil
+        subject.instance_variable_get(:@total_cost).should be_nil
+      end
+      it "sets the cost-as-conflict to nil" do
+        subject.instance_variable_get(:@cost_as_conflict).should be_nil
       end
     end
+  end
+
+  it "determines priority" do
+    autoscheduler.stub(:film_priority).and_return(6)
+    subject.priority.should == 6
   end
 
   it "determines started?" do
@@ -45,6 +50,15 @@ describe Cost do
     subject.should_not be_started
     autoscheduler.stub(:now).and_return(2.years.from_now)
     subject.should be_started
+  end
+
+  it "determines pickable?" do
+    subject.stub(:total_cost).and_return(26.2)
+    subject.should be_pickable
+    subject.stub(:total_cost).and_return(Cost::FREE)
+    subject.should be_pickable
+    subject.stub(:total_cost).and_return(Cost::UNPICKABLE)
+    subject.should_not be_pickable
   end
 
   it "determines screening_scheduled?" do
@@ -68,20 +82,35 @@ describe Cost do
     subject.film_scheduled?.should be_false
   end
 
+  it 'determines remaining screenings count' do
+    autoscheduler.stub(:remaining_screenings_count).and_return(3)
+    subject.remaining_screenings_count.should == 3
+  end
+
+  it 'determines conflicting screening costs' do
+    result = mock
+    autoscheduler.stub(:screening_id_conflicts_costs).and_return(result)
+    subject.conflicting_screening_costs.should eq(result)
+  end
+
   describe "A picked screening" do
     let!(:pick) do
       create(:pick, user: user, festival: festival, film: screening.film,
              screening: screening)
     end
     it "has a cost of Infinity" do
-      subject.cost.should == Cost::UNPICKABLE
+      subject.total_cost.should == Cost::UNPICKABLE
     end
   end
 
   describe "A started screening" do
     it "has a cost of Infinity" do
       autoscheduler.stub(:now).and_return(screening.starts_at + 5.minutes)
-      subject.cost.should == Cost::UNPICKABLE
+      subject.total_cost.should == Cost::UNPICKABLE
+    end
+    it "has a cost-as-conflict of 0" do
+      autoscheduler.stub(:now).and_return(screening.starts_at + 5.minutes)
+      subject.cost_as_conflict.should == Cost::FREE
     end
   end
 
@@ -91,8 +120,9 @@ describe Cost do
       create(:pick, user: user, festival: festival, screening: screening2)
     end
     it "has a cost of Infinity" do
-      subject.cost.should == Cost::UNPICKABLE
+      subject.total_cost.should == Cost::UNPICKABLE
     end
+    # conflicts don't influence cost_as_conflict
   end
 
   describe "A screening of a film picked elsewhere" do
@@ -104,8 +134,11 @@ describe Cost do
       create(:pick, user: user, festival: festival, film: screening2.film,
              screening: screening2)
     end
-    it "has a cost of 0" do
-      subject.cost.should == 0
+    it "has a cost of Infinity" do
+      subject.total_cost.should == Cost::UNPICKABLE
+    end
+    it "has a cost-as-conflict of 0" do
+      subject.cost_as_conflict.should == Cost::FREE
     end
   end
 end
