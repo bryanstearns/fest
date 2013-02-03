@@ -188,6 +188,9 @@ class AutoScheduler
       elsif screening_id_conflicts_scheduled?(s.id)
         log "screening #{s.id} is not pickable because conflict #{screening_id_conflicts_scheduled?(s.id)} is scheduled"
         false
+      elsif film_priority(s.film_id) == 0
+        log "screening #{s.id} is not pickable because it's not prioritized (or 0)."
+        false
       elsif s.starts_at < now
         log "screening #{s.id} is not pickable because it started already, at #{s.starts_at}"
         false

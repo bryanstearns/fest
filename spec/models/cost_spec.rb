@@ -114,6 +114,17 @@ describe Cost do
     end
   end
 
+  describe "A screening of a 0- or unprioritized film" do
+    it "has a cost of Infinity" do
+      subject.stub(:priority).and_return(0)
+      subject.total_cost.should == Cost::UNPICKABLE
+    end
+    it "has a cost-as-conflict of 0" do
+      subject.stub(:priority).and_return(0)
+      subject.cost_as_conflict.should == Cost::FREE
+    end
+  end
+
   describe "A screening with a picked conflict" do
     let(:screening2) { festival.conflicting_screenings(screening).first }
     let!(:conflicting_pick) do

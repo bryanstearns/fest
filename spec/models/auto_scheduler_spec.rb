@@ -45,7 +45,9 @@ describe AutoScheduler do
     end
 
     it 'keeps a list of pickable screenings' do
-      subject.current_pickable_screenings.should eq(subject.all_screenings)
+      subject.stub(:film_priority) {|id| id % 2 == 0 ? 4 : 0 }
+      subject.current_pickable_screenings.should \
+        eq(subject.all_screenings.select {|s| s.film_id % 2 == 0 })
     end
   end
 
@@ -200,7 +202,8 @@ describe AutoScheduler do
         end
       end
       let!(:nonconflicting_pick) do
-        create(:pick, user: user, festival: festival, film: screening2.film)
+        create(:pick, user: user, festival: festival, film: screening2.film,
+               priority: 4)
       end
       subject { autoscheduler.schedule(screening2) }
 

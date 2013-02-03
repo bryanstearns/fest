@@ -18,6 +18,9 @@ class Cost
       if started?
         log(@total_cost_message = "started #{screening.starts_at}, UNPICKABLE")
         UNPICKABLE
+      elsif priority == 0
+        log(@total_cost_message = "priority 0, UNPICKABLE")
+        UNPICKABLE
       elsif screening_scheduled?
         log(@total_cost_message = "screening_scheduled, UNPICKABLE")
         UNPICKABLE
@@ -60,6 +63,9 @@ class Cost
       UNPICKABLE
     elsif film_scheduled?
       log(@cost_as_conflict_message = "(conflict) film_scheduled, FREE")
+      FREE
+    elsif priority == 0
+      log(@cost_as_conflict_message = "(conflict) priority 0, FREE")
       FREE
     else
       log(@cost_as_conflict_message = "(conflict) calculated, #{calculated_cost}")
