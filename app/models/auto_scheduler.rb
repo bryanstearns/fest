@@ -1,6 +1,9 @@
 class AutoScheduler
   class InternalError < StandardError; end
-  attr_reader :festival, :now, :show_press, :unselect, :user, :verbose
+
+  include ActionView::Helpers::TextHelper
+  attr_reader :festival, :now, :show_press, :unselect, :user, :verbose,
+              :screenings_scheduled
 
   def initialize(options)
     @user = options[:user]
@@ -8,20 +11,39 @@ class AutoScheduler
     @show_press = options[:show_press]
     @unselect = options[:unselect] || 'none'
     @now = options[:now] || Time.current
+
+    @screenings_scheduled = 0
     @verbose = options[:verbose]
-    puts "Autoscheduler created for #{user.email} at #{festival.slug}" if verbose
+    log "Autoscheduler created for #{user.email} at #{festival.slug}"
   end
 
   def run
+    log "Run..."
     unselect_screenings(unselect)
     loop do
       schedule(next_best_screening || break)
+      log "Pass #{screenings_scheduled}"
     end
+    log "Done; #{screenings_scheduled} scheduled."
   end
 
   def unselect_screenings(unselect)
     festival.reset_screenings(user, unselect == 'future') \
       unless unselect == 'none'
+  end
+
+  def message
+    case screenings_scheduled
+    when 0
+      'No more screenings scheduled.'
+    when 1
+      "One screening scheduled: " +
+          "#{@last_scheduled_cost.total_cost if Rails.env.development?} " +
+          "#{@last_scheduled_screening.name} " +
+          "on #{I18n.l @last_scheduled_screening.starts_at, format: :dmd_hm }"
+    else
+      "#{pluralize(screenings_scheduled, 'more screening')} scheduled."
+    end.tap {|result| log "Message: \"#{result}\"" }
   end
 
   def next_best_screening
@@ -30,6 +52,7 @@ class AutoScheduler
   end
 
   def find_minimum_cost
+    log "looking for minimum-cost screening; #{current_pickable_screenings.count} left"
     reset_costs
     costs.values.min_by {|cost| cost.total_cost }
   end
@@ -46,6 +69,8 @@ class AutoScheduler
   end
 
   def schedule(screening)
+    cost = costs[screening]
+    log "Scheduling: #{screening.id}, #{cost.inspect}"
     check_for_conflict!(screening)
 
     pick = current_picks_by_film_id[screening.film_id]
@@ -53,6 +78,9 @@ class AutoScheduler
     pick.save!
     current_picks_by_screening_id[screening.id] = pick
     current_pickable_screenings.delete(screening)
+    @last_scheduled_screening = screening
+    @last_scheduled_cost = cost
+    @screenings_scheduled += 1
   end
 
   def check_for_conflict!(screening)
@@ -103,19 +131,19 @@ class AutoScheduler
   def current_pickable_screenings
     @current_pickable_screenings ||= all_screenings.select do |s|
       if film_id_scheduled?(s.film_id)
-        puts "screening #{s.id} not pickable because film #{s.film_id} screening #{film_id_scheduled?(s.film_id)} is already scheduled" if verbose
+        log "screening #{s.id} not pickable because film #{s.film_id} screening #{film_id_scheduled?(s.film_id)} is already scheduled"
         false
       elsif screening_id_conflicts_scheduled?(s.id)
-        puts "screening #{s.id} is not pickable because conflict #{screening_id_conflicts_scheduled?(s.id)} is scheduled" if verbose
+        log "screening #{s.id} is not pickable because conflict #{screening_id_conflicts_scheduled?(s.id)} is scheduled"
         false
       elsif s.starts_at < now
-        puts "screening #{s.id} is not pickable because it started already, at #{s.starts_at}" if verbose
+        log "screening #{s.id} is not pickable because it started already, at #{s.starts_at}"
         false
       else
-        puts "screening #{s.id} is pickable!" if verbose
+        log "screening #{s.id} is pickable!"
         true
       end
-    end.compact
+    end.compact.tap {|result| "found #{pluralize(result.count, 'pickable screening')}" }
   end
 
   #
@@ -133,5 +161,11 @@ class AutoScheduler
     all_conflicting_screening_ids_by_screening_id[screening_id].find do |s_id|
       screening_id_scheduled?(s_id) ? s_id : nil
     end
+  end
+
+  def log(msg)
+    msg = "AS: " + msg
+    Rails.logger.info(msg)
+    puts msg if verbose
   end
 end

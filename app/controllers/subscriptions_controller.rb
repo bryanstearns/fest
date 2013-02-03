@@ -21,7 +21,8 @@ class SubscriptionsController < ApplicationController
   # PUT /festivals/1/assistant
   def update
     if @subscription.update_attributes(params[:subscription])
-      flash[:notice] = "This is where I would have automatically scheduled stuff."
+      flash[:notice] = @subscription.autoscheduler_message \
+        if @subscription.autoscheduler_message.present?
       redirect_to festival_path(@festival)
     else
       render :show

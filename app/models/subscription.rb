@@ -34,4 +34,8 @@ class Subscription < ActiveRecord::Base
       unselect: unselect
     }
   end
+
+  def autoscheduler_message
+    @autoscheduler && autoscheduler.message
+  end
 end

@@ -49,5 +49,14 @@ class Cost
 
   def film_scheduled?
     autoscheduler.film_id_scheduled?(screening.film_id)
+  def inspect
+    "<Cost screening_id=#{screening_id} priority=#{priority.inspect} total_cost=#{total_cost.round(3)} " +
+        "cost_as_conflict=#{cost_as_conflict.round(3)} " +
+        "conflicts=#{autoscheduler.all_conflicting_screening_ids_by_screening_id[screening_id].inspect} " +
+        "conflict_costs=#{conflict_costs.map{|x| x.round(3)}.inspect}>"
+  end
+
+  def log(msg)
+    autoscheduler.log("Cost(#{screening_id}: #{screening.name}): " + msg)
   end
 end

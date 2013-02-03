@@ -72,6 +72,17 @@ describe Subscription do
         AutoScheduler.any_instance.should_not_receive(:run)
         subject.save!
       end
+
+      it 'returns a blank message' do
+        subject.autoscheduler_message.should be_blank
+      end
+    end
+
+    context 'when we do autoschedule' do
+      it 'returns the autoscheduler\'s message' do
+        subject.autoscheduler.stub(:message).and_return('helooo')
+        subject.autoscheduler_message.should == 'helooo'
+      end
     end
   end
 end
