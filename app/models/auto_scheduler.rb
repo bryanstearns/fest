@@ -33,7 +33,8 @@ class AutoScheduler
   end
 
   def unselect_screenings(unselect)
-    festival.reset_screenings(user, unselect == 'future') \
+    log "Unselecting: #{unselect}"
+    festival.reset_screenings(user, unselect == 'future' ? :now : nil) \
       unless unselect == 'none'
   end
 
@@ -66,9 +67,21 @@ class AutoScheduler
   end
 
   def find_minimum_cost
-    log "looking for minimum-cost screening; #{current_pickable_screenings.count} left"
     reset_costs
-    costs.values.min_by {|cost| cost.total_cost }
+
+    pickable_costs = current_pickable_screenings.map {|s| costs[s] }
+    result = if Rails.env.development?
+      all_pickable = pickable_costs.sort_by {|cost| cost.total_cost }
+      details = all_pickable.map {|c| "#{c.screening_id}: #{c.total_cost.round(3)}"}.join(", ")
+      log("#{all_pickable.count} remaining: #{details}")
+      all_pickable.first
+    else
+      pickable_costs.min_by {|cost| cost.total_cost }
+    end
+
+    log(result ? "find_minimum_cost found #{result.screening_id}: #{result.inspect}" \
+               : "find_minimum_cost: no pickable screenings")
+    result
   end
 
   def reset_costs
@@ -90,7 +103,9 @@ class AutoScheduler
     pick = current_picks_by_film_id[screening.film_id]
     pick.screening = screening
     pick.save!
+
     current_picks_by_screening_id[screening.id] = pick
+    current_picks_by_film_id[screening.film_id] = pick
     current_pickable_screenings.delete(screening)
     @last_scheduled_screening = screening
     @last_scheduled_cost = cost
@@ -115,9 +130,27 @@ class AutoScheduler
   end
 
   def all_conflicting_screening_ids_by_screening_id
-    @all_conflicts_by_id ||= all_screenings.inject(Hash.new {|h, k| h[k] = []}) do |h, s|
-      h[s.id] = all_screenings.map {|sx| sx.id if s.conflicts_with?(sx) }.compact
-      h
+    @all_conflicts_by_id ||= begin
+      all_screenings.inject(Hash.new {|h, k| h[k] = []}) do |h, s|
+        h[s.id] = all_screenings.map {|sx| sx.id if s.conflicts_with?(sx) }.compact
+        h
+      end
+    end
+  end
+
+  def all_remaining_screening_count_by_film_id
+    @all_remaining_screening_count_by_film_id ||= begin
+      all_screenings.inject(Hash.new {|h, k| h[k] = 0}) do |h, s|
+        h[s.film_id] += 1 unless s.starts_at < now
+        h
+      end
+    end
+  end
+
+  def all_films_by_id
+    @all_films_by_id ||= begin
+      film_ids = all_screenings.map {|s| s.film_id }.uniq
+      festival.films.find(film_ids).map_by(:id)
     end
   end
 
@@ -136,10 +169,15 @@ class AutoScheduler
 
   def current_picks_by_film_id
     @current_picks_by_film_id ||= begin
-      current_picks.map_by do |p|
-        p.film_id
+      current_picks.inject(Hash.new {|h, f_id| h[f_id] = build_pick(f_id) }) do |h, pick|
+        h[pick.film_id] = pick
+        h
       end
     end
+  end
+
+  def build_pick(film_id)
+    user.picks.build({film: all_films_by_id[film_id] }, as: :pick_creator)
   end
 
   def current_pickable_screenings
@@ -177,7 +215,26 @@ class AutoScheduler
     end
   end
 
+  def screening_id_conflicts(screening_id)
+    all_conflicting_screening_ids_by_screening_id[screening_id].map do |s_id|
+      all_screenings_by_id[s_id]
+    end
+  end
+
+  def screening_id_conflicts_costs(screening_id)
+    screening_id_conflicts(screening_id).map {|s| costs[s] }
+  end
+
+  def remaining_screenings_count(film_id)
+    all_remaining_screening_count_by_film_id[film_id]
+  end
+
+  def film_priority(film_id)
+    current_picks_by_film_id[film_id].try(:priority) || 0
+  end
+
   def log(msg)
+    return if Rails.env.test?
     msg = "AS: " + msg
     Rails.logger.info(msg)
     puts msg if verbose
