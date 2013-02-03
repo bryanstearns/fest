@@ -1,5 +1,12 @@
 <h2>Sign in</h2>
 
+<p>Note: If this is your first visit to Festival Fanatic since the start of
+   2013, you'll need to reset your password: please click the "Forgot your
+   password?" link below and we'll send you an email that will allow you to
+   reset it. (If you no longer have access to the email account you used to
+   register here, send a note using the Feedback link above with your name
+   and old & new email addresses, and we'll get you squared away quick!)</p>
+
 <%= simple_form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
   <div class="form-inputs">
     <%= f.input :email, :required => false, :autofocus => true %>
