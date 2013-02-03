@@ -1,18 +1,48 @@
-<div id="overview">
-  <h2><strong>Get more</strong> from your film festival experience!</h2>
-  <p>
-    Festival Fanatic can help you see more of the movies you want to see...
-    it's as easy as 1 - 2 - 3:
-  </p>
-  <ol>
-    <li>
-      Prioritize films
-    </li>
-    <li>
-      Tell us when you're available, and we'll find screenings for you automatically
-    </li>
-    <li>
-      Browse your schedule, from your desktop, your tablet, or your phone
-    </li>
-  </ol>
+
+<div class="row-fluid">
+  <div id="slogan" class="span12">
+    <strong>Get more</strong> from your film festival experience!
+  </div>
+</div>
+
+<div class="row-fluid">
+  <div id="overview" class="span12">
+    <p>
+      Festival Fanatic can help you see more of the movies you want to see...<br>
+      it's as easy as 1 - 2 - 3:
+    </p>
+    <div class="row-fluid">
+      <div class="span4 prioritize">
+        <div>1. Prioritize your films</div>
+        Which films do you really want to see?
+      </div>
+      <div class="span4 availability">
+        <div>2. Tell us when you're available</div>
+        and we'll find screenings for you automatically
+      </div>
+      <div class="span4 browse">
+        <div>3. Browse your schedule</div>
+        from your desktop, and (soon!) your tablet or phone
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="calltoaction" class="row-fluid">
+  <div class="span12">
+    <% if !user_signed_in? %>
+      <% if enabled?(:sign_up) %>
+        <%= link_to "Sign Up (it's free!)", new_user_registration_path,
+                    id: "signup", class: "btn btn-large" %>
+        <span>
+          or <%=  link_to "sign in", new_user_session_path %>
+          if you already have an account
+        </span>
+      <% else %>
+        (New sign ups are currently turned off. Check back soon)
+      <% end %>
+    <% else %>
+      Welcome back, <%= current_user.name %>!
+    <% end %>
+  </div>
 </div>
