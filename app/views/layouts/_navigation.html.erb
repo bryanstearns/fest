@@ -1,21 +1,32 @@
 <% minimal ||= false %>
-<header id="topnav" class="navbar navbar-fixed-top navbar-inverse">
+<header id="topnav" class="navbar navbar-inverse">
   <div class="navbar-inner">
     <div class="container">
-      <nav>
-        <%= link_to root_path, class: :brand do %>
-          Festival Fanatic
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+
+      <span class="sitename">
+        <% if user_signed_in? %>
+          <%= current_user.name %> is a <%= link_to "Festival Fanatic!", root_path %>
+        <% else %>
+          Are you a <%= link_to "Festival Fanatic?", root_path %>
         <% end %>
+      </span>
+
+      <div class="nav-collapse collapse">
         <ul class="nav">
           <% unless @hide_site_navigation_controls %>
+            <% if user_signed_in? && current_user_is_admin? %>
+              <li><%= link_to "Admin", admin_root_path,
+                              class: (needs_admin_attention? && "attention") %></li>
+            <% end %>
             <li><%= link_to "Festivals", festivals_path %></li>
             <li><%= link_to "Help", faq_path %></li>
             <li><%= link_to "Feedback", feedback_path %></li>
             <% if user_signed_in? %>
-              <% if current_user_is_admin? %>
-                <li><%= link_to "Admin", admin_root_path,
-                                class: (needs_admin_attention? && "attention") %></li>
-              <% end %>
               <li><%= link_to "My Account", edit_user_registration_path %></li>
               <li id="sign_out"><%= link_to "Sign out", destroy_user_session_path %></li>
             <% else %>
@@ -24,7 +35,7 @@
             <% end %>
           <% end %>
         </ul>
-      </nav>
+      </div>
     </div>
   </div>
 </header>
