@@ -35,7 +35,7 @@ describe QuestionsController do
 
       it "redirects to the home page" do
         post :create, {:question => valid_attributes}
-        response.should redirect_to(root_path)
+        response.should redirect_to(welcome_path)
       end
     end
 

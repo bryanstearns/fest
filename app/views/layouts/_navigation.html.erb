@@ -10,9 +10,9 @@
 
       <span class="sitename">
         <% if user_signed_in? %>
-          <%= current_user.name %> is a <%= link_to "Festival Fanatic!", root_path %>
+          <%= current_user.name %> is a <%= link_to "Festival Fanatic!", welcome_path %>
         <% else %>
-          Are you a <%= link_to "Festival Fanatic?", root_path %>
+          Are you a <%= link_to "Festival Fanatic?", welcome_path %>
         <% end %>
       </span>
 

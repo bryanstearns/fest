@@ -1,6 +1,6 @@
 
 When /^I visit the home page$/ do
-  visit root_path
+  visit welcome_path
 end
 
 When /^I visit the maintenance page$/ do

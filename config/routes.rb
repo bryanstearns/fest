@@ -19,7 +19,8 @@ Fest::Application.routes.draw do
 
   resources :questions, only: [:new, :create]
 
-  root to: "home#index"
+  root to: "home#landing"
+  match 'welcome' => "home#index", as: :welcome
   match 'maintenance' => "home#maintenance", as: :maintenance
   match 'sign_ups_off' => "home#sign_ups_off", as: :sign_ups_off
   match 'faq' => "home#faq", as: :faq

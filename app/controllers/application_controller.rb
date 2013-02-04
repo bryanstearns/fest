@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
         "Sorry, signing in is temporarily unavailable while I make the site " +
         "better. This shouldn't take long - come back in a bit to sign back " +
         "in; feel free to browse around in the meantime."
-      redirect_to root_path
+      redirect_to welcome_path
     when :sign_up
       redirect_to sign_ups_off_path
     else

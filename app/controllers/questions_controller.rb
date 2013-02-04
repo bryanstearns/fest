@@ -14,6 +14,6 @@ class QuestionsController < ApplicationController
     if @question.save
       flash[:notice] = 'Thanks for contacting me - I\'ll get back to you shortly.'
     end
-    respond_with(@question, location: root_path)
+    respond_with(@question, location: welcome_path)
   end
 end
