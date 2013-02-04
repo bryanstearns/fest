@@ -342,6 +342,24 @@ module Fest2Importer
     end
   end
 
+  class Announcement < ImportableModel
+    def attributes_to_copy
+      {
+          subject: subject,
+          contents: contents,
+          published: false,
+          published_at: published_at,
+          created_at: created_at,
+          updated_at: updated_at
+      }
+    end
+
+    def import
+      ::Announcement.create!(attributes_to_copy,
+                             without_protection: true)
+    end
+  end
+
   def self.drop_bad_accounts
     bad_domains = [
         # Had a run of spammers trying to abuse the old site.
@@ -381,7 +399,8 @@ module Fest2Importer
 
   def self.import
     Rails.logger.info "Importing Fest2 data..."
-    [Location, Venue, Festival, Film, Screening, User, Pick, Question].each do |klass|
+    [Location, Venue, Festival, Film, Screening, User, Pick,
+     Question, Announcement].each do |klass|
       klass.import_all
     end
 

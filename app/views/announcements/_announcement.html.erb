@@ -1,0 +1,16 @@
+<%= div_for(announcement) do %>
+  <h4>
+    <%= link_to_unless_current announcement.subject.html_safe,
+                               announcement_path(announcement) %>
+    <%= link_to 'Edit', edit_admin_announcement_path(announcement),
+                class: "btn btn-mini" if current_user_is_admin? %>
+  </h4>
+  <div class="published">
+    <% if announcement.published? %>
+      <%= l announcement.published_at, format: :dmdy_hm %>
+    <% else %>
+      (unpublished)
+    <% end %>
+  </div>
+  <%= announcement.contents.html_safe %>
+<% end %>

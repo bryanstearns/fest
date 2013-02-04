@@ -17,6 +17,7 @@ Fest::Application.routes.draw do
   end
   resources :screenings, only: [:show]
 
+  resources :announcements, only: [:index, :show]
   resources :questions, only: [:new, :create]
 
   root to: "home#landing"
@@ -44,6 +45,7 @@ Fest::Application.routes.draw do
 
     resources :users
     resources :enabled_flags, :only => [:update]
+    resources :announcements, only: [:new, :create, :edit, :update, :destroy]
     resources :questions, only: [:index, :show, :edit, :update, :destroy]
   end
 end

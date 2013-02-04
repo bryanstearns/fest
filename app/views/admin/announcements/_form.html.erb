@@ -1,0 +1,15 @@
+<%= simple_form_for([:admin, @announcement],
+                    class: 'announcement') do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :subject %>
+    <%= f.input :contents %>
+    <%= f.input :published %>
+    <%= f.input :published_at, as: :string %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

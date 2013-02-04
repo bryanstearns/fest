@@ -1,0 +1,45 @@
+require 'spec_helper'
+
+describe AnnouncementsController do
+  def valid_attributes
+    attributes_for(:announcement)
+  end
+
+  describe "GET index" do
+    context "when logged in as an admin" do
+      login_admin
+      it "assigns all announcements as @announcements" do
+        announcement = create(:announcement) # unpublished!
+        get :index, {}
+        assigns(:announcements).should eq([announcement])
+      end
+    end
+    context "when not logged in as an admin" do
+      it "assigns published announcements as @announcements" do
+        unpublished_announcement = create(:announcement)
+        published_announcement = create(:announcement, :published)
+        get :index, {}
+        assigns(:announcements).should eq([published_announcement])
+      end
+    end
+  end
+
+  describe "GET show" do
+    context "when logged in as an admin" do
+      login_admin
+      it "assigns the requested announcement as @announcement" do
+        announcement = create(:announcement, :published)
+        get :show, {:id => announcement.to_param}
+        assigns(:announcement).should eq(announcement)
+      end
+    end
+    context "when not logged in as an admin" do
+      it "doesn't find unpublished announcements" do
+        announcement = create(:announcement)
+        expect {
+          get :show, {:id => announcement.to_param}
+        }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
+end

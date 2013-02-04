@@ -17,7 +17,7 @@
         Which films do you really want to see?
       </div>
       <div class="span4 availability">
-        <div>2. Tell us when you're available</div>
+        <div>2. Tell me when you're available</div>
         and I'll find screenings for you automatically
       </div>
       <div class="span4 browse">
@@ -44,3 +44,12 @@
     <% end %>
   </div>
 </div>
+
+<% if @announcements.present? %>
+  <h3>News</h3>
+  <div class="announcements">
+    <%= render partial: "announcements/announcement",
+               collection: @announcements %>
+    <%= link_to "All announcements", announcements_path, class: "btn" %>
+  </div>
+<% end %>

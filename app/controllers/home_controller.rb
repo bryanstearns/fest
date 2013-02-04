@@ -19,6 +19,7 @@ class HomeController < ApplicationController
   end
 
   def index
+    @announcements = Announcement.published.limit(4)
   end
 
   def admin

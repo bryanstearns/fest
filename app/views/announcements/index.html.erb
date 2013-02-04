@@ -1,0 +1,14 @@
+<%= link_to "New announcement", new_admin_announcement_path,
+            class: "btn btn-small", id: 'new_announcement' \
+      if current_user_is_admin? %>
+
+<h3>All News</h3>
+
+<% if @announcements.present? %>
+  <div class="announcements">
+    <%= render partial: "announcements/announcement",
+               collection: @announcements %>
+  </div>
+<% else %>
+  (no published announcements right now...)
+<% end %>
