@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(:version => 20130204012854) do
   create_table "films", :force => true do |t|
     t.integer  "festival_id",  :null => false
     t.string   "name"
+    t.string   "sort_name"
     t.text     "description"
     t.string   "url_fragment"
     t.integer  "duration"
@@ -109,11 +110,14 @@ ActiveRecord::Schema.define(:version => 20130204012854) do
   add_index "screenings", ["film_id", "starts_at", "press"], :name => "index_screenings_on_film_id_and_starts_at_and_press"
 
   create_table "subscriptions", :force => true do |t|
-    t.integer  "festival_id",                    :null => false
-    t.integer  "user_id",                        :null => false
-    t.boolean  "show_press",  :default => false
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
+    t.integer  "festival_id",                                            :null => false
+    t.integer  "user_id",                                                :null => false
+    t.boolean  "show_press",                          :default => false
+    t.text     "restriction_text"
+    t.string   "excluded_location_ids"
+    t.string   "key",                   :limit => 10
+    t.datetime "created_at",                                             :null => false
+    t.datetime "updated_at",                                             :null => false
   end
 
   add_index "subscriptions", ["festival_id", "user_id"], :name => "index_subscriptions_on_festival_id_and_user_id", :unique => true

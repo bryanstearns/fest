@@ -1,21 +1,92 @@
 <h3>Almost there: I'll create a schedule for you</h3>
 
-<%= simple_form_for([@festival, @subscription]) do |f| %>
-  <%= f.error_notification %>
+<p>
+  This is the good part: I'll try to build you a schedule that includes as
+  many of your higher-priority films as possible. You can customize this
+  process: if there are times you can't attend the festival, or venues you
+  don't want to travel to, enter them below. When you're done, click the
+  "Schedule Films!" button, and I'll create a schedule just for you.
+</p>
 
+<%= simple_form_for(@subscription, url: festival_subscription_path(@festival),
+                    method: :put) do |f| %>
+  <%= f.error_notification %>
   <div class="form-inputs">
-    <%= f.input :show_press, label: "Show press screenings?" %>
-    <%= unselect_menu if @user_has_screenings %>
+
+    <ul>
+      <li>
+        Are there times you can't attend this festival? Enter them here
+        and I won't schedule any screenings for these times (though I'll still
+        show them on the schedule, and you can still pick them manually).
+        <p>
+          This feature is kind of finicky: use dates and time ranges with
+          punctuation like this:<br/>
+          <i>2/5, 2/6 -10am, 2/8 11:30am-2pm & 8pm-10pm</i>
+        </p>
+        <%= f.error :excluded_location_ids %>
+        <p><%= f.text_field :restriction_text, :size => 80 %></p>
+      </li>
+
+      <% if @festival.locations.any? %>
+        <li class="locations">
+          <p>
+            What locations should we include? As a Festival Fanatic, you'll
+            probably go to all of them, but if any are too inconvenient for you,
+            just uncheck them here: I won't schedule any screenings at those
+            theaters (though I'll still show them on the schedule, and you can
+            still pick them manually).</p>
+          <%= f.error :excluded_location_ids %>
+          <%= hidden_field_tag "subscription[included_location_ids][]", "",
+                               :name => "subscription[included_location_ids][]" %>
+          <% included_ids = @subscription.included_location_ids
+             @festival.locations.each do |location| -%>
+            <div>
+              <% id = location.id %>
+              <%= check_box_tag "subscription[included_location_ids][#{id}]", id,
+                                included_ids.include?(id),
+                                :name => "subscription[included_location_ids][]" %>
+              <%= label_tag "subscription_included_location_ids_#{id}", location.name,
+                            class: 'box' %>
+            </div>
+          <% end -%>
+        </li>
+      <% end -%>
+
+      <li>
+        <p>
+          Will you be attending any of the press screenings? I won't show them
+          on your schedule unless you check this box.
+        </p>
+        <div>
+          <%= check_box 'subscription', :show_press %>
+          <%= label 'subscription', :show_press, 'Show the press screenings?',
+                    class: 'box' %>
+        </div>
+      </li>
+
+      <% if @user_has_screenings %>
+        <li>
+          <p>You've got some screenings selected already; what should I do with them?</p>
+          <div><%= unselect_menu %></div>
+        </li>
+      <% end %>
+
+      <% if autoscheduler_debugging? %>
+        <li>
+          <p>Debugging: Limit the screenings I schedule?</p>
+          <div>
+            <%= debug_menu %>
+          </div>
+        </li>
+        <li>
+          <p>Debugging: Should I stop before scheduling a particular screening?</p>
+          <%= f.input :up_to_screening_id, label: "Stop at screening ID" %>
+        </li>
+      <% end %>
+    </ul>
   </div>
 
-  <% if autoscheduler_debugging? %>
-    <div class="form-inputs">
-      <%= f.input :up_to_screening_id, label: "Stop at screening ID" %>
-      <%= debug_menu %>
-    </div>
-  <% end %>
-
   <div class="form-actions">
-    <%= f.button :submit %>
+    <%= f.button :submit, 'Schedule Films!' %>
   </div>
 <% end %>

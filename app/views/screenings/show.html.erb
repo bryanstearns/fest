@@ -12,8 +12,8 @@
       <ul>
         <%= render @other_screenings %>
       </ul>
-      <% if autoscheduler_debugging? && @subscription %>
-        <p><%= @subscription.cost(@screening).inspect %></p>
+      <% if autoscheduler_debugging? && @autoscheduler %>
+        <p><%= @autoscheduler.costs[@screening].inspect %></p>
       <% end %>
     <% end %>
   <% end %>

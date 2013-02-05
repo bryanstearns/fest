@@ -72,6 +72,13 @@ describe SubscriptionsController do
           assigns(:subscription).should eq(subscription)
         end
 
+        it 'tries to run the autoscheduler' do
+          AutoScheduler.any_instance.stub(:should_run?).and_return(true)
+          AutoScheduler.any_instance.should_receive(:run)
+          put :update, { :festival_id => festival.to_param,
+                         :subscription => { } }
+        end
+
         it 'redirects to the festival' do
           put :update, { :festival_id => festival.to_param,
                          :subscription => { 'show_press' => false,
@@ -80,24 +87,27 @@ describe SubscriptionsController do
         end
       end
 
-      #No invalid params yet...
-      #describe "with invalid params" do
-      #  it "assigns the subscription as @subscription" do
-      #    subscription = Subscription.create! valid_attributes
-      #    # Trigger the behavior that occurs when invalid params are submitted
-      #    Subscription.any_instance.stub(:save).and_return(false)
-      #    put :update, {:id => subscription.to_param, :subscription => { "festival_id" => "invalid value" }}, valid_session
-      #    assigns(:subscription).should eq(subscription)
-      #  end
-      #
-      #  it "re-renders the 'show' template" do
-      #    subscription = Subscription.create! valid_attributes
-      #    # Trigger the behavior that occurs when invalid params are submitted
-      #    Subscription.any_instance.stub(:save).and_return(false)
-      #    put :update, {:id => subscription.to_param, :subscription => { "festival_id" => "invalid value" }}, valid_session
-      #    response.should render_template("show")
-      #  end
-      #end
+      describe "with invalid params" do
+        let!(:subscription) { create(:subscription, user: @signed_in_user,
+                                     festival: festival) }
+        it "assigns the subscription as @subscription" do
+          # Trigger the behavior that occurs when invalid params are submitted
+          Subscription.any_instance.stub(:save).and_return(false)
+          Subscription.any_instance.stub(:errors).and_return(some: ['errors'])
+          put :update, { :festival_id => festival.to_param,
+                         :subscription => { "restriction_text" => "invalid value" }}
+          assigns(:subscription).should eq(subscription)
+        end
+
+        it "re-renders the 'show' template" do
+          # Trigger the behavior that occurs when invalid params are submitted
+          Subscription.any_instance.stub(:save).and_return(false)
+          Subscription.any_instance.stub(:errors).and_return(some: ['errors'])
+          put :update, { :festival_id => festival.to_param,
+                         :subscription => { "restriction_text" => "invalid value" }}
+          response.should render_template("show")
+        end
+      end
     end
   end
 end

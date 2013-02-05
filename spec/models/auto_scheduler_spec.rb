@@ -5,11 +5,25 @@ describe AutoScheduler do
   let(:festival) { create(:festival, :with_films_and_screenings,
                           starts_on: Date.tomorrow, press: true) }
   let(:now) { Time.current }
+  let(:subscription) { create(:subscription, festival: festival,
+                              user: user)}
   let(:autoscheduler) {
     AutoScheduler.new(festival: festival, user: user,
+                      subscription: subscription,
                       show_press: false, now: now) }
   let(:expected_visible_screenings) { festival.screenings_visible_to(user) }
   let(:expected_visible_films) { expected_visible_screenings.map(&:film).uniq }
+
+  context 'when skip_autoscheduler is set' do
+    let(:subscription) { build(:subscription, skip_autoscheduler: true) }
+    it 'declines to run' do
+      autoscheduler.should_run?.should be_false
+    end
+
+    it 'returns a blank message' do
+      autoscheduler.message.should be_blank
+    end
+  end
 
   context 'when initializing' do
     subject { autoscheduler }

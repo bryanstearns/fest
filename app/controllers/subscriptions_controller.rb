@@ -21,8 +21,7 @@ class SubscriptionsController < ApplicationController
   # PUT /festivals/1/assistant
   def update
     if @subscription.update_attributes(params[:subscription])
-      flash[:notice] = @subscription.autoscheduler_message \
-        if @subscription.autoscheduler_message.present?
+      maybe_run_autoscheduler
       redirect_to festival_path(@festival)
     else
       render :show
@@ -30,6 +29,16 @@ class SubscriptionsController < ApplicationController
   end
 
 protected
+  def maybe_run_autoscheduler
+    autoscheduler = AutoScheduler.new(user: current_user,
+                                      festival: @festival,
+                                      subscription: @subscription)
+    if autoscheduler.should_run?
+      autoscheduler.run
+      flash[:notice] = autoscheduler.message if autoscheduler.message.present?
+    end
+  end
+
   def load_subscription
     @subscription = current_user.subscription_for(@festival, create: true)
   end

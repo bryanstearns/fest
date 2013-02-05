@@ -4,8 +4,8 @@ class Restriction
   attr_accessor :starts_at, :ends_at
 
   def initialize(starts_at, ends_at=nil)
-    @starts_at = starts_at
-    @ends_at = ends_at || rounded_end_of_day(starts_at)
+    @starts_at = starts_at.in_time_zone
+    @ends_at = (ends_at || rounded_end_of_day(starts_at)).in_time_zone
   end
 
   def self.dump(restrictions)
@@ -28,8 +28,8 @@ class Restriction
     t.strftime(t.min == 0 ? "#{hour}%P" : "#{hour}:%M%P")
   end
 
-  def self.load(text, context_date=nil)
-    context_date ||= Time.current
+  def self.load(text, context_date)
+    return [] unless text.present?
     context_date = context_date.to_date
     text.gsub(%r/\s{2,}/, ' ').split(',').map do |raw|
       parse_one_day(raw, context_date)
@@ -86,7 +86,7 @@ class Restriction
   end
 
   def inspect
-    "<Restriction #{starts_at}-#{ends_at}>"
+    "<Restriction #{starts_at.inspect}-#{ends_at.inspect}>"
   end
 
 private

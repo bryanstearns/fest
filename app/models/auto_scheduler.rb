@@ -2,21 +2,25 @@ class AutoScheduler
   class InternalError < StandardError; end
 
   include ActionView::Helpers::TextHelper
-  attr_reader :debug, :festival, :now, :show_press, :unselect, :user, :verbose,
-              :screenings_scheduled
+  attr_reader :festival, :now, :screenings_scheduled, :subscription,
+              :user, :verbose
+
+  delegate :skip_autoscheduler, :show_press, :unselect, :debug,
+           :up_to_screening_id, to: :subscription
 
   def initialize(options)
     @user = options[:user]
     @festival = options[:festival]
-    @show_press = options[:show_press]
-    @unselect = options[:unselect] || 'none'
-    @debug = options[:debug]
+    @subscription = options[:subscription]
     @now = options[:now] || Time.current
-    @up_to_screening_id = options[:up_to_screening_id]
+    @verbose = options[:verbose]
 
     @screenings_scheduled = 0
-    @verbose = options[:verbose]
     log "Autoscheduler created for #{user.email} at #{festival.slug}"
+  end
+
+  def should_run?
+    !skip_autoscheduler && (debug != 'none')
   end
 
   def run
@@ -48,6 +52,7 @@ class AutoScheduler
   end
 
   def message
+    return nil unless should_run?
     case screenings_scheduled
     when 0
       'No more screenings scheduled.'

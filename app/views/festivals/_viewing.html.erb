@@ -10,8 +10,8 @@
   <div class="times">
     <%= screening_times(viewing.screening) %>
     <%= '(press)' if viewing.press? %>
-    <% if autoscheduler_debugging? && @subscription %>
-      <% cost = @subscription.autoscheduler.costs[viewing.screening] %>
+    <% if autoscheduler_debugging? && @autoscheduler %>
+      <% cost = @autoscheduler.costs[viewing.screening] %>
       <%= cost.total_cost.round(3) rescue 'nil' %>/<%= cost.cost_as_conflict.round(3) rescue 'nil' %>
     <% end %>
   </div>

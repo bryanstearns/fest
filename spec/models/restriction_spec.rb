@@ -23,7 +23,7 @@ describe Restriction do
 
   context 'loading from text' do
     it 'produces an array of restrictions' do
-      Restriction.load(items_serialized).should eq(items)
+      Restriction.load(items_serialized, Date.parse('1/1/2013')).should eq(items)
     end
   end
 

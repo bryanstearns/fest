@@ -32,59 +32,50 @@ describe Subscription do
     end
   end
 
-  context 'autoscheduling' do
-    it 'initializes the autoscheduler with the right options' do
-      subject.autoscheduler_options\
-             .except(:debug, :up_to_screening_id).should eq({
-        user: subject.user,
-        festival: subject.festival,
-        show_press: subject.show_press,
-        unselect: nil
-      })
+  context 'assigning a sharing key' do
+    it 'generates a key' do
+      key = Subscription.generate_key
+      key.should match(/^[0-9a-f]{8}$/)
+      key.should_not eq(Subscription.generate_key)
+    end
+    it 'assigns the key on first use' do
+      subject.key.should_not be_nil
+    end
+    it 'assigns the key on first save' do
+      subject.save!
+      key = subject.key
+      subject.reload
+      subject.key.should eq(key)
+    end
+  end
+
+  context "location exclusions" do
+    let(:festival) { create(:festival, :with_venues,
+                            location_count: 2)}
+    subject { build(:subscription, festival: festival)}
+    it 'get the list of all IDs from the festival' do
+      subject.festival_location_ids.count.should == 2
+      subject.festival_location_ids.should \
+        eq(festival.locations.map(&:id))
     end
 
-    it 'passes the options to the autoscheduler' do
-      options = mock
-      subject.stub(:autoscheduler_options).and_return(options)
-      AutoScheduler.should_receive(:new).with(options)
-      subject.autoscheduler
+    it 'reports the list of included location IDs' do
+      subject.stub(:festival_location_ids).and_return([1,2,5,6])
+      subject.excluded_location_ids = [2, 6]
+      subject.included_location_ids.should eq([1, 5])
+    end
+    it 'accepts a list of included location IDs' do
+      subject.stub(:festival_location_ids).and_return([1,2,5,6])
+      subject.included_location_ids = [6, 1]
+      subject.excluded_location_ids.should eq([2, 5])
     end
 
-    context 'on an existing subscription' do
-      subject { create(:subscription) }
-      it 'runs an autoscheduler on save' do
-        autoscheduler = mock
-        subject.stub(:autoscheduler).and_return(autoscheduler)
-        autoscheduler.should_receive(:run).once
-        subject.save!
-      end
-    end
-
-    context 'when the record is first saved' do
-      it 'does not run the autoscheduler' do
-        AutoScheduler.any_instance.should_not_receive(:run)
-        subject.save!
-      end
-    end
-
-    context 'when skip_autoscheduler is set' do
-      subject { create(:subscription, skip_autoscheduler: true) }
-
-      it 'does not run the autoscheduler' do
-        AutoScheduler.any_instance.should_not_receive(:run)
-        subject.save!
-      end
-
-      it 'returns a blank message' do
-        subject.autoscheduler_message.should be_blank
-      end
-    end
-
-    context 'when we do autoschedule' do
-      it 'returns the autoscheduler\'s message' do
-        subject.autoscheduler.stub(:message).and_return('helooo')
-        subject.autoscheduler_message.should == 'helooo'
-      end
+    it 'validates that some locations are included' do
+      subject.included_location_ids = []
+      subject.should_not be_valid
+      subject.should have(1).errors_on(:excluded_location_ids)
+      subject.included_location_ids = [festival.locations.first.id]
+      subject.should be_valid
     end
   end
 end

@@ -1,4 +1,6 @@
 require 'securerandom'
+require 'restriction'
+require 'yaml'
 
 module Fest2Importer
   module Importable
@@ -301,15 +303,31 @@ module Fest2Importer
   class Subscription < ImportableModel
     belongs_to :user
     belongs_to :festival
+    serialize :excluded_location_ids
 
     maps_to_new(::Festival) {|festival| festival.slug }
     maps_to_new(::User) {|user| fix_email(user.email) }
 
     def attributes_to_copy
+      new_excluded_location_ids = if excluded_location_ids
+        excluded_location_ids.map {|old_id|
+          ::Location.where(name: fix_name(Location.find(old_id).name)).first.id
+        }
+      end
+
+      new_restriction_text = if restrictions
+        deserialized_restrictions =
+          YAML.load(restrictions.gsub('starts', 'starts_at')\
+                                .gsub('ends', 'ends_at'))
+        Restriction.dump(deserialized_restrictions)
+      end
       {
           festival: new_festival,
           user: new_user,
           show_press: show_press,
+          restriction_text: new_restriction_text,
+          excluded_location_ids: new_excluded_location_ids,
+          key: key,
           created_at: created_at,
           updated_at: updated_at
       }
@@ -400,7 +418,7 @@ module Fest2Importer
   def self.import
     Rails.logger.info "Importing Fest2 data..."
     [Location, Venue, Festival, Film, Screening, User, Pick,
-     Question, Announcement].each do |klass|
+     Subscription, Question, Announcement].each do |klass|
       klass.import_all
     end
 
