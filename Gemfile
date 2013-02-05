@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.11'
 
+gem 'airbrake'
 gem 'cache_digests'
 gem 'capistrano-ext', require: false
 gem 'capistrano-unicorn', require: false
@@ -11,6 +12,7 @@ gem 'bootstrap-sass'
 gem 'devise'
 gem 'handlers-js'
 gem 'mysql2'
+gem 'newrelic_rpm'
 gem 'redis-rails'
 gem 'simple_form'
 gem 'turbolinks'

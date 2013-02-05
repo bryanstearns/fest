@@ -13,7 +13,7 @@ set :use_sudo, false
 ssh_options[:forward_agent] = true
 ssh_options[:verbose] = :debug if ENV['VERBOSE']
 
-set :shared_files, %w[database.yml]
+set :shared_files, %w[database.yml newrelic.yml]
 
 role :app, 'frenzy'
 role :web, 'frenzy'

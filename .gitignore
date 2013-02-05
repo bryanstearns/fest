@@ -6,6 +6,7 @@
 
 /.bundle
 /config/database.yml
+/config/newrelic.yml
 /db/*.sqlite3
 /log/*.log
 /public/assets/
