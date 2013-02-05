@@ -38,28 +38,12 @@
   <% end %>
 </div>
 
-<% cache @festival do %>
-  <table id="picks">
-    <thead>
-      <tr>
-        <th class="rating_column">
-          Choose priority:<br/>
-          (lower … higher)
-        </th>
-        <th class="rating_column">
-          or rate the films<br/>
-          you've seen:
-        </th>
-        <th id="progress_column">
-        </th>
-        <th>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <%= render partial: 'picks/film', collection: @films %>
-    </tbody>
-  </table>
+<% if film_list_cacheable?(@sort_order) %>
+  <% cache [@festival, @sort_order] do %>
+    <%= render partial: 'picks/films' %>
+  <% end %>
+<% else %>
+  <%= render partial: 'picks/films' %>
 <% end %>
 
 <%= render partial: 'picks/picks', object: @picks %>

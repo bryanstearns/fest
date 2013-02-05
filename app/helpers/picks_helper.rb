@@ -1,4 +1,52 @@
 module PicksHelper
+  def film_sort_orders
+    %w[name country page priority rating screening]
+  end
+
+  def film_list_cacheable?(sort_order)
+    %w[name country page].include?(sort_order)
+  end
+
+  def film_sort_links(films, selected=nil)
+    selected ||= 'name'
+    sort_options = film_sort_orders
+    sort_options.delete('page') \
+      unless (films.any? {|f| f.page.present? } || selected == 'page')
+    sort_options.map do |p|
+      args = {}
+      args[:order] = p unless p == 'name'
+      link_to_unless(p == selected, p.titleize, festival_priorities_path(@festival, args))
+    end.join(' | ').html_safe
+  end
+
+  def films_sorted(films, options)
+    ordering = options[:by] || 'name'
+
+    picks = begin
+      raise(ArgumentError, "No picks to sort by!") \
+        unless options[:picks]
+      options[:picks].map_by{|p| p.film_id }
+    end if %w[priority rating screening].include? ordering
+
+    case ordering
+      when 'country'
+        films.sort_by {|f| [f.countries.present? ? country_names(f.countries) : 'ZZZZZZZ',
+                            f.sort_name] }
+      when 'page'
+        films.sort_by {|f| [ f.page, f.sort_name ] }
+      when 'priority'
+        films.sort_by {|f| [-1 * (picks[f.id].try(:priority) || -1), f.sort_name ] }
+      when 'rating'
+        films.sort_by {|f| [-1 * (picks[f.id].try(:rating) || -1), f.sort_name ] }
+      when 'screening'
+        far_future = 10.years.from_now
+        films.sort_by {|f| [picks[f.id].try(:screening).try(:starts_at) || far_future,
+                            f.sort_name ] }
+      else
+        films # we get them ordered by sort_name by default
+    end
+  end
+
   def pick_film_heading(film)
     film.name
   end

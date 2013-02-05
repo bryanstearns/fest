@@ -8,9 +8,10 @@ class Film < ActiveRecord::Base
   validates :duration, :festival_id, :name, presence: true
   validates :name, :uniqueness => { scope: :festival_id }
 
+  before_save :initialize_sort_name
   after_save :touch_screenings
 
-  scope :by_name, -> { order(:name) }
+  scope :by_name, -> { order(:sort_name) }
 
   def page_number
     page.to_i if page.present?
@@ -26,6 +27,10 @@ class Film < ActiveRecord::Base
   end
 
 protected
+  def initialize_sort_name
+    self.sort_name ||= name
+  end
+
   def touch_screenings
     # TODO: consider trying this in a single operation
     screenings.each {|s| s.touch }

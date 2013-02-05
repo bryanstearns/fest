@@ -3,6 +3,7 @@ class CreateFilms < ActiveRecord::Migration
     create_table :films do |t|
       t.references :festival, null: false
       t.string :name
+      t.string :sort_name
       t.text :description
       t.string :url_fragment
       t.integer :duration

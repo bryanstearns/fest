@@ -4,6 +4,10 @@
 <table id="film" class="table table-condensed">
   <tbody>
     <tr>
+      <td>Sort Name</td>
+      <td><%= @film.sort_name %></td>
+    </tr>
+    <tr>
       <td>Duration</td>
       <td><%= hours_and_minutes(@film.duration) %></td>
     </tr>

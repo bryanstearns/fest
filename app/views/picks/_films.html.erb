@@ -1,0 +1,31 @@
+
+<table id="picks">
+  <thead>
+  <tr>
+    <th class="rating_column">
+      Choose priority:<br/>
+      (lower … higher)
+    </th>
+    <th class="rating_column">
+      or rate the films<br/>
+      you've seen:
+    </th>
+    <th id="progress_column">
+    </th>
+    <th id="sortform">
+      <% links = film_sort_links(@films, @sort_order) %>
+      <p><span>Sort by:</span><%= links %></p>
+      <% if @sort_order == 'country' %>
+        <p>Films without a country (like shorts collections) are at the end.</p>
+      <% elsif @festival.slug_group == 'piff' && links =~ /page/ %>
+        <p><strong>For PIFF:</strong> Use "Page" to match the printed catalog order.</p>
+      <% end %>
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <%= render partial: 'picks/film',
+             collection: films_sorted(@films, by: @sort_order,
+                                      picks: @picks) %>
+  </tbody>
+</table>

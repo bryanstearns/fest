@@ -12,6 +12,7 @@ Handlers.register 'Picks', class
   constructor: (el) ->
     console.log("Picks constructed")
 
+    @autosubmit_sort_form()
     if window.picks_by_film_id?
       @setup_priority_divs()
       @setup_rating_divs()
@@ -19,6 +20,9 @@ Handlers.register 'Picks', class
     if window.screening_ids_by_status?
       @setup_screenings(window.screening_ids_by_status)
       @register_for_updates()
+
+  autosubmit_sort_form: ->
+    jQuery('#order').change -> jQuery('#sortform form').submit()
 
   save_pick: (div, attribute, value, progress) ->
     if logged_in()
