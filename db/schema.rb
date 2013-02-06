@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130204012854) do
+ActiveRecord::Schema.define(:version => 20130205164436) do
 
   create_table "announcements", :force => true do |t|
     t.string   "subject"
@@ -121,6 +121,16 @@ ActiveRecord::Schema.define(:version => 20130204012854) do
   end
 
   add_index "subscriptions", ["festival_id", "user_id"], :name => "index_subscriptions_on_festival_id_and_user_id", :unique => true
+
+  create_table "travel_intervals", :force => true do |t|
+    t.integer  "from_location_id", :null => false
+    t.integer  "to_location_id",   :null => false
+    t.integer  "user_id"
+    t.integer  "seconds_from"
+    t.integer  "seconds_to"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "name",                   :default => "",    :null => false

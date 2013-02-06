@@ -137,7 +137,7 @@ class AutoScheduler
   def all_conflicting_screening_ids_by_screening_id
     @all_conflicts_by_id ||= begin
       all_screenings.inject(Hash.new {|h, k| h[k] = []}) do |h, s|
-        h[s.id] = all_screenings.map {|sx| sx.id if s.conflicts_with?(sx) }.compact
+        h[s.id] = all_screenings.map {|sx| sx.id if s.conflicts_with?(sx, user.id) }.compact
         h
       end
     end

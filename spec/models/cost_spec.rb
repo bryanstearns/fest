@@ -7,7 +7,7 @@ describe Cost do
   let(:user) { subscription.user }
   let(:screening) { festival.screenings.starting_after(Time.current)\
                                        .where(press: false).find do |s|
-                      festival.conflicting_screenings(s).present?
+                      festival.conflicting_screenings(s, user.id).present?
                     end }
   let(:autoscheduler) { AutoScheduler.new(festival: festival, user: user,
                                           show_press: false) }
@@ -126,7 +126,7 @@ describe Cost do
   end
 
   describe "A screening with a picked conflict" do
-    let(:screening2) { festival.conflicting_screenings(screening).first }
+    let(:screening2) { festival.conflicting_screenings(screening, user.id).first }
     let!(:conflicting_pick) do
       create(:pick, user: user, festival: festival, screening: screening2)
     end

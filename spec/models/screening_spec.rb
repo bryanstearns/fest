@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Screening do
+  let(:user) { create(:user) }
   context "validations" do
     subject { build(:screening) }
 
@@ -45,35 +46,35 @@ describe Screening do
     end
 
     # Better readability...
-    RSpec::Matchers.define :not_conflict_with do |expected|
-      match {|actual| actual.conflicts_with?(expected).should be_false }
+    RSpec::Matchers.define :not_conflict_with do |expected, user|
+      match {|actual| actual.conflicts_with?(expected, user.id).should be_false }
     end
-    RSpec::Matchers.define :conflict_with do |expected|
-      match {|actual| actual.conflicts_with?(expected).should be_true }
+    RSpec::Matchers.define :conflict_with do |expected, user|
+      match {|actual| actual.conflicts_with?(expected, user.id).should be_true }
     end
 
     context "with itself" do
-      it { should not_conflict_with(subject) }
+      it { should not_conflict_with(subject, user) }
     end
     context "with another ending well before this starts" do
       let(:other_options) { { starts_at: subject.starts_at - 400.minutes } }
-      it { should not_conflict_with(other) }
+      it { should not_conflict_with(other, user) }
     end
     context "with another starting well after this ends" do
       let(:other_options) { { starts_at: subject.ends_at + 121.minutes } }
-      it { should not_conflict_with(other) }
+      it { should not_conflict_with(other, user) }
     end
     context "with another in the same venue" do
       let(:other_options) { { venue_id: subject.venue_id } }
-      it { should not_conflict_with(other) }
+      it { should not_conflict_with(other, user) }
     end
     context "with another at a different festival" do
       let(:other_options) { { festival: nil } }
-      it { should not_conflict_with(other) }
+      it { should not_conflict_with(other, user) }
     end
     context "with another at a conflicting time" do
       let(:other_options) { { starts_at: subject.starts_at + 10.minutes } }
-      it { should conflict_with(other) }
+      it { should conflict_with(other, user) }
     end
   end
 end

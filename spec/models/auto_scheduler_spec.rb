@@ -52,7 +52,7 @@ describe AutoScheduler do
       got_conflicts.count.should eq(expected_visible_screenings.count)
       festival.screenings.each do |screening|
         conflicts = festival.screenings.map do |s|
-          s.id if s.conflicts_with?(screening)
+          s.id if s.conflicts_with?(screening, user.id)
         end.compact
         got_conflicts[screening.id].should eq(conflicts)
       end
@@ -69,14 +69,14 @@ describe AutoScheduler do
     subject { autoscheduler }
     let(:screening) do
       festival.screenings.where(press: false).find do |s|
-        festival.conflicting_screenings(s).present?
+        festival.conflicting_screenings(s, user.id).present?
       end
     end
     let!(:pick) do
       create(:pick, user: user, festival: festival, film: screening.film,
              screening: screening, priority: 4)
     end
-    let(:screening2) { festival.conflicting_screenings(screening)\
+    let(:screening2) { festival.conflicting_screenings(screening, user.id)\
                                  .find {|s| !s.press } }
 
     it 'reports whether a film is scheduled' do
@@ -96,7 +96,7 @@ describe AutoScheduler do
 
     it 'returns a list of a screening\'s conflicts' do
       subject.screening_id_conflicts(screening.id).should == \
-        subject.all_screenings.select {|s| s.conflicts_with?(screening) }
+        subject.all_screenings.select {|s| s.conflicts_with?(screening, user.id) }
     end
 
     it 'returns a list of a screening\'s conflicts\' costs' do
@@ -182,7 +182,7 @@ describe AutoScheduler do
   context 'when scheduling' do
     let(:screening) do
       festival.screenings.where(press: false).find do |s|
-        festival.conflicting_screenings(s).present?
+        festival.conflicting_screenings(s, user.id).present?
       end
     end
     let!(:existing_pick) do
@@ -191,7 +191,7 @@ describe AutoScheduler do
     end
 
     context 'a conflicting screening' do
-      let(:screening2) { festival.conflicting_screenings(screening)\
+      let(:screening2) { festival.conflicting_screenings(screening, user.id)\
                                  .find {|s| !s.press } }
       let!(:conflicting_pick) do
         create(:pick, user: user, festival: festival, film: screening2.film)
@@ -210,7 +210,7 @@ describe AutoScheduler do
                 .where('press = ? and film_id <> ? and id not in (?)',
                        false,
                        screening.film_id,
-                       festival.conflicting_screenings(screening).map(&:id))\
+                       festival.conflicting_screenings(screening, user.id).map(&:id))\
                 .first.tap do |result|
           fail unless result
         end

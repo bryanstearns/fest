@@ -58,4 +58,7 @@ if !Rails.env.production?
                      name: "Example Festival", slug_group: 'example',
                      day_count: 2,
                      location: "Long Name City, Longstatename")
+
+  ENV["CSV"] = 'public/travel_times.csv'
+  Rake::Task['intervals:load'].invoke
 end

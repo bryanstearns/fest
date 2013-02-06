@@ -93,7 +93,8 @@ describe Festival do
 
   it "determines conflicting screenings" do
     festival = create(:festival, :with_screening_conflicts)
-    festival.conflicting_screenings(festival.screenings[0])\
+    user = create(:user)
+    festival.conflicting_screenings(festival.screenings[0], user.id)\
               .should eq([festival.screenings[1]])
   end
 end

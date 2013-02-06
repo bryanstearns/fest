@@ -45,7 +45,7 @@ class Pick < ActiveRecord::Base
 
   def conflicting_screening_ids
     if screening_id?
-      festival.conflicting_screenings(screening).map {|s| s.id }
+      festival.conflicting_screenings(screening, user_id).map {|s| s.id }
     else
       []
     end

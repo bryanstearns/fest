@@ -51,8 +51,8 @@ class Festival < ActiveRecord::Base
     picks_to_reset.update_all(screening_id: nil)
   end
 
-  def conflicting_screenings(screening)
-    screenings.all.select {|s| screening.conflicts_with?(s) }
+  def conflicting_screenings(screening, user_id)
+    screenings.all.select {|s| screening.conflicts_with?(s, user_id) }
   end
 
 private

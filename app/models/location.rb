@@ -2,6 +2,10 @@ class Location < ActiveRecord::Base
   has_many :festival_locations
   has_many :festivals, through: :festival_locations
   has_many :venues, dependent: :destroy
+  has_many :travel_intervals_from, class_name: 'TravelInterval',
+           foreign_key: :from_location_id, dependent: :destroy
+  has_many :travel_intervals_to, class_name: 'TravelInterval',
+           foreign_key: :to_location_id, dependent: :destroy
 
   attr_accessible :name
 

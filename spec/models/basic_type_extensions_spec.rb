@@ -99,6 +99,24 @@ describe 'Numeric#counted' do
     1.counted('octopus').should == 'one octopus'
   end
 end
+describe 'Numeric#to_duration' do
+  let(:t) { Time.current }
+  it 'should report days' do
+    ((t + 60.hours) - t).to_duration.should == '2.5d'
+  end
+  it 'should report hours' do
+    ((t + 210.minutes) - t).to_duration.should == '3.5h'
+  end
+  it 'should report minutes' do
+    ((t + 210.seconds) - t).to_duration.should == '3.5m'
+  end
+  it 'should report seconds' do
+    ((t + 3.5.seconds) - t).to_duration.should == '3.5s'
+  end
+  it 'should report milliseconds' do
+    ((t + 0.0035.seconds) - t).to_duration.should == '3.5ms'
+  end
+end
 
 describe 'Enumerable#map_by' do
   let(:a) { mock(x: 5) }
