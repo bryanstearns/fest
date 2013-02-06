@@ -39,7 +39,7 @@
   <% end %>
 </div>
 
-<% if film_list_cacheable?(@sort_order) %>
+<% if sort_order_is_not_user_specific?(@sort_order) %>
   <% cache ['picks', @festival, @sort_order] do %>
     <%= render partial: 'picks/films' %>
   <% end %>

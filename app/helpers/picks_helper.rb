@@ -1,15 +1,15 @@
 module PicksHelper
-  def film_sort_orders
-    %w[name country page priority rating screening]
-  end
+  FILM_SORT_ORDERS = %w[name country page priority rating screening]
+  USER_SPECIFIC_SORT_ORDERS = %w[priority rating screening]
 
-  def film_list_cacheable?(sort_order)
-    %w[name country page].include?(sort_order)
+  def sort_order_is_not_user_specific?(sort_order)
+    !USER_SPECIFIC_SORT_ORDERS.include?(sort_order)
   end
 
   def film_sort_links(films, selected=nil)
     selected ||= 'name'
-    sort_options = film_sort_orders
+    sort_options = FILM_SORT_ORDERS
+    sort_options -= USER_SPECIFIC_SORT_ORDERS unless user_signed_in?
     sort_options.delete('page') \
       unless (films.any? {|f| f.page.present? } || selected == 'page')
     sort_options.map do |p|

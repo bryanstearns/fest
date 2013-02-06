@@ -13,7 +13,7 @@ class PicksController < ApplicationController
   def index
     @films = @festival.films.by_name.includes(:screenings)
     @sort_order = params[:order] \
-      if view_context.film_sort_orders.include?(params[:order])
+      if PicksHelper::FILM_SORT_ORDERS.include?(params[:order])
     respond_with(@picks)
   end
 
