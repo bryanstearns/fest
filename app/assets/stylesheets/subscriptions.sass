@@ -6,16 +6,23 @@
   #subscription_restriction_text
     width: 80%
   li
-    margin-bottom: 10px
+    margin-bottom: 1.5em
     p
       margin-bottom: 0.7em
-    div
+    &.locations div
       padding-left: 1em
       display: inline-block
       white-space: nowrap
       width: 13em
     label.box
       display: inline
+      padding-left: 0.3em
     .help-inline
       display: block
       color: $errorText
+    .radio_buttons
+      label.control-label
+        display: none
+      .controls
+        margin-left: 0
+        padding-left: 0

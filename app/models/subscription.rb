@@ -74,6 +74,10 @@ class Subscription < ActiveRecord::Base
     SecureRandom.hex(4)
   end
 
+  def unselect
+    @unselect || 'future'
+  end
+
 protected
   def check_location_exclusions
     return unless excluded_location_ids.present?

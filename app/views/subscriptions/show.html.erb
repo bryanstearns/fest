@@ -39,7 +39,7 @@
           <%= hidden_field_tag "subscription[included_location_ids][]", "",
                                :name => "subscription[included_location_ids][]" %>
           <% included_ids = @subscription.included_location_ids
-             @festival.locations.each do |location| -%>
+             @festival.locations.sort_by {|l| l.name }.each do |location| -%>
             <div>
               <% id = location.id %>
               <%= check_box_tag "subscription[included_location_ids][#{id}]", id,
@@ -59,7 +59,7 @@
         </p>
         <div>
           <%= check_box 'subscription', :show_press %>
-          <%= label 'subscription', :show_press, 'Show the press screenings?',
+          <%= label 'subscription', :show_press, 'Show the press screenings',
                     class: 'box' %>
         </div>
       </li>
@@ -67,7 +67,11 @@
       <% if @user_has_screenings %>
         <li>
           <p>You've got some screenings selected already; what should I do with them?</p>
-          <div><%= unselect_menu %></div>
+          <%= f.input :unselect, as: :radio_buttons, collection: [
+              ['Unselect just the future screenings', 'future'],
+              ['Unselect all of them', 'all'],
+              ['Leave them selected; just fill in around them', 'none']
+          ] %>
         </li>
       <% end %>
 
