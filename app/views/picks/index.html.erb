@@ -35,7 +35,7 @@
       change a priority or add a rating; you can also reset all your priorities and
       ratings and start over by clicking this button:
       <%= link_to "Start Over", reset_rankings_festival_path(@festival),
-                  :method => :post,
+                  :method => :put,
                   :confirm => "Are you sure you want to throw away all your priority settings and ratings?",
                   :class => "btn btn-small" %>
     </p>
