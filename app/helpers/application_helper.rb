@@ -3,7 +3,7 @@ module ApplicationHelper
   include Countries::Helpers
 
   def autoscheduler_debugging?
-    user_signed_in? && (Rails.env.development? || current_user.admin?)
+    false #user_signed_in? && (Rails.env.development? || current_user.admin?)
   end
 
   def webfont_link_tag

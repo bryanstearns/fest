@@ -7,6 +7,29 @@ $scheduled_color: #8FDB8F // bb9966 // darker green
 $scheduled_border_color: darken($scheduled_color, 30)
 $other_scheduled_color: lighten($scheduled_color, 10)
 
+// The stuff common to viewings and the legend
+.viewing-common
+  @include border-radius(4px)
+  margin: 1px
+  padding: 3px
+  &.lowpriority
+    background-color: $lowpriority_color
+    border: 3px solid $lowpriority_color
+  &.unranked
+    background-color: $unranked_color
+    border: 3px solid $unranked_color
+  &.unscheduled
+    background-color: $unscheduled_color
+    border: 3px solid $unscheduled_color
+  &.scheduled
+    background-color: $scheduled_color
+    border: 3px solid $scheduled_border_color
+    padding: 2px
+  &.otherscheduled
+    background-color: $other_scheduled_color
+    border: 3px solid $other_scheduled_color
+
+
 // One day's grid
 table.day
   td,th
@@ -29,28 +52,8 @@ table.day
       padding-right: 4px
       height: $dayHourHeight
 
-  .lowpriority
-    background-color: $lowpriority_color
-    border: 3px solid $lowpriority_color
-  .unranked
-    background-color: $unranked_color
-    border: 3px solid $unranked_color
-  .unscheduled
-    background-color: $unscheduled_color
-    border: 3px solid $unscheduled_color
-  .scheduled
-    background-color: $scheduled_color
-    border: 3px solid $scheduled_border_color
-    padding: 2px
-  .otherscheduled
-    background-color: $other_scheduled_color
-    border: 3px solid $other_scheduled_color
-
   div.screening
-    @include border-radius(4px)
-    margin: 1px
-    padding: 3px
-
+    @extend .viewing-common
     cursor: pointer
     overflow: hidden
     .title

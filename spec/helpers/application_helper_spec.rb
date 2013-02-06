@@ -133,10 +133,10 @@ describe ApplicationHelper do
   end
 
   context "generating flag icons" do
-    it "produce a image tags for each country given" do
+    it "produce image tags for each country given" do
       helper.flags("us de").should == \
-        "<img alt=\"United States\" class=\"flag flag-us\" src=\"/assets/blank.gif\" />" +
-          "<img alt=\"Germany\" class=\"flag flag-de\" src=\"/assets/blank.gif\" />"
+        "<img alt=\"United States\" class=\"flag flag-us\" src=\"/assets/blank.gif\" title=\"United States\" />" +
+          "<img alt=\"Germany\" class=\"flag flag-de\" src=\"/assets/blank.gif\" title=\"Germany\" />"
     end
   end
   context "generating country names" do

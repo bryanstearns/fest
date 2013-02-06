@@ -266,8 +266,9 @@ module Countries
     def flags(countries)
       return nil if countries.blank?
       safe_join(countries.split(' ').map do |country|
+        name = Countries.code_to_name(country)
         image_tag("blank.gif", class: "flag flag-#{country}",
-                  alt: Countries.code_to_name(country))
+                  alt: name, title: name)
       end)
     end
     def country_names(countries)

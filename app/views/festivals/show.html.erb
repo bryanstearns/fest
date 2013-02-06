@@ -8,6 +8,24 @@
   <% end %>
 <% end %>
 
+<div id="instructions">
+  <% if user_signed_in? %>
+    <%= render partial: 'instructions' %>
+  <% else %>
+    <p>
+      Here's the festival schedule; if you sign in, you'll be able to click on
+      the grid to schedule screenings.
+    </p>
+  <% end %>
+</div>
+
+<% if false #user_signed_in? %>
+  <div id="showhide">
+    <a href="#">Click here to <span>hide</span> the instructions</a>
+    <%= image_tag 'fam3silk/information.png', :alt => false, :title => false %>
+  </div>
+<% end %>
+
 <% cache [@festival, @show_press] do %>
   <div class="days" data-handler="Days">
     <%= render partial: "day", collection: days(@festival, press: @show_press) %>

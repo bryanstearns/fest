@@ -8,9 +8,34 @@ li.extra-action
 div#as-of
   float: right
 
-header.festival div
-  text-align: center
-  padding-bottom: 1em
+header.festival
+  div
+    text-align: center
+    padding-bottom: 1em
+    h3
+      margin: 0
 
 .festival .actions
   padding-left: 1em
+
+#instructions
+  margin-bottom: 1.5em
+  p
+    margin-bottom: 0.75em
+  ul
+    padding: 0 0 0 1em
+    margin: 0
+
+  #legend
+    float: right
+    list-style-type: none
+    width: 330px
+    padding-left: 1em
+    margin: 0
+    li
+      @extend .viewing-common
+      margin: 3px
+
+#showhide
+  cursor: pointer
+  float: right

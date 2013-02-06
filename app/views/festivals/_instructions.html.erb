@@ -1,0 +1,65 @@
+<ul id="legend">
+  <li class="scheduled">
+    This is a screening you're attending.
+  </li>
+  <li class="otherscheduled">
+    You're seeing a different screening of this film.
+  </li>
+  <li class="unscheduled">
+    You wanted to see this film (by prioritizing it), but aren't scheduled
+    to see it.
+  </li>
+  <li class="unranked">
+    You're not planning on seeing this film (or didn't prioritize it yet).
+  </li>
+  <li>
+    The priority (or rating) you gave each film is shown
+    with little faces (or stars):</br>
+    <%= (image_tag("raty/face-b.png") * 3).html_safe %> or
+    <%= (image_tag("raty/star-on.png") * 3).html_safe %>
+  </li>
+</ul>
+
+<p>
+  Your festival schedule is below;
+
+  click a screening to see more information about the film,
+
+  add the screening to your schedule (we'll automatically unselect
+  conflicting screenings and other screenings of that film),
+
+  see more information about the film and its other screenings,
+
+  change your priority for this film or rate it once you've seen it,
+
+  or (shortly!) read buzz about the film & add your own. Also:
+</p>
+<ul>
+  <li>
+    You can always go back to the "Your Film Priorities" tab to adjust
+    your priorities, then use the "Scheduling Assistant" to re-schedule
+    the rest of the festival for you.
+  </li>
+  <% if user_signed_in? %>
+    <li>
+      You'll shortly be able to download a printable PDF of your schedule;
+      this feature isn't quite ready yet. You'll also be able to download
+      your schedule in iCalendar or Google Calendar formats (and if anyone
+      sends me Feedback asking for My Yahoo! calendar format, I'll do that
+      too).
+    </li>
+    <li>
+      You'll also be able to share your schedule and a list of your film
+      ratings with your friends using links that will appear <i>right here</i>
+      as soon as those features are done; I'll work on them right after the
+      printable PDF feature.
+    </li>
+    <li>
+      You can click
+      <%= link_to "here", reset_screenings_festival_path(@festival),
+                  method: :post, class: 'btn btn-mini', id: 'reset-screenings',
+                  confirm: "Are you sure you want to unschedule all your screenings?" %>
+      to un-select all your selected screenings and start over.
+    </li>
+  <% end %>
+</ul>
