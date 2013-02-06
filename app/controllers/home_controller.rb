@@ -32,6 +32,6 @@ class HomeController < ApplicationController
   def sign_ups_off
   end
 
-  def faq
+  def help
   end
 end

@@ -24,7 +24,7 @@ Fest::Application.routes.draw do
   match 'welcome' => "home#index", as: :welcome
   match 'maintenance' => "home#maintenance", as: :maintenance
   match 'sign_ups_off' => "home#sign_ups_off", as: :sign_ups_off
-  match 'faq' => "home#faq", as: :faq
+  match 'help' => "home#help", as: :help
   match 'feedback' => "questions#new", as: :feedback
 
   # Admin stuff

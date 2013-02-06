@@ -24,7 +24,7 @@
                               class: (needs_admin_attention? && "attention") %></li>
             <% end %>
             <li><%= link_to "Festivals", festivals_path %></li>
-            <li><%= link_to "Help", faq_path %></li>
+            <li><%= link_to "Help", help_path %></li>
             <li><%= link_to "Feedback", feedback_path %></li>
             <% if user_signed_in? %>
               <li><%= link_to "My Account", edit_user_registration_path %></li>
