@@ -1,6 +1,6 @@
 <% tag ||= :li %>
 <% show_actions ||= nil %>
-<% cache [screening, tag, show_actions] do %>
+<% cache ['screening', screening, tag, show_actions] do %>
   <%= content_tag_for(tag, screening) do %>
     <%= screening_times(screening, with_date: true) %>:
     <%= screening.venue_name %>

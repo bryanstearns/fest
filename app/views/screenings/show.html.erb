@@ -1,4 +1,4 @@
-<% cache @film do %>
+<% cache ['modal', @film] do %>
   <div class="modal-header">
     <%= pick_symbols(@film) %>
     <div class="title"><%= @film.name %></div>
