@@ -113,15 +113,16 @@
     </p>
   </li>
 
-<!--  <li>
+  <li>
     <h4>Where'd you get the nifty icons?</h4>
-    <p>The flags (<%# %w{us br dk np ke au}.map {|co| flag_icon_tag co }.join(" ") %>)
-      and many of the other icons I use (like <%# image_tag "fam3silk/film_go.png" %>
-      and <%# image_tag "fam3silk/date.png" %>) come from web developer Mark James, who asks only that I
-      <%# link_to "link to his site", "http://www.famfamfam.com/lab/icons/silk/" %> to use them - done, and thanks, Mark!
+
+    <p>The flags (<%= flags "us br dk np ke au" %>) and many of the
+      other icons I use (like <%= image_tag "fam3silk/information.png" %>)
+      come from web developer Mark James, who asks only that I
+      <%= link_to "link to his site", "http://www.famfamfam.com/lab/icons/silk/" %>
+      to use them - done, and thanks, Mark!
     </p>
   </li>
--->
 
   <li>
     <div id="me">
