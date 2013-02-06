@@ -11,5 +11,7 @@
 
   <div class="form-actions">
     <%= f.button :submit %>
+    <%= cancel_link(announcements_path) %>
+    <%= destroy_button([:admin, @announcement]) %>
   </div>
 <% end %>
