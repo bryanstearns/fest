@@ -5,12 +5,11 @@
 Handlers.register 'Days', class
   constructor: (el) ->
     console.log("Days constructed")
-    jQuery('.day .screening').on('click', ->
+    jQuery('.day .screening').off('click').on('click', ->
       screening_id = jQuery(this).attr('id').split('_')[1]
       jQuery('body').modalmanager('loading')
 
       modal = jQuery('#screening-modal')
-      jQuery(document).trigger('handlers:pageUpdating', 'body')
 
       modal.load('/screenings/' + screening_id, '', ->
         jQuery(document).trigger('handlers:pageUpdated', 'body')
