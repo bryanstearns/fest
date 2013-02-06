@@ -15,8 +15,8 @@ Fest::Application.configure do
 
   # Set mailer options
   config.action_mailer.default_url_options = { host: 'localhost:3000' }
-  # (if enabled, don't send mail at all; if disabled do.)
-  # config.action_mailer.delivery_method = :test
+  # Don't send mail by default (our mailcatcher initializer may override this!)
+  config.action_mailer.delivery_method = :test
 
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = false

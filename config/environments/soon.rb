@@ -52,7 +52,9 @@ Fest::Application.configure do
   # config.action_mailer.raise_delivery_errors = false
 
   # Make sure URLs in emails will work
-  config.action_mailer.default_url_options = { host: 'festivalfanatic.com' }
+  config.action_mailer.default_url_options = { host: 'soon.festivalfanatic.com' }
+  # Don't send mail by default (our mailcatcher initializer may override this!)
+  config.action_mailer.delivery_method = :test
 
   # Enable threaded mode
   # config.threadsafe!
