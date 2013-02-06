@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(:version => 20130205164436) do
     t.integer  "festival_id",  :null => false
     t.string   "name"
     t.string   "sort_name"
+    t.string   "short_name"
     t.text     "description"
     t.string   "url_fragment"
     t.integer  "duration"

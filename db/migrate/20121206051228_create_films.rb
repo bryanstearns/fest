@@ -4,6 +4,7 @@ class CreateFilms < ActiveRecord::Migration
       t.references :festival, null: false
       t.string :name
       t.string :sort_name
+      t.string :short_name
       t.text :description
       t.string :url_fragment
       t.integer :duration

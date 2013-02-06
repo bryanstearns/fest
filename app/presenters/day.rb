@@ -95,7 +95,7 @@ class Viewing
     @height = height
   end
 
-  delegate :name, :countries, :film, :press?, to: :screening
+  delegate :name, :countries, :film, :press?, :short_name, to: :screening
 end
 
 ColumnKey = Struct.new(:venue, :index) do

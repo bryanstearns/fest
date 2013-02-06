@@ -4,7 +4,7 @@
   <a name="s<%= viewing.screening.id %>"></a>
   <%= pick_symbols(viewing.film) %>
   <div class="title">
-    <%= viewing.name %><%= " (#{viewing.screening.id})" if autoscheduler_debugging? %>
+    <%= viewing.short_name %><%= " (#{viewing.screening.id})" if autoscheduler_debugging? %>
     <span class="flags"><%= flags(viewing.countries) %></span>
   </div>
   <div class="times">

@@ -31,7 +31,7 @@ class Screening < ActiveRecord::Base
   }
 
   delegate :name, to: :venue, prefix: true
-  delegate :name, :countries, to: :film
+  delegate :name, :short_name, :countries, to: :film
 
   def duration
     (ends_at - starts_at).to_i rescue film.try(:duration)
