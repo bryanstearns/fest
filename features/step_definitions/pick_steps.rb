@@ -34,5 +34,5 @@ end
 
 Given /^the film (priority|rating) should be set$/ do |attr|
   pick = @festival.picks.where(user_id: @user.id, film_id: @film.id).first
-  pick.send(attr).should == 1
+  pick.send(attr).should == ((attr == 'rating') ? 1 : 0)
 end

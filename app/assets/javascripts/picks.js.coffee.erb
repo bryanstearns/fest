@@ -50,7 +50,7 @@ Handlers.register 'Picks', class
     priority_divs = jQuery('.dots')
     priority_divs.each (index, div) ->
       pick = window.picks_by_film_id[model_id_from(div)]
-      if pick and pick.priority
+      if pick and pick.priority?
         jQuery(div).attr('data-priority', pick.priority)
     self = this
     priority_divs.raty(
@@ -64,10 +64,10 @@ Handlers.register 'Picks', class
         { range: 5, on: 'face-b.png', off: 'face-b-off.png' }
       ]
       score: ->
-        self.priority_to_index[jQuery(this).attr('data-priority')]
+        self.priority_to_index[jQuery(this).attr('data-priority')] + 1
       click: (score, evt) ->
         progress_div = jQuery('#' + jQuery(this).closest('.film').attr('id') + '_progress')
-        self.save_pick(this, 'priority', self.index_to_priority[score], progress_div)
+        self.save_pick(this, 'priority', self.index_to_priority[score - 1], progress_div)
     )
 
   setup_rating_divs: ->
@@ -106,16 +106,15 @@ Handlers.register 'Picks', class
           star_count = pick.rating
           if star_count > 0
             jQuery(div).html(new Array(star_count+1).join(stars))
-          else
-            dot_count = self.priority_to_index[pick.priority]
-            if dot_count > 0
-              if dot_count == 1
-                dot_html = first_dot
-              else
-                dot_html = new Array(dot_count + 1).join(other_dots)
-              jQuery(div).html(dot_html)
+          else if pick.priority?
+            dot_count = self.priority_to_index[pick.priority] + 1
+            if dot_count == 1
+              dot_html = first_dot
             else
-              jQuery(div).html('')
+              dot_html = new Array(dot_count + 1).join(other_dots)
+            jQuery(div).html(dot_html)
+          else
+            jQuery(div).html('')
 
   setup_screenings: (screening_ids_by_status) ->
     for own status, ids of screening_ids_by_status
