@@ -7,9 +7,6 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 require 'factory_girl_rails'
-require 'fest2_importer'
-
-Fest2Importer.import
 
 if !Rails.env.production?
   admin = User.where(email: 'admin@example.com').first
@@ -48,17 +45,8 @@ if !Rails.env.production?
     admin.picks.create!({ film: film, priority: priority }, as: :pick_creator)
   end
 
-  piff_2013 = Festival.find_by_slug('piff_2013')
-  piff_2013.films.each do |film|
-    priority = Pick::PRIORITY_HINTS.keys[film.duration.to_minutes % Pick::PRIORITY_HINTS.count]
-    admin.picks.create!({ film: film, priority: priority }, as: :pick_creator)
-  end
-
   FactoryGirl.create(:festival, :past,
                      name: "Example Festival", slug_group: 'example',
                      day_count: 2,
                      location: "Long Name City, Longstatename")
-
-  ENV["CSV"] = 'public/travel_times.csv'
-  Rake::Task['intervals:load'].invoke
 end

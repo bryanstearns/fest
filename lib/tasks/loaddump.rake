@@ -3,12 +3,8 @@ namespace :db do
            "local development database"
   task :fetch do
     puts "Retrieving production data"
-    # cmd = "mysqldump -ufest -pfest fest_prod"
-    # `ssh festprod "#{cmd}" > production.sql`
-    cmd = "mysqldump -ufest -pfest --add-drop-table --skip-set-charset " +
-          "--default-character-set=latin1 --skip-extended-insert --skip-quick " +
-          "fest_production"
-    `ssh oldfestivalfanatic "#{cmd}" > production.sql`
+    cmd = "mysqldump -ufest -pfest fest_prod"
+    `ssh festprod "#{cmd}" > production.sql`
     load_data
   end
 
@@ -22,19 +18,15 @@ namespace :db do
     env = ENV["RAILS_ENV"] || 'development'
     raise "Can't load data into production" if env == "production"
     puts "Loading data"
-    `mysql -ufest -pfest fest2_snapshot <production.sql`
-
-    #puts "Recreating database"
-    #`r --create`
-    #puts "Loading data"
-    #db_config = YAML::load(ERB.new(IO.read("config/database.yml")).result)
-    #`mysql -ufest -pfest #{db_config[env]["database"]} <production.sql`
-    #puts "Migrating"
-    #Rake::Task['db:migrate'].invoke
-    ##Rake::Task['db:check'].invoke
-    #if env == "development"
-    #  puts "Cloning structure to test"
-    #  Rake::Task['db:test:clone'].invoke
-    #end
+    db_config = YAML::load(ERB.new(IO.read("config/database.yml")).result)
+    `mysql -ufest -pfest #{db_config[env]["database"]} <production.sql`
+    puts "Migrating"
+    Rake::Task['db:migrate'].invoke
+    if env == "development"
+      puts "Cloning structure to test"
+      Rake::Task['db:test:clone'].invoke
+    end
+    puts "Flushing redis cache"
+    Redis.current.flushdb
   end
 end
