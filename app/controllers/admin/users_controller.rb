@@ -13,6 +13,14 @@ module Admin
       respond_with(:admin, @user = User.find(params[:id]))
     end
 
+    # POST /admin/users/1/act_as
+    def act_as
+      @user = User.find(params[:id])
+      sign_in(:user, @user)
+      flash[:notice] = "You're now acting as #{@user.name} / #{@user.email}"
+      redirect_to(root_path)
+    end
+
     # GET /admin/users/new
     def new
       respond_with(:admin, @user = User.new)

@@ -4,10 +4,8 @@ Fest::Application.routes.draw do
 
   # Public stuff
   resources :festivals, only: [:index, :show] do
-    member do
-      post :reset_rankings
-      post :reset_screenings
-    end
+    post :reset_rankings, on: :member
+    post :reset_screenings, on: :member
     resource :subscription, path: 'assistant', controller: :subscriptions,
              only: [:show, :update]
     match 'priorities' => "picks#index"
@@ -43,7 +41,9 @@ Fest::Application.routes.draw do
     end
     resources :venues, only: [:edit, :update, :destroy]
 
-    resources :users
+    resources :users do
+      post :act_as, on: :member
+    end
     resources :enabled_flags, :only => [:update]
     resources :announcements, only: [:new, :create, :edit, :update, :destroy]
     resources :questions, only: [:index, :show, :edit, :update, :destroy]
