@@ -1,5 +1,5 @@
 set :stages, Dir.glob('config/deploy/*.rb').map {|x| File.basename(x, '.rb')}
-set :default_stage, 'soon'
+set :default_stage, 'prod'
 require 'capistrano/ext/multistage'
 require 'bundler/capistrano'
 
