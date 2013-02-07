@@ -1,16 +1,15 @@
 
-<div class="row-fluid">
-  <div id="slogan" class="span12">
-    <strong>Get more</strong> from your film festival experience!
-  </div>
-</div>
 
 <div class="row-fluid">
-  <div id="overview" class="span12">
-    <p>
-      Festival Fanatic can help you see more of the movies you want to see...<br>
-      it's as easy as 1 - 2 - 3:
-    </p>
+  <div id="overview" class="well span12">
+    <div class="row-fluid">
+      <div id="slogan" class="span12">
+        <strong>Get more</strong> from your film festival experience!
+      </div>
+      <p>
+        Festival Fanatic can help you see more of the movies you want to see...
+      </p>
+    </div>
     <div class="row-fluid">
       <div class="span4 prioritize">
         <div>1. Prioritize your films</div>
@@ -24,34 +23,20 @@
         <div>3. Browse your schedule</div>
         from your desktop, and (soon!) your tablet or phone
       </div>
-      <div class='clearfix'></div>
-      <p id="nowplaying">
-        Now scheduling:<br>
-        <%= link_to "36th Portland International Film Festival", '/festivals/piff_2013/priorities' %>!
-      </p>
+    </div>
+    <div id="calltoaction" class="row-fluid">
+      <div class="span12">
+        <div id="nowplaying">
+          <h4>Now scheduling</h4>
+          <h2>the 36th Portland International Film Festival</h2>
+          <%= link_to "Get Started (it's free!)", '/festivals/piff_2013/priorities',
+                      class: 'btn btn-large' %>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-<div id="calltoaction" class="row-fluid">
-  <div class="span12">
-    <% if !user_signed_in? %>
-      <% if enabled?(:sign_up) %>
-        <p>
-          <%= link_to "Sign Up (it's free!)", new_user_registration_path,
-                      id: "signup", class: "btn btn-large" %>
-          <span>
-          or <%=  link_to "sign in", new_user_session_path %>
-            if you already have an account
-        </span>
-
-        </p>
-      <% else %>
-        (New sign ups are currently turned off. Check back soon)
-      <% end %>
-    <% end %>
-  </div>
-</div>
 
 <% if @announcements.present? %>
   <h3>News</h3>
