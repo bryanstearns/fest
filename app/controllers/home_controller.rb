@@ -20,6 +20,7 @@ class HomeController < ApplicationController
 
   def index
     @announcements = Announcement.published.limit(4)
+                                 .order(:published_at).reverse_order
   end
 
   def admin
