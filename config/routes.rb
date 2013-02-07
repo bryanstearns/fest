@@ -19,11 +19,12 @@ Fest::Application.routes.draw do
   resources :questions, only: [:new, :create]
 
   root to: "home#landing"
-  match 'welcome' => "home#index", as: :welcome
+  match 'changes' => "home#changes", as: :changes
+  match 'feedback' => "questions#new", as: :feedback
+  match 'help' => "home#help", as: :help
   match 'maintenance' => "home#maintenance", as: :maintenance
   match 'sign_ups_off' => "home#sign_ups_off", as: :sign_ups_off
-  match 'help' => "home#help", as: :help
-  match 'feedback' => "questions#new", as: :feedback
+  match 'welcome' => "home#index", as: :welcome
 
   # Admin stuff
   match 'admin' => "home#admin", as: :admin_root
