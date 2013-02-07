@@ -37,12 +37,15 @@
   <div class="span12">
     <% if !user_signed_in? %>
       <% if enabled?(:sign_up) %>
-        <%= link_to "Sign Up (it's free!)", new_user_registration_path,
-                    id: "signup", class: "btn btn-large" %>
-        <span>
+        <p>
+          <%= link_to "Sign Up (it's free!)", new_user_registration_path,
+                      id: "signup", class: "btn btn-large" %>
+          <span>
           or <%=  link_to "sign in", new_user_session_path %>
-          if you already have an account
+            if you already have an account
         </span>
+
+        </p>
       <% else %>
         (New sign ups are currently turned off. Check back soon)
       <% end %>
