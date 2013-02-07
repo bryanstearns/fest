@@ -33,7 +33,7 @@ module PicksHelper
         films.sort_by {|f| [f.countries.present? ? country_names(f.countries) : 'ZZZZZZZ',
                             f.sort_name] }
       when 'page'
-        films.sort_by {|f| [ f.page, f.sort_name ] }
+        films.sort_by {|f| [ f.page || 9999999.0, f.sort_name ] }
       when 'priority'
         films.sort_by {|f| [-1 * (picks[f.id].try(:priority) || -1), f.sort_name ] }
       when 'rating'
