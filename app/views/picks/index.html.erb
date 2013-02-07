@@ -28,17 +28,19 @@
   </p>
 
   <% if user_signed_in? %>
-    <p>
-      Each choice is saved as soon as you click. When you're done, click the
-      <span class="nobr">"Continue"</span> button at the bottom to move to the
-      next step. You can come back later if you don't finish now, or if you want to
-      change a priority or add a rating; you can also reset all your priorities and
-      ratings and start over by clicking this button:
-      <%= link_to "Start Over", reset_rankings_festival_path(@festival),
-                  :method => :put,
-                  :confirm => "Are you sure you want to throw away all your priority settings and ratings?",
-                  :class => "btn btn-small" %>
-    </p>
+    <div>
+      <span>
+        Each choice is saved as soon as you click. When you're done, click the
+        "Continue" button at the bottom to move to the next step. You can come
+        back later if you don't finish now, or if you want to change a priority
+        or add a rating; you can also reset all your priorities and ratings and
+        start over by clicking this button:
+        <%= button_to "Discard all priorities and ratings",
+                      reset_rankings_festival_path(@festival),
+                      :confirm => "Are you sure you want to throw away all your priorities and ratings?",
+                      :class => "btn btn-small" %>
+      </span>
+    </div>
     <p class="well">
       <span class="attention">Oops!</span> Bryan here: I've gotten reports
       this morning (Wednesday February 6th) that some folks' choices from this

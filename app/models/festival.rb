@@ -42,6 +42,11 @@ class Festival < ActiveRecord::Base
     screenings.all.select {|s| user.can_see?(s, subscription) }
   end
 
+  def reset_rankings(user)
+    picks_to_reset = picks_for(user).prioritized_or_rated
+    picks_to_reset.update_all(priority: nil, rating: nil)
+  end
+
   def reset_screenings(user, after=nil)
     after = Time.current if after == :now
     picks_to_reset = picks_for(user).selected

@@ -33,6 +33,7 @@ class Pick < ActiveRecord::Base
   validates :rating, inclusion: { in: RATING_HINTS.keys }, allow_nil: true
 
   scope :selected, where('picks.screening_id is not null')
+  scope :prioritized_or_rated, where('(picks.priority is not null or picks.rating is not null)')
 
   def self.priority_to_index
     @@priority_to_index ||= {}.tap do |result|

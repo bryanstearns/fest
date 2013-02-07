@@ -5,8 +5,8 @@ Fest::Application.routes.draw do
   # Public stuff
   resources :festivals, only: [:index, :show] do
     member do
-      put :reset_rankings
-      put :reset_screenings
+      post :reset_rankings
+      post :reset_screenings
     end
     resource :subscription, path: 'assistant', controller: :subscriptions,
              only: [:show, :update]

@@ -17,21 +17,23 @@ class FestivalsController < ApplicationController
 
   # PUT /festivals/1/reset_rankings
   def reset_rankings
-    if user_signed_in?
-      current_user.reset_rankings(@festival)
-    end
+    @festival.reset_rankings(current_user) if user_signed_in?
+    flash[:notice] = 'Your priorities and ratings have been reset.'
     redirect_to festival_priorities_path(@festival)
   end
 
   # PUT /festivals/1/reset_screenings
   def reset_screenings
-    if user_signed_in?
-      current_user.reset_screenings(@festival)
-    end
-    redirect_to festival_priorities_path(@festival)
+    @festival.reset_screenings(current_user) if user_signed_in?
+    flash[:notice] = 'All your screenings have been unselected.'
+    redirect_to festival_path(@festival)
   end
 
 protected
+  def load_festival
+    @festival = Festival.find_by_slug!(params[:id])
+  end
+
   def load_festival_and_screenings
     @festival = Festival.includes(screenings: [:venue, :film]).find_by_slug!(params[:id])
     @screenings = @festival.screenings
