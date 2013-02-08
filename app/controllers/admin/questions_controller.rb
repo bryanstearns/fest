@@ -5,7 +5,9 @@ module Admin
 
     # GET /admin/questions
     def index
-      respond_with(:admin, @questions = Question.all)
+      @show_all = params[:all]
+      @questions = @show_all ? Question.all : Question.not_done
+      respond_with(:admin, @questions)
     end
 
     # GET /admin/questions/1

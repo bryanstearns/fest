@@ -1,13 +1,13 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <b>Email:</b>
-  <%= @question.email %>
+  <b>From:</b>
+  <%= question_mail_to(@question) %>
 </p>
 
 <p>
   <b>Question:</b>
-  <%= @question.question %>
+  <pre><%= @question.question %></pre>
 </p>
 
 <p>

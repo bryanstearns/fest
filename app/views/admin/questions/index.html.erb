@@ -1,4 +1,9 @@
-<h1>All feedback</h1>
+
+<% if @show_all %>
+  <h3>All feedback <small><%= link_to("(Show open only)", admin_questions_path) %></small></h3>
+<% else %>
+  <h3>Open feedback <small><%= link_to("(Show all)", admin_questions_path(all: true)) %></small></h3>
+<% end %>
 
 <table id="questions">
   <tr>
@@ -19,7 +24,7 @@
       <%= link_to_if(question.user_id?, question.name, question.user_id? && admin_user_path(question.user)) %>
       <%= question_mail_to(question) %>
     </td>
-    <td><%= question.question %></td>
+    <td><pre><%= question.question %></pre></td>
     <td><%= question.acknowledged %></td>
     <td><%= question.done %></td>
     <td><%= link_to 'Show', admin_question_path(question) %></td>
