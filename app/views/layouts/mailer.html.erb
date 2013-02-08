@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="en"><!-- <%= SOURCE_REVISION_DETAILS + " #$$" %> -->
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <meta charset="utf-8">
+  <%= yield(:head) %>
+</head>
+<body>
+  <%= content_for?(:content) ? yield(:content) : yield %>
+</body>
+</html>

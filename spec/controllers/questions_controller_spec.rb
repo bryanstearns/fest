@@ -12,9 +12,10 @@ describe QuestionsController do
     end
     context "with a logged-in user" do
       login_user
-      it "should set the user's email automatically" do
+      it "should set the user's name email automatically" do
         get :new, {}
         assigns(:question).email.should == @signed_in_user.email
+        assigns(:question).name.should == @signed_in_user.name
       end
     end
   end

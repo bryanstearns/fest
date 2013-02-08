@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
 
   has_many :subscriptions, dependent: :destroy
   has_many :travel_intervals, dependent: :destroy
+  has_many :questions, dependent: :nullify
   has_many :picks, dependent: :destroy do
     def find_or_initialize_for(film_id)
       Pick.includes(screening: :festival, film: :festival)\
