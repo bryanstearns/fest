@@ -63,7 +63,8 @@ class Day
     days.each do |day|
       page_height += day.grid_height + DAY_HEADER_HEIGHT
       if page_height > page_height
-        day.page_break_before = true
+        # TODO: off for now; see whether Laura's happier without them
+        # day.page_break_before = true
         page_height = day.grid_height
       end
     end
