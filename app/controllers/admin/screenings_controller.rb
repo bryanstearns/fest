@@ -4,6 +4,7 @@ module Admin
     before_filter :load_film_and_festival, only: [:index, :new, :create]
     before_filter :load_screening_film_and_festival, except: [:index, :new, :create]
     before_filter :load_venues_for_select, only: [:new, :edit]
+    before_filter :load_attendees, only: [:edit, :update]
     respond_to :html
 
     # GET /admin/screenings/1
@@ -33,7 +34,10 @@ module Admin
     # PUT /admin/screenings/1
     def update
       if @screening.update_attributes(params[:screening])
-        flash[:notice] = 'Screening was successfully updated.'
+        emails = @users.map {|u| u.email }
+        message = "#{pluralize(emails.count, 'user')} were affected"
+        message += ': ' + emails.join(', ') if emails.present?
+        flash[:notice] = "Screening was successfully updated; #{message}."
       end
       respond_with(:admin, @screening, location: admin_film_path(@film))
     end
@@ -59,6 +63,11 @@ module Admin
 
     def load_venues_for_select
       @venues = @festival.venues
+    end
+
+    def load_attendees
+      @picks = @screening.picks.includes(:user)
+      @users = @picks.map {|p| p.user }
     end
   end
 end
