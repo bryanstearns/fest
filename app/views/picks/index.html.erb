@@ -45,7 +45,7 @@
 </div>
 
 <% if sort_order_is_not_user_specific?(@sort_order) %>
-  <% cache ['picks', @festival, @sort_order] do %>
+  <% cache ['picks', @festival, @sort_order, @show_press] do %>
     <%= render partial: 'picks/films' %>
   <% end %>
 <% else %>
