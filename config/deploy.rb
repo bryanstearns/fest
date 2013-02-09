@@ -35,3 +35,8 @@ desc "restart unicorn app instances"
 task :restart_unicorns, :roles => :app, :except => {:no_release => true} do
   run "kill -USR2 `cat #{shared_path}/pids/unicorn.pid` || echo 'Unable to restart unicorns' 1>&2"
 end
+
+desc "flush the redis cache"
+task :flush_redis_cache, :roles => :app do
+  run "redis-cli flushall"
+end
