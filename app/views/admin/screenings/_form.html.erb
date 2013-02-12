@@ -15,12 +15,14 @@
   </div>
 <% end %>
 
-<p>
-  <% if @users.any? %>
-    <%= pluralize(@users.count, 'user has', 'users have') %>
-    picked this screening:
-    <%= @users.map(&:email).join(', ') %>
-  <% else %>
-    No users have picked this screening.
-  <% end %>
-</p>
+<% if !@screening.new_record? %>
+  <p>
+    <% if @users.any? %>
+      <%= pluralize(@users.count, 'user has', 'users have') %>
+      picked this screening:
+      <%= @users.map(&:email).join(', ') %>
+    <% else %>
+      No users have picked this screening.
+    <% end %>
+  </p>
+<% end %>
