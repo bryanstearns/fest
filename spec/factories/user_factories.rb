@@ -12,5 +12,16 @@ FactoryGirl.define do
         admin true
       end
     end
+
+    trait :with_ratings do
+      after(:create) do |user|
+        festival = create(:festival, :with_films_and_screenings)
+        festival.films.order(:id).limit(5).each do |film|
+          rating = (film.id % 5) + 1
+          create(:pick, user: user, festival: festival, film: film,
+                 rating: rating)
+        end
+      end
+    end
   end
 end
