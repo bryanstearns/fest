@@ -13,7 +13,7 @@
     <%= csrf_meta_tags %>
     <%= yield(:head) %>
   </head>
-<body>
+<body class="<%= controller.controller_name %> <%= controller.controller_name %>-<%= controller.action_name %>">
   <%= render 'layouts/navigation' %>
   <div id="main" role="main">
     <div class="container">
