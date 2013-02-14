@@ -32,7 +32,7 @@ describe Subscription do
     end
   end
 
-  context 'assigning a sharing key' do
+  context 'assigning sharing keys' do
     it 'generates a key' do
       key = Subscription.generate_key
       key.should match(/^[0-9a-f]{8}$/)
@@ -46,6 +46,15 @@ describe Subscription do
       key = subject.key
       subject.reload
       subject.key.should eq(key)
+    end
+    it 'assigns the ratings token on first use' do
+      subject.ratings_token.should_not be_nil
+    end
+    it 'assigns the ratings token on first save' do
+      subject.save!
+      ratings_token = subject.ratings_token
+      subject.reload
+      subject.ratings_token.should eq(ratings_token)
     end
   end
 

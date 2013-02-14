@@ -33,7 +33,10 @@ class Pick < ActiveRecord::Base
   validates :rating, inclusion: { in: RATING_HINTS.keys }, allow_nil: true
 
   scope :selected, where('picks.screening_id is not null')
+  scope :rated, where('picks.rating is not null')
   scope :prioritized_or_rated, where('(picks.priority is not null or picks.rating is not null)')
+
+  delegate :countries, :name, :sort_name, to: :film, prefix: true
 
   def self.priority_to_index
     @@priority_to_index ||= {}.tap do |result|
@@ -42,7 +45,6 @@ class Pick < ActiveRecord::Base
       end
     end
   end
-
 
   def conflicting_screening_ids
     if screening_id?

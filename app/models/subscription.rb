@@ -16,7 +16,7 @@ class Subscription < ActiveRecord::Base
   validate :check_restriction_text
   validate :check_location_exclusions
 
-  before_validation :assign_sharing_key
+  before_validation :assign_sharing_keys
 
   def can_see?(screening)
     return false if screening.press && !show_press?
@@ -55,7 +55,17 @@ class Subscription < ActiveRecord::Base
       write_attribute(:key, result)
     end)
   end
-  alias_method :assign_sharing_key, :key
+
+  def ratings_token
+    read_attribute(:ratings_token) || (Subscription.generate_key.tap do |result|
+      write_attribute(:ratings_token, result)
+    end)
+  end
+
+  def assign_sharing_keys
+    ratings_token
+    key
+  end
 
   def included_location_ids
     festival_location_ids - (excluded_location_ids || [])

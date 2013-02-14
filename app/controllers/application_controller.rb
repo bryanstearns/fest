@@ -51,7 +51,7 @@ protected
   end
 
   def load_subscription_and_picks_for_current_user
-    @subscription = current_user.subscription_for(@festival) \
+    @subscription = current_user.subscription_for(@festival, create: true) \
       if user_signed_in?
     @show_press = @subscription.try(:show_press)
     @picks = user_signed_in? ? @festival.picks_for(current_user) : []

@@ -1,0 +1,15 @@
+<h3><%= @user.name %>'s Ratings</h3>
+
+<% if @picks_by_rating.empty? %>
+  <p><%= @user.name %> hasn't rated any films yet. Come back soon!</p>
+<% else %>
+  <p>Here's what <%= @user.name %> thinks about the
+  <%= pluralize(@picks_by_rating.values.flatten.count, 'film') %>
+    rated so far:
+  </p>
+  <% @picks_by_rating.keys.sort.reverse.each do |rating_value| %>
+    <%= render partial: 'rating_group',
+               locals: { rating: rating_value,
+                         picks: @picks_by_rating[rating_value] } %>
+  <% end %>
+<% end %>

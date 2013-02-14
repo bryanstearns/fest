@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130207184202) do
+ActiveRecord::Schema.define(:version => 20130212010911) do
 
   create_table "announcements", :force => true do |t|
     t.string   "subject"
@@ -121,6 +121,7 @@ ActiveRecord::Schema.define(:version => 20130207184202) do
     t.string   "key",                   :limit => 10
     t.datetime "created_at",                                             :null => false
     t.datetime "updated_at",                                             :null => false
+    t.string   "ratings_token"
   end
 
   add_index "subscriptions", ["festival_id", "user_id"], :name => "index_subscriptions_on_festival_id_and_user_id", :unique => true

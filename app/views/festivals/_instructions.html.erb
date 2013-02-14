@@ -30,8 +30,6 @@
 
   see more information about the film and its other screenings,
 
-  change your priority for this film or rate it once you've seen it,
-
   or (shortly!) read buzz about the film & add your own. Also:
 </p>
 <ul>
@@ -41,6 +39,19 @@
     the rest of the festival for you.
   </li>
   <% if user_signed_in? %>
+    <% if current_user.has_ratings_for?(@festival) %>
+      <li><p>You can share a list of your film ratings using this link (which you
+        can post on Twitter or Facebook - anyone can access it):<br>
+        <%= link_to(user_ratings_url(@subscription.ratings_token),
+                    user_ratings_path(@subscription.ratings_token),
+                    target: '_blank') %></p>
+      </li>
+    <% else %>
+      <li>Once you've rated some of the movies you've seen (back on the
+        Priorities page), you'll see a link here to share a ratings page
+        with your friends.
+      </li>
+    <% end %>
     <li>
       You'll shortly be able to download a printable PDF of your schedule;
       this feature isn't quite ready yet. You'll also be able to download
@@ -49,10 +60,9 @@
       too).
     </li>
     <li>
-      You'll also be able to share your schedule and a list of your film
-      ratings with your friends using links that will appear <i>right here</i>
-      as soon as those features are done; I'll work on them right after the
-      printable PDF feature.
+      You'll also be able to share your schedule with your friends using a link
+      that will appear <i>right here</i> as soon as those features are done;
+      I'll work on them right after the printable PDF feature.
     </li>
     <% if current_user.has_screenings_for?(@festival) %>
       <li>

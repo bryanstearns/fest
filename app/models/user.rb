@@ -45,4 +45,8 @@ class User < ActiveRecord::Base
   def has_priorities_for?(festival)
     picks.where(['festival_id = ? and priority is not null', festival.id]).any?
   end
+
+  def has_ratings_for?(festival)
+    picks.rated.where('festival_id = ?', festival.id).any?
+  end
 end
