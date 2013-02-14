@@ -3,8 +3,10 @@
   <%=raw image_tag("raty/star-on.png", height: 16, width: 16) * rating %>
 </h5>
 
-<% picks.sort_by {|p| p.film_sort_name }.each do |pick| %>
-  <%= content_tag_for(:li, pick.film) do %>
-    <%= pick.film_name %> <%= flags(pick.film_countries) %>
+<ul id="rating_<%= rating %>">
+  <% picks.sort_by {|p| p.film_sort_name }.each do |pick| %>
+    <%= content_tag_for(:li, pick.film) do %>
+      <%= pick.film_name %> <%= flags(pick.film_countries) %>
+    <% end %>
   <% end %>
-<% end %>
+</ul>
