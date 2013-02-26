@@ -25,6 +25,28 @@ describe ApplicationHelper do
     end
   end
 
+  context "current_user_is_ffff?" do
+    subject { helper.current_user_is_ffff? }
+    context "without user logged in" do
+      before { helper.stub(user_signed_in?: false) }
+      it { should be_false }
+    end
+    context "with non-ffff user logged in" do
+      before do
+        helper.stub(user_signed_in?: true)
+        helper.stub(current_user: build(:user, :ffff => false))
+      end
+      it { should be_false }
+    end
+    context "with ffff user logged in" do
+      before do
+        helper.stub(user_signed_in?: true)
+        helper.stub(current_user: build(:user, :ffff => true))
+      end
+      it { should be_true }
+    end
+  end
+
   context "A formatted date range" do
     subject { date_range(start_on, end_on) }
     let(:start_on) { Date.parse("2015-11-20") }

@@ -17,8 +17,8 @@ class User < ActiveRecord::Base
   end
 
   attr_accessible :name, :email, :password, :password_confirmation, :remember_me
-  attr_accessible :admin, :name, :email, :password, :password_confirmation, :remember_me,
-                  as: :admin
+  attr_accessible :admin, :name, :email, :ffff, :password,
+                  :password_confirmation, :remember_me, as: :admin
 
   validates :name, :presence => true
 

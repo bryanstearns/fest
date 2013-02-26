@@ -23,6 +23,10 @@ module ApplicationHelper
     user_signed_in? && current_user.admin?
   end
 
+  def current_user_is_ffff?
+    user_signed_in? && current_user.ffff?
+  end
+
   def mdy_hms(time, null_value='')
     time ? l(time, format: :mdy_hms) : null_value
   end
