@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '3.2.12'
 
 gem 'airbrake'
+gem 'axlsx_rails'
 gem 'cache_digests'
 gem 'capistrano-ext', require: false
 gem 'capistrano-unicorn', require: false
