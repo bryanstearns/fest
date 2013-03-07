@@ -35,6 +35,7 @@ class Pick < ActiveRecord::Base
   scope :selected, where('picks.screening_id is not null')
   scope :rated, where('picks.rating is not null')
   scope :prioritized_or_rated, where('(picks.priority is not null or picks.rating is not null)')
+  scope :for_ffff_users, joins(:user).where('users.ffff = ?', true)
 
   delegate :countries, :name, :sort_name, to: :film, prefix: true
 
