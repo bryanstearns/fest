@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :user do
-    name "Factory User"
+    sequence(:name) {|n| "Factory User #{n}" }
     sequence(:email) {|n| "user#{n}@example.com" }
     password "sw0rdf1sh!"
     password_confirmation "sw0rdf1sh!"
@@ -14,8 +14,9 @@ FactoryGirl.define do
     end
 
     trait :with_ratings do
-      after(:create) do |user|
-        festival = create(:festival, :with_films_and_screenings)
+      ignore { festival nil }
+      after(:create) do |user, ev|
+        festival = ev.festival || create(:festival, :with_films_and_screenings)
         create(:subscription, festival: festival, user: user)
         festival.films.order(:id).limit(5).each do |film|
           rating = (film.id % 5) + 1
