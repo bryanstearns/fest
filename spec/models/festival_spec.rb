@@ -31,23 +31,41 @@ describe Festival do
       subject.slug.should == "#{subject.slug_group}_#{subject.starts_on.strftime("%Y")}"
     end
 
-    it "should group screenings by date in date order" do
-      festival = create(:festival, :with_films_and_screenings, press: true)
-      press_day = festival.starts_on - 1
-      press_screenings_on_pre_day = festival.screenings.to_a.select do |s|
-        s.starts_at.to_date == press_day
+    context "grouping screenings" do
+      let(:festival) { create(:festival, :with_films_and_screenings, press: true) }
+      let(:press_day) { festival.starts_on - 1 }
+      let(:first_day) { festival.starts_on }
+      let(:press_screenings_on_pre_day) do
+        festival.screenings.to_a.select do |s|
+          s.starts_at.to_date == press_day
+        end
       end
-      first_day = festival.starts_on
-      non_press_screenings_on_first_day = festival.screenings.to_a.select do |s|
-        s.starts_at.to_date == first_day
+      let(:non_press_screenings_on_first_day) do
+        festival.screenings.to_a.select do |s|
+          s.starts_at.to_date == first_day
+        end
       end
 
-      with_press = festival.screenings_by_date(press: true)
-      with_press[press_day].should eq(press_screenings_on_pre_day)
-      with_press[first_day].should eq(non_press_screenings_on_first_day)
-      without_press = festival.screenings_by_date(press: false)
-      without_press.should_not have_key(press_day)
-      without_press[first_day].should eq(non_press_screenings_on_first_day)
+      context "with press screenings" do
+        let(:screenings) { festival.screenings_by_date(press: true) }
+        it "should find the press day screenings" do
+          screenings[press_day].should eq(press_screenings_on_pre_day)
+        end
+        it "should find the first-day screenings" do
+          screenings[first_day].should eq(non_press_screenings_on_first_day)
+        end
+      end
+
+      context "without press screenings" do
+        let(:screenings) { festival.screenings_by_date(press: false) }
+        it "should find the first-day screenings" do
+          screenings[first_day].should eq(non_press_screenings_on_first_day)
+        end
+
+        it "should not include press screenings" do
+          screenings.should_not have_key(press_day)
+        end
+      end
     end
 
     it "collects picks for a given user" do
