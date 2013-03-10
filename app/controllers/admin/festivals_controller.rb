@@ -6,7 +6,7 @@ module Admin
 
     # GET /admin/festivals/new
     def new
-      respond_with(:admin, @festival = Festival.new)
+      respond_with(:admin, @festival = Festival.new(revised_at: Time.current))
     end
 
     # GET /admin/festivals/1/edit
