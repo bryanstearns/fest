@@ -9,7 +9,7 @@ class Film < ActiveRecord::Base
   validates :duration, :festival_id, :name, presence: true
   validates :name, :uniqueness => { scope: :festival_id }
 
-  before_save :initialize_extra_names
+  before_validation :initialize_extra_names
   after_save :touch_screenings
 
   scope :by_name, -> { order(:sort_name) }
@@ -29,8 +29,8 @@ class Film < ActiveRecord::Base
 
 protected
   def initialize_extra_names
-    self.sort_name ||= name
-    self.short_name ||= name
+    self.sort_name = name if sort_name.blank?
+    self.short_name = name if short_name.blank?
   end
 
   def touch_screenings
