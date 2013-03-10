@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130223001129) do
+ActiveRecord::Schema.define(:version => 20130310195518) do
 
   create_table "announcements", :force => true do |t|
     t.string   "subject"
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(:version => 20130223001129) do
     t.string   "slug",                           :null => false
     t.string   "slug_group",                     :null => false
     t.string   "name",                           :null => false
-    t.string   "location",                       :null => false
+    t.string   "place",                          :null => false
     t.string   "main_url"
     t.string   "updates_url"
     t.date     "starts_on"
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(:version => 20130223001129) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "place"
   end
 
   create_table "picks", :force => true do |t|

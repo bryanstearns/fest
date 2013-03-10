@@ -42,7 +42,8 @@ class FakeFestivalGenerator
 
   def make_locations_and_venues
     locations = FactoryGirl.create_list(:location, (day_count / 3) + 1,
-                                        :with_venues)
+                                        :with_venues,
+                                        place: festival.place)
     locations.each do |location|
       FactoryGirl.create(:festival_location, festival: festival,
                          location: location)
@@ -115,7 +116,7 @@ end
 FactoryGirl.define do
   factory :festival do
     ignore { day_count 1 }
-    location "Locationville, OR"
+    place "Placeville, Oregon"
     sequence(:slug_group) {|n| "fest#{n}" }
     name {|f| "Festival #{f.slug_group}" }
     starts_on Date.yesterday

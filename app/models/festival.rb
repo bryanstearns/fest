@@ -7,7 +7,7 @@ class Festival < ActiveRecord::Base
   has_many :subscriptions, dependent: :destroy
   has_many :picks
 
-  attr_accessible :ends_on, :location, :location_ids, :main_url, :name, :published,
+  attr_accessible :ends_on, :location_ids, :main_url, :name, :place, :published,
                   :revised_at, :scheduled, :slug, :slug_group, :starts_on,
                   :updates_url
 
@@ -15,7 +15,7 @@ class Festival < ActiveRecord::Base
   before_validation :default_revised_at, on: :create
 
   validates :slug, presence: true, uniqueness: true
-  validates :ends_on, :location, :name, :revised_at, :slug_group, :starts_on,
+  validates :ends_on, :name, :place, :revised_at, :slug_group, :starts_on,
             presence: true
   validate :date_range_ordering
 

@@ -5,9 +5,10 @@ namespace :intervals do
     require 'debugger'
     dry_run = ENV["DRY_RUN"]
     verbose = (ENV["VERBOSE"] || 0).to_i
+    place = ENV["PLACE"] || abort("Must specify PLACE!")
     ActiveRecord::Base.transaction do
       csv = ENV['CSV'] || abort("no CSV= specified")
-      locations_by_name = Location.order(:name).inject({}) {|h, l| h[l.name] = l; h }
+      locations_by_name = Location.where(place: place).order(:name).inject({}) {|h, l| h[l.name] = l; h }
       index_to_location = nil
       CSV.foreach(csv) do |row|
         puts row.inspect if verbose > 2
@@ -64,13 +65,17 @@ namespace :intervals do
 
   desc "Dump travel intervals to a CSV"
   task :dump => :environment do
+    user = User.find_by_email(ENV['USER']) if ENV['USER']
+    place = ENV["PLACE"]
+    abort("Must specify PLACE!") unless (place || user)
     csv_path = ENV['CSV']
     csv_path = "travel_times.csv" if csv_path == "1"
     csv = File.open(csv_path, 'w') if csv_path
     begin
-      user = User.find_by_email(ENV['USER']) if ENV['USER']
       cache = TravelInterval.make_cache(user.try(:id))
-      locations = Location.order('name').to_a
+      locations = Location
+      locations = locations.where(place: place) if place
+      locations = locations.order('name').to_a
       labels = ['minutes from v to:'] + locations.map(&:name)
       widths = labels.map {|l| l.length }
       format = widths.map {|w| "%#{w + 2}s" }.join('  ')

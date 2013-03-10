@@ -7,9 +7,10 @@ class Location < ActiveRecord::Base
   has_many :travel_intervals_to, class_name: 'TravelInterval',
            foreign_key: :to_location_id, dependent: :destroy
 
-  attr_accessible :name
+  attr_accessible :name, :place
 
-  validates :name, presence: true, uniqueness: true
+  validates :name, presence: true, uniqueness: { scope: :place }
+  validates :place, presence: true
 
   scope :unused, where('not exists (select 1 from festival_locations ' +
                        'where locations.id = festival_locations.location_id)')

@@ -5,7 +5,7 @@ module Admin
 
     # GET /admin/locations
     def index
-      respond_with(:admin, @locations = Location.order(:name).includes(:venues))
+      respond_with(:admin, @locations = Location.order(:place, :name).includes(:venues))
     end
 
     # GET /admin/locations/new

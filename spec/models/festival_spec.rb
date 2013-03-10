@@ -5,7 +5,7 @@ describe Festival do
     subject { build(:festival) }
 
     it { should validate_presence_of(:name) }
-    it { should validate_presence_of(:location) }
+    it { should validate_presence_of(:place) }
     it { should validate_presence_of(:slug_group) }
     it { should validate_presence_of(:starts_on) }
     it { should validate_presence_of(:ends_on) }
