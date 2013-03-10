@@ -12,5 +12,5 @@
       </div>
     </div>
   </div>
-<% end -%>
+<% end unless @festival.new_record? -%>
 <%= render :file => 'layouts/festivals' %>
