@@ -7,7 +7,8 @@ class FestivalsController < ApplicationController
 
   # GET /festivals
   def index
-    respond_with(@festivals = Festival.published)
+    @festivals = current_user_is_admin? ? Festival.all : Festival.published
+    respond_with(@festivals)
   end
 
   # GET /festivals/1
