@@ -12,6 +12,9 @@
     <%= f.button :submit %>
     <%= cancel_link(admin_film_path(@film)) %>
     <%= destroy_button([:admin, @screening]) %>
+    <%= link_to('New Film', new_admin_festival_film_path(@festival),
+                class: 'btn btn-small extra-action', id: 'new_festival_film') \
+          if @screening.new_record? %>
   </div>
 <% end %>
 
