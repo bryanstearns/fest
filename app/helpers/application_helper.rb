@@ -123,4 +123,11 @@ module ApplicationHelper
                 options.merge(class: 'ajax-progress obscured',
                               id: dom_id(model) + "_progress"))
   end
+
+  def festival_revision_info(festival, picks=nil)
+    result = "Festival as of #{I18n.l @festival.revised_at, format: :dmdy_hm }"
+    last_pick = picks.map {|p| p.updated_at }.compact.max if picks.present?
+    result += "; choices as of #{I18n.l last_pick, format: :dmdy_hm }" if last_pick
+    result
+  end
 end

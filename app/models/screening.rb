@@ -30,7 +30,7 @@ class Screening < ActiveRecord::Base
     with_press ? scoped : where('screenings.press = ?', false)
   }
 
-  delegate :name, to: :venue, prefix: true
+  delegate :name, :abbreviation, to: :venue, prefix: true
   delegate :name, :short_name, :countries, to: :film
 
   def duration

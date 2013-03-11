@@ -1,5 +1,10 @@
 class FestivalsController < ApplicationController
+
+  include PrawnHelper
+
   respond_to :html
+  respond_to :pdf, only: [:show]
+
   before_filter :load_festival, only: [:reset_rankings, :reset_screenings]
   before_filter :load_festival_and_screenings, only: [:show]
   before_filter :check_festival_access, only: [:show]
@@ -13,7 +18,14 @@ class FestivalsController < ApplicationController
 
   # GET /festivals/1
   def show
-    respond_with(@festival)
+    respond_with(@festival) do |format|
+      format.pdf do
+        pdf = SchedulePDF.new(festival: @festival, picks: @picks,
+                              subscription: @subscription, user: current_user)
+        send_data(pdf.render, filename: "#{@festival.slug}.pdf",
+                  type: "application/pdf")
+      end
+    end
   end
 
   # PUT /festivals/1/reset_rankings

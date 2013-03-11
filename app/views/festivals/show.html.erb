@@ -33,7 +33,7 @@
   </div>
 
   <div id="as-of">
-    Festival as of <%=l @festival.revised_at, format: :dmdy_hm %>
+    <%= festival_revision_info(@festival) %>
   </div>
 
   <div id="screening-modal" class="modal hide fade" tabindex="-1"></div>

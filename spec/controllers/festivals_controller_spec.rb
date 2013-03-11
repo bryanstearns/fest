@@ -30,6 +30,12 @@ describe FestivalsController do
         get :show, {:id => festival.to_param}
         assigns(:picks).should eq(picks)
       end
+
+      it 'returns a PDF when .pdf format is requested' do
+        festival = create(:festival)
+        get :show, { id: festival.to_param, format: 'pdf' }
+        response.body.should start_with('%PDF-')
+      end
     end
   end
 end
