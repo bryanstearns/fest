@@ -1,5 +1,5 @@
 module PrawnHelper
-  FONTS_PATH = "/usr/share/fonts/android"
+  FONTS_PATH = Rails.root.join('app', 'fonts')
 
   class SchedulePDF
     include ApplicationHelper
