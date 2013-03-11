@@ -52,17 +52,19 @@
         </li>
       <% end -%>
 
-      <li>
-        <p>
-          Will you be attending any of the press screenings? I won't show them
-          on your schedule unless you check this box.
-        </p>
-        <div>
-          <%= check_box 'subscription', :show_press %>
-          <%= label 'subscription', :show_press, 'Show the press screenings',
-                    class: 'box' %>
-        </div>
-      </li>
+      <% if @festival.has_press? %>
+        <li>
+          <p>
+            Will you be attending any of the press screenings? I won't show them
+            on your schedule unless you check this box.
+          </p>
+          <div>
+            <%= check_box 'subscription', :show_press %>
+            <%= label 'subscription', :show_press, 'Show the press screenings',
+                      class: 'box' %>
+          </div>
+        </li>
+      <% end %>
 
       <% if @user_has_screenings %>
         <li>

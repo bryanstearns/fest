@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130310195518) do
+ActiveRecord::Schema.define(:version => 20130311030023) do
 
   create_table "announcements", :force => true do |t|
     t.string   "subject"
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(:version => 20130310195518) do
     t.datetime "revised_at"
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false
+    t.boolean  "has_press",   :default => false
   end
 
   add_index "festivals", ["ends_on", "published"], :name => "index_festivals_on_ends_on_and_published"
