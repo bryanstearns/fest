@@ -7,9 +7,7 @@
 Festival Fanatic is a Ruby on Rails web application that helps its users manage their
 film-festival attendance.
 
-The production version is {here}[http://festivalfanatic.com]; right now, that's the old
-Rails 2.3.9-based version. This version is a complete rewrite based on Rails 3.2.9 (and
-will be upgraded to Rails 4 as it, and the other gems it depends on, stabilize).
+The production version is {here}[https://festivalfanatic.com].
 
 == License
 
