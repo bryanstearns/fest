@@ -1,6 +1,11 @@
 require 'spec_helper'
+require 'support/shared_blocked_email_address_examples'
 
 describe User do
+  it_behaves_like "something with an email address"
+
+  it { should validate_presence_of(:email) }
+
   it "should create a new user given valid attributes" do
     User.create!(attributes_for(:user))
   end

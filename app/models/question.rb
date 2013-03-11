@@ -1,6 +1,8 @@
 class Question < ActiveRecord::Base
   belongs_to :user
 
+  include BlockedEmailAddressChecks
+
   attr_accessible :acknowledged, :done, :email, :name, :question, :user_id
 
   default_scope order(:created_at).reverse_order

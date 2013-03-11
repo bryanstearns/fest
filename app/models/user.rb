@@ -3,6 +3,8 @@ class User < ActiveRecord::Base
          :registerable, :recoverable, :rememberable, :trackable,
          :validatable
 
+  include BlockedEmailAddressChecks
+
   has_many :subscriptions, dependent: :destroy
   has_many :travel_intervals, dependent: :destroy
   has_many :questions, dependent: :nullify
