@@ -13,6 +13,7 @@ en:
       ymd: "%y%m%d"
   time:
     formats:
+      md_hm: "%-m/%-d %k:%M"
       mdy_hms: "%-m/%-d/%Y %k:%M:%S"
       dmdy_hm: "%A, %B %-d %Y, %l:%M %p"
       dmd_hm: "%A, %B %-d, %l:%M %p"
