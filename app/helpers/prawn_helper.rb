@@ -15,7 +15,7 @@ module PrawnHelper
     def initialize(options)
       @festival = options[:festival]
       @user = options[:user]
-      @picks = options[:picks]
+      @picks = options[:picks] || []
       @subscription = options[:subscription]
       @debug = options[:debug] || true
       @pdf = Prawn::Document.new(page_size: 'LETTER', page_layout: :landscape)
@@ -201,8 +201,7 @@ module PrawnHelper
 
       film.screenings.with_press(show_press).each do |screening|
         font(*time_style(screening)) do
-          text = I18n.l(screening.starts_at, format: :md_hm) + ' ' +
-                 screening.venue_abbreviation
+          text = "#{screening_times(screening)} #{screening.venue_abbreviation}"
           text += ' (press)' if screening.press?
           pdf.text_box text,
                        :at => [@left + @indent, @y],
