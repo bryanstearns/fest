@@ -14,4 +14,8 @@ class Location < ActiveRecord::Base
 
   scope :unused, where('not exists (select 1 from festival_locations ' +
                        'where locations.id = festival_locations.location_id)')
+
+  def label
+    "#{name} (#{place})"
+  end
 end

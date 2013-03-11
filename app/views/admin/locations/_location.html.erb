@@ -1,6 +1,6 @@
 <%= content_tag_for(:li, location) do %>
   <h2>
-    <%= location.name %> (<%= location.place %>)
+    <%= location.label %>
     <span class="actions">
       <%= link_to 'Edit', edit_admin_location_path(location),
                   class: "btn btn-small" %>
