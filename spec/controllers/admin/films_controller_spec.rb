@@ -80,11 +80,11 @@ describe Admin::FilmsController do
         assigns(:film).should be_persisted
       end
 
-      it "redirects to the festival films list" do
+      it "redirects to the film's new-screening form" do
         festival = create(:festival)
         post :create, { festival_id: festival,
                         film: valid_attributes }
-        response.should redirect_to(admin_festival_films_url(festival))
+        response.should redirect_to(new_admin_film_screening_url(Film.last))
       end
     end
 

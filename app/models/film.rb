@@ -3,11 +3,12 @@ class Film < ActiveRecord::Base
   has_many :screenings, dependent: :destroy
   has_many :picks, dependent: :destroy
 
-  attr_accessible :countries, :description, :duration, :name, :page,
-                  :short_name, :sort_name, :url_fragment
+  attr_accessible :countries, :description, :duration_minutes,
+                  :name, :page, :short_name, :sort_name, :url_fragment
 
-  validates :duration, :festival_id, :name, presence: true
+  validates :duration_minutes, :festival_id, :name, presence: true
   validates :name, :uniqueness => { scope: :festival_id }
+  validates :duration_minutes, numericality: true
 
   before_validation :initialize_extra_names
   after_save :touch_screenings
@@ -25,6 +26,22 @@ class Film < ActiveRecord::Base
       # Load them all, then filter.
       screenings.to_a.select {|s| !s.press }
     end
+  end
+
+  def duration_minutes
+    @duration_minutes || duration.try(:to_minutes)
+  end
+
+  def duration_minutes=(t)
+    t = (Regexp.last_match[1].to_i * 60) + Regexp.last_match[2].to_i \
+      if t.to_s =~ /(\d+):(\d+)/
+    self.duration = t && t.to_i.minutes
+    @duration_minutes = t
+  end
+
+  def duration=(t)
+    write_attribute(:duration, t)
+    @duration_minutes = nil
   end
 
 protected

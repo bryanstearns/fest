@@ -69,12 +69,14 @@ describe Admin::ScreeningsController do
         assigns(:screening).should be_persisted
       end
 
-      it "redirects to the film page" do
+      it "redirects back to the new screening page" do
         post :create, {
             :film_id => film.to_param,
             :screening => valid_attributes
         }
-        response.should redirect_to([:admin, film])
+        response.should redirect_to(new_admin_film_screening_url(film,
+                                      starts_at: Screening.last.ends_at,
+                                      venue_id: venue.to_param))
       end
     end
 

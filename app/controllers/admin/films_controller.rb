@@ -32,10 +32,13 @@ module Admin
     # POST /admin/festivals/1/films
     def create
       @film = @festival.films.build(params[:film])
-      if @film.save
-        flash[:notice] = 'Film was successfully created.'
+      location = if @film.save
+        flash[:notice] = "Film '#{@film.name}' was successfully created."
+        new_admin_film_screening_path(@film)
+      else
+        admin_festival_films_path(@festival)
       end
-      respond_with(:admin, @film, location: admin_festival_films_path(@festival))
+      respond_with(:admin, @film, location: location)
     end
 
     # PUT /admin/films/1
