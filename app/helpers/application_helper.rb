@@ -15,7 +15,7 @@ module ApplicationHelper
       'latin',
       'latin-ext',
     ].join(',')
-    href = "http://fonts.googleapis.com/css?family=#{families}&subset=#{subset}"
+    href = "//fonts.googleapis.com/css?family=#{families}&subset=#{subset}"
     content_tag(:link, '', href: href.html_safe, rel: :stylesheet, type: 'text/css')
   end
 
