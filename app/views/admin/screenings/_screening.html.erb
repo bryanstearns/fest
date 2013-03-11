@@ -1,6 +1,6 @@
 <%= content_tag_for(:tr, screening) do %>
   <td>
-    <%= link_to screening_times(screening),
+    <%= link_to screening_times(screening, with_date: true),
                 edit_admin_screening_path(screening) %>
   </td>
   <td><%= screening.venue.abbreviation %></td>
