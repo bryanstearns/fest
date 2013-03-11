@@ -1,3 +1,5 @@
+require 'prawn'
+
 module PrawnHelper
   FONTS_PATH = Rails.root.join('app', 'fonts')
 
@@ -17,7 +19,7 @@ module PrawnHelper
       @user = options[:user]
       @picks = options[:picks] || []
       @subscription = options[:subscription]
-      @debug = options[:debug] || true
+      @debug = options[:debug]
       @pdf = Prawn::Document.new(page_size: 'LETTER', page_layout: :landscape)
       setup_geometry
       setup_choices
