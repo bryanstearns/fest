@@ -1,12 +1,11 @@
 development: &defaults
-  adapter: mysql2
+  adapter: postgresql
   encoding: utf8
   reconnect: false
   database: fest_test
   pool: 5
-  username: root
-  password:
   timeout: 5000
+  min_messages: WARNING
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
