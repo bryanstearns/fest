@@ -16,7 +16,7 @@ class Screening < ActiveRecord::Base
 
   before_validation :assign_denormalized_ids, :assign_ends_at
 
-  default_scope order(:starts_at)
+  default_scope order(:starts_at, :id)
 
   scope :on, ->(date) {
     t = date.to_date.to_time_in_current_zone
