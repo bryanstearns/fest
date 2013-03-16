@@ -1,10 +1,8 @@
 development: &defaults
   adapter: postgresql
   encoding: utf8
-  reconnect: false
   database: fest_test
-  pool: 5
-  timeout: 5000
+  username: postgres
   min_messages: WARNING
 
 # Warning: The database defined as "test" will be erased and

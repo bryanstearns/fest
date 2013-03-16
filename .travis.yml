@@ -11,4 +11,4 @@ script:
   - TRAVIS=1 xvfb-run bundle exec rake
 before_script:
   - cp config/database.travis.yml config/database.yml
-  - mysql -e 'create database fest_test'
+  - psql -c 'create database fest_test;' -U postgres
