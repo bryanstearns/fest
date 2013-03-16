@@ -20,6 +20,7 @@ gem 'redis-rails'
 gem 'simple_form'
 gem 'turbolinks'
 gem 'jquery-turbolinks'
+gem 'taps', git: 'git://github.com/thedeeno/taps.git'
 gem 'underscore-rails'
 gem 'unicorn'
 

@@ -3,7 +3,7 @@ namespace :db do
            "local development database"
   task :fetch do
     puts "Retrieving production data"
-    cmd = "mysqldump -ufest -pfest --compatible=postgres fest_prod"
+    cmd = "mysqldump -ufest -pfest fest_prod"
     `ssh festprod "#{cmd}" > production.sql`
     load_data
   end
@@ -19,8 +19,21 @@ namespace :db do
     raise "Can't load data into production" if env == "production"
     puts "Loading data"
     db_config = YAML::load(ERB.new(IO.read("config/database.yml")).result)
-    #`mysql -ufest -pfest #{db_config[env]["database"]} <production.sql`
-    `pgsql -d #{db_config[env]["database"]} -f production.sql`
+    `mysql -ufest -pfest #{db_config[env]["database"]} <production.sql`
+    #`psql #{db_config[env]["database"]} -f production.sql`
+    # Use taps to convert the data to postgress
+    child = fork do
+      puts "starting server"
+      exec "bundle exec taps server mysql2://fest:fest@localhost/fest_#{env} t t"
+    end
+    sleep(2)
+    puts 'Pulling data into Postgres'
+    `bundle exec taps pull postgres://localhost/fest_#{env} http://t:t@localhost:5000`
+
+    puts "Killing server"
+    Process.kill('QUIT', child)
+    Process.wait
+
     puts "Migrating"
     Rake::Task['db:migrate'].invoke
     if env == "development"
