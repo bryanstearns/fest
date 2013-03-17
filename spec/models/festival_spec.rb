@@ -92,12 +92,15 @@ describe Festival do
       }
 
       it "unselects all by default" do
-        expect {
-          festival.reset_screenings(user)
-        }.to change {
-          festival.picks_for(user).where('screening_id is not null').count
-        }.by(-2)
+        festival.picks_for(user).where('screening_id is not null').\
+          should have_at_least(1).item
+
+        festival.reset_screenings(user)
+
+        festival.picks_for(user).where('screening_id is not null').\
+          should have(0).items
       end
+
       it 'unselects just the future ones with a cutoff' do
         expect {
           festival.reset_screenings(user,
