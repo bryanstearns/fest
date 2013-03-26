@@ -9,6 +9,6 @@ Handlers.register 'Days', class
 
       modal.load('/screenings/' + screening_id, '', ->
         jQuery(document).trigger('handlers:pageUpdated', 'body')
-        modal.modal()
+        modal.modal(modalOverflow: true)
       )
     )
