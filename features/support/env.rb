@@ -9,6 +9,7 @@ require 'spork'
 
 Spork.prefork do
   require 'cucumber/rails'
+  require 'capybara/poltergeist'
 
   # Capybara defaults to XPath selectors rather than Webrat's default of CSS3. In
   # order to ease the transition to Capybara we set the default here. If you'd
@@ -16,8 +17,8 @@ Spork.prefork do
   # steps to use the XPath syntax.
   Capybara.default_selector = :css
 
-  # Use the Webkit driver for javascript tests
-  Capybara.javascript_driver = :webkit
+  # Use the phantomjs driver for javascript tests
+  Capybara.javascript_driver = :poltergeist
 
   World(FactoryGirl::Syntax::Methods)
   World(EnabledFlags)

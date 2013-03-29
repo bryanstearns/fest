@@ -47,7 +47,6 @@ end
 
 group :test do
   gem 'capybara'
-  gem 'capybara-webkit'
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'email_spec'
@@ -55,6 +54,7 @@ group :test do
   gem 'guard-cucumber'
   gem 'guard-rspec'
   gem 'guard-spork'
+  gem 'poltergeist'
   gem 'rb-inotify', :require => false # Guard will pick the right one of these
   gem 'rb-fsevent', :require => false
   gem 'rb-fchange', :require => false
