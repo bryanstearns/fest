@@ -1,6 +1,5 @@
 Handlers.register 'Days', class
   constructor: (el) ->
-    console.log("Days constructed")
     jQuery('.day .screening').off('click').on('click', ->
       screening_id = jQuery(this).attr('id').split('_')[1]
       jQuery('body').modalmanager('loading')

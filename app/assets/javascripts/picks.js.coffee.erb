@@ -7,8 +7,6 @@ Handlers.register 'Picks', class
   unschedule_label: "Unschedule"
 
   constructor: (el) ->
-    console.log("Picks constructed")
-
     @autosubmit_sort_form()
     if window.picks_by_film_id?
       @setup_priority_divs()
