@@ -3,11 +3,12 @@ class FestivalsController < ApplicationController
   include PrawnHelper
 
   respond_to :html
-  respond_to :pdf, only: [:show]
+  respond_to :pdf, :xlsx, only: [:show]
 
   before_filter :load_festival, only: [:reset_rankings, :reset_screenings]
   before_filter :load_festival_and_screenings, only: [:show]
   before_filter :check_festival_access, only: [:show]
+  before_filter :check_ffff_spreadsheet_access, only: [:show]
   before_filter :load_subscription_and_picks_for_current_user, only: [:show]
 
   # GET /festivals
@@ -26,6 +27,9 @@ class FestivalsController < ApplicationController
                   type: "application/pdf")
       end
     end
+    response.headers['Content-Disposition'] =
+      "attachment; filename=\"#{@festival.slug}_ratings.xlsx\"" \
+      if request.format == Mime::Type.lookup_by_extension(:xlsx)
   end
 
   # PUT /festivals/1/reset_rankings
@@ -50,5 +54,10 @@ protected
   def load_festival_and_screenings
     @festival = Festival.includes(screenings: [:venue, :film]).find_by_slug!(params[:id])
     @screenings = @festival.screenings
+  end
+
+  def check_ffff_spreadsheet_access
+    raise(ActiveRecord::RecordNotFound) \
+      if request.format == :xlsx && !view_context.allow_ffff_download?
   end
 end

@@ -27,6 +27,12 @@ module ApplicationHelper
     user_signed_in? && current_user.ffff?
   end
 
+  def allow_ffff_download?
+    user_signed_in? &&
+      (current_user.admin? ||
+       (current_user.email.starts_with('dlj9@') && current_user_is_ffff?))
+  end
+
   def mdy_hms(time, null_value='')
     time ? l(time, format: :mdy_hms) : null_value
   end

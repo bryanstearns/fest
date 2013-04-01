@@ -23,8 +23,18 @@
   <p>
     If there's a film you've seen already, you can note what you thought of it
     here by entering a rating from one to five stars; you can also come back and
-    enter ratings later. (I'll be sharing these ratings &mdash; see
-    <%= link_to 'the Help page', help_path %> for details.)
+    enter ratings later.
+    <% if current_user_is_ffff? %>
+      <i>Ah, I see you're an FFFF member! I'll share your ratings with Doug.
+        <% if allow_ffff_download? %>
+          Oh, it's you, Doug: <%= link_to("FFFF Ratings", festival_path(@festival, format: :xlsx),
+                                          class: 'btn btn-small') %>
+        <% end %>
+      </i>
+    <% else %>
+      (I'll be sharing these ratings &mdash; see
+      <%= link_to 'the Help page', help_path %> for details.)
+    <% end %>
   </p>
 
   <% if user_signed_in? %>

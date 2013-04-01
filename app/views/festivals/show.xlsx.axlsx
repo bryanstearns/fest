@@ -1,0 +1,2 @@
+xlsx_package.use_shared_strings = true
+FfffRatingsXlsx.new(xlsx_package.workbook, @festival).render
