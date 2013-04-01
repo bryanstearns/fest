@@ -43,4 +43,18 @@ namespace :db do
     puts "Flushing redis cache"
     Redis.current.flushdb
   end
+
+  # Notes on moving data from MySQL to postgres:
+  # - (As of this writing, production still uses MySQL, but development uses
+  #   postgresql.)
+  # - Use 'rake db:fetch' to copy the production data into the local mysql
+  #   fest_development database.
+  # - Launch a taps server in the background, pointing at the local mysql database:
+  #   /usr/local/opt/rbenv/versions/1.9.3-p327/lib/ruby/gems/1.9.1/gems/taps-0.3.24/bin/taps \
+  #     server mysql://fest:fest@localhost/fest_development t t &
+  # - Run taps to copy the data into the local production database:
+  #   /usr/local/opt/rbenv/versions/1.9.3-p327/lib/ruby/gems/1.9.1/gems/taps-0.3.24/bin/taps \
+  #     pull postgres://stearns@localhost/fest_development http://t:t@localhost:5000"
+  # - fg, ctrl-C to kill the taps server.
+  # - Don't forget to 'rake db:test:clone'
 end
