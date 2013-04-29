@@ -19,20 +19,39 @@ namespace :db do
     raise "Can't load data into production" if env == "production"
     puts "Loading data"
     db_config = YAML::load(ERB.new(IO.read("config/database.yml")).result)
-    `mysql -ufest -pfest #{db_config[env]["database"]} <production.sql`
-    #`psql #{db_config[env]["database"]} -f production.sql`
-    # Use taps to convert the data to postgress
-    child = fork do
-      puts "starting server"
-      exec "bundle exec taps server mysql2://fest:fest@localhost/fest_#{env} t t"
+    adapter = db_config[env]['adapter']
+    mysql_database = if adapter == 'mysql2'
+      db_config[env]["database"]
+    else
+      db_config['dev_my']['database']
     end
-    sleep(2)
-    puts 'Pulling data into Postgres'
-    `bundle exec taps pull postgres://localhost/fest_#{env} http://t:t@localhost:5000`
-
-    puts "Killing server"
-    Process.kill('QUIT', child)
-    Process.wait
+    `mysql -ufest -pfest #{mysql_database} <production.sql`
+    if adapter != 'mysql2'
+      # Use taps to convert the data to postgress or sqlite3
+      child = fork do
+        cmd = "bundle exec taps server mysql2://fest:fest@localhost/fest_#{env} t t"
+        puts "starting server: #{cmd}"
+        exec cmd
+      end
+      sleep(2)
+      begin
+        case adapter
+        when 'postgresql'
+          puts 'Pulling data into Postgres'
+          `bundle exec taps pull postgres://localhost/fest_#{env} http://t:t@localhost:5000`
+        when 'sqlite3'
+          cmd = "bundle exec taps pull -d sqlite://#{Rails.root}/#{db_config[env]['database']} http://t:t@localhost:5000"
+          puts "Pulling data into Sqlite3 with: #{cmd}"
+          `#{cmd}`
+        else
+          abort "Uh oh: unknown adapter: #{adapter.inspect}"
+        end
+      ensure
+        puts "Killing taps server"
+        Process.kill('QUIT', child)
+        Process.wait
+      end
+    end
 
     puts "Migrating"
     Rake::Task['db:migrate'].invoke
