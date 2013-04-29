@@ -405,6 +405,7 @@ DEPENDENCIES
   shoulda-matchers
   simple_form
   spork
+  sqlite3
   taps!
   turbolinks
   uglifier
