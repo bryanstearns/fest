@@ -88,7 +88,7 @@ describe Cost do
   end
 
   it 'determines conflicting screening costs' do
-    result = mock
+    result = double
     autoscheduler.stub(:screening_id_conflicts_costs).and_return(result)
     subject.conflicting_screening_costs.should eq(result)
   end

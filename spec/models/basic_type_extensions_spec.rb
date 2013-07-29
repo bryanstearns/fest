@@ -119,9 +119,9 @@ describe 'Numeric#to_duration' do
 end
 
 describe 'Enumerable#map_by' do
-  let(:a) { mock(x: 5) }
-  let(:b) { mock(x: 12) }
-  let(:c) { mock(x: 7) }
+  let(:a) { double(x: 5) }
+  let(:b) { double(x: 12) }
+  let(:c) { double(x: 7) }
   let(:enumerable) { [ a, b, c ] }
   context "when given an symbol" do
     subject { enumerable.map_by(:x) }

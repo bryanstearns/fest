@@ -100,9 +100,9 @@ describe AutoScheduler do
     end
 
     it 'returns a list of a screening\'s conflicts\' costs' do
-      conflicting_screenings = [mock, mock]
-      cost_first = mock
-      cost_last = mock
+      conflicting_screenings = [double, double]
+      cost_first = double
+      cost_last = double
       costs = { conflicting_screenings.first => cost_first,
                 conflicting_screenings.last => cost_last }
       subject.stub(:screening_id_conflicts).and_return(conflicting_screenings)
@@ -140,8 +140,8 @@ describe AutoScheduler do
     end
 
     it 'picks screenings until there are no more to pick' do
-      subject.stub(:next_best_screening).and_return(mock(id: -1),
-                                                    mock(id: -2),
+      subject.stub(:next_best_screening).and_return(double(id: -1),
+                                                    double(id: -2),
                                                     nil)
       subject.expects(:schedule).twice
       subject.run
@@ -150,9 +150,9 @@ describe AutoScheduler do
 
   context 'finding the cheapest screening' do
     it 'resets costs, then asks each for its cost and picks the smallest' do
-      expensive = mock(total_cost: Cost::UNPICKABLE, screening_id: 0)
-      middling = mock(total_cost: 5.0, screening_id: 0)
-      cheapie = mock(total_cost: 1.0, screening_id: 0)
+      expensive = double(total_cost: Cost::UNPICKABLE, screening_id: 0)
+      middling = double(total_cost: 5.0, screening_id: 0)
+      cheapie = double(total_cost: 1.0, screening_id: 0)
       costs = { a: expensive, b: cheapie, c: middling }
       autoscheduler.stub(:current_pickable_screenings).and_return(costs.keys)
       autoscheduler.stub(:costs).and_return(costs)
@@ -161,8 +161,8 @@ describe AutoScheduler do
     end
 
     it 'returns the cheapest one if it\'s pickable' do
-      screening = mock(id: 1000)
-      cost = mock(:pickable? => true, :screening => screening)
+      screening = double(id: 1000)
+      cost = double(:pickable? => true, :screening => screening)
       autoscheduler.stub(:find_minimum_cost).and_return(cost)
       autoscheduler.next_best_screening.should == screening
     end
@@ -173,7 +173,7 @@ describe AutoScheduler do
     end
 
     it 'returns nil if the cheapest one isn\'t pickable' do
-      cost = mock(:pickable? => false)
+      cost = double(:pickable? => false)
       autoscheduler.stub(:find_minimum_cost).and_return(cost)
       autoscheduler.next_best_screening.should be_nil
     end
@@ -221,7 +221,7 @@ describe AutoScheduler do
       end
       subject { autoscheduler.schedule(screening2) }
 
-      it { should_not raise_error(AutoScheduler::InternalError) }
+      it { should_not raise_error() }
 
       it 'should update the current_ lists' do
         autoscheduler.current_picks_by_screening_id.should_not have_key(screening2.id)

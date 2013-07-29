@@ -4,7 +4,7 @@ describe PicksHelper do
   helper PicksHelper
 
   it 'builds a heading for a film' do
-    film = mock(name: 'Vertigo')
+    film = double(name: 'Vertigo')
     helper.pick_film_heading(film).should match(/Vertigo/)
   end
 

@@ -25,7 +25,7 @@ describe FestivalsController do
       it "assigns the current_user's picks as @picks" do
         login_user
         festival = create(:festival)
-        picks = mock
+        picks = double
         Festival.any_instance.stub(:picks_for).and_return(picks)
         get :show, {:id => festival.to_param}
         assigns(:picks).should eq(picks)

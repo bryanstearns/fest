@@ -11,9 +11,9 @@ describe ScreeningsHelper do
       [12, 2, '12 earlier and two later screenings:']
     ].each do |earlier, later, expected|
       context "with #{earlier} earlier and #{later} later" do
-        let(:earlier_mocks) { Array.new(earlier, mock(starts_at: 2.days.ago)) }
-        let(:later_mocks) { Array.new(later, mock(starts_at: 2.days.from_now)) }
-        let(:other) { earlier_mocks + later_mocks }
+        let(:earlier_doubles) { Array.new(earlier, double(starts_at: 2.days.ago)) }
+        let(:later_doubles) { Array.new(later, double(starts_at: 2.days.from_now)) }
+        let(:other) { earlier_doubles + later_doubles }
         it "says #{expected.inspect}" do
           helper.other_screenings_caption(Time.current, other)\
             .should == expected
