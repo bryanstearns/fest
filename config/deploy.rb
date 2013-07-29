@@ -7,17 +7,14 @@ set :scm, :git
 set :repository, 'git@github.com:bryanstearns/fest.git'
 set :deploy_via, :remote_cache
 
-set :user, 'www-data'
-set :runner, 'www-data'
+default_run_options[:shell] = '/bin/bash --login'
 set :use_sudo, false
-ssh_options[:forward_agent] = true
-ssh_options[:verbose] = :debug if ENV['VERBOSE']
+set :ssh_options, { :forward_agent => true }
+if ENV['VERBOSE']
+  set :ssh_options, { :verbose => debug }
+end
 
 set :shared_files, %w[database.yml newrelic.yml secret_token]
-
-role :app, 'frenzy'
-role :web, 'frenzy'
-role :db, 'frenzy', primary: true
 
 before "deploy:assets:precompile", "setup_shared_files"
 after "deploy:create_symlink", "deploy:migrate"
