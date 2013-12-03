@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.13'
+gem 'rails', '3.2.16'
 
 gem 'airbrake'
 gem 'axlsx_rails'
@@ -9,7 +9,7 @@ gem 'capistrano-ext', require: false
 gem 'capistrano-unicorn', require: false
 gem 'jquery-rails'
 gem 'bootstrap_modal_rails'
-gem 'bootstrap-sass'
+gem 'bootstrap-sass', '< 3.0'
 gem 'devise'
 gem 'handlers-js'
 gem 'mysql2'
@@ -31,12 +31,6 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller' # better_errors wants this
   gem 'factory_girl_rails', require: false
-
-  if ENV['RM_INFO'] # Don't use the debugger when running under Rubymine
-    gem 'debugger', require: false
-  else
-    gem 'debugger'
-  end
 end
 
 group :assets do
@@ -55,7 +49,7 @@ group :test do
   gem 'guard-cucumber'
   gem 'guard-rspec'
   gem 'guard-spork'
-  gem 'poltergeist'
+  gem 'poltergeist', '~> 1.4.0'
   gem 'rb-inotify', :require => false # Guard will pick the right one of these
   gem 'rb-fsevent', :require => false
   gem 'rb-fchange', :require => false
