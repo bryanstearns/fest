@@ -79,15 +79,15 @@ describe ApplicationHelper do
     context "when passed an object" do
       subject { date_range(object) }
       context "that responds to #starts_on and #ends_on" do
-        let(:object) { stub(:starts_on => start_on,
-                            :ends_on => start_on + 2.days) }
+        let(:object) { double(:starts_on => start_on,
+                              :ends_on => start_on + 2.days) }
         it "should ask the object" do
           subject.should == "November 20 - 22, 2015"
         end
       end
       context "that responds to #starts_at and #ends_at" do
-        let(:object) { stub(:starts_at => start_on.at("2:00"),
-                            :ends_at => (start_on + 3.days).at("17:00")) }
+        let(:object) { double(:starts_at => start_on.at("2:00"),
+                              :ends_at => (start_on + 3.days).at("17:00")) }
         it "should ask the object" do
           subject.should == "November 20 - 23, 2015"
         end
@@ -127,8 +127,8 @@ describe ApplicationHelper do
     context "when passed an object" do
       subject { time_range(object) }
       context "that responds to #starts_at and #ends_at" do
-        let(:object) { stub(:starts_at => start_at,
-                            :ends_at => start_at + 2.hours) }
+        let(:object) { double(:starts_at => start_at,
+                              :ends_at => start_at + 2.hours) }
         it "should ask the object" do
           subject.should == "9:45 - 11:45 am"
         end
