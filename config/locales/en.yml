@@ -15,8 +15,8 @@ en:
     formats:
       md_hm: "%-m/%-d %k:%M"
       mdy_hms: "%-m/%-d/%Y %k:%M:%S"
-      dmdy_hm: "%A, %B %-d %Y, %l:%M %p"
-      dmd_hm: "%A, %B %-d, %l:%M %p"
+      dmdy_hm: "%A, %B %-d %Y, %l:%M %P"
+      dmd_hm: "%A, %B %-d, %l:%M %P"
       hm: "%l:%M"
-      hp: "%l %p"
-      hmp: "%l:%M %p"
+      hp: "%l %P"
+      hmp: "%l:%M %P"
