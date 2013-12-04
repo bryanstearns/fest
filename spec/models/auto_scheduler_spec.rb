@@ -135,7 +135,7 @@ describe AutoScheduler do
 
     it 'starts by unselecting old screenings' do
       subject.stub(:next_best_screening).and_return(nil)
-      festival.expects(:reset_screenings).once
+      festival.should_receive(:reset_screenings).once
       subject.run
     end
 
@@ -143,7 +143,7 @@ describe AutoScheduler do
       subject.stub(:next_best_screening).and_return(double(id: -1),
                                                     double(id: -2),
                                                     nil)
-      subject.expects(:schedule).twice
+      subject.should_receive(:schedule).twice
       subject.run
     end
   end
@@ -221,7 +221,9 @@ describe AutoScheduler do
       end
       subject { autoscheduler.schedule(screening2) }
 
-      it { should_not raise_error() }
+      it 'should not raise' do
+        expect { subject }.to_not raise_error
+      end
 
       it 'should update the current_ lists' do
         autoscheduler.current_picks_by_screening_id.should_not have_key(screening2.id)
