@@ -20,4 +20,17 @@ module FilmsHelper
   def pick_symbols(film)
     content_tag(:div, '', id: dom_id(film) + '_pick', class: 'pick_symbols')
   end
+
+  def countries(film)
+    names = country_names(film.countries)
+    names = 'Other' if names.blank?
+    names
+  end
+
+  def film_details(film)
+    parts = []
+    parts << (flags(film.countries) + country_names(film.countries)) if film.countries.present?
+    parts << hours_and_minutes(film.duration)
+    safe_join(parts, ", ")
+  end
 end

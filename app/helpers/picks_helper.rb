@@ -47,10 +47,6 @@ module PicksHelper
     end
   end
 
-  def pick_film_heading(film)
-    film.name
-  end
-
   def pick_priority_to_index_in_javascript
     # TIL: JSON keys have to be strings, but we want real numeric Javascript
     # dictionaries.

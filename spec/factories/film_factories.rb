@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :film do
     sequence(:name) {|n| "Jaws #{n}" }
     duration_minutes 90
-    countries "us"
+    sequence(:countries) {|n| Countries::CODES[(n ^ 5) % Countries::CODES.length]}
     association :festival
 
     trait :with_screenings do

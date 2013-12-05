@@ -1,6 +1,8 @@
+include Countries::Helpers
 
-Given /^I visit the priorities page$/ do
-  visit festival_priorities_path(@festival)
+Given /^I visit the priorities page( with by-country sorting|)$/ do |sorted|
+  options = sorted ? { order: 'country' } : {}
+  visit festival_priorities_path(@festival, options)
 end
 
 Given /^I might get an alert$/ do
@@ -18,10 +20,15 @@ When /^I set a film (priority|rating)$/ do |attr|
   find("#film_#{@film.id}_progress.obscured") # wait for ajax
 end
 
-Then /^I should see a list of all the films$/ do
-  films_by_name = @festival.films.to_a.sort_by {|f| f.name }
-  films_list = page.find("table#picks")
-  films_list.should have_content(films_by_name.first.name)
+Then /^I should see a list of all the films(| sorted by country)$/ do |sorting|
+  sorted_film_ids = if sorting
+    @festival.films.to_a.sort_by {|f| [f.countries.present? ? country_names(f.countries) \
+                                                            : 'ZZZZZZZ', f.sort_name] }
+  else
+    @festival.films.to_a.sort_by {|f| f.name }
+  end.map {|f| f.id }
+  film_list_ids = page.all("table#picks tbody tr").map {|e| e['id'] && e['id'].gsub('film_', '').to_i }.compact
+  film_list_ids.should == sorted_film_ids
 end
 
 Then /^I should see an alert saying '([^\']+)'$/ do |msg|

@@ -1,9 +1,25 @@
+<% if @sort_order == 'country' %>
+  <% film_countries = countries(film) %>
+  <% if @last_film_countries != film_countries %>
+    <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th>
+        <h4><%= film_countries %></h4>
+      </th>
+    </tr>
+    <% @last_film_countries = film_countries %>
+  <% end %>
+<% end %>
+
 <%= content_tag_for(:tr, film) do %>
   <td><%= priority_dots(film) %></td>
   <td><%= rating_stars(film) %></td>
   <td><%= ajax_progress(film) %></td>
   <td>
-    <%= pick_film_heading(film) %>
+    <div class="title"><%= film.name %></div>
+    <p><%= film_details(film) %></p>
     <ul class="screenings">
       <%= render(partial: 'screenings/screening', collection: film.screenings.with_press(@show_press),
                  locals: { film: film }) \

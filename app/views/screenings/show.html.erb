@@ -2,8 +2,7 @@
   <div class="modal-header">
     <%= pick_symbols(@film) %>
     <div class="title"><%= @film.name %></div>
-    <p><%= safe_join([ flags(@film.countries).to_s + country_names(@film.countries).to_s,
-                       hours_and_minutes(@screening.duration)].compact, ", ") %></p>
+    <p><%= film_details(film) %></p>
   </div>
   <%= div_for(@film, class: 'modal-body screening unranked') do %>
     <%= render partial: @screening, locals: { tag: :div, show_actions: true } %>

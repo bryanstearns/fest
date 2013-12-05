@@ -7,6 +7,11 @@ Feature: Festival Film Priorities Page
     And I visit the priorities page
     Then I should see a list of all the films
 
+  Scenario: Sorting the priorities page
+    Given a festival with films and screenings
+    And I visit the priorities page with by-country sorting
+    Then I should see a list of all the films sorted by country
+
   @javascript
   Scenario: Trying to prioritize when not logged in
     Given a festival with films and screenings

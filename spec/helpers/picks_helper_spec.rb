@@ -3,11 +3,6 @@ require 'spec_helper'
 describe PicksHelper do
   helper PicksHelper
 
-  it 'builds a heading for a film' do
-    film = double(name: 'Vertigo')
-    helper.pick_film_heading(film).should match(/Vertigo/)
-  end
-
   describe 'DRYing up Javascript stuff' do
     it 'gives a JSONish map of pick priority to index' do
       helper.pick_priority_to_index_in_javascript.should ==
