@@ -87,8 +87,9 @@ module ApplicationHelper
     current = options.delete(:current)
     options[:class] = [options[:class], 'active'].compact.join(' ') \
       if (current || current_page?(target))
-    link_options = options.delete(:link_options)
-    content_tag(:li, link_to(title, target, link_options), options)
+    link_options = options.delete(:link_options) || {}
+
+    content_tag(:li, link_to(title, target, link_options.merge('data-no-turbolink' => true)), options)
   end
 
   def cancel_link(record, options={})

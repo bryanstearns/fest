@@ -15,7 +15,7 @@ module PicksHelper
     sort_options.map do |p|
       args = {}
       args[:order] = p unless p == 'name'
-      link_to_unless(p == selected, p.titleize, festival_priorities_path(@festival, args))
+      link_to_unless(p == selected, p.titleize, festival_priorities_path(@festival, args), 'data-no-turbolink' => true)
     end.join(' | ').html_safe
   end
 
