@@ -2,6 +2,7 @@ set :stages, Dir.glob('config/deploy/*.rb').map {|x| File.basename(x, '.rb')}
 set :default_stage, 'prod'
 require 'capistrano/ext/multistage'
 require 'bundler/capistrano'
+require 'new_relic/recipes'
 
 set :scm, :git
 set :repository, 'git@github.com:bryanstearns/fest.git'
@@ -23,6 +24,7 @@ set :shared_files, %w[database.yml newrelic.yml secret_token devise_key]
 before "deploy:assets:precompile", "setup_shared_files"
 after "deploy:create_symlink", "deploy:migrate"
 after "deploy:restart", "restart_unicorns"
+after "deploy:restart", "newrelic:notice_deployment"
 
 desc "Link shared files into the release tree"
 task :setup_shared_files do
