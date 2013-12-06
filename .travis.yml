@@ -1,10 +1,12 @@
 language: ruby
 bundler_args: --without development
 rvm:
-  - 1.9.3
+  - 2.0.0
 notifications:
   recipients:
     - festfan@festivalfanatic.com
+services:
+  - redis-server
 script:
   - RAILS_ENV=test TRAVIS=1 bundle exec rake db:migrate
   - TRAVIS=1 bundle exec rake db:test:prepare
