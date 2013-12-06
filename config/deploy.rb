@@ -14,7 +14,11 @@ if ENV['VERBOSE']
   set :ssh_options, { :verbose => debug }
 end
 
-set :shared_files, %w[database.yml newrelic.yml secret_token]
+# Chef's application cookbook sets up shared/vendor_bundle instead of
+# bundler/capistrano's default shared/bundle. So, for now:
+set(:bundle_dir) { File.join(fetch(:shared_path), 'vendor_bundle') }
+
+set :shared_files, %w[database.yml newrelic.yml secret_token devise_key]
 
 before "deploy:assets:precompile", "setup_shared_files"
 after "deploy:create_symlink", "deploy:migrate"
