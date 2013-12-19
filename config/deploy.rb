@@ -10,9 +10,10 @@ set :deploy_via, :remote_cache
 
 default_run_options[:shell] = '/bin/bash --login'
 set :use_sudo, false
-set :ssh_options, { :forward_agent => true }
 if ENV['VERBOSE']
-  set :ssh_options, { :verbose => debug }
+  set :ssh_options, { :forward_agent => true, :verbose => :debug }
+else
+  set :ssh_options, { :forward_agent => true }
 end
 
 # Chef's application cookbook sets up shared/vendor_bundle instead of
