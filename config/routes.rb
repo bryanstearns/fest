@@ -5,6 +5,7 @@ Fest::Application.routes.draw do
   # Public stuff
   resources :festivals, only: [:index, :show] do
     post :reset_rankings, on: :member
+    post(:random_priorities, on: :member) if !Rails.env.production?
     post :reset_screenings, on: :member
     resource :subscription, path: 'assistant', controller: :subscriptions,
              only: [:show, :update]

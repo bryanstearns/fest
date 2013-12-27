@@ -5,7 +5,7 @@ class FestivalsController < ApplicationController
   respond_to :html
   respond_to :pdf, :xlsx, only: [:show]
 
-  before_filter :load_festival, only: [:reset_rankings, :reset_screenings]
+  before_filter :load_festival, only: [:random_priorities, :reset_rankings, :reset_screenings]
   before_filter :load_festival_and_screenings, only: [:show]
   before_filter :check_festival_access, only: [:show]
   before_filter :check_ffff_spreadsheet_access, only: [:show]
@@ -30,6 +30,13 @@ class FestivalsController < ApplicationController
     response.headers['Content-Disposition'] =
       "attachment; filename=\"#{@festival.slug}_ratings.xlsx\"" \
       if request.format == Mime::Type.lookup_by_extension(:xlsx)
+  end
+
+  # PUT /festivals/1/random_priorities
+  def random_priorities
+    @festival.random_priorities(current_user) if user_signed_in?
+    flash[:notice] = 'Random priorities have been set.'
+    redirect_to festival_priorities_path(@festival)
   end
 
   # PUT /festivals/1/reset_rankings

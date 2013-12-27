@@ -110,6 +110,16 @@ describe Festival do
         }.by(-1)
       end
     end
+
+    it 'random-prioritizes films' do
+      festival = create(:festival, :with_films_and_screenings)
+      user = create(:user)
+
+      festival.random_priorities(user)
+      film_count = festival.films.count * 1.0
+      prioritized_count = festival.picks_for(user).where('priority is not null').count
+      expect(prioritized_count / film_count).to be > (Festival::RANDOM_ASSIGNMENT_PERCENTAGE - 0.2)
+    end
   end
 
   it "determines conflicting screenings" do

@@ -51,6 +51,18 @@
                       :class => "btn btn-small" %>
       </span>
     </div>
+
+    <% unless Rails.env.production? %>
+      <div>
+        <span>
+          <i>Ah, you're testing! Click this button to randomly assign priorities
+          to <%= (Festival::RANDOM_ASSIGNMENT_PERCENTAGE * 100).to_i %>% of the films:</i>
+          <%= button_to "Assign random priorities",
+                        random_priorities_festival_path(@festival),
+                        :class => "btn btn-small" %>
+        </span>
+      </div>
+    <% end %>
   <% end %>
 </div>
 

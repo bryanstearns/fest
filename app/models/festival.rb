@@ -21,6 +21,9 @@ class Festival < ActiveRecord::Base
 
   scope :published, where(published: true)
 
+  RANDOM_ASSIGNMENT_PERCENTAGE = 0.97
+  RANDOM_REJECT_PERCENTAGE = 0.03
+
   def to_param
     slug
   end
@@ -40,6 +43,28 @@ class Festival < ActiveRecord::Base
   def screenings_visible_to(user)
     subscription = user.subscription_for(id)
     screenings.all.select {|s| user.can_see?(s, subscription) }
+  end
+
+  def random_priorities(user)
+    return if Rails.env.production?
+    existing_picks = picks_for(user).each_with_object({}) {|p, h| h[p.film_id] = p }
+    priorities = Pick::PRIORITY_HINTS.keys[1..-1] # skip "don't want to see"
+    films.order(:sort_name).each do |film|
+      pick = existing_picks[film.id]
+      pick ||= picks.build.tap do |pick|
+        pick.film = film
+        pick.user = user
+      end
+      r = rand
+      pick.priority = if r <= RANDOM_REJECT_PERCENTAGE
+        0 # don't want to see at all
+      elsif r <= RANDOM_ASSIGNMENT_PERCENTAGE
+        priorities.sample
+      else
+        nil
+      end
+      pick.save!
+    end
   end
 
   def reset_rankings(user)
