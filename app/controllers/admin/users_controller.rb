@@ -5,6 +5,7 @@ module Admin
 
     # GET /admin/users
     def index
+      @order = params[:order] if %w[name email activity].include?(params[:order])
       respond_with(:admin, @users = User.all)
     end
 

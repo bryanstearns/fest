@@ -1,11 +1,11 @@
-<%= content_tag_for(:tr, user) do %>
+<%= content_tag_for(:tr, user.user) do %>
   <td>
-    <%= link_to user.name, [:admin, user] %>
+    <%= link_to user.name, [:admin, user.user] %>
   </td>
   <td>
     <%= user.email %>
   </td>
   <td>
-    <%= user_status(user) %>
+    <%= user.summary %>
   </td>
 <% end %>

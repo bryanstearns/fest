@@ -1,33 +1,64 @@
 module UsersHelper
-  def user_status(user)
-    UserStatus.new(user).summary
+  def user_presenters(users, order)
+    users.map {|u| UserPresenter.new(u, order) }.sort
   end
 
-  class UserStatus
+  class UserPresenter
     include ActionView::Helpers::OutputSafetyHelper
     include ActionView::Helpers::TextHelper
     include ActionView::Helpers::TranslationHelper
 
     attr_accessor :details, :user
 
-    def initialize(user)
+    def initialize(user, order)
       @user = user
+      @order = order
       @details = {}
       summarize
     end
 
     def summary
-      times = @details.keys.sort.reverse
       items = times.map {|k| @details[k] }.flatten
       items.map! {|i| content_tag(:li, i) }
       content_tag(:ul, safe_join(items))
     end
 
+    def method_missing(name, *args, &block)
+      if @user.respond_to?(name)
+        @user.send(name, *args, &block)
+      else
+        super
+      end
+    end
+
+    def <=>(other)
+      sort_key <=> other.sort_key
+    end
+
   protected
+    def sort_key
+      @sort_key ||= begin
+        key = case @order
+          when 'email'
+            user.email
+          when 'name'
+            user.name
+          when 'activity'
+            times.first && (Time.now - times.first)
+        end
+        [key, user.id]
+      end
+    end
+
+    def times
+      @details.keys.sort.reverse
+    end
+
     def summarize
       add_current_sign_in
       add_last_sign_in
       add_remembering
+      add_most_recent_pick
       add_reset_sent
       add_confirmation
       add_failed_sign_in_attempts
@@ -50,6 +81,13 @@ module UsersHelper
       add("remembering since #{t user.remember_created_at}",
           user.remember_created_at) \
         if user.remember_created_at?
+    end
+
+    def add_most_recent_pick
+      pick = user.picks.order(:updated_at).includes(:festival).last
+      add("latest #{pick.festival.slug} pick at #{t pick.updated_at}",
+          pick.updated_at) \
+        if pick
     end
 
     def add_reset_sent
