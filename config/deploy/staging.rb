@@ -17,3 +17,10 @@ task :db_fetch, :roles => :db do
   upload("production.sql", "#{current_path}/production.sql", only: { primary: true })
   run "cd #{current_path}; RAILS_ENV=staging bundle exec rake db:load"
 end
+
+desc "clone the last festival in this GROUP for testing"
+task :clone_festival, :roles => :db do
+  abort("Staging only!") unless fetch(:rails_env) == 'staging'
+  group = ENV['GROUP'] || 'piff'
+  run "cd #{current_path}; RAILS_ENV=staging bundle exec rake clone_festival GROUP=#{group}"
+end
