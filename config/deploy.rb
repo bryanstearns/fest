@@ -7,6 +7,7 @@ require 'new_relic/recipes'
 set :scm, :git
 set :repository, 'git@github.com:bryanstearns/fest.git'
 set :deploy_via, :remote_cache
+set :copy_exclude, [ '.git' ]
 
 default_run_options[:shell] = '/bin/bash --login'
 set :use_sudo, false
