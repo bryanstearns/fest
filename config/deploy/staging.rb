@@ -9,3 +9,11 @@ set :runner, 'feststaging'
 role :app, 'feststaging'
 role :web, 'feststaging'
 role :db, 'feststaging', primary: true
+
+desc "copy production to staging"
+task :db_fetch, :roles => :db do
+  abort("Staging only!") unless fetch(:rails_env) == 'staging'
+  `bundle exec rake db:fetch_production`
+  upload("production.sql", "#{current_path}/production.sql", only: { primary: true })
+  run "cd #{current_path}; RAILS_ENV=staging bundle exec rake db:load"
+end
