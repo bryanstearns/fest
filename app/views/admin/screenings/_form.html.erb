@@ -4,7 +4,9 @@
 
   <div class="form-inputs">
     <%= f.input :venue_id, collection: @venues, autofocus: true %>
-    <%= f.input :starts_at %>
+    <%= f.input :starts_at, label: 'Starts', as: :string,
+                input_html: { value: f.object.starts_at.strftime("%Y-%m-%d %H:%M"),
+                              'data-handler' => 'ScreeningTimePicker' } %>
     <%= f.input :press if @festival.has_press? %>
   </div>
 
