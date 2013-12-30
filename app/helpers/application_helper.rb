@@ -106,7 +106,7 @@ module ApplicationHelper
     else
       record
     end
-    link_to "Cancel", path
+    link_to "Cancel", path, 'data-handler' => 'EscapeToCancel'
   end
 
   def destroy_button(record)
