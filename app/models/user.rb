@@ -3,6 +3,8 @@ class User < ActiveRecord::Base
          :registerable, :recoverable, :rememberable, :trackable,
          :validatable
 
+  serialize :preferences, ActiveRecord::Coders::Hstore
+
   include BlockedEmailAddressChecks
 
   has_many :subscriptions, dependent: :destroy
