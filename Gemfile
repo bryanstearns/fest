@@ -23,6 +23,7 @@ gem 'turbolinks'
 gem 'jquery-turbolinks'
 gem 'underscore-rails'
 gem 'unicorn'
+gem 'unicorn-worker-killer'
 
 group :development do
   gem 'mailcatcher'
