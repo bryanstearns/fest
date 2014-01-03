@@ -26,6 +26,14 @@ gem 'unicorn'
 gem 'unicorn-worker-killer'
 
 group :development do
+  gem 'listen'
+  gem 'spring'
+  gem 'spring-commands-rspec'
+  gem 'spring-commands-cucumber'
+  gem 'guard-spring'
+  gem 'guard-rspec'
+  gem 'guard-cucumber'
+
   gem 'mailcatcher'
   gem 'quiet_assets'
   gem 'better_errors'
