@@ -46,15 +46,8 @@ group :test do
   gem 'database_cleaner'
   gem 'email_spec'
   gem 'factory_girl_rails'
-  gem 'guard-cucumber'
-  gem 'guard-rspec'
-  gem 'guard-spork'
   gem 'poltergeist', '~> 1.4.0'
-  gem 'rb-inotify', :require => false # Guard will pick the right one of these
-  gem 'rb-fsevent', :require => false
-  gem 'rb-fchange', :require => false
   gem 'rspec-rails'
   gem 'rspec-instafail'
   gem 'shoulda-matchers'
-  gem 'spork'
 end
