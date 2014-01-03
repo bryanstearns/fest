@@ -19,9 +19,10 @@ namespace :db do
 
   def fetch_data
     puts "Retrieving production data"
-    cmd = "ssh festprod@festprod \"pg_dump --clean --no-owner --no-privileges fest_prod\" | " +
-          "egrep -v ^[^\\']+plpgsql | egrep -v ^[^\\']+SCHEMA\\ public | " +
-          "egrep -v ^[^\\']+EXTENSION\\ hstore > production.sql"
+    cmd = "ssh festprod@festprod \"pg_dump --clean --no-owner --no-privileges fest_prod\""
+    cmd += " | egrep -v ^[^\\']+plpgsql | egrep -v ^[^\\']+SCHEMA\\ public"
+    cmd += " | egrep -v ^[^\\']+EXTENSION\\ hstore"
+    cmd += " > production.sql"
     `#{cmd}`
   end
 
