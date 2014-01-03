@@ -118,7 +118,7 @@ describe Festival do
       festival.random_priorities(user)
       film_count = festival.films.count * 1.0
       prioritized_count = festival.picks_for(user).where('priority is not null').count
-      expect(prioritized_count / film_count).to be > (Festival::RANDOM_ASSIGNMENT_PERCENTAGE - 0.2)
+      expect(prioritized_count / film_count).to be > 0.73
     end
   end
 
