@@ -11,6 +11,9 @@
   <div class="times">
     <%= screening_times(viewing.screening) %>
     <%= '(press)' if viewing.press? %>
+    <% if my_schedule_on_phone? %>
+      <span><span class="<%= my_schedule_visible_on_phone %>"> <%= viewing.venue_name %></span></span>
+    <% end %>
     <% if autoscheduler_debugging? && @autoscheduler %>
       <% cost = @autoscheduler.costs[viewing.screening] %>
       <%= cost.total_cost.round(3) rescue 'nil' %>/<%= cost.cost_as_conflict.round(3) rescue 'nil' %>

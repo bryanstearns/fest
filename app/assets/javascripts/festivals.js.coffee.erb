@@ -1,6 +1,6 @@
 Handlers.register 'Days', class
   constructor: (el) ->
-    jQuery('.day .screening').off('click').on('click', ->
+    jQuery('table.day .screening').off('click').on('click', ->
       screening_id = jQuery(this).attr('id').split('_')[1]
       jQuery('body').modalmanager('loading')
 
@@ -11,3 +11,18 @@ Handlers.register 'Days', class
         modal.modal(modalOverflow: true)
       )
     )
+
+    if jQuery(".visible-phone table.day").length > 0
+      update_my_schedule = ->
+        jQuery(".day_container").each (index, day_container) ->
+          screenings = jQuery(".hidden-phone .screening.scheduled",
+                              day_container).clone(true).sort (a, b) ->
+            (a.getAttribute('data-starts-at') || 0) - (b.getAttribute('data-starts-at') || 0)
+          if screenings.length > 0
+            screenings.each (i, screening) -> screening.style.marginTop = "3px"
+          else
+            screenings = "No scheduled screenings."
+          jQuery(".visible-phone td", day_container).html(screenings)
+        true
+      jQuery(document).on 'days:updated', update_my_schedule
+      update_my_schedule()

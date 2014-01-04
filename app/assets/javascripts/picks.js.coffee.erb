@@ -151,7 +151,7 @@ Handlers.register 'Picks', class
         for own status, values of screening_ids_by_status
           window.screening_ids_by_status[status] =
             _.union(values, window.screening_ids_by_status[status])
-        true
+      true
 
   not_signed_in: ->
     alert("You're not signed in; you can sign in to manage your " +
