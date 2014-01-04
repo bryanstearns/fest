@@ -34,7 +34,7 @@
   </div>
 <% end %>
 
-<% cache ['festival', @festival, @show_press] do %>
+<% cache ['festival', @festival, @show_press, my_schedule_on_phone?] do %>
   <div class="days" data-handler="Days">
     <%= render partial: "day", collection: days(@festival, press: @show_press) %>
   </div>
