@@ -10,7 +10,14 @@
 
 <div id="instructions">
   <% if user_signed_in? %>
-    <%= render partial: 'instructions' %>
+    <div class="<%= my_schedule_hidden_on_phone %>">
+      <%= render partial: 'instructions' %>
+    </div>
+    <% if my_schedule_on_phone? %>
+      <div class="<%= my_schedule_visible_on_phone %>">
+        <%= render partial: 'phone_instructions' %>
+      </div>
+    <% end %>
   <% else %>
     <p>
       Here's the festival schedule; if you sign in, you'll be able to click on
