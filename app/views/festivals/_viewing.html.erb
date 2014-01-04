@@ -1,4 +1,5 @@
 <%= div_for(viewing.screening, class: "unranked",
+            'data-starts-at' => viewing.screening.starts_at.to_i,
             style: "height: #{viewing.height}px; " +
                    "margin-top: #{viewing.space_before}px") do %>
   <a name="s<%= viewing.screening.id %>"></a>
