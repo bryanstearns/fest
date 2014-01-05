@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
          :registerable, :recoverable, :rememberable, :trackable,
          :validatable
 
-  VALID_PREFERENCES = %w[hide_festival_instructions hide_priority_instructions]
+  VALID_PREFERENCES = %w[hide_instructions]
   serialize :preferences, ActiveRecord::Coders::Hstore
 
   include BlockedEmailAddressChecks
@@ -35,7 +35,7 @@ class User < ActiveRecord::Base
     define_method(pref) do
       preferences[pref.to_s]
     end
-    alias_method "#{pref}?", pref
+    alias_method "#{pref}?".to_sym, pref.to_sym
     define_method("#{pref}=".to_sym) do |new_value|
       if preferences[pref.to_s] != new_value
         if new_value && new_value.to_s != '0'

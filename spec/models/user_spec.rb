@@ -118,7 +118,7 @@ describe User do
     let(:user) { create(:confirmed_user) }
 
     it "should recognize a valid preference" do
-      User.valid_preference?("hide_festival_instructions").should be_true
+      User.valid_preference?("hide_instructions").should be_true
     end
 
     it "should recognize an invalid preference" do
@@ -126,20 +126,20 @@ describe User do
     end
 
     it "should default to nil" do
-      user.hide_festival_instructions.should be_nil
+      user.hide_instructions.should be_nil
     end
 
     it "should also respond to ?" do
-      user.hide_festival_instructions?.should be_nil
+      user.hide_instructions?.should be_nil
     end
 
     it "should be settable" do
-      user.hide_festival_instructions = true
-      user.reload.hide_festival_instructions?.should be_true
-      user.reload.hide_festival_instructions.should be_true
-      user.hide_festival_instructions = false
-      user.reload.hide_festival_instructions?.should be_nil
-      user.reload.hide_festival_instructions.should be_nil
+      user.hide_instructions = true
+      user.reload.hide_instructions?.should be_true
+      user.reload.hide_instructions.should be_true
+      user.hide_instructions = false
+      user.reload.hide_instructions?.should be_nil
+      user.reload.hide_instructions.should be_nil
     end
   end
 end

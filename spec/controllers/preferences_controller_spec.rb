@@ -4,7 +4,7 @@ describe PreferencesController do
   let(:user) { create(:confirmed_user) }
 
   describe "PUT update" do
-    let(:preference) { 'hide_festival_instructions' }
+    let(:preference) { 'hide_instructions' }
     let(:value) { "1" }
     subject { put :update, { id: preference, value: value, format: :js } }
 
@@ -17,11 +17,11 @@ describe PreferencesController do
       login_user
 
       describe "with valid params" do
-        #it 'updates the signed-in user' do
-        #  User.any_instance.should_receive("hide_festival_instructions=")\
-        #                   .with("1")
-        #  subject
-        #end
+        it 'updates the signed-in user' do
+          @signed_in_user.send(preference).should be_nil
+          subject
+          @signed_in_user.reload.send(preference).should == "1"
+        end
 
         it "responds with :ok status" do
           subject

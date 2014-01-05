@@ -1,14 +1,8 @@
 
-<% if autoscheduler_debugging? && @subscription %>
-  <%= simple_form_for([@festival, @subscription]) do |f| %>
-    <%= f.hidden_field :unselect, value: 'none' %>
-    <%= debug_menu %>
-    stop at ID: <%= f.text_field :up_to_screening_id, width: 10 %>
-    <%= f.button :submit %>
-  <% end %>
-<% end %>
+<%= show_hide_instructions_button %>
+<h3>Your Festival Schedule</h3>
 
-<div id="instructions">
+<% hidable_instructions do %>
   <% if user_signed_in? %>
     <div class="<%= my_schedule_hidden_on_phone %>">
       <%= render partial: 'instructions' %>
@@ -24,14 +18,15 @@
       the grid to schedule screenings.
     </p>
   <% end %>
-</div>
+<% end %>
 
-<% if false #user_signed_in? %>
-  <div id="showhide">
-    <a href="#">Click here to <span>hide</span> the instructions</a>
-    <%= image_tag 'fam3silk/information.png', alt: false, title: false,
-                  height: 16, width: 16 %>
-  </div>
+<% if autoscheduler_debugging? && @subscription %>
+  <%= simple_form_for([@festival, @subscription]) do |f| %>
+    <%= f.hidden_field :unselect, value: 'none' %>
+    <%= debug_menu %>
+    stop at ID: <%= f.text_field :up_to_screening_id, width: 10 %>
+    <%= f.button :submit %>
+  <% end %>
 <% end %>
 
 <% cache ['festival', @festival, @show_press, my_schedule_on_phone?] do %>

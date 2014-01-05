@@ -66,22 +66,15 @@
 
     <% if current_user.has_screenings_for?(@festival) %>
       <li>
-        <p>
+        <span>
           You can throw out your current schedule (but not your ratings or
-          priorities) and start over:</p>
+          priorities) and start over:
           <%= button_to "Unselect all screenings",
                         reset_screenings_festival_url(@festival),
                         confirm: "Are you sure you want to unschedule all your screenings?",
                         class: 'btn btn-small', id: 'reset-screenings' %>
+        </span>
       </li>
     <% end %>
-    <li>
-      <p>
-      You can hide these instructions (don't worry, you'll be able to show them again if need be):
-        <%= button_to "Hide these instructions",
-                      reset_screenings_festival_url(@festival),
-                      class: 'btn btn-small' %>
-      </p>
-    </li>
   <% end %>
 </ul>

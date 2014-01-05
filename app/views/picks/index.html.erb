@@ -1,6 +1,7 @@
+<%= show_hide_instructions_button %>
 <h3>Your film priorities</h3>
 
-<div id="instructions">
+<% hidable_instructions do %>
   <p>
     The goal of this site is to help you see the films you really want to see -
     it's a three step process: you start by prioritizing the festival's films,
@@ -64,7 +65,7 @@
       </div>
     <% end %>
   <% end %>
-</div>
+<% end %>
 
 <% if sort_order_is_not_user_specific?(@sort_order) %>
   <% cache ['picks', @festival, @sort_order, @show_press] do %>

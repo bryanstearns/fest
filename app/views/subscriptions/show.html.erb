@@ -1,12 +1,13 @@
+<%= show_hide_instructions_button %>
 <h3>Almost there: I'll create a schedule for you</h3>
 
-<p>
+<% hidable_instructions do %>
   This is the good part: I'll try to build you a schedule that includes as
   many of your higher-priority films as possible. You can customize this
   process: if there are times you can't attend the festival, or venues you
   don't want to travel to, enter them below. When you're done, click the
   "Schedule Films!" button, and I'll create a schedule just for you.
-</p>
+<% end %>
 
 <%= simple_form_for(@subscription, url: festival_subscription_path(@festival),
                     method: :put) do |f| %>

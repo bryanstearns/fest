@@ -1,0 +1,36 @@
+<% environment.context_class.instance_eval { include Rails.application.routes.url_helpers } %>
+
+Handlers.register 'ToggleInstructions', class
+  constructor: (el) ->
+    @button = $("#instructions_button")
+    @instructions = $(".instructions")
+
+    self = this
+
+    @button.off('click').click (e) ->
+      state = $('span', self.button).text()
+      if state == "Show"
+        self.do_show(true)
+      else
+        self.do_hide(true)
+      e.preventDefault()
+
+    if $(el).data('value') == 1 # hidden now
+      self.do_hide(true)
+
+  do_show: (save_too) ->
+    @instructions.show()
+    $('span', @button).text("Hide")
+    @save_state(0) if save_too
+
+  do_hide: (save_too) ->
+    @instructions.hide()
+    $('span', @button).text("Show")
+    @save_state(1) if save_too
+
+  save_state: (state) ->
+    # fire and forget - we don't care whether this works.
+    $.ajax
+      url: "<%= preference_path('hide_instructions') %>"
+      type: "PUT"
+      data: { value: state ? 1 : 0 }
