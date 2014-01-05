@@ -28,6 +28,8 @@ Fest::Application.routes.draw do
   match 'sign_ups_off' => "home#sign_ups_off", as: :sign_ups_off
   match 'welcome' => "home#index", as: :welcome
 
+  resources :preferences, only: [:update]
+
   # Admin stuff
   match 'admin' => "home#admin", as: :admin_root
   namespace 'admin' do
