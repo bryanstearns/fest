@@ -4,10 +4,19 @@
       <h3><%= @festival.name %></h3>
       <%= safe_join [date_range(@festival), @festival.place].compact, ' &mdash; '.html_safe %>
     </div>
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs hidden-phone">
       <%= link_in_list_to "1. Your Film Priorities", festival_priorities_path(@festival) %>
       <%= link_in_list_to "2. Scheduling Assistant", festival_subscription_path(@festival) %>
       <%= link_in_list_to "3. Your Festival Schedule", festival_path(@festival) %>
+      <%= link_in_list_to("Edit", edit_admin_festival_path(@festival),
+                          current: current_page_in_admin?,
+                          class: 'extra-action') \
+            if current_user_is_admin? %>
+    </ul>
+    <ul class="nav nav-pills visible-phone">
+      <%= link_in_list_to "Priorities", festival_priorities_path(@festival) %>
+      <%= link_in_list_to "Assistant", festival_subscription_path(@festival) %>
+      <%= link_in_list_to "Schedule", festival_path(@festival) %>
       <%= link_in_list_to("Edit", edit_admin_festival_path(@festival),
                           current: current_page_in_admin?,
                           class: 'extra-action') \

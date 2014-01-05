@@ -1,8 +1,5 @@
 
-<%= content_tag(:a, '',
-                id: l(day.date, format: :ymd),
-                class: day.page_break_before ? 'page-break' : nil) %>
-<a id="<%= %>"></a>
+<a name="<%= l(day.date, format: :ymd) %>"<%= ' class="page-break"' if day.page_break_before %>></a>
 <h4><%=l day.date, format: :dmd %></h4>
 
 <div class="day_container" id="day_<%= day.id %>">
