@@ -14,13 +14,19 @@ describe PicksController do
   describe "POST create" do
     let(:festival) { create(:festival, :with_films) }
     let(:film_id) { festival.films.first.to_param }
+    let(:post_params) { { :film_id => film_id,
+                          :pick => { :priority => "2" },
+                          :attribute => 'priority' } }
     subject { post :create, post_params.merge(format: :js) }
+
+    it "requires an authenticated user" do
+      logged_out
+      subject
+      response.response_code.should == 401
+    end
 
     describe "for a user who'd not previously saved a pick for that film" do
       describe "with valid params" do
-        let(:post_params) { { :film_id => film_id,
-                              :pick => { :priority => "2" },
-                              :attribute => 'priority' } }
         it "creates a new Pick" do
           expect { subject }.to change(Pick, :count).by(1)
         end
