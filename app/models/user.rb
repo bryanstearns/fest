@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
          :registerable, :recoverable, :rememberable, :trackable,
          :validatable
 
+  VALID_PREFERENCES = %w[hide_festival_instructions hide_priority_instructions]
   serialize :preferences, ActiveRecord::Coders::Hstore
 
   include BlockedEmailAddressChecks
@@ -25,6 +26,28 @@ class User < ActiveRecord::Base
                   :password_confirmation, :remember_me, as: :admin
 
   validates :name, :presence => true
+
+  def self.valid_preference?(name)
+    VALID_PREFERENCES.include?(name.to_s)
+  end
+
+  VALID_PREFERENCES.each do |pref|
+    define_method(pref) do
+      preferences[pref.to_s]
+    end
+    alias_method "#{pref}?", pref
+    define_method("#{pref}=".to_sym) do |new_value|
+      if preferences[pref.to_s] != new_value
+        if new_value && new_value.to_s != '0'
+          preferences[pref.to_s] = new_value
+        else
+          preferences.delete(pref.to_s)
+        end
+        save!
+      end
+      new_value
+    end
+  end
 
   def subscription_for(festival_id, options={})
     festival_id = festival_id.id unless festival_id.is_a? Integer

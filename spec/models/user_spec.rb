@@ -113,4 +113,33 @@ describe User do
       end
     end
   end
+
+  context "preferences" do
+    let(:user) { create(:confirmed_user) }
+
+    it "should recognize a valid preference" do
+      User.valid_preference?("hide_festival_instructions").should be_true
+    end
+
+    it "should recognize an invalid preference" do
+      User.valid_preference?("hack_the_server").should be_false
+    end
+
+    it "should default to nil" do
+      user.hide_festival_instructions.should be_nil
+    end
+
+    it "should also respond to ?" do
+      user.hide_festival_instructions?.should be_nil
+    end
+
+    it "should be settable" do
+      user.hide_festival_instructions = true
+      user.reload.hide_festival_instructions?.should be_true
+      user.reload.hide_festival_instructions.should be_true
+      user.hide_festival_instructions = false
+      user.reload.hide_festival_instructions?.should be_nil
+      user.reload.hide_festival_instructions.should be_nil
+    end
+  end
 end
