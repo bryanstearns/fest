@@ -13,10 +13,9 @@
     You're not planning on seeing this film (or didn't prioritize it yet).
   </li>
   <li>
-    The priority (or rating) you gave each film is shown
-    with little faces (or stars):</br>
-    <%= (image_tag("raty/face-b.png", height: 16, width: 16) * 3).html_safe %> or
-    <%= (image_tag("raty/star-on.png", height: 16, width: 16) * 3).html_safe %>
+    The priority (or rating) you gave each film is shown like
+    <span class="unbreakable"><%= (image_tag("raty/face-b.png", height: 16, width: 16) * 3).html_safe %> (or
+    <%= (image_tag("raty/star-on.png", height: 16, width: 16) * 3).html_safe %>).</span>
   </li>
 </ul>
 
@@ -62,8 +61,6 @@
                             festival_path(@festival, format: :pdf ) %>
         of this schedule, which you can print with
         <a href="http://get.adobe.com/reader/" target="_blank">Adobe Reader</a>.
-        (The format is a bit rough right now; I'd appreciate feedback if you have
-        suggestions for improvement!)
       </p>
     </li>
 
@@ -78,5 +75,13 @@
                         class: 'btn btn-small', id: 'reset-screenings' %>
       </li>
     <% end %>
+    <li>
+      <p>
+      You can hide these instructions (don't worry, you'll be able to show them again if need be):
+        <%= button_to "Hide these instructions",
+                      reset_screenings_festival_url(@festival),
+                      class: 'btn btn-small' %>
+      </p>
+    </li>
   <% end %>
 </ul>
