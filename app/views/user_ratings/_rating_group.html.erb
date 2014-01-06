@@ -1,6 +1,6 @@
 <h5>
-  <%= pluralize(picks.count, 'film') %>:
   <%=raw image_tag("raty/star-on.png", height: 16, width: 16) * rating %>
+  <%= pluralize(picks.count, 'film') %>:
 </h5>
 
 <ul id="rating_<%= rating %>">
