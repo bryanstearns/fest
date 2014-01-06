@@ -39,6 +39,7 @@ group :development do
   gem 'better_errors'
   gem 'binding_of_caller' # better_errors wants this
   gem 'factory_girl_rails', require: false
+  gem 'pry-nav'
 end
 
 group :assets do
