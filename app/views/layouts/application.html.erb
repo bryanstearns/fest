@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= content_for?(:title) ? yield(:title) : "Festival Fanatic" %></title>
+    <title><%= content_for?(:title) ? "#{yield(:title)} | Festival Fanatic" : "Festival Fanatic" %></title>
     <meta name="description" content="">
     <meta name="author" content="">
     <%= favicon_link_tag %>

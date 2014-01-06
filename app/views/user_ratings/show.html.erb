@@ -1,4 +1,5 @@
-<h3><%= @user.name %>'s Ratings</h3>
+<% content_for :title do %><%= @user.name %>'s <%= @festival.name %> Ratings<% end %>
+<h3><%= @user.name %>'s <%= @festival.name %> Ratings</h3>
 
 <% if @picks_by_rating.empty? %>
   <p><%= @user.name %> hasn't rated any films yet. Come back soon!</p>

@@ -1,3 +1,4 @@
+<% content_for :title do %>Festivals<% end %>
 <%= link_to('New Festival', new_admin_festival_path,
             class: 'btn btn-small extra-action') \
       if current_user_is_admin? %>
