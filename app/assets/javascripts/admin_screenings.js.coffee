@@ -28,6 +28,12 @@ Handlers.register 'ScreeningTimePicker', class
         else if code == 40 # down arrow
           self.adjust_date(+1)
           e.preventDefault()
+      .keyup (e) ->
+        value = self.date_input.val()
+        if value.match(/^\d+$/)
+          self.set_date(parseInt(value))
+      .blur (e) ->
+        self.date_input.val(self.format_date_value())
     @time_input
       .keyup (e) ->
         [hour, min] = self.parse_time_value(self.time_input.val())
@@ -38,6 +44,10 @@ Handlers.register 'ScreeningTimePicker', class
   adjust_date: (offset) ->
     @datetime.setDate(@datetime.getDate() + offset)
     @date_input.val(@format_date_value()).select()
+    @update_raw_input()
+
+  set_date: (day) ->
+    @datetime.setDate(day)
     @update_raw_input()
 
   set_time: (hour, min) ->
