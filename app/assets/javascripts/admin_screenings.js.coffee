@@ -1,6 +1,6 @@
 Handlers.register 'ScreeningTimePicker', class
   constructor: (el) ->
-    return if $("#screening_starts_at_date", el).length != 0
+    return if $("#screening_starts_at_date", el.parentElement).length != 0
 
     @raw_input = $(el)
     @raw_input.hide()
