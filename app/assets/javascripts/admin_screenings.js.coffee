@@ -7,6 +7,7 @@ Handlers.register 'ScreeningTimePicker', class
 
     @parse_value()
     @create_custom_inputs()
+    @add_new_film_shortcut()
 
   parse_value: ->
     [date, time, @timezone] = @raw_input.val().split(' ')
@@ -86,3 +87,10 @@ Handlers.register 'ScreeningTimePicker', class
 
   padded: (i) ->
     if i < 10 then "0" + i else i
+
+  add_new_film_shortcut: ->
+    $("html").keyup (e) ->
+      code = e.keyCode || e.which
+      if e.altKey && code == 78 # alt-n
+        e.preventDefault()
+        window.location = $("#new_festival_film").attr("href")
