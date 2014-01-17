@@ -13,7 +13,7 @@
     </tr>
     <tr>
       <td>Duration</td>
-      <td><%= hours_and_minutes(@film.duration) %></td>
+      <td><%= hours_and_minutes(@film.duration) %> / <%= @film.duration.to_minutes %> minutes </td>
     </tr>
     <tr>
       <td>Countries</td>
