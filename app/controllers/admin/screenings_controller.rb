@@ -73,7 +73,7 @@ module Admin
     end
 
     def load_venues_for_select
-      @venues = @festival.venues
+      @venues = @festival.venues.sort_by(&:name)
     end
 
     def load_attendees
