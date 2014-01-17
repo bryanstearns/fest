@@ -35,7 +35,7 @@ module Admin
         flash[:notice] = "#{l @screening.starts_at, format: :dmd_hm} screening of '#{@film.name}' at #{@screening.venue.name} was successfully created."
         new_admin_film_screening_path(@film,
                                       venue_id: @screening.venue_id,
-                                      starts_at: @screening.ends_at)
+                                      starts_at: @screening.starts_at)
       else
         admin_film_path(@film)
       end

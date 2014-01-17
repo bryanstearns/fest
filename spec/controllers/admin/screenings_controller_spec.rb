@@ -75,7 +75,7 @@ describe Admin::ScreeningsController do
             :screening => valid_attributes
         }
         response.should redirect_to(new_admin_film_screening_url(film,
-                                      starts_at: Screening.last.ends_at,
+                                      starts_at: Screening.last.starts_at,
                                       venue_id: venue.to_param))
       end
     end
