@@ -21,7 +21,7 @@ class Festival < ActiveRecord::Base
 
   scope :published, where(published: true)
 
-  RANDOM_ASSIGNMENT_PERCENTAGE = 0.97
+  RANDOM_UNASSIGNMENT_PERCENTAGE = 0.02
   RANDOM_REJECT_PERCENTAGE = 0.03
 
   def to_param
@@ -56,12 +56,12 @@ class Festival < ActiveRecord::Base
         pick.user = user
       end
       r = rand
-      pick.priority = if r <= RANDOM_REJECT_PERCENTAGE
+      pick.priority = if r <= RANDOM_UNASSIGNMENT_PERCENTAGE
+        nil # leave it unprioritized
+      elsif r <= RANDOM_REJECT_PERCENTAGE
         0 # don't want to see at all
-      elsif r <= RANDOM_ASSIGNMENT_PERCENTAGE
-        priorities.sample
       else
-        nil
+        priorities.sample
       end
       pick.save!
     end
