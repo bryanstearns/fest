@@ -7,7 +7,7 @@ module Admin
 
     # GET /admin/festivals/1/films
     def index
-      respond_with(@films = @festival.films.includes(:screenings).all)
+      respond_with(@films = @festival.films.includes(:screenings).order(:sort_name).all)
     end
 
     # GET /admin/films/1
