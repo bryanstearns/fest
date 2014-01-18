@@ -6,7 +6,7 @@
     <%= screening.venue_name %>
     <%= '(press)' if screening.press? %>
     <% if show_actions %>
-      <span class="actions">
+      <span class="actions<%= my_schedule_hidden_on_phone %>">
         <%= ajax_progress(screening) %>
         <a id="<%= dom_id(screening) %>_toggle" class="btn btn-mini"></a>
       </span>
