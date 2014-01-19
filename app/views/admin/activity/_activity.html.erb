@@ -1,0 +1,8 @@
+<tr>
+  <td><%= mdy_hms(activity.created_at) %></td>
+  <%= content_tag(:td, link_to(@user.email, @user)) if @show_user %>
+  <td><%= activity.name %></td>
+  <td>
+    <%= activity_details(activity) %>
+  </td>
+</tr>

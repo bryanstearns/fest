@@ -42,6 +42,13 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
+  config.before(:suite) do
+    Activity.disabled = true
+  end
+  config.after(:each) do
+    Activity.disabled = true
+  end
+
   # If true, the base class of anonymous controllers will be inferred
   # automatically. This will be the default behavior in future versions of
   # rspec-rails.

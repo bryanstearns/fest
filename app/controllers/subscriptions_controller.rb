@@ -34,7 +34,7 @@ protected
                                       subscription: @subscription)
     if autoscheduler.should_run?
       autoscheduler.run
-      record_activity(:autoscheduled, user: current_user, festival: @festival,
+      Activity.record(:autoscheduled, user: current_user, festival: @festival,
                       message: autoscheduler.message)
       flash[:notice] = autoscheduler.message if autoscheduler.message.present?
     end

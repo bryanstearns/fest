@@ -19,6 +19,7 @@ module Admin
     # GET /admin/users/1
     def show
       @user = User.includes(:activity).find(params[:id])
+      @activity = @user.activity
       respond_with(:admin, @user)
     end
 

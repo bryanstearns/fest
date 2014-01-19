@@ -22,19 +22,20 @@ class PicksController < ApplicationController
   def create
     attribute_name = params[:attribute]
     attribute_value = params[:pick][attribute_name]
-    saved = if @pick.new_record? && attribute_value.nil?
-      true # Just pretend we saved if it'd be the default anyway.
+    if @pick.new_record? && attribute_value.nil?
+      saved = true # Just pretend we saved if it'd be the default anyway.
     else
       attributes_to_update = { attribute_name => attribute_value }
       attributes_to_update[:auto] = false if (attribute_name == 'screening_id' && attribute_value.present?)
-      @pick.update_attributes(attributes_to_update)
-      record_activity("pick_#{attribute_name}",
+      saved = @pick.update_attributes(attributes_to_update)
+      Activity.record("pick_#{attribute_name}",
         user: current_user,
         festival: @festival,
         subject: @film,
         target: @pick.screening,
         attribute: attribute_name,
-        attribute_value: attribute_value
+        attribute_value: attribute_value,
+        saved: saved
       )
     end
     @screenings_to_update = if saved

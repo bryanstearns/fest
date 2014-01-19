@@ -73,3 +73,8 @@ Cucumber::Rails::Database.javascript_strategy = :truncation
 Before do
   [:site, :sign_in, :sign_up].each {|f| set_enabled_value(f, true) }
 end
+
+# Don't bother recording activity
+Before do
+  Activity.disabled = true
+end

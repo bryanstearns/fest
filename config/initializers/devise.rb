@@ -246,3 +246,9 @@ Devise.setup do |config|
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = "/my_engine/users/auth"
 end
+
+# Record sign ins
+Warden::Manager.after_authentication except: :fetch do |record, warden, options|
+  Rails.logger.info("warden after_authentication: #{record.inspect}, #{options.inspect}")
+  Activity.record("sign_in", user: record)
+end

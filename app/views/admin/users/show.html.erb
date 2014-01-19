@@ -92,6 +92,14 @@
   </tbody>
 </table>
 
-<%= render partial: 'admin/activity/list',
-           collection: @user.activity,
-           locals: { show_user: false } %>
+<h3>Activity</h3>
+
+<table class="table table-condensed">
+  <tr>
+    <th>When</th>
+    <th>Name</th>
+    <th>Details</th>
+  </tr>
+
+  <%= render @user.activity, locals: { show_user: false } %>
+</table>
