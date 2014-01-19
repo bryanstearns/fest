@@ -2,6 +2,11 @@
             class: 'admin btn btn-small' %>
 <h1>Listing locations</h1>
 
-<ul id="locations">
-  <%= render @locations %>
-</ul>
+<% @locations.group_by(&:place).each do |place, locations| %>
+  <div class="place">
+    <h2><%= place %></h2>
+    <ul class="locations">
+      <%= render locations %>
+    </ul>
+  </div>
+<% end %>
