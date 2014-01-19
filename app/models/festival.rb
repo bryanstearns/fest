@@ -5,6 +5,7 @@ class Festival < ActiveRecord::Base
   has_many :films, dependent: :destroy
   has_many :screenings
   has_many :subscriptions, dependent: :destroy
+  has_many :users, through: :subscriptions
   has_many :picks
 
   attr_accessible :ends_on, :location_ids, :main_url, :name, :place, :published,

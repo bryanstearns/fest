@@ -4,7 +4,11 @@
               class: 'btn btn-small extra-action' %>
 <% end %>
 
+<% if params[:festival_id] %>
+<h1><%= @festival.name %> <%= @festival.starts_on.year %> Fanatics</h1>
+<% else %>
 <h1>All Festival Fanatics</h1>
+<% end %>
 
 <table class="table table-condensed">
   <tr>
@@ -21,3 +25,9 @@
 
   <%= render partial: "user", collection: user_presenters(@users, @order) %>
 </table>
+
+
+<h1>User email addresses</h1>
+<p>
+ <%= @users.map {|u| user_name_and_email(u) if u.mailable? }.join(', ') %>
+</p>

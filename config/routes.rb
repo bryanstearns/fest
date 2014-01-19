@@ -35,6 +35,7 @@ Fest::Application.routes.draw do
   namespace 'admin' do
     resources :festivals, only: [:new, :create, :edit, :update, :destroy] do
       resources :films, only: [:index, :new, :create]
+      resources :users, only: [:index], controller: :users
     end
     resources :films, only: [:show, :edit, :update, :destroy] do
       resources :screenings, only: [:new, :create]

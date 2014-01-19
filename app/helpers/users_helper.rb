@@ -1,4 +1,12 @@
 module UsersHelper
+  def user_name_and_email(user)
+    if user.name.present?
+      "\"#{user.name}\" <#{user.email}>"
+    else
+      user.email
+    end
+  end
+
   def user_presenters(users, order)
     users.map {|u| UserPresenter.new(u, order) }.sort
   end

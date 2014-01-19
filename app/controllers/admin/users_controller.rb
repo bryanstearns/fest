@@ -4,9 +4,16 @@ module Admin
     respond_to :html
 
     # GET /admin/users
+    # GET /admin/festivals/1/users
     def index
       @order = params[:order] if %w[name email activity].include?(params[:order])
-      respond_with(:admin, @users = User.all)
+      @users = if params[:festival_id]
+        @festival = Festival.find_by_slug!(params[:festival_id])
+        @festival.users
+      else
+        User.all
+      end
+      respond_with(:admin, @users)
     end
 
     # GET /admin/users/1
