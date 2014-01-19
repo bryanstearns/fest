@@ -11,8 +11,8 @@ class ApplicationController < ActionController::Base
   before_filter :log_session_state
   after_filter(:log_memory_usage) unless Rails.env.test?
 
-  delegate :current_user_is_admin?, :current_page?,
-           :autoscheduler_debugging?, to: :view_context
+  delegate :autoscheduler_debugging?, :current_user_is_admin?, :current_page?,
+           :record_activity, to: :view_context
 
   rescue_from DisabledByFlag do |e|
     case e.flag

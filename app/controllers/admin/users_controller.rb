@@ -18,7 +18,8 @@ module Admin
 
     # GET /admin/users/1
     def show
-      respond_with(:admin, @user = User.find(params[:id]))
+      @user = User.includes(:activity).find(params[:id])
+      respond_with(:admin, @user)
     end
 
     # POST /admin/users/1/act_as

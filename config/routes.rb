@@ -49,9 +49,11 @@ Fest::Application.routes.draw do
 
     resources :users do
       post :act_as, on: :member
+      resources :activity, only: [:index]
     end
     resources :enabled_flags, :only => [:update]
     resources :announcements, only: [:new, :create, :edit, :update, :destroy]
     resources :questions, only: [:index, :show, :edit, :update, :destroy]
+    resources :activity, only: [:index]
   end
 end

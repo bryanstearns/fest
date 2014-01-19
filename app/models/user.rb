@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
 
   include BlockedEmailAddressChecks
 
+  has_many :activity, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
   has_many :travel_intervals, dependent: :destroy
   has_many :questions, dependent: :nullify

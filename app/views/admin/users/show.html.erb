@@ -91,3 +91,7 @@
     </tr>
   </tbody>
 </table>
+
+<%= render partial: 'admin/activity/list',
+           collection: @user.activity,
+           locals: { show_user: false } %>
