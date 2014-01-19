@@ -95,6 +95,8 @@
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit, 'Schedule Films!' %>
+    <%= f.button :submit, 'Schedule Films!', 'data-handler' => 'ButtonProgress' %>
+    <span class="ajax-progress obscured"></span>
+    <span class="obscured"> Be patient... this can take a minute!</span>
   </div>
 <% end %>
