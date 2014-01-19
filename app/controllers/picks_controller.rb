@@ -28,6 +28,14 @@ class PicksController < ApplicationController
       attributes_to_update = { attribute_name => attribute_value }
       attributes_to_update[:auto] = false if (attribute_name == 'screening_id' && attribute_value.present?)
       @pick.update_attributes(attributes_to_update)
+      record_activity("pick_#{attribute_name}",
+        user: current_user,
+        festival: @festival,
+        subject: @film,
+        target: @pick.screening,
+        attribute: attribute_name,
+        attribute_value: attribute_value
+      )
     end
     @screenings_to_update = if saved
       @pick.screenings_of_films_of_changed_screenings
