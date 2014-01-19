@@ -12,8 +12,7 @@ class SubscriptionsController < ApplicationController
     else
       build_temporary_subscription
     end
-    @user_has_screenings = user_signed_in? &&
-      current_user.has_screenings_for?(@festival)
+    @user_picks = user_signed_in? && @festival.picks_for(current_user).includes(:screenings)
 
     respond_with(@subscription)
   end

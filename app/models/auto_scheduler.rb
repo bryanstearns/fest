@@ -38,8 +38,7 @@ class AutoScheduler
 
   def unselect_screenings(unselect)
     log "Unselecting: #{unselect}"
-    festival.reset_screenings(user, unselect == 'future' ? :now : nil) \
-      unless unselect == 'none'
+    festival.reset_screenings(user, unselect)
   end
 
   def debug_limit_screening?(screening)
@@ -107,6 +106,7 @@ class AutoScheduler
 
     pick = current_picks_by_film_id[screening.film_id]
     pick.screening = screening
+    pick.auto = true
     pick.save!
 
     current_picks_by_screening_id[screening.id] = pick

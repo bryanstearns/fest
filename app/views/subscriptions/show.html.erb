@@ -68,14 +68,10 @@
         </li>
       <% end %>
 
-      <% if @user_has_screenings %>
+      <% if @user_picks.any?(&:screening_id) %>
         <li>
           <p>You've got some screenings selected already; what should I do with them?</p>
-          <%= f.input :unselect, as: :radio_buttons, collection: [
-              ['Unselect just the future screenings', 'future'],
-              ['Unselect all of them', 'all'],
-              ['Leave them selected; just fill in around them', 'none']
-          ] %>
+          <%= f.input :unselect, as: :radio_buttons, collection: unselect_menu_choices(@user_picks) %>
         </li>
       <% end %>
 

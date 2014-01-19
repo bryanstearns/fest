@@ -74,6 +74,13 @@ describe Festival do
       festival.picks_for(pick.user).should == [pick]
     end
 
+    it "collects screenings picked by a given user" do
+      festival = create(:festival, :with_films_and_screenings)
+      screening = festival.screenings.first
+      pick = create(:pick, festival: festival, film: festival.films.first, screening: screening)
+      festival.screenings_for(pick.user).should == [screening]
+    end
+
     it "collects screenings visible to a given user" do
       festival = create(:festival, :with_films_and_screenings, press: true)
       festival.screenings_visible_to(create(:user)).should == festival.screenings.where(press: false)
@@ -85,11 +92,16 @@ describe Festival do
                                  .map {|f| f.screenings.first }\
                                  .sort_by {|s| s.starts_at }}
       let(:user) { create(:user) }
-      let!(:picks) {
+      let!(:picks) do
         screenings.map do |s|
-          create(:pick, user: user, festival: festival, screening: s)
+          create(:pick, user: user, festival: festival, screening: s,
+                 auto: (s == screenings.first))
         end
-      }
+      end
+
+      before do
+        Time.stub(current: screenings.first.starts_at + 1.minute)
+      end
 
       it "unselects all by default" do
         festival.picks_for(user).where('screening_id is not null').\
@@ -103,11 +115,18 @@ describe Festival do
 
       it 'unselects just the future ones with a cutoff' do
         expect {
-          festival.reset_screenings(user,
-                                    screenings.first.starts_at + 1.minute)
+          festival.reset_screenings(user, 'future')
         }.to change {
           festival.picks_for(user).where('screening_id is not null').count
         }.by(-1)
+      end
+
+      it 'can skip manual picks' do
+        expect {
+          festival.reset_screenings(user, 'auto')
+        }.to change {
+          festival.picks_for(user).where('screening_id is not null').count
+        }.by(0)
       end
     end
 

@@ -40,6 +40,10 @@ class Festival < ActiveRecord::Base
     picks.where(user_id: user.id)
   end
 
+  def screenings_for(user)
+    screenings.joins(:picks).where('picks.user_id' => user.id)
+  end
+
   def screenings_visible_to(user)
     subscription = user.subscription_for(id)
     screenings.all.select {|s| user.can_see?(s, subscription) }
@@ -72,13 +76,15 @@ class Festival < ActiveRecord::Base
     picks_to_reset.update_all(priority: nil, rating: nil)
   end
 
-  def reset_screenings(user, after=nil)
-    after = Time.current if after == :now
+  def reset_screenings(user, mode=nil)
+    return if mode == 'none'
+
     picks_to_reset = picks_for(user).selected
     picks_to_reset = picks_to_reset.joins(:screening)\
                                    .where('screenings.starts_at > ?',
-                                               after) if after
-    picks_to_reset.update_all(screening_id: nil)
+                                          Time.current) if %w[future auto].include?(mode)
+    picks_to_reset = picks_to_reset.where(auto: true) if mode == 'auto'
+    picks_to_reset.update_all(screening_id: nil, auto: false)
   end
 
   def conflicting_screenings(screening, user_id)

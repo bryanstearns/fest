@@ -39,7 +39,8 @@ describe PicksHelper do
           picked_film.id => {
             priority: 8,
             rating: 2,
-            screening_id: nil
+            screening_id: nil,
+            auto: false
           }
         }
     end

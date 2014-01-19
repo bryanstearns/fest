@@ -25,8 +25,9 @@ class PicksController < ApplicationController
     saved = if @pick.new_record? && attribute_value.nil?
       true # Just pretend we saved if it'd be the default anyway.
     else
-      params[:pick] = { attribute_name => attribute_value }
-      @pick.update_attributes(params[:pick])
+      attributes_to_update = { attribute_name => attribute_value }
+      attributes_to_update[:auto] = false if (attribute_name == 'screening_id' && attribute_value.present?)
+      @pick.update_attributes(attributes_to_update)
     end
     @screenings_to_update = if saved
       @pick.screenings_of_films_of_changed_screenings

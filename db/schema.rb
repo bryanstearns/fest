@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131230032827) do
+ActiveRecord::Schema.define(:version => 20140118193726) do
 
   create_table "announcements", :force => true do |t|
     t.string   "subject"
@@ -76,14 +76,15 @@ ActiveRecord::Schema.define(:version => 20131230032827) do
   end
 
   create_table "picks", :force => true do |t|
-    t.integer  "user_id",      :null => false
-    t.integer  "festival_id",  :null => false
-    t.integer  "film_id",      :null => false
+    t.integer  "user_id",                         :null => false
+    t.integer  "festival_id",                     :null => false
+    t.integer  "film_id",                         :null => false
     t.integer  "screening_id"
     t.integer  "priority"
     t.integer  "rating"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+    t.boolean  "auto",         :default => false
   end
 
   add_index "picks", ["user_id", "festival_id", "film_id"], :name => "index_picks_on_user_id_and_festival_id_and_film_id", :unique => true

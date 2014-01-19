@@ -70,7 +70,8 @@ module PicksHelper
       h[pick.film_id] = {
         priority: pick.priority,
         rating: pick.rating,
-        screening_id: pick.screening_id
+        screening_id: pick.screening_id,
+        auto: pick.auto
       }
       h
     end

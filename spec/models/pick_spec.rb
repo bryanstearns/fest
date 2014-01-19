@@ -43,17 +43,28 @@ describe Pick do
     let(:initially_selected_screening) { festival.screenings[0] }
     let(:another_screening) { festival.screenings[1] }
     let!(:pick) { create(:pick, user: user, festival: festival,
-                         screening: initially_selected_screening) }
+                         screening: initially_selected_screening,
+                         auto: true) }
 
     it "determines conflicting picks" do
       new_pick = build(:pick, user: user, festival: festival,
                        screening: another_screening)
       new_pick.conflicting_picks.should eq([pick])
     end
-    it "deselects conflicting screenings" do
-      new_pick = user.picks.find_or_initialize_for(another_screening.film_id)
-      new_pick.update_attributes(screening: another_screening)
-      pick.reload.screening_id.should be_nil
+
+    context 'when selecting a conflicting screening' do
+      let(:new_pick) do
+        user.picks.find_or_initialize_for(another_screening.film_id)
+      end
+
+      before { new_pick.update_attributes(screening: another_screening) }
+
+      it "deselects conflicting screenings" do
+        pick.reload.screening_id.should be_nil
+      end
+      it "clears the auto flag on deselected conflicting screenings" do
+        pick.reload.auto.should be_false
+      end
     end
   end
 end

@@ -4,7 +4,7 @@ class Pick < ActiveRecord::Base
   belongs_to :screening
   belongs_to :user
 
-  attr_accessible :priority, :rating, :screening, :screening_id
+  attr_accessible :priority, :rating, :screening, :screening_id, :auto
   attr_accessible :festival, :festival_id, :film, :film_id, :priority, :rating, :screening, :screening_id,
                   as: :pick_creator
 
@@ -26,6 +26,7 @@ class Pick < ActiveRecord::Base
 
   before_validation :check_foreign_keys
   before_save :deselect_conflicting_screenings
+  before_save :clear_auto_without_screening
 
   validates :user_id, :film_id, :festival_id, presence: true
   validates :priority, :rating, numericality: true, allow_nil: true
@@ -86,8 +87,14 @@ protected
       conflicts = conflicting_picks
       if conflicts.present?
         changed_screening_ids(conflicts.map {|p| p.screening_id })
-        conflicts.update_all(screening_id: nil)
+        conflicts.update_all(screening_id: nil, auto: false)
       end
     end
+    true
+  end
+
+  def clear_auto_without_screening
+    self.auto = false unless screening_id.present?
+    true
   end
 end

@@ -225,6 +225,12 @@ describe AutoScheduler do
         expect { subject }.to_not raise_error
       end
 
+      it "marks the pick as 'automatic'" do
+        refute nonconflicting_pick.auto
+        subject
+        assert nonconflicting_pick.reload.auto
+      end
+
       it 'should update the current_ lists' do
         autoscheduler.current_picks_by_screening_id.should_not have_key(screening2.id)
         autoscheduler.current_picks_by_film_id.should have_key(nonconflicting_pick.film_id)

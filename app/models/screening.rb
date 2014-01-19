@@ -37,6 +37,10 @@ class Screening < ActiveRecord::Base
     (ends_at - starts_at).to_i rescue film.try(:duration)
   end
 
+  def future?
+    starts_at > Time.current
+  end
+
   def conflicts_with?(other, user_id)
     # easy tests first:
     return false if

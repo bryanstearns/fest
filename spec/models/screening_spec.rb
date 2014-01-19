@@ -34,6 +34,10 @@ describe Screening do
     it "should know its film's name" do
       subject.name.should eq(subject.film.name)
     end
+
+    it "should know if it's yet to happen" do
+      subject.should_not be_future # tests #future?
+    end
   end
 
   describe "testing for conflict" do
