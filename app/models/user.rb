@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
          :registerable, :recoverable, :rememberable, :trackable,
          :validatable
 
-  VALID_PREFERENCES = %w[hide_instructions]
+  VALID_PREFERENCES = %w[hide_instructions unsubscribed bounced]
   serialize :preferences, ActiveRecord::Coders::Hstore
 
   include BlockedEmailAddressChecks
@@ -46,6 +46,17 @@ class User < ActiveRecord::Base
         save!
       end
       new_value
+    end
+  end
+
+  def mailable?
+    confirmed? && !unsubscribed? && !bounced?
+  end
+
+  def confirm!
+    if super
+      self.bounced = nil
+      save!
     end
   end
 

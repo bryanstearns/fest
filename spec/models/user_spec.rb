@@ -114,6 +114,29 @@ describe User do
     end
   end
 
+  context "an unconfirmed user" do
+    subject { create(:unconfirmed_user) }
+    it { should_not be_mailable }
+  end
+
+  context "an unsubscribed user" do
+    subject { create(:confirmed_user, preferences: { 'unsubscribed' => true }) }
+    it { should_not be_mailable }
+  end
+
+  context "a bounced user" do
+    subject { create(:unconfirmed_user, preferences: { 'bounced' => true }) }
+    it { should_not be_mailable }
+
+    context "who reconfirms" do
+      before do
+        subject.confirm!
+        subject.reload
+      end
+      it { should be_mailable }
+    end
+  end
+
   context "preferences" do
     let(:user) { create(:confirmed_user) }
 

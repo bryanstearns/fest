@@ -35,6 +35,14 @@ module UsersHelper
       sort_key <=> other.sort_key
     end
 
+    def email_with_status
+      flags = []
+      flags << 'bounced' if bounced?
+      flags << 'unsubscribed' if unsubscribed?
+      flags << 'unconfirmed' unless confirmed?
+      return email if flags.empty?
+      safe_join [ content_tag(:span, email), ' ', content_tag(:strong, flags.join(', ')) ]
+    end
   protected
     def sort_key
       @sort_key ||= begin

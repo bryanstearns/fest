@@ -5,6 +5,10 @@ FactoryGirl.define do
     password "sw0rdf1sh!"
     password_confirmation "sw0rdf1sh!"
 
+    factory :unconfirmed_user do
+      sequence(:unconfirmed_email) {|n| "unconfirmed_user#{n}@example.com" }
+    end
+
     factory :confirmed_user do
       confirmed_at Time.zone.parse("2000-01-01")
 
