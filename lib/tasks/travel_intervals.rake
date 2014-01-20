@@ -2,7 +2,6 @@ namespace :intervals do
   desc "Load a travel intervals from a CSV"
   task :load => :environment do
     require 'csv'
-    require 'debugger'
     dry_run = ENV["DRY_RUN"]
     verbose = (ENV["VERBOSE"] || 0).to_i
     place = ENV["PLACE"] || abort("Must specify PLACE!")
@@ -65,14 +64,24 @@ namespace :intervals do
 
   desc "Dump travel intervals to a CSV"
   task :dump => :environment do
+    require 'csv'
     user = User.find_by_email(ENV['USER']) if ENV['USER']
     place = ENV["PLACE"]
     abort("Must specify PLACE!") unless (place || user)
+    default_interval = (ENV["DEFAULT"] || TravelInterval::DEFAULT_INTER_INTERVAL).to_i
     csv_path = ENV['CSV']
     csv_path = "travel_times.csv" if csv_path == "1"
     csv = File.open(csv_path, 'w') if csv_path
     begin
-      cache = TravelInterval.make_cache(user.try(:id))
+      csv.puts "Festival Fanatic Travel Times#{ " -- #{place || user.name}" if (place || user)}"
+      csv.puts ""
+      csv.puts "This table shows the travel times in each direction between venues; some of the venues aren't used this year but I kept them for testing with last year's data; ignore them."
+      csv.puts "Read down the left column to find the starting theater, then across to the destination theater's column."
+      csv.puts "In filling out this table, I assumed that people would walk between downtown venues and drive between downtown and the outlying venues. (Cinema 21 is outlying.) The parking time is added already if necessary."
+      csv.puts "If you'd like to suggest changes, please edit this spreadsheet and mail it back (as an email attachment) to festfan@festivalfanatic.com"
+      csv.puts ""
+
+      cache = TravelInterval.make_cache(user.try(:id), default_interval)
       locations = Location
       locations = locations.where(place: place) if place
       locations = locations.order('name').to_a

@@ -1,23 +1,24 @@
-Festival Fanatic Travel Times,,,,,,,,,,,,,
-,,,,,,,,,,,,,
-This table shows the travel times in each direction between venues; some of the venues aren't used this year but I kept them for testing with last year's data; ignore them.,,,,,,,,,,,,,
-"Read down the left column to find the starting theater, then across to the destination theater's column.",,,,,,,,,,,,,
-"In filling out this table, I assumed that people would walk between downtown venues and drive between downtown and the outlying venues. (Cinema 21 is outlying.) The parking time is added already if necessary.",,,,,,,,,,,,,
-"If you'd like to suggest changes, please edit this spreadsheet and mail it back (as an email attachment) to festfan@festivalfanatic.com",,,,,,,,,,,,,
-,,,,,,,,,,,,,
-minutes from v to:,Broadway,Cinema 21,Cinemagic,Fields Ballroom,Fox Tower,Hollywood Theatre,Lake Twin,Lloyd Center,Lloyd Mall,Newmark Theatre,Pioneer Place,Whitsell Auditorium,World Trade Center
-parking time:,10,10,10,10,10,10,10,10,10,10,10,10,10
-,,,,,,,,,,,,,
-Broadway,x,17,18,3,4,21,28,18,18,3,6,3,6
-Cinema 21,16,x,23,17,17,21,31,20,20,17,17,17,18
-Cinemagic,18,23,x,18,18,21,30,18,18,18,18,18,18
-Fields Ballroom,3,17,18,x,4,21,30,19,19,3,6,2,6
-Fox Tower,4,17,18,4,x,21,30,20,20,3,5,4,6
-Hollywood Theatre,21,21,21,21,21,x,29,16,16,17,18,21,16
-Lake Twin,30,31,30,30,30,30,x,30,30,30,30,30,30
-Lloyd Center,20,20,20,20,20,18,32,x,4,19,20,19,19
-Lloyd Mall,20,20,20,20,20,18,32,4,x,19,20,19,19
-Newmark Theatre,3,17,18,3,3,21,28,19,19,x,6,3,6
-Pioneer Place,6,18,18,6,5,21,6,20,20,6,x,6,6
-Whitsell Auditorium,3,17,18,2,4,21,28,19,19,3,6,x,6
-World Trade Center,6,19,19,6,6,21,26,19,19,6,6,6,x
+Festival Fanatic Travel Times,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+This table shows the travel times in each direction between venues; some of the venues aren't used this year but I kept them for testing with last year's data; ignore them.,,,,,,,,,,,,,,,,
+"Read down the left column to find the starting theater, then across to the destination theater's column.",,,,,,,,,,,,,,,,
+"In filling out this table, I assumed that people would walk between downtown venues and drive between downtown and the outlying venues. (Cinema 21 is outlying.) The parking time is added already if necessary.",,,,,,,,,,,,,,,,
+"If you'd like to suggest changes, please edit ONLY THE NUMBERS and mail it back (as an email attachment) to festfan@festivalfanatic.com",,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,
+minutes from v to:,Broadway,Cinema 21,Cinemagic,Fields Ballroom,Fox Tower,Hollywood Theatre,Lake Twin,Lloyd Center,Lloyd Mall,Newmark Theatre,OMSI,Pinocchio,Pioneer Place,Schnitzer Concert Hall,Whitsell Auditorium,World Trade Center
+Broadway,10,20,20,13,13,21,28,20,20,13,15,13,16,13,14,15
+Cinema 21,16,10,24,18,18,21,33,20,20,18,20,18,18,18,16,19
+Cinemagic,18,23,10,20,20,21,30,18,18,18,16,18,20,18,18,19
+Fields Ballroom,13,20,20,10,14,21,30,20,20,18,15,18,16,18,13,15
+Fox Tower,14,20,20,12,10,21,30,20,20,14,15,14,15,14,14,15
+Hollywood Theatre,21,25,21,21,21,10,29,18,18,21,15,21,21,21,21,20
+Lake Twin,30,35,30,30,30,30,10,35,35,30,30,30,30,30,30,30
+Lloyd Center,20,20,20,20,20,19,25,10,14,20,20,20,20,20,20,20
+Lloyd Mall,20,20,20,20,20,19,25,14,10,20,20,20,20,20,20,20
+Newmark Theatre,13,20,20,13,13,21,28,20,20,10,15,13,16,13,14,15
+OMSI,15,19,16,15,15,19,22,18,18,15,10,15,15,15,15,16
+Pinocchio,13,20,20,12,12,21,28,20,20,13,15,10,15,13,13,15
+Pioneer Place,16,20,20,15,14,21,28,20,20,16,15,16,10,16,16,16
+Schnitzer Concert Hall,12,20,20,13,13,21,28,20,20,12,15,12,15,12,14,15
+Whitsell Auditorium,14,18,20,14,14,21,28,20,20,14,15,14,15,14,10,16
+World Trade Center,15,20,19,16,15,21,27,19,19,15,14,15,15,15,16,10

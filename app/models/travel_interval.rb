@@ -18,8 +18,10 @@ class TravelInterval < ActiveRecord::Base
   end
 
   class Cache
-    def initialize(user_id)
+    def initialize(user_id, default_inter_interval=TravelInterval::DEFAULT_INTER_INTERVAL)
       @user_id = user_id
+      @default_inter_interval = default_inter_interval
+
       @cache = Hash.new {|hf, fk| hf[fk] = {} }
 
       TravelInterval.for_user_id(user_id).inject(@cache) do |h, interval|
@@ -34,7 +36,7 @@ class TravelInterval < ActiveRecord::Base
       to_location = to_location.id if to_location.is_a? Location
       return TravelInterval::DEFAULT_INTRA_INTERVAL if from_location == to_location
 
-      @cache[from_location][to_location] || TravelInterval::DEFAULT_INTER_INTERVAL
+      @cache[from_location][to_location] || @default_inter_interval
     end
   end
 
@@ -51,8 +53,8 @@ class TravelInterval < ActiveRecord::Base
     @interval_cache[user_id] ||= make_cache(user_id)
   end
 
-  def self.make_cache(user_id)
-    TravelInterval::Cache.new(user_id)
+  def self.make_cache(user_id, default_inter_interval=TravelInterval::DEFAULT_INTER_INTERVAL)
+    TravelInterval::Cache.new(user_id, default_inter_interval)
   end
 
 protected
