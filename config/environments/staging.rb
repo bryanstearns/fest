@@ -52,7 +52,11 @@ Fest::Application.configure do
   # config.action_mailer.raise_delivery_errors = false
 
   # Make sure URLs in emails will work
-  config.action_mailer.default_url_options = { host: 'staging.festivalfanatic.com' }
+  config.action_mailer.default_url_options = { host: 'staging.festivalfanatic.com',
+                                               protocol: 'https' }
+  Rails.application.routes.default_url_options[:host] = 'staging.festivalfanatic.com'
+  Rails.application.routes.default_url_options[:protocol] = 'https'
+
   # Don't send mail by default (our mailcatcher initializer may override this!)
   config.action_mailer.delivery_method = :test
 

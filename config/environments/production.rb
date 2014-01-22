@@ -62,6 +62,8 @@ Fest::Application.configure do
   # Make sure URLs in emails will work
   config.action_mailer.default_url_options = { host: 'festivalfanatic.com',
                                                protocol: 'https' }
+  Rails.application.routes.default_url_options[:host] = 'festivalfanatic.com'
+  Rails.application.routes.default_url_options[:protocol] = 'https'
 
   # Enable threaded mode
   # config.threadsafe!

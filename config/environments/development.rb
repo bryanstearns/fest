@@ -15,6 +15,8 @@ Fest::Application.configure do
 
   # Set mailer options
   config.action_mailer.default_url_options = { host: 'localhost:3000' }
+  Rails.application.routes.default_url_options[:host] = 'localhost:3000'
+
   # Don't send mail by default (our mailcatcher initializer may override this!)
   config.action_mailer.delivery_method = :test
 
