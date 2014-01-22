@@ -165,4 +165,13 @@ describe User do
       user.reload.hide_instructions.should be_nil
     end
   end
+
+  context "calendar token" do
+    it "stores a token on save" do
+      user = build(:user)
+      user.calendar_token.should be_nil
+      user.save!
+      user.calendar_token.should_not be_nil
+    end
+  end
 end

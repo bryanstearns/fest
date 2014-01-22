@@ -22,6 +22,8 @@ class User < ActiveRecord::Base
     end
   end
 
+  before_save :set_calendar_token
+
   attr_accessible :name, :email, :password, :password_confirmation, :remember_me
   attr_accessible :admin, :name, :email, :ffff, :password,
                   :password_confirmation, :remember_me, as: :admin
@@ -87,5 +89,9 @@ class User < ActiveRecord::Base
 
   def has_ratings_for?(festival)
     picks.rated.where('festival_id = ?', festival.id).any?
+  end
+
+  def set_calendar_token
+    self.calendar_token ||= Devise.friendly_token
   end
 end
