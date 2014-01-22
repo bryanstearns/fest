@@ -24,6 +24,7 @@ gem 'jquery-turbolinks'
 gem 'underscore-rails'
 gem 'unicorn'
 gem 'unicorn-worker-killer'
+gem 'icalendar'
 
 group :development do
   gem 'listen'
