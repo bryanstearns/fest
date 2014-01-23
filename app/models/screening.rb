@@ -29,6 +29,10 @@ class Screening < ActiveRecord::Base
   scope :with_press, ->(with_press) {
     with_press ? scoped : where('screenings.press = ?', false)
   }
+  scope :for_calendar, -> {
+    where('screenings.starts_at > ? and screenings.starts_at < ?',
+          6.months.ago, 6.months.from_now)
+  }
 
   delegate :name, :abbreviation, to: :venue, prefix: true
   delegate :name, :short_name, :countries, to: :film

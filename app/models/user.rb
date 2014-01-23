@@ -21,6 +21,7 @@ class User < ActiveRecord::Base
       end
     end
   end
+  has_many :screenings, through: :picks
 
   before_save :set_calendar_token
 
