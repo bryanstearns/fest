@@ -1,3 +1,14 @@
+
+Given(/^I have scheduled at least one film$/) do
+  create(:pick, user: @user, festival: @festival,
+                screening: @festival.screenings.first)
+end
+
+When(/^I visit the calendar link$/) do
+  calendar_url = page.find("a#calendar")["href"]
+  visit calendar_url
+end
+
 When /^there are three festivals in two groups$/ do
   @grouped_festivals_with_dates = {
     'piff' => {
@@ -18,6 +29,10 @@ end
 
 When /^I visit the festivals index page$/ do
   visit festivals_path
+end
+
+Then(/^I should download a calendar with my films$/) do
+  page.body.should have_content("BEGIN:VCALENDAR")
 end
 
 Then /^I should see the festivals listed in groups$/ do
