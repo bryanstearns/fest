@@ -38,6 +38,15 @@
     </p>
   </li>
   <% if user_signed_in? %>
+    <% if current_user_is_admin? %>
+      <li><p>New for 2014: You can add your scheduled films to iCal or Google
+        Calendar by subscribing using this link (which you shouldn't share!):<br>
+        <%= link_to(user_calendar_url(current_user.calendar_token),
+                    user_calendar_path(current_user.calendar_token),
+                    target: '_blank', id: 'calendar') %></p>
+      </li>
+    <% end %>
+
     <% if current_user.has_ratings_for?(@festival) %>
       <li><p>You can share a list of your film ratings using this link (which you
         can post on Twitter or Facebook - anyone can access it):<br>
