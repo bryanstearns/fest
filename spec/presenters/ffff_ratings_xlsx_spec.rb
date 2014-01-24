@@ -43,7 +43,7 @@ describe FfffRatingsXlsx do
       cleaned = subject['H2:I2'].map do |cell|
         cell.value.gsub("\n",' ')
       end
-      cleaned.should == ffff_users.map(&:name)
+      cleaned.should == ffff_users.map(&:name).sort
     end
 
     it "adds film rows to the table" do
