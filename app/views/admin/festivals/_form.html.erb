@@ -11,6 +11,7 @@
     <%= f.input :updates_url, label: 'Updates URL' %>
     <%= f.input :published, hint: 'Include festival in the public list' %>
     <%= f.input :scheduled, hint: 'Show as "Coming soon" unless checked' %>
+    <%= f.input :has_press, label: 'Has press screenings?' %>
     <%= f.input :revised_at %>
     <%= f.association :locations, as: :check_boxes, label_method: :label %>
   </div>
