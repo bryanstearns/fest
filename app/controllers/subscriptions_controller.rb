@@ -2,18 +2,14 @@ class SubscriptionsController < ApplicationController
   before_filter :authenticate_user!, except: [:show]
   before_filter :load_festival
   before_filter :load_subscription, only: [:update]
+  before_filter :load_or_build_subscription, only: [:show]
+  before_filter :load_user_picks, only: [:show]
+
   layout 'festivals'
   respond_to :html
 
   # GET /festival/1/assistant
   def show
-    if user_signed_in?
-      load_subscription
-    else
-      build_temporary_subscription
-    end
-    @user_picks = user_signed_in? && @festival.picks_for(current_user).includes(:screening)
-
     respond_with(@subscription)
   end
 
@@ -23,6 +19,7 @@ class SubscriptionsController < ApplicationController
       maybe_run_autoscheduler
       redirect_to festival_path(@festival)
     else
+      load_user_picks
       render :show
     end
   end
@@ -46,5 +43,17 @@ protected
 
   def build_temporary_subscription
     @subscription = @festival.subscriptions.build
+  end
+
+  def load_or_build_subscription
+    if user_signed_in?
+      load_subscription
+    else
+      build_temporary_subscription
+    end
+  end
+
+  def load_user_picks
+    @user_picks = user_signed_in? && @festival.picks_for(current_user).includes(:screening)
   end
 end
