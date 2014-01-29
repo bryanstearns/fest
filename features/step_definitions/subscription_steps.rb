@@ -2,7 +2,7 @@
 When /^I visit their user ratings page$/ do
   @festival = @user.picks.first.festival
   subscription = @user.subscription_for(@festival.id)
-  visit user_ratings_path(subscription.ratings_token)
+  visit user_rating_path(@user, subscription.ratings_token)
 end
 
 Then /^I should see their film ratings$/ do

@@ -5,7 +5,7 @@ Given(/^I have scheduled at least one film$/) do
 end
 
 When(/^I visit the calendar link$/) do
-  calendar_url = page.find("a#calendar")["href"]
+  calendar_url = page.find("#calendar_url").text
   visit calendar_url
 end
 

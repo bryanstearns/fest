@@ -3,7 +3,7 @@ class FestivalsController < ApplicationController
   include PrawnHelper
 
   respond_to :html
-  respond_to :pdf, :xlsx, only: [:show]
+  respond_to :pdf, :xlsx, :ics, only: [:show]
 
   before_filter :load_festival, only: [:random_priorities, :reset_rankings, :reset_screenings]
   before_filter :load_festival_and_screenings, only: [:show]
@@ -25,6 +25,17 @@ class FestivalsController < ApplicationController
                               subscription: @subscription, user: current_user)
         send_data(pdf.render, filename: "#{@festival.slug}.pdf",
                   type: "application/pdf")
+      end
+      format.ics do
+        screenings = @screenings.with_press(@show_press)
+        formatter = CalendarFormatter.new(@festival.name, screenings)
+        if params[:raw]
+          render text: formatter.to_ics, content_type: 'text/plain'
+        else
+          send_data formatter.to_ics,
+                    filename: formatter.filename,
+                    content_type: 'text/calendar'
+        end
       end
     end
     response.headers['Content-Disposition'] =

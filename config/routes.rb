@@ -15,8 +15,12 @@ Fest::Application.routes.draw do
     resources :picks, only: [:create]
   end
   resources :screenings, only: [:show]
-  match 'ratings/:token' => 'user_ratings#show', as: :user_ratings
-  match 'calendars/:token' => 'user_calendars#show', as: :user_calendar
+  match 'ratings/:id' => 'user_ratings#show', as: :old_user_ratings
+
+  resources :users, only: [] do
+    resources :calendar, controller: :user_calendars, only: [:show]
+    resources :ratings, controller: :user_ratings, only: [:show]
+  end
 
   resources :announcements, only: [:index, :show]
   resources :questions, only: [:new, :create]

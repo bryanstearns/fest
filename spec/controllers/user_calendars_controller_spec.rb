@@ -10,14 +10,16 @@ describe UserCalendarsController do
       end
     end
 
+    before do
+      CalendarFormatter.any_instance.stub(to_ics: 'output')
+      get 'show', user_id: user.id, id: user.calendar_token
+    end
+
     it "returns http success" do
-      get 'show', token: user.calendar_token
       response.should be_success
     end
 
     it "returns the picks in ICS format" do
-      CalendarFormatter.any_instance.stub(to_ics: 'output')
-      get 'show', token: user.calendar_token
       response.body.should eq('output')
     end
   end

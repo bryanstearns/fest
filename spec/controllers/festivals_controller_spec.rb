@@ -36,6 +36,12 @@ describe FestivalsController do
         get :show, { id: festival.to_param, format: 'pdf' }
         response.body.should start_with('%PDF-')
       end
+
+      it 'returns an iCalendar when .ics format is requested' do
+        festival = create(:festival, :with_films_and_screenings)
+        get :show, { id: festival.to_param, format: 'ics' }
+        response.body.should start_with('BEGIN:VCALENDAR')
+      end
     end
   end
 end

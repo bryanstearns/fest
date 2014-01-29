@@ -93,6 +93,6 @@ class User < ActiveRecord::Base
   end
 
   def set_calendar_token
-    self.calendar_token ||= Devise.friendly_token
+    self.calendar_token ||= SecureRandom.hex(4)
   end
 end
