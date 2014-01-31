@@ -251,4 +251,5 @@ end
 Warden::Manager.after_authentication except: :fetch do |record, warden, options|
   Rails.logger.info("warden after_authentication: #{record.inspect}, #{options.inspect}")
   Activity.record("sign_in", user: record)
+  NewRelic::Agent.add_custom_parameters(:user_id => record.id)
 end
