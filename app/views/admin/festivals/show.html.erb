@@ -8,6 +8,10 @@
     <td><%= @festival.subscriptions.joins(:user).where("users.ffff = ?", true).count %></td>
   </tr>
   <tr>
+    <th>Users who checked "show press screenings"</th>
+    <td><%= @festival.subscriptions.where(show_press: true).count %></td>
+  </tr>
+  <tr>
     <th>Prioritized films</th>
     <td><%= @festival.picks.where("priority is not null").count %></td>
   </tr>
