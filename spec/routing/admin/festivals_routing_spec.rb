@@ -6,8 +6,8 @@ describe Admin::FestivalsController do
       get("/admin/festivals").should_not be_routable
     end
 
-    it "doesn't route to #show" do
-      get("/admin/festivals/1").should_not be_routable
+    it "routes to #show" do
+      get("/admin/festivals/1").should route_to("admin/festivals#show", :id => "1")
     end
 
     it "routes to #new" do

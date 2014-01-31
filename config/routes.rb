@@ -38,7 +38,7 @@ Fest::Application.routes.draw do
   # Admin stuff
   match 'admin' => "home#admin", as: :admin_root
   namespace 'admin' do
-    resources :festivals, only: [:new, :create, :edit, :update, :destroy] do
+    resources :festivals, only: [:show, :new, :create, :edit, :update, :destroy] do
       resources :films, only: [:index, :new, :create]
       resources :users, only: [:index], controller: :users
     end

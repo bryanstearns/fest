@@ -7,6 +7,7 @@ class Festival < ActiveRecord::Base
   has_many :subscriptions, dependent: :destroy
   has_many :users, through: :subscriptions
   has_many :picks
+  has_many :activity
 
   attr_accessible :ends_on, :has_press, :location_ids, :main_url, :name, :place,
                   :published, :revised_at, :scheduled, :slug, :slug_group,

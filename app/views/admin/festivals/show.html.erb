@@ -1,0 +1,34 @@
+<table class="table">
+  <tr>
+    <th>Users</th>
+    <td><%= @festival.subscriptions.count %></td>
+  </tr>
+  <tr>
+    <th>FFFF Users</th>
+    <td><%= @festival.subscriptions.joins(:user).where("users.ffff = ?", true).count %></td>
+  </tr>
+  <tr>
+    <th>Prioritized films</th>
+    <td><%= @festival.picks.where("priority is not null").count %></td>
+  </tr>
+  <tr>
+    <th>Assistant runs</th>
+    <td><%= @festival.activity.where(name: 'autoscheduled').count %></td>
+  </tr>
+  <tr>
+    <th>All scheduled screenings</th>
+    <td><%= @festival.picks.where("screening_id is not null").count %></td>
+  </tr>
+  <tr>
+    <th>Assistant-scheduled screenings</th>
+    <td><%= @festival.picks.where("screening_id is not null").where(auto: true).count %></td>
+  </tr>
+  <tr>
+    <th>Rated films</th>
+    <td><%= @festival.picks.where("rating is not null").count %></td>
+  </tr>
+  <tr>
+    <th></th>
+    <td></td>
+  </tr>
+</table>

@@ -10,6 +10,14 @@ describe Admin::FestivalsController do
     attributes_for(:festival)
   end
 
+  describe "GET show" do
+    it "assigns the requested festival as @festival" do
+      festival = create(:festival)
+      get :show, {:id => festival.to_param}
+      assigns(:festival).should eq(festival)
+    end
+  end
+
   describe "GET new" do
     it "assigns a new festival as @festival" do
       get :new, {}

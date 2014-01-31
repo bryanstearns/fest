@@ -4,6 +4,11 @@ module Admin
     layout 'festivals_admin'
     respond_to :html
 
+    # GET /admin/festivals/show
+    def show
+      respond_with(:admin, @festival = Festival.find_by_slug!(params[:id]))
+    end
+
     # GET /admin/festivals/new
     def new
       respond_with(:admin, @festival = Festival.new(revised_at: Time.current))
