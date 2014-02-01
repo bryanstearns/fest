@@ -13,7 +13,7 @@ Feature: Festival Show Page
 
   Scenario: Downloading an icalendar file
     Given a festival with films and screenings
-    And I am logged in as an administrator
+    And I am logged in
     And I have scheduled at least one film
     When I visit the festival page
     And I visit the calendar link
