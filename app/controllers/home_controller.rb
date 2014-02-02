@@ -4,9 +4,8 @@ class HomeController < ApplicationController
   def landing
     flash.keep
     if user_signed_in?
-      last_pick = current_user.picks.includes(:festival).order('picks.updated_at').last
-      festival = last_pick.try(:festival)
-      if festival && festival == Festival.published.order(:starts_on).where(slug_group: festival.slug_group).last
+      festival = current_user.default_festival
+      if festival
         if current_user.has_screenings_for?(festival)
           redirect_to festival
         else

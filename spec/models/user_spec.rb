@@ -166,6 +166,17 @@ describe User do
     end
   end
 
+  context "determining a good festival to land on" do
+    let(:user) { create(:confirmed_user) }
+    let(:festival) { create(:festival, :with_films_and_screenings, slug_group: 'xyzzy') }
+    let(:screening) { festival.screenings.first }
+    let!(:pick) { create(:pick, user: user, festival: festival,
+                         film: screening.film, screening: screening) }
+    it "should pick one" do
+      user.default_festival.should eq(festival)
+    end
+  end
+
   context "calendar token" do
     it "stores a token on save" do
       user = build(:user)

@@ -78,6 +78,11 @@ class User < ActiveRecord::Base
     end
   end
 
+  def default_festival
+    festival = picks.includes(:festival).order('picks.updated_at').last.try(:festival)
+    festival if festival && festival.is_latest_in_group?
+  end
+
   def can_see?(screening, subscription=nil)
     subscription ||= subscription_for(screening.festival_id)
     subscription ? subscription.can_see?(screening) : !screening.press

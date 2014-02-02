@@ -93,6 +93,10 @@ class Festival < ActiveRecord::Base
     screenings.all.select {|s| screening.conflicts_with?(s, user_id) }
   end
 
+  def is_latest_in_group?
+    self == Festival.published.order(:starts_on).where(slug_group: slug_group).last
+  end
+
 private
   def update_slug
     self.slug = "#{slug_group}_#{starts_on.strftime("%Y")}" if slug_group && starts_on
