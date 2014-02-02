@@ -11,6 +11,7 @@ class FestivalsController < ApplicationController
   before_filter :check_ffff_spreadsheet_access, only: [:show]
   before_filter :load_subscription_and_picks_for_current_user, only: [:show]
   before_filter :pass_through_debug_flag, only: [:show]
+  before_filter :check_for_news, only: [:show]
 
   # GET /festivals
   def index

@@ -24,10 +24,13 @@ class User < ActiveRecord::Base
   has_many :screenings, through: :picks
 
   before_save :set_calendar_token
+  before_create :set_welcomed_at
 
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me
+  attr_accessible :name, :email, :password, :password_confirmation,
+                  :remember_me, :welcomed_at
   attr_accessible :admin, :name, :email, :ffff, :password,
-                  :password_confirmation, :remember_me, as: :admin
+                  :password_confirmation, :remember_me, :welcomed_at,
+                  as: :admin
 
   validates :name, :presence => true
 
@@ -94,5 +97,22 @@ class User < ActiveRecord::Base
 
   def set_calendar_token
     self.calendar_token ||= SecureRandom.hex(4)
+  end
+
+  def news(limit=nil)
+    Announcement.published_since(welcomed_at).limit(nil)
+  end
+
+  def hasnt_seen?(announcement)
+    announcement.try(:published?) && (announcement.published_at > welcomed_at)
+  end
+
+  def set_welcomed_at
+    self.welcomed_at ||= Time.current
+  end
+
+  def news_delivered!(time = Time.current)
+    self.welcomed_at = time
+    self.save!
   end
 end

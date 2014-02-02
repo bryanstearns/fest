@@ -57,6 +57,24 @@ protected
     @picks = user_signed_in? ? @festival.picks_for(current_user) : []
   end
 
+  def check_for_news
+    return unless user_signed_in? && flash.now[:notice].blank?
+
+    news = current_user.news(2).to_a
+    return if news.count == 0
+
+    heading, link_title = if news.count == 1
+      [ "News: \"#{news.first.subject}\" ", "(more)" ]
+    else
+      [ "There's news since your last visit! ", "(view now)" ]
+    end
+
+    flash.now[:notice] = safe_join [
+      heading,
+      view_context.link_to(link_title, clear_announcements_path, method: :post)
+    ]
+  end
+
   def log_session_state
     session_key = Rails.application.config.session_options[:key]
     size = (cookies[session_key] || "").size

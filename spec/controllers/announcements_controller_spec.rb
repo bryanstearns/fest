@@ -42,4 +42,16 @@ describe AnnouncementsController do
       end
     end
   end
+
+  describe "POST clear" do
+    login_user
+    it "updates the user's last-seen date" do
+      post :clear
+      @signed_in_user.reload.welcomed_at.should be > 5.minutes.ago
+    end
+    it "redirects to the announcements list" do
+      post :clear
+      response.should redirect_to(announcements_path)
+    end
+  end
 end

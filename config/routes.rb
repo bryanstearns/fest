@@ -22,7 +22,9 @@ Fest::Application.routes.draw do
     resources :ratings, controller: :user_ratings, only: [:show]
   end
 
-  resources :announcements, only: [:index, :show]
+  resources :announcements, only: [:index, :show] do
+    post :clear, on: :collection
+  end
   resources :questions, only: [:new, :create]
 
   root to: "home#landing"

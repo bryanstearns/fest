@@ -16,4 +16,10 @@ class AnnouncementsController < ApplicationController
     @announcement = scope.find(params[:id])
     respond_with(@announcement)
   end
+
+  # POST /announcements/clear
+  def clear
+    current_user.news_delivered! if user_signed_in?
+    redirect_to(announcements_path)
+  end
 end
