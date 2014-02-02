@@ -2,10 +2,6 @@ module ApplicationHelper
   include EnabledFlags
   include Countries::Helpers
 
-  def autoscheduler_debugging?
-    false #user_signed_in? && (Rails.env.development? || current_user.admin?)
-  end
-
   def webfont_link_tag
     families = [
       #"Droid+Serif:400,700,400italic,700italic",

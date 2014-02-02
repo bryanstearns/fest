@@ -42,6 +42,29 @@ describe FestivalsController do
         get :show, { id: festival.to_param, format: 'ics' }
         response.body.should start_with('BEGIN:VCALENDAR')
       end
+
+      it 'passes through the debug flag if the user is an admin' do
+        user = create(:confirmed_admin_user)
+        FestivalsController.any_instance.stub(current_user: user)
+        festival = create(:festival)
+
+        get :show, { id: festival.to_param, debug: 'one' }
+        assigns(:subscription).debug.should eq('one')
+      end
+      it 'ignores the debug flag if the user is not an admin' do
+        user = create(:confirmed_user)
+        FestivalsController.any_instance.stub(current_user: user)
+        festival = create(:festival)
+
+        get :show, { id: festival.to_param, debug: 'one' }
+        assigns(:subscription).debug.should_not eq('one')
+      end
+      it 'ignores the debug flag if no user is signed in' do
+        festival = create(:festival)
+
+        get :show, { id: festival.to_param, debug: 'one' }
+        assigns(:subscription).should be_nil
+      end
     end
   end
 end

@@ -85,6 +85,15 @@ describe SubscriptionsController do
                                             'skip_autoscheduler' => true } }
           response.should redirect_to(festival_path(subscription.festival))
         end
+
+        it 'redirects with the debug flag if the user is an admin' do
+          put :update, { :festival_id => festival.to_param,
+                         :subscription => { 'show_press' => false,
+                                            'skip_autoscheduler' => true,
+                                            'debug' => 'one' } }
+          response.should redirect_to(festival_path(subscription.festival,
+                                                    'debug' => 'one'))
+        end
       end
 
       describe "with invalid params" do

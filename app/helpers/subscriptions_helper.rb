@@ -1,7 +1,11 @@
 module SubscriptionsHelper
+  def autoscheduler_debugging?
+    (current_user_is_admin? || Rails.env.development?) && params['debug'].present?
+  end
+
   def debug_menu
     choices = [
-        ['As many as possible', ''],
+        ['As many as possible', 'all'],
         ['All the free ones', 'free'],
         ['Just one', 'one'],
         ['None, just save subscription', 'none']

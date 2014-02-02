@@ -10,6 +10,7 @@ class FestivalsController < ApplicationController
   before_filter :check_festival_access, only: [:show]
   before_filter :check_ffff_spreadsheet_access, only: [:show]
   before_filter :load_subscription_and_picks_for_current_user, only: [:show]
+  before_filter :pass_through_debug_flag, only: [:show]
 
   # GET /festivals
   def index
@@ -77,5 +78,9 @@ protected
   def check_ffff_spreadsheet_access
     raise(ActiveRecord::RecordNotFound) \
       if request.format == :xlsx && !view_context.allow_ffff_download?
+  end
+
+  def pass_through_debug_flag
+    @subscription.debug = params['debug'] if @subscription && current_user_is_admin?
   end
 end

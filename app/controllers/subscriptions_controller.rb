@@ -1,8 +1,8 @@
 class SubscriptionsController < ApplicationController
   before_filter :authenticate_user!, except: [:show]
   before_filter :load_festival
-  before_filter :load_subscription, only: [:update]
   before_filter :load_or_build_subscription, only: [:show]
+  before_filter :load_subscription, only: [:update]
   before_filter :load_user_picks, only: [:show]
 
   layout 'festivals'
@@ -17,7 +17,9 @@ class SubscriptionsController < ApplicationController
   def update
     if @subscription.update_attributes(params[:subscription])
       maybe_run_autoscheduler
-      redirect_to festival_path(@festival)
+      options = {}
+      options['debug'] = @subscription.debug if @subscription.debug.present?
+      redirect_to festival_path(@festival, options)
     else
       load_user_picks
       render :show
