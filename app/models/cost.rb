@@ -5,7 +5,7 @@ class Cost
   attr_reader :autoscheduler, :screening
 
   delegate :now, to: :autoscheduler
-  delegate :started?, to: :screening
+  delegate :started?, :press?, to: :screening
 
   def initialize(autoscheduler, screening)
     @autoscheduler = autoscheduler
@@ -42,10 +42,15 @@ class Cost
       log "collecting conflict costs (#{autoscheduler.all_conflicting_screening_ids_by_screening_id[screening_id].inspect})"
       costs = conflict_costs
       result = costs.inject(:+) || FREE
-      result = -(100 - costs.count) if result == FREE
+      result = -(unopposed_base - costs.count) if result == FREE
       log("total conflict cost: (#{costs.inspect}) => #{result}")
       result
     end
+  end
+
+  def unopposed_base
+    # considering unopposed screenings, bias toward press screenings
+    press? ? 110 : 100
   end
 
   def conflict_costs
