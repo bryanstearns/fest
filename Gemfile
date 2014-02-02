@@ -37,8 +37,8 @@ group :development do
 
   gem 'mailcatcher'
   gem 'quiet_assets'
-  gem 'better_errors'
-  gem 'binding_of_caller' # better_errors wants this
+  #gem 'better_errors'
+  #gem 'binding_of_caller' # better_errors wants this
   gem 'pry-nav'
 end
 
