@@ -149,7 +149,7 @@ module PrawnHelper
     def draw_films
       return unless @festival.films.present?
       films = @festival.films.by_name
-      next_column(:widow) unless have_room_for? \
+      next_column unless have_room_for? \
         font_height(:h3) + 4 + font_height(:plain) +
         ((films.first.screenings.size + 1) * font_height(:small))
 
