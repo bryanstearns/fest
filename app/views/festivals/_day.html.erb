@@ -1,8 +1,8 @@
 
-<a name="<%= l(day.date, format: :ymd) %>"<%= ' class="page-break"' if day.page_break_before %>></a>
-<h4><%=l day.date, format: :dmd %></h4>
+<div class="day_container<%= ' page-break' if day.page_break_before %>" id="day_<%= day.id %>">
+  <a name="<%= l(day.date, format: :ymd) %>"></a>
+  <h4><%=l day.date, format: :dmd %></h4>
 
-<div class="day_container" id="day_<%= day.id %>">
   <div class="<%= my_schedule_hidden_on_phone %>">
     <table class="day">
       <thead>
