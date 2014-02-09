@@ -29,9 +29,14 @@ module FestivalsHelper
   end
 
   def days(festival, options)
-    Day.paginate(festival.screenings_by_date(options)\
+    days = festival.screenings_by_date(options)\
        .map do |date, screenings|
       Day.new(date, screenings)
-    end)
+    end
+    if festival.slug == 'piff_2014'
+      days << Day.new(Date.parse("2014-02-09"), [])
+      days = days.sort_by {|day| day.date }
+    end
+    days
   end
 end

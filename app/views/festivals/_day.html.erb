@@ -1,50 +1,55 @@
 
 <div class="day_container<%= ' page-break' if day.page_break_before %>" id="day_<%= day.id %>">
   <a name="<%= l(day.date, format: :ymd) %>"></a>
+  <%= '<a name="today"></a>'.html_safe if day.date == Date.today %>
   <h4><%=l day.date, format: :dmd %></h4>
 
-  <div class="<%= my_schedule_hidden_on_phone %>">
-    <table class="day">
-      <thead>
-      <tr>
-        <th class="times"><%# time header %></th>
-        <% day.column_names.each do |column_name| %>
-          <th class="venue" width="<%= day.column_width %>%">
-            <%= column_name %>
-          </th>
-        <% end %>
-      </tr>
-      </thead>
-
-      <tbody>
-      <tr>
-        <td class="times">
-          <%= hour_steps(day.starts_at, day.ends_at) do |t| %>
-            <div>
-              <%= hour_label(t) %>
-            </div>
-          <% end %>
-        </td>
-        <% day.column_viewings.each do |viewings| %>
-          <td class="screenings">
-            <%= render partial: "viewing", collection: viewings %>
-          </td>
-        <% end %>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <% if my_schedule_on_phone? %>
-    <%# will be filled in by javascript %>
-    <div class="<%= my_schedule_visible_on_phone %>">
+  <% if day.screenings.empty? %>
+    <p>(All screenings cancelled due to weather.)</p>
+  <% else %>
+    <div class="<%= my_schedule_hidden_on_phone %>">
       <table class="day">
+        <thead>
+        <tr>
+          <th class="times"><%# time header %></th>
+          <% day.column_names.each do |column_name| %>
+            <th class="venue" width="<%= day.column_width %>%">
+              <%= column_name %>
+            </th>
+          <% end %>
+        </tr>
+        </thead>
+
         <tbody>
         <tr>
-          <td class="screenings"></td>
+          <td class="times">
+            <%= hour_steps(day.starts_at, day.ends_at) do |t| %>
+              <div>
+                <%= hour_label(t) %>
+              </div>
+            <% end %>
+          </td>
+          <% day.column_viewings.each do |viewings| %>
+            <td class="screenings">
+              <%= render partial: "viewing", collection: viewings %>
+            </td>
+          <% end %>
         </tr>
         </tbody>
       </table>
     </div>
+
+    <% if my_schedule_on_phone? %>
+      <%# will be filled in by javascript %>
+      <div class="<%= my_schedule_visible_on_phone %>">
+        <table class="day">
+          <tbody>
+          <tr>
+            <td class="screenings"></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
   <% end %>
 </div>

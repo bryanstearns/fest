@@ -8,4 +8,10 @@ class Mailer < ActionMailer::Base
     @question = question
     mail to: FESTFAN, subject: 'Festival Fanatic feedback received'
   end
+
+  def generic(options)
+    @body = options.delete(:body)
+    options[:to] ||= FESTFAN
+    mail options
+  end
 end

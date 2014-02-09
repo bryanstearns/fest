@@ -1,0 +1,50 @@
+#!/usr/bin/env ruby
+# encoding: utf-8
+
+require File.expand_path("../../config/environment.rb", __FILE__)
+
+screening_where = {
+  starts_at: (Date.today.beginning_of_day .. Date.today.end_of_day)
+}
+
+picks_grouped = Pick.includes(:user).joins(:screening)\
+    .where(screenings: screening_where)\
+    .group_by(&:user)
+
+picks_grouped.each do |user, picks|
+  plural = picks.count > 1
+
+  screenings = picks.sort_by do |pick|
+    pick.screening.starts_at
+  end.map do |pick|
+    screening = pick.screening
+    time = screening.starts_at.strftime("#{screening.starts_at.hour % 12}:%M%P")
+    "<li>#{time}: <i>#{pick.film_name}</i> at #{screening.venue_name}</li>"
+  end.join("\n")
+  body = <<BODY
+
+<p>Hi #{user.name},<p>
+
+<p>Hopefully, you've heard that today's screenings have been cancelled due to
+the icy weather. I've removed them from Festival Fanatic's schedule, but
+wanted to let you know that you'd had #{plural ? "these screenings" : "this screening" } selected:</p>
+
+<ul>#{screenings}</ul>
+
+<p>You can visit the Schedule Assistant page, choose "Unselect all the future
+screenings," then click "Schedule Films!" and the Assistant will rejigger the
+entire rest of your schedule to fit as many of your higher-priority picks as it
+can. Or, you can manually rework your schedule if you like: click on each screening
+on the Festival Schedule grid to schedule or unschedule it.</p>
+
+<p>Hopefully things will be back to normal tomorrow. See you at the movies!</p>
+
+<p>...Bryan, Festival Fanatic</p>
+BODY
+  puts "#{user.name} <#{user.email}> -- #{picks.count}"
+  Mailer.generic(to: user.email,
+                 subject: "Screenings cancelled for Sunday 2/9",
+                 body: body).deliver
+end
+
+Screening.where(screening_where).destroy_all
