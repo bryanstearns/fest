@@ -147,7 +147,7 @@ class FfffRatingsXlsx
 
   def film_row_range(film_index)
     row_number = film_index + header_row_count + 1
-    "#{first_user_column_name}#{row_number}:#{last_user_column_name}#{row_number}"
+    "#{first_user_column_name}#{row_number}:Z#{row_number}"
   end
 
   def first_film_row_number
@@ -188,7 +188,7 @@ class FfffRatingsXlsx
   end
 
   def user_rating_counts
-    (0..user_count).map do |index|
+    (0..(user_count - 1)).map do |index|
       "=COUNTA(#{user_column_range(index)})"
     end
   end
