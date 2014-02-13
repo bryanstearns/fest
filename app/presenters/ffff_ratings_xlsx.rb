@@ -134,8 +134,8 @@ class FfffRatingsXlsx
   def rater_formulas(film_index)
     range = film_row_range(film_index)
     [ "=COUNTA(#{range})",
-      "=AVERAGE(#{range})",
-      "=STDEVP(#{range})"]
+      "=IF(COUNTA(#{range}), AVERAGE(#{range}), \"\")",
+      "=IF(COUNTA(#{range}), STDEVP(#{range}), \"\")"]
   end
 
   def first_user_column_name
