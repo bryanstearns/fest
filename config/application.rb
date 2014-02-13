@@ -68,7 +68,7 @@ module Fest
     config.assets.version = '1.0'
 
     # Always use Redis, namespaced by our environment
-    config.cache_store = :redis_store, "redis://localhost:6379/#{ENV['REDIS_DB'] || 0}/#{Rails.env}"
+    config.cache_store = :redis_store, ENV['REDIS_URL'] || "redis://localhost:6379/#{ENV['REDIS_DB'] || 0}/#{Rails.env}"
 
     # Generate SASS please
     config.sass.preferred_syntax = :sass
