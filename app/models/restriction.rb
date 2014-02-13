@@ -32,8 +32,8 @@ class Restriction
     return [] unless text.present?
     context_date = context_date.to_date
     text.gsub(%r/\s{2,}/, ' ').split(',').map do |raw|
-      parse_one_day(raw, context_date)
-    end.flatten
+      parse_one_day(raw, context_date) unless raw.blank?
+    end.compact.flatten
   end
 
   def self.parse_one_day(text, context_date)
