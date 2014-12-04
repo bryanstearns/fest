@@ -5,7 +5,7 @@ class Announcement < ActiveRecord::Base
 
   before_save :set_published_at
 
-  scope :published, where(published: true)
+  scope :published, -> { where(published: true) }
 
   scope :published_since, ->(time) { published.where('published_at > ?', time) }
 

@@ -33,10 +33,10 @@ class Pick < ActiveRecord::Base
   validates :priority, inclusion: { in: PRIORITY_HINTS.keys }, allow_nil: true
   validates :rating, inclusion: { in: RATING_HINTS.keys }, allow_nil: true
 
-  scope :selected, where('picks.screening_id is not null')
-  scope :rated, where('picks.rating is not null')
-  scope :prioritized_or_rated, where('(picks.priority is not null or picks.rating is not null)')
-  scope :for_ffff_users, joins(:user).where('users.ffff = ?', true)
+  scope :selected, -> { where('picks.screening_id is not null') }
+  scope :rated, -> { where('picks.rating is not null') }
+  scope :prioritized_or_rated, -> { where('(picks.priority is not null or picks.rating is not null)') }
+  scope :for_ffff_users, -> { joins(:user).where('users.ffff = ?', true) }
 
   delegate :countries, :name, :sort_name, to: :film, prefix: true
 

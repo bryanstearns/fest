@@ -21,7 +21,7 @@ class Festival < ActiveRecord::Base
             presence: true
   validate :date_range_ordering
 
-  scope :published, where(published: true)
+  scope :published, -> { where(published: true) }
 
   RANDOM_UNASSIGNMENT_PERCENTAGE = 0.02
   RANDOM_REJECT_PERCENTAGE = 0.03
