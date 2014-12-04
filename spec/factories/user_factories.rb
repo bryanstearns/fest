@@ -19,7 +19,7 @@ FactoryGirl.define do
     end
 
     trait :with_ratings do
-      ignore { festival nil }
+      transient { festival nil }
       after(:create) do |user, ev|
         festival = ev.festival || create(:festival, :with_films_and_screenings)
         create(:subscription, festival: festival, user: user)

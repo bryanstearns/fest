@@ -115,7 +115,7 @@ end
 
 FactoryGirl.define do
   factory :festival do
-    ignore { day_count 1 }
+    transient { day_count 1 }
     place "Placeville, Oregon"
     sequence(:slug_group) {|n| "fest#{n}" }
     name {|f| "Festival #{f.slug_group}" }
@@ -136,8 +136,8 @@ FactoryGirl.define do
     end
 
     trait :with_films_and_screenings do
-      ignore { film_count nil }
-      ignore { press false }
+      transient { film_count nil }
+      transient { press false }
       after(:create) do |festival, ev|
         FakeFestivalGenerator.new(festival, ev.film_count, ev.press).run
       end
@@ -160,14 +160,14 @@ FactoryGirl.define do
     end
 
     trait :with_films do
-      ignore { film_count 3 }
+      transient { film_count 3 }
       after(:create) do |festival, ev|
         create_list(:film, ev.film_count, festival: festival)
       end
     end
 
     trait :with_venues do
-      ignore do
+      transient do
         location_count 1
         venue_count 1
       end

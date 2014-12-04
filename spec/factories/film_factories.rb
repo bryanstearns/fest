@@ -6,7 +6,7 @@ FactoryGirl.define do
     association :festival
 
     trait :with_screenings do
-      ignore { screening_count 3 }
+      transient { screening_count 3 }
       after(:create) do |film, ev|
         FactoryGirl.create_list(:screening, ev.screening_count,
                                 film: film, festival: film.festival)

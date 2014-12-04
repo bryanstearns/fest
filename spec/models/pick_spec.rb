@@ -7,8 +7,8 @@ describe Pick do
   it { should validate_numericality_of(:priority) }
   it { should validate_numericality_of(:rating) }
   it { should validate_numericality_of(:priority) }
-  it { should ensure_inclusion_of(:priority).in_array([0,1,2,4,8]) }
-  it { should ensure_inclusion_of(:rating).in_array([1,2,3,4,5]) }
+  it { should validate_inclusion_of(:priority).in_array([0,1,2,4,8]) }
+  it { should validate_inclusion_of(:rating).in_array([1,2,3,4,5]) }
 
   describe "deducing related models" do
     let(:film) { create(:film) }

@@ -19,7 +19,7 @@ class Screening < ActiveRecord::Base
   default_scope { order(:starts_at, :id) }
 
   scope :on, ->(date) {
-    t = date.to_date.to_time_in_current_zone
+    t = date.to_date.in_time_zone
     where(['(screenings.starts_at >= ? and screenings.ends_at <= ?)',
            t.beginning_of_day, t.end_of_day])
   }

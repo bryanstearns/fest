@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :day do
-    ignore { festival nil }
-    ignore { screenings nil }
+    transient { festival nil }
+    transient { screenings nil }
     initialize_with do
       my_screenings = screenings || begin
         my_festival = festival || \

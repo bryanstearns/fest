@@ -28,12 +28,12 @@ describe 'Date#at' do
   subject { Date.today }
   it { should be_a(Date) }
   it "should set the time on a Date from a string" do
-    subject.at("23").should eq(subject.to_time_in_current_zone\
+    subject.at("23").should eq(subject.in_time_zone\
                                       .change(hour: 23, min: 0, sec: 0))
   end
   it "should set the time on a Date from another time" do
     subject.at("2/1/2012 15:17".to_time).should \
-      eq(subject.to_time_in_current_zone.change(hour: 15, min: 17, sec: 0))
+      eq(subject.in_time_zone.change(hour: 15, min: 17, sec: 0))
   end
 end
 

@@ -34,7 +34,7 @@ end
 
 class Date
   def at(time)
-    self.to_time_in_current_zone.at(time)
+    self.in_time_zone.at(time)
   end
 end
 
