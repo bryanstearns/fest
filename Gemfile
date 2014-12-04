@@ -52,8 +52,9 @@ group :test do
   gem 'database_cleaner'
   gem 'email_spec'
   gem 'factory_girl_rails'
-  gem 'poltergeist', '~> 1.4.0'
+  gem 'poltergeist' #, '~> 1.4.0'
   gem 'rspec-rails'
   gem 'rspec-instafail'
+  gem 'rspec-collection_matchers'
   gem 'shoulda-matchers'
 end
