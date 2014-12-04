@@ -33,7 +33,7 @@ if !Rails.env.production?
   end
 
   Festival.where(slug_group: 'example').destroy_all
-  Location.unused.destroy_all
+  Location.unused.destroy_all if Location.any?
 
   example_fest = FactoryGirl.create(:festival, :with_films_and_screenings,
                                     name: "Example Festival",
