@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ScreeningsHelper do
+describe ScreeningsHelper, type: :helper do
   helper ScreeningsHelper
   describe 'describing other screenings' do
     [

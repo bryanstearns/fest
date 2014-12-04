@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SubscriptionsController do
+describe SubscriptionsController, type: :controller do
   let(:festival) { create(:festival, :with_films_and_screenings) }
 
   describe "GET show" do

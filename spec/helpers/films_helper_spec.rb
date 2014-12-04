@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe FilmsHelper do
+describe FilmsHelper, type: :helper do
   helper FilmsHelper
 
   describe "translating duration" do

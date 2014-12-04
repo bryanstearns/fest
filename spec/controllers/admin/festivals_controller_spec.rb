@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Admin::FestivalsController do
+describe Admin::FestivalsController, type: :controller do
   login_admin
 
   # This should return the minimal set of attributes required to create a valid

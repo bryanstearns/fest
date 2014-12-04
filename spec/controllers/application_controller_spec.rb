@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ApplicationController do
+describe ApplicationController, type: :controller do
   describe 'requiring an admin' do
     controller do
       before_filter :authenticate_admin!

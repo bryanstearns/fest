@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe PicksController do
+describe PicksController, type: :controller do
   login_user
 
   describe "GET index" do

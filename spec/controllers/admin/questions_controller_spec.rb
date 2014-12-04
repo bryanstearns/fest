@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Admin::QuestionsController do
+describe Admin::QuestionsController, type: :controller do
   login_admin
 
   def valid_attributes

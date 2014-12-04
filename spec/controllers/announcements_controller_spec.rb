@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe AnnouncementsController do
+describe AnnouncementsController, type: :controller do
   def valid_attributes
     attributes_for(:announcement)
   end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe DayHelper do
+describe DayHelper, type: :helper do
   helper DayHelper
 
   context "stepping time" do

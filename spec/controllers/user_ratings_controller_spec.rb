@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe UserRatingsController do
+describe UserRatingsController, type: :controller do
   describe "GET 'show'" do
     let(:subscription) { create(:subscription) }
     before do

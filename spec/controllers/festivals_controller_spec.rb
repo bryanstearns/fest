@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe FestivalsController do
+describe FestivalsController, type: :controller do
   describe "GET index" do
     it "assigns all festivals as @festivals" do
       festival = create(:festival)

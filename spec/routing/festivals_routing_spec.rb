@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe FestivalsController do
+describe FestivalsController, type: :routing do
   describe "routing" do
     it "routes to #index" do
       get("/festivals").should route_to("festivals#index")

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ScreeningsController do
+describe ScreeningsController, type: :controller do
   describe "GET 'show'" do
     it "assigns @screening, @festival, @film, and @other_screenings" do
       screening = create(:screening)

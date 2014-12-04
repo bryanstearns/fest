@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Admin::ActivityController do
+describe Admin::ActivityController, type: :controller do
   login_admin
   def valid_attributes
     attributes_for(:activity)

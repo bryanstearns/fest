@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe QuestionsController do
+describe QuestionsController, type: :controller do
   def valid_attributes
     attributes_for(:question)
   end

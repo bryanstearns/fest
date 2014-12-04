@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ApplicationHelper do
+describe ApplicationHelper, type: :helper do
   helper ApplicationHelper
 
   context "current_user_is_admin?" do

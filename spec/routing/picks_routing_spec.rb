@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe PicksController do
+describe PicksController, type: :routing do
   describe "routing" do
     it "routes /priorities to #index with festival" do
       get("/festivals/1/priorities").should route_to("picks#index", :festival_id => "1")

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe PicksHelper do
+describe PicksHelper, type: :helper do
   helper PicksHelper
 
   describe 'DRYing up Javascript stuff' do

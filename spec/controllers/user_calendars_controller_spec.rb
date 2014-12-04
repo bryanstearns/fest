@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe UserCalendarsController do
+describe UserCalendarsController, type: :controller do
   describe "GET 'show'" do
     let(:festival) { create(:festival, :with_films_and_screenings) }
     let(:user) { create(:user) }

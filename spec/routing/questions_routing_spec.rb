@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe QuestionsController do
+describe QuestionsController, type: :routing do
   describe "routing" do
     it "routes to #new" do
       get("/feedback").should route_to("questions#new")

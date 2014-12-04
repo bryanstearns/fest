@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe PreferencesController do
+describe PreferencesController, type: :controller do
   let(:user) { create(:confirmed_user) }
 
   describe "PUT update" do
