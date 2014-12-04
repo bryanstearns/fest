@@ -30,17 +30,6 @@ class FestivalGroup
     @slug
   end
 
-  # I'm not sure why, but extending ActiveModel::Naming above triggers its own
-  # deprecation warning: "DEPRECATION WARNING: partial_path is deprecated and
-  # will be removed from Rails 4.0 (ActiveModel::Name#partial_path is
-  # deprecated. Call #to_partial_path on model instances directly instead.)."
-  # This works around that. TODO: Fix w/Rails4?
-  raise "Fix FestivalGroup TODO; see #{__FILE__}:#{__LINE__}" \
-    if Rails.version.starts_with?("4")
-  def to_partial_path
-    "festival_groups/festival_group"
-  end
-
   def latest_festival_start
     festivals.first.starts_on
   end
