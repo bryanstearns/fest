@@ -9,4 +9,4 @@ use Unicorn::WorkerKiller::Oom, 256*mb, 384*mb, 16, true
 use Unicorn::WorkerKiller::MaxRequests # use defaults
 
 require ::File.expand_path('../config/environment',  __FILE__)
-run Fest::Application
+run Rails.application

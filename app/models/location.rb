@@ -13,7 +13,7 @@ class Location < ActiveRecord::Base
   validates :place, presence: true
 
   scope :unused, where('not exists (select 1 from festival_locations ' +
-                       'where locations.id = festival_locations.location_id)')
+                  'where locations.id = festival_locations.location_id)')
 
   def label
     "#{name} (#{place})"

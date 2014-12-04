@@ -1,4 +1,4 @@
-Fest::Application.routes.draw do
+Rails.application.routes.draw do
   # Authentication stuff
   devise_for :users
 
@@ -9,13 +9,13 @@ Fest::Application.routes.draw do
     post :reset_screenings, on: :member
     resource :subscription, path: 'assistant', controller: :subscriptions,
              only: [:show, :update]
-    match 'priorities' => "picks#index"
+    get 'priorities' => "picks#index"
   end
   resources :films, only: [] do
     resources :picks, only: [:create]
   end
   resources :screenings, only: [:show]
-  match 'ratings/:id' => 'user_ratings#show', as: :old_user_ratings
+  get 'ratings/:id' => 'user_ratings#show', as: :old_user_ratings
 
   resources :users, only: [] do
     resources :calendar, controller: :user_calendars, only: [:show]
@@ -28,17 +28,17 @@ Fest::Application.routes.draw do
   resources :questions, only: [:new, :create]
 
   root to: "home#landing"
-  match 'changes' => "home#changes", as: :changes
-  match 'feedback' => "questions#new", as: :feedback
-  match 'help' => "home#help", as: :help
-  match 'maintenance' => "home#maintenance", as: :maintenance
-  match 'sign_ups_off' => "home#sign_ups_off", as: :sign_ups_off
-  match 'welcome' => "home#index", as: :welcome
+  get 'changes' => "home#changes", as: :changes
+  get 'feedback' => "questions#new", as: :feedback
+  get 'help' => "home#help", as: :help
+  get 'maintenance' => "home#maintenance", as: :maintenance
+  get 'sign_ups_off' => "home#sign_ups_off", as: :sign_ups_off
+  get 'welcome' => "home#index", as: :welcome
 
   resources :preferences, only: [:update]
 
   # Admin stuff
-  match 'admin' => "home#admin", as: :admin_root
+  get 'admin' => "home#admin", as: :admin_root
   namespace 'admin' do
     resources :festivals, only: [:show, :new, :create, :edit, :update, :destroy] do
       resources :films, only: [:index, :new, :create]

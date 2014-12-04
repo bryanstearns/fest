@@ -14,9 +14,9 @@ gem 'devise'
 gem 'handlers-js'
 gem 'newrelic_rpm'
 gem 'pg'
-gem 'activerecord-postgres-hstore'
 gem 'prawn'
 gem 'redis-rails'
+gem 'sass-rails'
 gem 'simple_form'
 gem 'turbolinks'
 gem 'jquery-turbolinks'
@@ -43,7 +43,6 @@ end
 group :assets do
   gem 'coffee-rails'
   gem 'jquery-ui-rails'
-  gem 'sass-rails'
   gem 'uglifier'
 end
 

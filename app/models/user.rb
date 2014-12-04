@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
          :validatable
 
   VALID_PREFERENCES = %w[hide_instructions unsubscribed bounced]
-  serialize :preferences, ActiveRecord::Coders::Hstore
+  store_accessor :preferences, *VALID_PREFERENCES.map(&:to_sym)
 
   include BlockedEmailAddressChecks
 

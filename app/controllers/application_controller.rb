@@ -1,6 +1,6 @@
 
 class ApplicationController < ActionController::Base
-  protect_from_forgery
+  protect_from_forgery with: :exception
 
   helper :all # include all helpers, all the time
   include ActionView::Helpers::TextHelper
