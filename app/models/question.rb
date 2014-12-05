@@ -3,7 +3,7 @@ class Question < ActiveRecord::Base
 
   include BlockedEmailAddressChecks
 
-  default_scope { order(:created_at, :id).reverse_order }
+  default_scope { order(created_at: :desc, id: :desc) }
   scope :not_done, -> { where(done: false) }
 
   validates :email, :question, :name, presence: true

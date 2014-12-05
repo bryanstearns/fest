@@ -19,7 +19,7 @@ class HomeController < ApplicationController
 
   def index
     @announcements = Announcement.published.limit(4)
-                                 .order(:published_at).reverse_order
+                                 .order(published_at: :desc)
     current_user.news_delivered! if user_signed_in? && current_user.hasnt_seen?(@announcements.first)
   end
 

@@ -4,8 +4,8 @@ class AnnouncementsController < ApplicationController
   # GET /announcements
   def index
     @announcements = current_user_is_admin? \
-      ? Announcement.order(:created_at).reverse_order \
-      : Announcement.published.order(:published_at).reverse_order
+      ? Announcement.order(created_at: :desc) \
+      : Announcement.published.order(published_at: :desc)
     respond_with(@announcements)
   end
 

@@ -7,7 +7,7 @@ class Activity < ActiveRecord::Base
 
   cattr_accessor :disabled
 
-  default_scope { order(:id).reverse_order }
+  default_scope { order(id: :desc) }
 
   def self.record(name, options)
     return if disabled
