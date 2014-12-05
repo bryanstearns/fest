@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Mailer do
+describe Mailer, type: :mailer do
   describe "feedback" do
     let(:question) { build(:question, name: "Bob Smith", email: "bob@example.com") }
     let(:mail) { Mailer.feedback(question) }
