@@ -9,7 +9,7 @@ gem 'capistrano-ext', require: false
 gem 'capistrano-unicorn', require: false
 gem 'jquery-rails'
 gem 'bootstrap-modal-rails'
-gem 'bootstrap-sass' #, '< 3.0'
+gem 'bootstrap-sass'
 gem 'devise'
 gem 'handlers-js'
 gem 'newrelic_rpm'
@@ -52,7 +52,7 @@ group :test do
   gem 'database_cleaner'
   gem 'email_spec'
   gem 'factory_girl_rails'
-  gem 'poltergeist' #, '~> 1.4.0'
+  gem 'poltergeist'
   gem 'rspec-rails'
   gem 'rspec-instafail'
   gem 'rspec-collection_matchers'
