@@ -33,7 +33,7 @@ class CalendarFormatter
 
   def to_ics
     calendar = Calendar.new
-    calendar.prodid Rails.application.routes.default_url_options[:host]
+    calendar.prodid = Rails.application.routes.default_url_options[:host]
 
     # Someday there'll be REFRESH-INTERVAL;VALUE=DURATION:PT12H, but for now:
     # http://tools.ietf.org/html/draft-daboo-icalendar-extensions-06
@@ -46,23 +46,23 @@ class CalendarFormatter
     tzid = "America/Los_Angeles"
     tz = TZInfo::Timezone.get(tzid)
     timezone = tz.ical_timezone(screenings.first.starts_at)
-    calendar.add(timezone)
+    calendar.add_timezone(timezone)
 
     screenings.each do |screening|
       screening_url = festival_url(screening.festival_id,
                                    anchor: "s#{screening.id}")
-      calendar.event do
-        summary screening.name
-        location screening.venue_name
+      calendar.event do |e|
+        e.summary = screening.name
+        e.location = screening.venue_name
 
-        dtstart screening.starts_at.to_datetime.tap {|d| d.ical_params = { 'TZID' => tzid } }
-        dtend screening.ends_at.to_datetime.tap {|d| d.ical_params = { 'TZID' => tzid } }
+        e.dtstart = Icalendar::Values::DateTime.new(screening.starts_at.to_datetime, 'tzid' => tzid)
+        e.dtend = Icalendar::Values::DateTime.new(screening.ends_at.to_datetime, 'tzid' => tzid)
 
-        created screening.created_at.to_datetime.tap {|d| d.ical_params = { 'TZID' => tzid } }
-        last_modified screening.updated_at.to_datetime.tap {|d| d.ical_params = { 'TZID' => tzid } }
+        e.created = Icalendar::Values::DateTime.new(screening.created_at.to_datetime, 'tzid' => tzid)
+        e.last_modified = Icalendar::Values::DateTime.new(screening.updated_at.to_datetime, 'tzid' => tzid)
 
-        uid screening_url
-        url screening_url
+        e.uid = screening_url
+        e.url = screening_url
       end
     end
 
