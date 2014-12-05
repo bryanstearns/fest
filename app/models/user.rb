@@ -15,8 +15,8 @@ class User < ActiveRecord::Base
   has_many :picks, dependent: :destroy do
     def find_or_initialize_for(film_id)
       Pick.includes(screening: :festival, film: :festival)\
-          .find_or_initialize_by_user_id_and_film_id(proxy_association.owner.id,
-                                                     film_id).tap do |result|
+          .find_or_initialize_by(user_id: proxy_association.owner.id,
+                                 film_id: film_id).tap do |result|
         result.festival ||= Film.find(film_id).festival
       end
     end
