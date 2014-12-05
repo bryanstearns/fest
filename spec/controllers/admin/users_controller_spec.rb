@@ -30,10 +30,10 @@ describe Admin::UsersController, type: :controller do
 
   describe "GET index" do
     it "assigns all users as @users" do
+      User.where.not(id: @signed_in_user.id).delete_all
       user = User.create! valid_attributes
-      User.stub(:all).and_return([user])
       get :index, {}
-      assigns(:users).should eq([user])
+      assigns(:users).should eq([@signed_in_user, user])
     end
   end
 
