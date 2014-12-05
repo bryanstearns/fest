@@ -7,8 +7,6 @@ class Location < ActiveRecord::Base
   has_many :travel_intervals_to, class_name: 'TravelInterval',
            foreign_key: :to_location_id, dependent: :destroy
 
-  attr_accessible :name, :place
-
   validates :name, presence: true, uniqueness: { scope: :place }
   validates :place, presence: true
 

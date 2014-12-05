@@ -4,10 +4,6 @@ class Pick < ActiveRecord::Base
   belongs_to :screening
   belongs_to :user
 
-  attr_accessible :priority, :rating, :screening, :screening_id, :auto
-  attr_accessible :festival, :festival_id, :film, :film_id, :priority, :rating, :screening, :screening_id,
-                  as: :pick_creator
-
   RATING_HINTS = {
       1 => "1 star: It was bad",
       2 => "2 stars: It wasn't very good",

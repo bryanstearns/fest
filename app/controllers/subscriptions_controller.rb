@@ -15,7 +15,7 @@ class SubscriptionsController < ApplicationController
 
   # PUT /festivals/1/assistant
   def update
-    if @subscription.update_attributes(params[:subscription])
+    if @subscription.update_attributes(subscription_params)
       maybe_run_autoscheduler
       options = {}
       options['debug'] = @subscription.debug if @subscription.debug.present?
@@ -57,5 +57,13 @@ protected
 
   def load_user_picks
     @user_picks = user_signed_in? && @festival.picks_for(current_user).includes(:screening)
+  end
+
+private
+  def subscription_params
+    params.require(:subscription).
+            permit(:debug, :restriction_text,
+                   :show_press, :skip_autoscheduler, :unselect,
+                   :up_to_screening_id, included_location_ids: [])
   end
 end

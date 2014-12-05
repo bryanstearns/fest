@@ -23,7 +23,7 @@ module Admin
     # PUT /admin/questions/1
     def update
       @question = Question.find(params[:id])
-      if @question.update_attributes(params[:question])
+      if @question.update_attributes(question_params)
         flash[:notice] = 'Question was successfully updated.'
       end
       respond_with(:admin, @question, location: admin_questions_path)
@@ -34,6 +34,12 @@ module Admin
       @question = Question.find(params[:id])
       @question.destroy
       respond_with(:admin, @question, location: admin_questions_path)
+    end
+
+  private
+    def question_params
+      params.require(:question).
+              permit(:acknowledged, :done, :email, :name, :question, :user_id)
     end
   end
 end

@@ -57,9 +57,9 @@ describe SubscriptionsController, type: :controller do
                                      show_press: false) }
 
         it 'updates the requested subscription' do
-          Subscription.any_instance.should_receive(:update_attributes)\
-            .with({ 'show_press' => true,
-                    'skip_autoscheduler' => true })
+          allow_any_instance_of(Subscription).to receive(:update_attributes)\
+            .with('show_press' => true,
+                  'skip_autoscheduler' => true)
           put :update, {:festival_id => festival.to_param,
                         :subscription => { 'show_press' => true,
                                            'skip_autoscheduler' => true } }
@@ -73,10 +73,10 @@ describe SubscriptionsController, type: :controller do
         end
 
         it 'tries to run the autoscheduler' do
-          AutoScheduler.any_instance.stub(:should_run?).and_return(true)
-          AutoScheduler.any_instance.should_receive(:run)
+          allow_any_instance_of(AutoScheduler).to receive(:should_run?).and_return(true)
+          expect_any_instance_of(AutoScheduler).to receive(:run).and_return(nil)
           put :update, { :festival_id => festival.to_param,
-                         :subscription => { } }
+                         :subscription => { 'debug' => nil } }
         end
 
         it 'redirects to the festival' do
@@ -101,8 +101,8 @@ describe SubscriptionsController, type: :controller do
                                      festival: festival) }
         it "assigns the subscription as @subscription" do
           # Trigger the behavior that occurs when invalid params are submitted
-          Subscription.any_instance.stub(:save).and_return(false)
-          Subscription.any_instance.stub(:errors).and_return(some: ['errors'])
+          allow_any_instance_of(Subscription).to receive(:save).and_return(false)
+          allow_any_instance_of(Subscription).to receive(:errors).and_return(some: ['errors'])
           put :update, { :festival_id => festival.to_param,
                          :subscription => { "restriction_text" => "invalid value" }}
           assigns(:subscription).should eq(subscription)
@@ -110,8 +110,8 @@ describe SubscriptionsController, type: :controller do
 
         it "re-renders the 'show' template" do
           # Trigger the behavior that occurs when invalid params are submitted
-          Subscription.any_instance.stub(:save).and_return(false)
-          Subscription.any_instance.stub(:errors).and_return(some: ['errors'])
+          allow_any_instance_of(Subscription).to receive(:save).and_return(false)
+          allow_any_instance_of(Subscription).to receive(:errors).and_return(some: ['errors'])
           put :update, { :festival_id => festival.to_param,
                          :subscription => { "restriction_text" => "invalid value" }}
           response.should render_template("show")

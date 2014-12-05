@@ -9,8 +9,6 @@ class Activity < ActiveRecord::Base
 
   default_scope { order(:id).reverse_order }
 
-  attr_accessible :details, :festival_id, :name, :subject, :target, :user_id
-
   def self.record(name, options)
     return if disabled
     user_id = options.delete(:user).try(:id) || options.delete(:user_id)

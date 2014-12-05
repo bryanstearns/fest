@@ -74,15 +74,15 @@ describe Admin::LocationsController, type: :controller do
     describe "with invalid params" do
       it "assigns a newly created but unsaved location as @location" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Location.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Location).to receive(:save).and_return(false)
         post :create, {:location => { "name" => "" }}
         assigns(:location).should be_a_new(Location)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Location.any_instance.stub(:save).and_return(false)
-        Location.any_instance.stub(:errors).and_return(some: ['errors'])
+        allow_any_instance_of(Location).to receive(:save).and_return(false)
+        allow_any_instance_of(Location).to receive(:errors).and_return(some: ['errors'])
         post :create, {:location => { "name" => "" }}
         response.should render_template("new")
       end
@@ -97,7 +97,7 @@ describe Admin::LocationsController, type: :controller do
         # specifies that the Location created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        Location.any_instance.should_receive(:update_attributes).with({ "name" => "MyString" })
+        allow_any_instance_of(Location).to receive(:update_attributes).with("name" => "MyString")
         put :update, {:id => location.to_param, :location => { "name" => "MyString" }}
       end
 
@@ -118,7 +118,7 @@ describe Admin::LocationsController, type: :controller do
       it "assigns the location as @location" do
         location = Location.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
-        Location.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Location).to receive(:save).and_return(false)
         put :update, {:id => location.to_param, :location => { "name" => "" }}
         assigns(:location).should eq(location)
       end
@@ -126,8 +126,8 @@ describe Admin::LocationsController, type: :controller do
       it "re-renders the 'edit' template" do
         location = Location.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
-        Location.any_instance.stub(:save).and_return(false)
-        Location.any_instance.stub(:errors).and_return(some: ['errors'])
+        allow_any_instance_of(Location).to receive(:save).and_return(false)
+        allow_any_instance_of(Location).to receive(:errors).and_return(some: ['errors'])
         put :update, {:id => location.to_param, :location => { "name" => "" }}
         response.should render_template("edit")
       end

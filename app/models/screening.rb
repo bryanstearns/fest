@@ -5,9 +5,6 @@ class Screening < ActiveRecord::Base
   belongs_to :venue
   has_many :picks, dependent: :nullify
 
-  attr_accessible :ends_at, :festival, :film, :location, :press, :starts_at,
-                  :venue_id
-
   validates :film_id, :venue_id, :starts_at, presence: true
   validates :ends_at, presence: true,
             if: ->(x) { x.film_id? && x.starts_at? }

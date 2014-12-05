@@ -82,7 +82,7 @@ describe Admin::VenuesController, type: :controller do
       it "assigns a newly created but unsaved venue as @venue" do
         # Trigger the behavior that occurs when invalid params are submitted
         location = create(:location)
-        Venue.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Venue).to receive(:save).and_return(false)
         post :create, { :location_id => location.to_param,
                         :venue => { "name" => "" } }
         assigns(:venue).should be_a_new(Venue)
@@ -106,7 +106,8 @@ describe Admin::VenuesController, type: :controller do
         # specifies that the Venue created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        Venue.any_instance.should_receive(:update_attributes).with({ "name" => "MyString" })
+        allow_any_instance_of(Venue).to receive(:update_attributes).
+                                        with("name" => "MyString")
         put :update, {:id => venue.to_param, :venue => { "name" => "MyString" }}
       end
 
@@ -127,7 +128,7 @@ describe Admin::VenuesController, type: :controller do
       it "assigns the venue as @venue" do
         venue = create(:venue)
         # Trigger the behavior that occurs when invalid params are submitted
-        Venue.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Venue).to receive(:save).and_return(false)
         put :update, {:id => venue.to_param, :venue => { "name" => "" }}
         assigns(:venue).should eq(venue)
       end

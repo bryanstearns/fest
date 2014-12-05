@@ -26,7 +26,7 @@ describe FestivalsController, type: :controller do
         login_user
         festival = create(:festival)
         picks = double
-        Festival.any_instance.stub(:picks_for).and_return(picks)
+        allow_any_instance_of(Festival).to receive(:picks_for).and_return(picks)
         get :show, {:id => festival.to_param}
         assigns(:picks).should eq(picks)
       end
@@ -45,7 +45,8 @@ describe FestivalsController, type: :controller do
 
       it 'passes through the debug flag if the user is an admin' do
         user = create(:confirmed_admin_user)
-        FestivalsController.any_instance.stub(current_user: user)
+        allow_any_instance_of(FestivalsController).to receive(:current_user).
+                                                          and_return(user)
         festival = create(:festival)
 
         get :show, { id: festival.to_param, debug: 'one' }
@@ -53,7 +54,8 @@ describe FestivalsController, type: :controller do
       end
       it 'ignores the debug flag if the user is not an admin' do
         user = create(:confirmed_user)
-        FestivalsController.any_instance.stub(current_user: user)
+        allow_any_instance_of(FestivalsController).to receive(:current_user).
+                                                          and_return(user)
         festival = create(:festival)
 
         get :show, { id: festival.to_param, debug: 'one' }

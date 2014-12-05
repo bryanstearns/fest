@@ -15,7 +15,7 @@ describe Pick do
     describe "when we know the screening" do
       let(:screening) { create(:screening, film: film )}
       it "deduces film and festival from the screening" do
-        pick = Pick.new({ screening: screening }, as: :pick_creator)
+        pick = Pick.new(screening: screening)
         pick.should have(:no).errors_on(:film_id)
         pick.should have(:no).errors_on(:festival_id)
         pick.film.should == screening.film
@@ -24,7 +24,7 @@ describe Pick do
     end
     describe "when we know the film" do
       it "deduces festival from the film" do
-        pick = Pick.new({ film: film }, as: :pick_creator)
+        pick = Pick.new(film: film)
         pick.screening.should be_nil
         pick.should have(:no).errors_on(:film_id)
         pick.should have(:no).errors_on(:festival_id)

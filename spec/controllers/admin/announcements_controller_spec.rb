@@ -48,16 +48,16 @@ describe Admin::AnnouncementsController, type: :controller do
     describe "with invalid params" do
       it "assigns a newly created but unsaved announcement as @announcement" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Announcement.any_instance.stub(:save).and_return(false)
-        Announcement.any_instance.stub(:errors).and_return(some: ['errors'])
+        allow_any_instance_of(Announcement).to receive(:save).and_return(false)
+        allow_any_instance_of(Announcement).to receive(:errors).and_return(some: ['errors'])
         post :create, {:announcement => { "subject" => "" }}
         assigns(:announcement).should be_a_new(Announcement)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Announcement.any_instance.stub(:save).and_return(false)
-        Announcement.any_instance.stub(:errors).and_return(some: ['errors'])
+        allow_any_instance_of(Announcement).to receive(:save).and_return(false)
+        allow_any_instance_of(Announcement).to receive(:errors).and_return(some: ['errors'])
         post :create, {:announcement => { "subject" => "" }}
         response.should render_template("new")
       end
@@ -72,8 +72,10 @@ describe Admin::AnnouncementsController, type: :controller do
         # specifies that the Announcement created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        Announcement.any_instance.should_receive(:update_attributes).with({ "subject" => "MyString" })
-        put :update, {:id => announcement.to_param, :announcement => { "subject" => "MyString" }}
+        allow_any_instance_of(Announcement).to receive(:update_attributes).
+                                               with("subject" => "MyString")
+        put :update, {:id => announcement.to_param,
+                      :announcement => { "subject" => "MyString" }}
       end
 
       it "assigns the requested announcement as @announcement" do
@@ -93,8 +95,8 @@ describe Admin::AnnouncementsController, type: :controller do
       it "assigns the announcement as @announcement" do
         announcement = Announcement.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
-        Announcement.any_instance.stub(:save).and_return(false)
-        Announcement.any_instance.stub(:errors).and_return(some: ['errors'])
+        allow_any_instance_of(Announcement).to receive(:save).and_return(false)
+        allow_any_instance_of(Announcement).to receive(:errors).and_return(some: ['errors'])
         put :update, {:id => announcement.to_param, :announcement => { "subject" => "" }}
         assigns(:announcement).should eq(announcement)
       end
@@ -102,8 +104,8 @@ describe Admin::AnnouncementsController, type: :controller do
       it "re-renders the 'edit' template" do
         announcement = Announcement.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
-        Announcement.any_instance.stub(:save).and_return(false)
-        Announcement.any_instance.stub(:errors).and_return(some: ['errors'])
+        allow_any_instance_of(Announcement).to receive(:save).and_return(false)
+        allow_any_instance_of(Announcement).to receive(:errors).and_return(some: ['errors'])
         put :update, {:id => announcement.to_param, :announcement => { "subject" => "" }}
         response.should render_template("edit")
       end

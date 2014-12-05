@@ -26,12 +26,6 @@ class User < ActiveRecord::Base
   before_save :set_calendar_token
   before_create :set_welcomed_at
 
-  attr_accessible :name, :email, :password, :password_confirmation,
-                  :remember_me, :welcomed_at
-  attr_accessible :admin, :name, :email, :ffff, :password,
-                  :password_confirmation, :remember_me, :welcomed_at,
-                  as: :admin
-
   validates :name, :presence => true
 
   def self.valid_preference?(name)
@@ -71,8 +65,7 @@ class User < ActiveRecord::Base
     festival_id = festival_id.id unless festival_id.is_a? Integer
     rel = subscriptions.where(festival_id: festival_id)
     if options[:create]
-      rel.first_or_create!({ festival_id: festival_id },
-                           as: :subscription_creator)
+      rel.first_or_create!(festival_id: festival_id)
     else
       rel.first
     end

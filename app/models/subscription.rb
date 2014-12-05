@@ -6,13 +6,6 @@ class Subscription < ActiveRecord::Base
   attr_accessor :debug, :included_location_ids,
                 :skip_autoscheduler, :unselect, :up_to_screening_id
 
-  attr_accessible :debug, :included_location_ids, :restriction_text,
-                  :show_press, :skip_autoscheduler, :unselect,
-                  :up_to_screening_id
-  attr_accessible :debug, :festival_id, :included_location_ids,
-                  :restriction_text, :show_press, :skip_autoscheduler,
-                  :unselect, :up_to_screening_id, as: :subscription_creator
-
   validate :check_restriction_text
   validate :check_location_exclusions
 

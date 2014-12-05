@@ -83,7 +83,7 @@ describe Admin::ScreeningsController, type: :controller do
     describe "with invalid params" do
       it "assigns a newly created but unsaved screening as @screening" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Screening.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Screening).to receive(:save).and_return(false)
         post :create, {
             :film_id => film.to_param,
             :screening => { "starts_at" => "" }
@@ -109,10 +109,10 @@ describe Admin::ScreeningsController, type: :controller do
         # specifies that the Screening created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        Screening.any_instance.should_receive(:update_attributes)\
-                              .with({ "foo" => true })
+        allow_any_instance_of(Screening).to receive(:update_attributes).
+                                            with("press" => false)
         put :update, {:id => screening.to_param,
-                      :screening => { "foo" => true }}
+                      :screening => { "press" => false}}
       end
 
       it "assigns the requested screening as @screening" do
@@ -129,7 +129,7 @@ describe Admin::ScreeningsController, type: :controller do
     describe "with invalid params" do
       it "assigns the screening as @screening" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Screening.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Screening).to receive(:save).and_return(false)
         put :update, {:id => screening.to_param, :screening => { "starts_at" => "" }}
         assigns(:screening).should eq(screening)
       end

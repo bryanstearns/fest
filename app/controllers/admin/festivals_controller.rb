@@ -21,7 +21,7 @@ module Admin
 
     # POST /admin/festivals
     def create
-      @festival = Festival.new(params[:festival])
+      @festival = Festival.new(festival_params)
       flash[:notice] = 'Festival was successfully created.' if @festival.save
       respond_with(:admin, @festival, location: festivals_path)
     end
@@ -29,7 +29,7 @@ module Admin
     # PUT /admin/festivals/1
     def update
       @festival = Festival.find_by_slug!(params[:id])
-      if @festival.update_attributes(params[:festival])
+      if @festival.update_attributes(festival_params)
         flash[:notice] = 'Festival was successfully updated.'
       end
       respond_with(:admin, @festival, location: festival_path(@festival))
@@ -41,6 +41,14 @@ module Admin
       @festival.destroy
       flash[:notice] = 'Festival was successfully destroyed.'
       respond_with(:admin, @festival, location: festivals_path)
+    end
+
+  private
+    def festival_params
+      params.require(:festival).
+          permit(:ends_on, :has_press, :location_ids, :main_url, :name, :place,
+                 :published, :revised_at, :scheduled, :slug, :slug_group,
+                 :starts_on, :updates_url, location_ids: [])
     end
   end
 end

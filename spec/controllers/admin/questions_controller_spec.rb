@@ -39,8 +39,10 @@ describe Admin::QuestionsController, type: :controller do
         # specifies that the Question created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        Question.any_instance.should_receive(:update_attributes).with({ "email" => "MyString" })
-        put :update, {:id => question.to_param, :question => { "email" => "MyString" }}
+        allow_any_instance_of(Question).to receive(:update_attributes).
+                                           with("email" => "MyString")
+        put :update, {:id => question.to_param,
+                      :question => { "email" => "MyString" }}
       end
 
       it "assigns the requested question as @question" do
@@ -60,8 +62,8 @@ describe Admin::QuestionsController, type: :controller do
       it "assigns the question as @question" do
         question = Question.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
-        Question.any_instance.stub(:save).and_return(false)
-        Question.any_instance.stub(:errors).and_return(some: ['errors'])
+        allow_any_instance_of(Question).to receive(:save).and_return(false)
+        allow_any_instance_of(Question).to receive(:errors).and_return(some: ['errors'])
         put :update, {:id => question.to_param, :question => { "email" => "" }}
         assigns(:question).should eq(question)
       end
@@ -69,8 +71,8 @@ describe Admin::QuestionsController, type: :controller do
       it "re-renders the 'edit' template" do
         question = Question.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
-        Question.any_instance.stub(:save).and_return(false)
-        Question.any_instance.stub(:errors).and_return(some: ['errors'])
+        allow_any_instance_of(Question).to receive(:save).and_return(false)
+        allow_any_instance_of(Question).to receive(:errors).and_return(some: ['errors'])
         put :update, {:id => question.to_param, :question => { "email" => "" }}
         response.should render_template("edit")
       end

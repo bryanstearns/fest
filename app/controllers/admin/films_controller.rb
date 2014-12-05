@@ -31,7 +31,7 @@ module Admin
 
     # POST /admin/festivals/1/films
     def create
-      @film = @festival.films.build(params[:film])
+      @film = @festival.films.build(film_params)
       location = if @film.save
         flash[:notice] = "Film '#{@film.name}' was successfully created."
         new_admin_film_screening_path(@film)
@@ -45,7 +45,7 @@ module Admin
     def update
       @film = Film.includes(:festival).find(params[:id])
       @festival = @film.festival
-      if @film.update_attributes(params[:film])
+      if @film.update_attributes(film_params)
         flash[:notice] = 'Film was successfully updated.'
       end
       respond_with(:admin, @film, location: admin_festival_films_path(@festival))
@@ -57,6 +57,13 @@ module Admin
       @film.destroy
       flash[:notice] = 'Film was successfully destroyed.'
       respond_with(:admin, @film, location: admin_festival_films_path(@film.festival))
+    end
+
+  private
+    def film_params
+      params.require(:film).
+              permit(:countries, :description, :duration_minutes,
+                     :name, :page, :short_name, :sort_name, :url_fragment)
     end
   end
 end

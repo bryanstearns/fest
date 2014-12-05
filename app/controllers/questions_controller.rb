@@ -13,11 +13,16 @@ class QuestionsController < ApplicationController
 
   # POST /questions
   def create
-    @question = Question.new(params[:question])
+    @question = Question.new(question_params)
     if @question.save
       flash[:notice] = 'Thanks for contacting me - I\'ll get back to you shortly.'
       Mailer.feedback(@question).deliver
     end
     respond_with(@question, location: welcome_path)
+  end
+
+private
+  def question_params
+    params.require(:question).permit(:email, :name, :question)
   end
 end

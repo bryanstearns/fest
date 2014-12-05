@@ -30,7 +30,7 @@ module Admin
 
     # POST /admin/films/1/screenings
     def create
-      @screening = @film.screenings.build(params[:screening])
+      @screening = @film.screenings.build(screening_params)
       location = if @screening.save
         flash[:notice] = "#{l @screening.starts_at, format: :dmd_hm} screening of '#{@film.name}' at #{@screening.venue.name} was successfully created."
         new_admin_film_screening_path(@film,
@@ -44,7 +44,7 @@ module Admin
 
     # PUT /admin/screenings/1
     def update
-      if @screening.update_attributes(params[:screening])
+      if @screening.update_attributes(screening_params)
         emails = @users.map {|u| u.email }
         message = "#{pluralize(emails.count, 'user')} were affected"
         message += ': ' + emails.join(', ') if emails.present?
@@ -79,6 +79,13 @@ module Admin
     def load_attendees
       @picks = @screening.picks.includes(:user)
       @users = @picks.map {|p| p.user }
+    end
+
+  private
+    def screening_params
+      params.require(:screening).
+          permit(:ends_at, :festival, :film, :location, :press, :starts_at,
+                 :venue_id)
     end
   end
 end

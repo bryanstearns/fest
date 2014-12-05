@@ -16,7 +16,7 @@ module Admin
 
     # POST /admin/locations/1/venues
     def create
-      @venue = @location.venues.build(params[:venue])
+      @venue = @location.venues.build(venue_params)
       if @venue.save
         flash[:notice] = 'Venue was successfully created.'
       end
@@ -26,7 +26,7 @@ module Admin
     # PUT /admin/venues/1
     def update
       @venue = Venue.find(params[:id])
-      if @venue.update_attributes(params[:venue])
+      if @venue.update_attributes(venue_params)
         flash[:notice] = 'Venue was successfully updated.'
       end
       respond_with(:admin, @venue, location: admin_locations_path)
@@ -42,6 +42,11 @@ module Admin
     protected
     def load_location
       @location = Location.find(params[:location_id])
+    end
+
+  private
+    def venue_params
+      params.require(:venue).permit(:abbreviation, :name)
     end
   end
 end

@@ -1,12 +1,8 @@
 class Announcement < ActiveRecord::Base
-  attr_accessible :contents, :published, :published_at, :subject
-
+  before_save :set_published_at
   validates :subject, :contents, presence: true
 
-  before_save :set_published_at
-
   scope :published, -> { where(published: true) }
-
   scope :published_since, ->(time) { published.where('published_at > ?', time) }
 
 protected

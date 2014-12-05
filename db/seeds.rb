@@ -42,7 +42,7 @@ if !Rails.env.production?
                                     place: "Long Name City, Longstatename")
   example_fest.films.each do |film|
     priority = Pick::PRIORITY_HINTS.keys[film.duration.to_minutes % Pick::PRIORITY_HINTS.count]
-    admin.picks.create!({ film: film, priority: priority }, as: :pick_creator)
+    admin.picks.create!(film: film, priority: priority)
   end
 
   FactoryGirl.create(:festival, :past,

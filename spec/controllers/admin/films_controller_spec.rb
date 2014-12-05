@@ -93,7 +93,7 @@ describe Admin::FilmsController, type: :controller do
          "and festival as @festival" do
         # Trigger the behavior that occurs when invalid params are submitted
         festival = create(:festival)
-        Film.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Film).to receive(:save).and_return(false)
         post :create, { festival_id: festival.to_param,
                         film: { "name" => "" } }
         assigns(:film).should be_a_new(Film)
@@ -103,8 +103,8 @@ describe Admin::FilmsController, type: :controller do
       it "re-renders the 'new' template" do
         festival = create(:festival)
         # Trigger the behavior that occurs when invalid params are submitted
-        Film.any_instance.stub(:save).and_return(false)
-        Film.any_instance.stub(:errors).and_return(some: ['errors'])
+        allow_any_instance_of(Film).to receive(:save).and_return(false)
+        allow_any_instance_of(Film).to receive(:errors).and_return(some: ['errors'])
         post :create, { festival_id: festival.to_param,
                         film: { "name" => "" } }
         response.should render_template("new")
@@ -120,7 +120,7 @@ describe Admin::FilmsController, type: :controller do
         # specifies that the Film created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        Film.any_instance.should_receive(:update_attributes).with({ "name" => "MyString" })
+        allow_any_instance_of(Film).to receive(:update_attributes).with("name" => "MyString")
         put :update, {:id => film.to_param, :film => { "name" => "MyString" }}
       end
 
@@ -142,7 +142,7 @@ describe Admin::FilmsController, type: :controller do
       it "assigns the film as @film and festival as @festival" do
         film = create(:film)
         # Trigger the behavior that occurs when invalid params are submitted
-        Film.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(Film).to receive(:save).and_return(false)
         put :update, {:id => film.to_param, :film => { "name" => "" }}
         assigns(:film).should eq(film)
         assigns(:festival).should eq(film.festival)
@@ -151,8 +151,8 @@ describe Admin::FilmsController, type: :controller do
       it "re-renders the 'edit' template" do
         film = create(:film)
         # Trigger the behavior that occurs when invalid params are submitted
-        Film.any_instance.stub(:save).and_return(false)
-        Film.any_instance.stub(:errors).and_return(some: ['errors'])
+        allow_any_instance_of(Film).to receive(:save).and_return(false)
+        allow_any_instance_of(Film).to receive(:errors).and_return(some: ['errors'])
         put :update, {:id => film.to_param, :film => { "name" => "" }}
         response.should render_template("edit")
       end

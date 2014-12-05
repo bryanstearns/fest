@@ -20,7 +20,7 @@ module Admin
 
     # POST /admin/locations
     def create
-      @location = Location.new(params[:location])
+      @location = Location.new(location_params)
       if @location.save
         flash[:notice] = 'Location was successfully created.'
       end
@@ -30,7 +30,7 @@ module Admin
     # PUT /admin/locations/1
     def update
       @location = Location.find(params[:id])
-      if @location.update_attributes(params[:location])
+      if @location.update_attributes(location_params)
         flash[:notice] = 'Location was successfully updated.'
       end
       respond_with(:admin, @location, location: admin_locations_path)
@@ -42,6 +42,11 @@ module Admin
       @location.destroy
       flash[:notice] = 'Location was successfully destroyed.'
       respond_with(:admin, @location)
+    end
+
+  private
+    def location_params
+      params.require(:location).permit(:name, :place)
     end
   end
 end

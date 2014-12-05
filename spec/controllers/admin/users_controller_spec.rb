@@ -83,7 +83,7 @@ describe Admin::UsersController, type: :controller do
     describe "with invalid params" do
       it "assigns a newly created but unsaved user as @user" do
         # Trigger the behavior that occurs when invalid params are submitted
-        User.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(User).to receive(:save).and_return(false)
         post :create, {:user => { name: '' }}
         assigns(:user).should be_a_new(User)
       end
@@ -104,8 +104,8 @@ describe Admin::UsersController, type: :controller do
         # specifies that the User created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        User.any_instance.should_receive(:update_attributes).with({ "these" => "params" }, as: :admin)
-        put :update, {:id => user.to_param, :user => { "these" => "params" }}
+        expect_any_instance_of(User).to receive(:update_attributes).with("email" => "bogus")
+        put :update, {:id => user.to_param, :user => { "email" => "bogus" }}
       end
 
       it "assigns the requested user as @user" do
@@ -125,7 +125,7 @@ describe Admin::UsersController, type: :controller do
       it "assigns the user as @user" do
         user = User.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
-        User.any_instance.stub(:save).and_return(false)
+        allow_any_instance_of(User).to receive(:save).and_return(false)
         put :update, {:id => user.to_param, :user => { name: '' }}
         assigns(:user).should eq(user)
       end

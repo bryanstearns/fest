@@ -56,16 +56,16 @@ describe Admin::FestivalsController, type: :controller do
     describe "with invalid params" do
       it "assigns a newly created but unsaved festival as @festival" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Festival.any_instance.stub(:save).and_return(false)
-        post :create, {:festival => {}}
+        allow_any_instance_of(Festival).to receive(:save).and_return(false)
+        post :create, {:festival => { name: '' }}
         assigns(:festival).should be_a_new(Festival)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Festival.any_instance.stub(:save).and_return(false)
-        Festival.any_instance.stub(:errors).and_return(some: ['errors'])
-        post :create, {:festival => {}}
+        allow_any_instance_of(Festival).to receive(:save).and_return(false)
+        allow_any_instance_of(Festival).to receive(:errors).and_return(some: ['errors'])
+        post :create, {:festival => { name: '' }}
         response.should render_template("new")
       end
     end
@@ -79,8 +79,8 @@ describe Admin::FestivalsController, type: :controller do
         # specifies that the Festival created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        Festival.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, {:id => festival.to_param, :festival => {'these' => 'params'}}
+        expect_any_instance_of(Festival).to receive(:update_attributes).with('name' => 'bogus')
+        put :update, {:id => festival.to_param, :festival => {'name' => 'bogus'}}
       end
 
       it "assigns the requested festival as @festival" do
@@ -102,17 +102,17 @@ describe Admin::FestivalsController, type: :controller do
       it "assigns the festival as @festival" do
         festival = create(:festival)
         # Trigger the behavior that occurs when invalid params are submitted
-        Festival.any_instance.stub(:save).and_return(false)
-        put :update, {:id => festival.to_param, :festival => {}}
+        allow_any_instance_of(Festival).to receive(:save).and_return(false)
+        put :update, {:id => festival.to_param, :festival => { name: '' }}
         assigns(:festival).should eq(festival)
       end
 
       it "re-renders the 'edit' template" do
         festival = create(:festival)
         # Trigger the behavior that occurs when invalid params are submitted
-        Festival.any_instance.stub(:save).and_return(false)
-        Festival.any_instance.stub(:errors).and_return(some: ['errors'])
-        put :update, {:id => festival.to_param, :festival => {}}
+        allow_any_instance_of(Festival).to receive(:save).and_return(false)
+        allow_any_instance_of(Festival).to receive(:errors).and_return(some: ['errors'])
+        put :update, {:id => festival.to_param, :festival => { name: '' }}
         response.should render_template("edit")
       end
     end

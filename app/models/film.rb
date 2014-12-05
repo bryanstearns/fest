@@ -3,9 +3,6 @@ class Film < ActiveRecord::Base
   has_many :screenings, dependent: :destroy
   has_many :picks, dependent: :destroy
 
-  attr_accessible :countries, :description, :duration_minutes,
-                  :name, :page, :short_name, :sort_name, :url_fragment
-
   validates :duration_minutes, :festival_id, :name, presence: true
   validates :name, :uniqueness => { scope: :festival_id }
   validates :duration_minutes, numericality: true

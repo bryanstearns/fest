@@ -3,8 +3,6 @@ class Question < ActiveRecord::Base
 
   include BlockedEmailAddressChecks
 
-  attr_accessible :acknowledged, :done, :email, :name, :question, :user_id
-
   default_scope { order(:created_at, :id).reverse_order }
   scope :not_done, -> { where(done: false) }
 

@@ -9,10 +9,6 @@ class Festival < ActiveRecord::Base
   has_many :picks
   has_many :activity
 
-  attr_accessible :ends_on, :has_press, :location_ids, :main_url, :name, :place,
-                  :published, :revised_at, :scheduled, :slug, :slug_group,
-                  :starts_on, :updates_url
-
   before_validation :update_slug
   before_validation :default_revised_at, on: :create
 

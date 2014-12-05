@@ -15,7 +15,7 @@ module Admin
 
     # POST /admin/announcements
     def create
-      @announcement = Announcement.new(params[:announcement])
+      @announcement = Announcement.new(announcement_params)
       if @announcement.save
         flash[:notice] = 'Announcement was successfully created.'
       end
@@ -25,7 +25,7 @@ module Admin
     # PUT /admin/announcements/1
     def update
       @announcement = Announcement.find(params[:id])
-      if @announcement.update_attributes(params[:announcement])
+      if @announcement.update_attributes(announcement_params)
         flash[:notice] = 'Announcement was successfully updated.'
       end
       respond_with(:admin, @announcement, location: announcements_path)
@@ -36,6 +36,12 @@ module Admin
       @announcement = Announcement.find(params[:id])
       @announcement.destroy
       respond_with(:admin, @announcement, location: announcements_path)
+    end
+
+  private
+    def announcement_params
+      params.require(:announcement).
+          permit(:contents, :published, :published_at, :subject)
     end
   end
 end

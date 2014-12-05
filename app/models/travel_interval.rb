@@ -7,9 +7,6 @@ class TravelInterval < ActiveRecord::Base
   belongs_to :from_location, class_name: 'Location'
   belongs_to :to_location, class_name: 'Location'
 
-  attr_accessible :from_location_id, :seconds_from, :seconds_to,
-                  :to_location_id, :user
-
   before_validation :sort_location_ids
 
   scope :for_user_id, ->(user_id) do

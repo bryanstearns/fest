@@ -64,10 +64,9 @@ describe PicksController, type: :controller do
 
     describe "for a user who'd previously saved a pick for that film" do
       before(:each) do
-        @pick = controller.current_user.picks.create!({ festival: festival,
-                                                        priority: 1,
-                                                        film_id: film_id },
-                                                      as: :pick_creator)
+        @pick = controller.current_user.picks.create!(festival: festival,
+                                                      priority: 1,
+                                                      film_id: film_id)
       end
 
       describe "with valid params" do
@@ -75,8 +74,9 @@ describe PicksController, type: :controller do
                               :pick => { :priority => "2" },
                               :attribute => 'priority' } }
         it "updates the existing Pick" do
-          Pick.any_instance.should_receive(:update_attributes)\
-                           .with("priority" => "2")
+          allow_any_instance_of(Pick).
+              to receive(:update_attributes).
+                 with("priority" => "2")
           subject
         end
 

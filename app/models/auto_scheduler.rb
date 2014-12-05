@@ -182,7 +182,7 @@ class AutoScheduler
   end
 
   def build_pick(film_id)
-    user.picks.build({film: all_films_by_id[film_id] }, as: :pick_creator)
+    user.picks.build(film: all_films_by_id[film_id])
   end
 
   def current_pickable_screenings

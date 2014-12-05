@@ -22,7 +22,7 @@ class PicksController < ApplicationController
   # We take a parameter for which attribute to set, and only set that one.
   def create
     attribute_name = params[:attribute]
-    attribute_value = params[:pick][attribute_name]
+    attribute_value = pick_params[attribute_name]
     if @pick.new_record? && attribute_value.nil?
       saved = true # Just pretend we saved if it'd be the default anyway.
     else
@@ -60,5 +60,11 @@ protected
   def load_film_and_festival_from_pick
     @film = @pick.film
     @festival = @film.festival
+  end
+
+private
+  def pick_params
+    params.require(:pick).
+        permit(:priority, :rating, :screening, :screening_id, :auto)
   end
 end

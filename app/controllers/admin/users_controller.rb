@@ -43,7 +43,7 @@ module Admin
 
     # POST /admin/users
     def create
-      @user = User.new(params[:user], as: :admin)
+      @user = User.new(user_params)
       if @user.save
         flash[:notice] = 'User was successfully created.'
       end
@@ -53,7 +53,7 @@ module Admin
     # PUT /admin/users/1
     def update
       @user = User.find(params[:id])
-      if @user.update_attributes(params[:user], as: :admin)
+      if @user.update_attributes(user_params)
         flash[:notice] = 'User was successfully updated.'
       end
       respond_with(:admin, @user)
@@ -65,6 +65,13 @@ module Admin
       @user.destroy
       flash[:notice] = 'User was successfully destroyed.'
       respond_with(:admin, @user)
+    end
+
+  private
+    def user_params
+      params.require(:user).
+          permit(:email, :name, :password, :password_confirmation,
+                 :remember_me, :welcomed_at)
     end
   end
 end

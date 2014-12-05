@@ -43,16 +43,16 @@ describe QuestionsController, type: :controller do
     describe "with invalid params" do
       it "assigns a newly created but unsaved question as @question" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Question.any_instance.stub(:save).and_return(false)
-        Question.any_instance.stub(:errors).and_return(some: ['errors'])
+        allow_any_instance_of(Question).to receive(:save).and_return(false)
+        allow_any_instance_of(Question).to receive(:errors).and_return(some: ['errors'])
         post :create, {:question => { "email" => "" }}
         assigns(:question).should be_a_new(Question)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Question.any_instance.stub(:save).and_return(false)
-        Question.any_instance.stub(:errors).and_return(some: ['errors'])
+        allow_any_instance_of(Question).to receive(:save).and_return(false)
+        allow_any_instance_of(Question).to receive(:errors).and_return(some: ['errors'])
         post :create, {:question => { "email" => "" }}
         response.should render_template("new")
       end
