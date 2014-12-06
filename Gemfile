@@ -40,7 +40,7 @@ group :development do
   gem 'pry-nav'
 end
 
-group :assets do
+group :assets, :development, :test do
   gem 'coffee-rails'
   gem 'jquery-ui-rails'
   gem 'uglifier'
