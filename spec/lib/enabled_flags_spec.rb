@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'enabled_flags'
 
 describe EnabledFlags do
-  after(:all) do
+  after(:each) do
     subject.set_enabled_value(:changing, true)
   end
 
