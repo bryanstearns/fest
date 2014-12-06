@@ -24,7 +24,7 @@ class Screening < ActiveRecord::Base
     where('screenings.starts_at > ?', time)
   }
   scope :with_press, ->(with_press) {
-    with_press ? scoped : where('screenings.press = ?', false)
+    with_press ? all : where('screenings.press = ?', false)
   }
   scope :for_calendar, -> {
     where('screenings.starts_at > ? and screenings.starts_at < ?',
