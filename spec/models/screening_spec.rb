@@ -51,10 +51,10 @@ describe Screening do
 
     # Better readability...
     RSpec::Matchers.define :not_conflict_with do |expected, user|
-      match {|actual| actual.conflicts_with?(expected, user.id).should be_false }
+      match {|actual| actual.conflicts_with?(expected, user.id).should be_falsey }
     end
     RSpec::Matchers.define :conflict_with do |expected, user|
-      match {|actual| actual.conflicts_with?(expected, user.id).should be_true }
+      match {|actual| actual.conflicts_with?(expected, user.id).should be_truthy }
     end
 
     context "with itself" do

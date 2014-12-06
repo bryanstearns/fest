@@ -57,7 +57,7 @@ describe User do
       context "of normal screenings" do
         let(:is_press) { false }
         it "returns true" do
-          subject.can_see?(screening).should be_true
+          subject.can_see?(screening).should be_truthy
         end
       end
       context "of press screenings" do
@@ -69,17 +69,17 @@ describe User do
                                                  show_press: show_press))
         end
         it "returns false by default" do
-          subject.can_see?(screening).should be_false
+          subject.can_see?(screening).should be_falsey
         end
         context "and the user does't want press screenings" do
           it "returns false" do
-            subject.can_see?(screening).should be_false
+            subject.can_see?(screening).should be_falsey
           end
         end
         context "and the user has asked for press screenings" do
           let(:show_press) { true }
           it "returns true" do
-            subject.can_see?(screening).should be_true
+            subject.can_see?(screening).should be_truthy
           end
         end
       end
@@ -88,7 +88,7 @@ describe User do
     describe "checking for screenings" do
       describe "and there aren't any" do
         it "returns false" do
-          subject.has_screenings_for?(festival).should be_false
+          subject.has_screenings_for?(festival).should be_falsey
         end
       end
       describe "and there's at least one" do
@@ -97,7 +97,7 @@ describe User do
         let!(:pick) { create(:pick, festival: festival, user: subject,
                              film: film, screening: screening ) }
         it "returns true" do
-          subject.has_screenings_for?(festival).should be_true
+          subject.has_screenings_for?(festival).should be_truthy
         end
       end
     end
@@ -105,7 +105,7 @@ describe User do
     describe "checking for priorites" do
       describe "and there aren't any" do
         it "returns false" do
-          subject.has_priorities_for?(festival).should be_false
+          subject.has_priorities_for?(festival).should be_falsey
         end
       end
       describe "and there's at least one" do
@@ -113,7 +113,7 @@ describe User do
         let!(:pick) { create(:pick, festival: festival, user: subject,
                              film: film, priority: 1) }
         it "returns true" do
-          subject.has_priorities_for?(festival).should be_true
+          subject.has_priorities_for?(festival).should be_truthy
         end
       end
     end

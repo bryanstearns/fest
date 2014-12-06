@@ -63,7 +63,7 @@ describe Pick do
         pick.reload.screening_id.should be_nil
       end
       it "clears the auto flag on deselected conflicting screenings" do
-        pick.reload.auto.should be_false
+        pick.reload.auto.should be_falsey
       end
     end
   end

@@ -41,55 +41,55 @@ describe Cost do
   end
 
   it "determines priority" do
-    autoscheduler.stub(:film_priority).and_return(6)
+    allow(autoscheduler).to receive(:film_priority).and_return(6)
     subject.priority.should == 6
   end
 
   it "determines started?" do
-    autoscheduler.stub(:now).and_return(2.years.ago)
+    allow(autoscheduler).to receive(:now).and_return(2.years.ago)
     subject.should_not be_started
-    autoscheduler.stub(:now).and_return(2.years.from_now)
+    allow(autoscheduler).to receive(:now).and_return(2.years.from_now)
     subject.should be_started
   end
 
   it "determines pickable?" do
-    subject.stub(:total_cost).and_return(26.2)
+    allow(subject).to receive(:total_cost).and_return(26.2)
     subject.should be_pickable
-    subject.stub(:total_cost).and_return(Cost::FREE)
+    allow(subject).to receive(:total_cost).and_return(Cost::FREE)
     subject.should be_pickable
-    subject.stub(:total_cost).and_return(Cost::UNPICKABLE)
+    allow(subject).to receive(:total_cost).and_return(Cost::UNPICKABLE)
     subject.should_not be_pickable
   end
 
   it "determines screening_scheduled?" do
-    autoscheduler.stub(:screening_id_scheduled?).and_return(true)
-    subject.screening_scheduled?.should be_true
-    autoscheduler.stub(:screening_id_scheduled?).and_return(false)
-    subject.screening_scheduled?.should be_false
+    allow(autoscheduler).to receive(:screening_id_scheduled?).and_return(true)
+    subject.screening_scheduled?.should be_truthy
+    allow(autoscheduler).to receive(:screening_id_scheduled?).and_return(false)
+    subject.screening_scheduled?.should be_falsey
   end
 
   it "determines any_conflict_picked?" do
-    autoscheduler.stub(:screening_id_conflicts_scheduled?).and_return(true)
-    subject.any_conflict_picked?.should be_true
-    autoscheduler.stub(:screening_id_conflicts_scheduled?).and_return(false)
-    subject.any_conflict_picked?.should be_false
+    allow(autoscheduler).to receive(:screening_id_conflicts_scheduled?).and_return(true)
+    subject.any_conflict_picked?.should be_truthy
+    allow(autoscheduler).to receive(:screening_id_conflicts_scheduled?).and_return(false)
+    subject.any_conflict_picked?.should be_falsey
   end
 
   it "determines film_scheduled?" do
-    autoscheduler.stub(:film_id_scheduled?).and_return(true)
-    subject.film_scheduled?.should be_true
-    autoscheduler.stub(:film_id_scheduled?).and_return(false)
-    subject.film_scheduled?.should be_false
+    allow(autoscheduler).to receive(:film_id_scheduled?).and_return(true)
+    subject.film_scheduled?.should be_truthy
+    allow(autoscheduler).to receive(:film_id_scheduled?).and_return(false)
+    subject.film_scheduled?.should be_falsey
   end
 
   it 'determines remaining screenings count' do
-    autoscheduler.stub(:remaining_screenings_count).and_return(3)
+    allow(autoscheduler).to receive(:remaining_screenings_count).and_return(3)
     subject.remaining_screenings_count.should == 3
   end
 
   it 'determines conflicting screening costs' do
     result = double
-    autoscheduler.stub(:screening_id_conflicts_costs).and_return(result)
+    allow(autoscheduler).to receive(:screening_id_conflicts_costs).and_return(result)
     subject.conflicting_screening_costs.should eq(result)
   end
 
@@ -105,22 +105,24 @@ describe Cost do
 
   describe "A started screening" do
     it "has a cost of Infinity" do
-      autoscheduler.stub(:now).and_return(screening.starts_at + 5.minutes)
+      allow(autoscheduler).to receive(:now).
+                                  and_return(screening.starts_at + 5.minutes)
       subject.total_cost.should == Cost::UNPICKABLE
     end
     it "has a cost-as-conflict of 0" do
-      autoscheduler.stub(:now).and_return(screening.starts_at + 5.minutes)
+      allow(autoscheduler).to receive(:now).
+                                  and_return(screening.starts_at + 5.minutes)
       subject.cost_as_conflict.should == Cost::FREE
     end
   end
 
   describe "A screening of a 0- or unprioritized film" do
     it "has a cost of Infinity" do
-      subject.stub(:priority).and_return(0)
+      allow(subject).to receive(:priority).and_return(0)
       subject.total_cost.should == Cost::UNPICKABLE
     end
     it "has a cost-as-conflict of 0" do
-      subject.stub(:priority).and_return(0)
+      allow(subject).to receive(:priority).and_return(0)
       subject.cost_as_conflict.should == Cost::FREE
     end
   end

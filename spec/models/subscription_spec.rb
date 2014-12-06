@@ -10,23 +10,23 @@ describe Subscription do
     context "of normal screenings" do
       let(:is_press) { false }
       it "returns true" do
-        subject.can_see?(screening).should be_true
+        subject.can_see?(screening).should be_truthy
       end
     end
     context "of press screenings" do
       let(:is_press) { true }
       it "returns false by default" do
-        subject.can_see?(screening).should be_false
+        subject.can_see?(screening).should be_falsey
       end
       context "and the user does't want press screenings" do
         it "returns false" do
-          subject.can_see?(screening).should be_false
+          subject.can_see?(screening).should be_falsey
         end
       end
       context "and the user has asked for press screenings" do
         subject { build(:subscription, show_press: true) }
         it "returns true" do
-          subject.can_see?(screening).should be_true
+          subject.can_see?(screening).should be_truthy
         end
       end
     end

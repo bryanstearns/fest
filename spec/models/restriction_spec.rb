@@ -33,10 +33,10 @@ describe Restriction do
         starts_at: Time.zone.parse("2013/2/4").at("20"),
         ends_at: Time.zone.parse("2013/2/4").at("22"))
 
-      items.first.overlaps?(overlapping).should be_true
+      items.first.overlaps?(overlapping).should be_truthy
     end
     it 'returns false for non-overlapping restrictions' do
-      items.first.overlaps?(items.last).should be_false
+      items.first.overlaps?(items.last).should be_falsey
     end
   end
 end

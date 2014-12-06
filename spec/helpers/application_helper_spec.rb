@@ -6,44 +6,48 @@ describe ApplicationHelper, type: :helper do
   context "current_user_is_admin?" do
     subject { helper.current_user_is_admin? }
     context "without user logged in" do
-      before { helper.stub(user_signed_in?: false) }
-      it { should be_false }
+      before { allow(helper).to receive(:user_signed_in?).and_return(false) }
+      it { should be_falsey }
     end
     context "with non-admin user logged in" do
       before do
-        helper.stub(user_signed_in?: true)
-        helper.stub(current_user: build(:user, :admin => nil))
+        allow(helper).to receive(:user_signed_in?).and_return(true)
+        allow(helper).to receive(:current_user).
+                             and_return(build(:user, :admin => nil))
       end
-      it { should be_false }
+      it { should be_falsey }
     end
     context "with admin user logged in" do
       before do
-        helper.stub(user_signed_in?: true)
-        helper.stub(current_user: build(:user, :admin => true))
+        allow(helper).to receive(:user_signed_in?).and_return(true)
+        allow(helper).to receive(:current_user).
+                             and_return(build(:user, :admin => true))
       end
-      it { should be_true }
+      it { should be_truthy }
     end
   end
 
   context "current_user_is_ffff?" do
     subject { helper.current_user_is_ffff? }
     context "without user logged in" do
-      before { helper.stub(user_signed_in?: false) }
-      it { should be_false }
+      before { allow(helper).to receive(:user_signed_in?).and_return(false) }
+      it { should be_falsey }
     end
     context "with non-ffff user logged in" do
       before do
-        helper.stub(user_signed_in?: true)
-        helper.stub(current_user: build(:user, :ffff => false))
+        allow(helper).to receive(:user_signed_in?).and_return(true)
+        allow(helper).to receive(:current_user).
+                             and_return(build(:user, :ffff => false))
       end
-      it { should be_false }
+      it { should be_falsey }
     end
     context "with ffff user logged in" do
       before do
-        helper.stub(user_signed_in?: true)
-        helper.stub(current_user: build(:user, :ffff => true))
+        allow(helper).to receive(:user_signed_in?).and_return(true)
+        allow(helper).to receive(:current_user).
+                             and_return(build(:user, :ffff => true))
       end
-      it { should be_true }
+      it { should be_truthy }
     end
   end
 
@@ -140,15 +144,15 @@ describe ApplicationHelper, type: :helper do
     subject { helper.link_in_list_to("Title", "some_target") }
     context "when on the current page" do
       it "should produce a li with class 'active'" do
-        helper.stub(:current_page? => true)
-        helper.should_receive(:content_tag).with(:li, anything, class: "active")
+        allow(helper).to receive(:current_page?).and_return(true)
+        expect(helper).to receive(:content_tag).with(:li, anything, class: "active")
         subject
       end
     end
     context "when not on the current page" do
       it "should produce a li without class 'active'" do
-        helper.stub(:current_page? => false)
-        helper.should_not_receive(:content_tag).with(:li, anything, class: "active")
+        allow(helper).to receive(:current_page?).and_return(false)
+        expect(helper).to_not receive(:content_tag).with(:li, anything, class: "active")
         subject
       end
     end

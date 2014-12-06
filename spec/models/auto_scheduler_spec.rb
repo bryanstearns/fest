@@ -17,7 +17,7 @@ describe AutoScheduler do
   context 'when skip_autoscheduler is set' do
     let(:subscription) { build(:subscription, skip_autoscheduler: true) }
     it 'declines to run' do
-      autoscheduler.should_run?.should be_false
+      autoscheduler.should_run?.should be_falsey
     end
 
     it 'returns a blank message' do
@@ -80,18 +80,18 @@ describe AutoScheduler do
                                  .find {|s| !s.press } }
 
     it 'reports whether a film is scheduled' do
-      subject.film_id_scheduled?(screening.film_id).should be_true
-      subject.film_id_scheduled?(screening2.film_id).should be_false
+      subject.film_id_scheduled?(screening.film_id).should be_truthy
+      subject.film_id_scheduled?(screening2.film_id).should be_falsey
     end
 
     it 'reports whether a screening is scheduled' do
-      subject.screening_id_scheduled?(screening.id).should be_true
-      subject.screening_id_scheduled?(screening2.id).should be_false
+      subject.screening_id_scheduled?(screening.id).should be_truthy
+      subject.screening_id_scheduled?(screening2.id).should be_falsey
     end
 
     it 'reports whether any of a screening\'s conflicts is scheduled' do
-      subject.screening_id_conflicts_scheduled?(screening2.id).should be_true
-      subject.screening_id_conflicts_scheduled?(screening.id).should be_false
+      subject.screening_id_conflicts_scheduled?(screening2.id).should be_truthy
+      subject.screening_id_conflicts_scheduled?(screening.id).should be_falsey
     end
 
     it 'returns a list of a screening\'s conflicts' do
