@@ -40,19 +40,19 @@ describe CalendarFormatter do
     end
 
     it "should start at the screening start time" do
-      event.dtstart.to_i.should eq((screening.starts_at + Time.zone.utc_offset).to_i)
+      event.dtstart.to_i.should eq(screening.starts_at.to_i)
     end
 
     it "should end at the screening end time" do
-      event.dtend.to_i.should eq((screening.ends_at + Time.zone.utc_offset).to_i)
+      event.dtend.to_i.should eq(screening.ends_at.to_i)
     end
 
     it "should reflects the screening's created-at time" do
-      event.created.to_i.should eq((screening.created_at + Time.zone.utc_offset).to_i)
+      event.created.to_i.should eq(screening.created_at.to_i)
     end
 
     it "should reflects the screening's updated-at time" do
-      event.last_modified.to_i.should eq((screening.updated_at + Time.zone.utc_offset).to_i)
+      event.last_modified.to_i.should eq(screening.updated_at.to_i)
     end
 
     it "should point at the screening" do
