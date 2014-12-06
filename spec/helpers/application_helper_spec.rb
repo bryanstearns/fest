@@ -145,15 +145,13 @@ describe ApplicationHelper, type: :helper do
     context "when on the current page" do
       it "should produce a li with class 'active'" do
         allow(helper).to receive(:current_page?).and_return(true)
-        expect(helper).to receive(:content_tag).with(:li, anything, class: "active")
-        subject
+        expect(subject).to match(/^<li class="active">/)
       end
     end
     context "when not on the current page" do
       it "should produce a li without class 'active'" do
         allow(helper).to receive(:current_page?).and_return(false)
-        expect(helper).to_not receive(:content_tag).with(:li, anything, class: "active")
-        subject
+        expect(subject).to match(/^<li>/)
       end
     end
   end
