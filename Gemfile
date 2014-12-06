@@ -54,7 +54,6 @@ group :test do
   gem 'factory_girl_rails'
   gem 'poltergeist'
   gem 'rspec-rails'
-  gem 'rspec-instafail'
   gem 'rspec-collection_matchers'
   gem 'shoulda-matchers'
 end
