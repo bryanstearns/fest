@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Admin::AnnouncementsController do
+describe Admin::AnnouncementsController, type: :routing do
   describe "routing" do
     it "routes to #new" do
       get("/admin/announcements/new").should route_to("admin/announcements#new")

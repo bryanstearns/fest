@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Admin::ActivityController do
+describe Admin::ActivityController, type: :routing do
   describe "routing" do
     it "routes to #index" do
       get("/admin/activity").should route_to("admin/activity#index")

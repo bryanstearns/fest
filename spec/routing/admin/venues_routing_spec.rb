@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Admin::VenuesController do
+describe Admin::VenuesController, type: :routing do
   describe "routing" do
 
     it "doesn't route to #index" do

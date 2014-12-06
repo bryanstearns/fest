@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Admin::FestivalsController do
+describe Admin::FestivalsController, type: :routing do
   describe "routing" do
     it "doesn't route to #index" do
       get("/admin/festivals").should_not be_routable

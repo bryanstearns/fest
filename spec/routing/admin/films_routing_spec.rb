@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Admin::FilmsController do
+describe Admin::FilmsController, type: :routing do
   describe "routing" do
     it "routes to #index with festival" do
       get("/admin/festivals/1/films").should route_to("admin/films#index", festival_id: "1")

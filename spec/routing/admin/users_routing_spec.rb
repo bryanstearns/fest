@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Admin::UsersController do
+describe Admin::UsersController, type: :routing do
   describe "routing" do
 
     it "routes to #index" do

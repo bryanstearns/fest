@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Admin::ScreeningsController do
+describe Admin::ScreeningsController, type: :routing do
   describe "routing" do
     it "doesn't route to #index" do
       get("/admin/screenings").should_not be_routable
