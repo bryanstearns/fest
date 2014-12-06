@@ -3,7 +3,8 @@ class User < ActiveRecord::Base
          :registerable, :recoverable, :rememberable, :trackable,
          :validatable
 
-  VALID_PREFERENCES = %w[hide_instructions unsubscribed bounced]
+  BOOLEAN_PREFERENCES = %w[hide_instructions unsubscribed bounced]
+  VALID_PREFERENCES = BOOLEAN_PREFERENCES + []
   store_accessor :preferences, *VALID_PREFERENCES.map(&:to_sym)
 
   include BlockedEmailAddressChecks
@@ -32,22 +33,16 @@ class User < ActiveRecord::Base
     VALID_PREFERENCES.include?(name.to_s)
   end
 
-  VALID_PREFERENCES.each do |pref|
+  # Make sure the boolean prefs respond with true/false instead of 'true'/'false'
+  BOOLEAN_PREFERENCES.each do |pref|
     define_method(pref) do
-      preferences[pref.to_s]
+      value = super()
+      (['true', 'false', nil].include?(value)) ? (value == 'true') : value
     end
+  end
+  # Give all the pref query methods.
+  VALID_PREFERENCES.each do |pref|
     alias_method "#{pref}?".to_sym, pref.to_sym
-    define_method("#{pref}=".to_sym) do |new_value|
-      if preferences[pref.to_s] != new_value
-        if new_value && new_value.to_s != '0'
-          preferences[pref.to_s] = new_value
-        else
-          preferences.delete(pref.to_s)
-        end
-        save!
-      end
-      new_value
-    end
   end
 
   def mailable?

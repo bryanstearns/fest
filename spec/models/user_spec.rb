@@ -141,28 +141,37 @@ describe User do
     let(:user) { create(:confirmed_user) }
 
     it "should recognize a valid preference" do
-      User.valid_preference?("hide_instructions").should be_true
+      User.valid_preference?("hide_instructions").should be true
     end
 
     it "should recognize an invalid preference" do
-      User.valid_preference?("hack_the_server").should be_false
+      User.valid_preference?("hack_the_server").should be false
     end
 
-    it "should default to nil" do
-      user.hide_instructions.should be_nil
+    it "should default to false" do
+      user.hide_instructions.should be false
     end
 
     it "should also respond to ?" do
-      user.hide_instructions?.should be_nil
+      user.hide_instructions?.should be false
     end
 
     it "should be settable" do
       user.hide_instructions = true
-      user.reload.hide_instructions?.should be_true
-      user.reload.hide_instructions.should be_true
+      user.hide_instructions?.should be true
+      user.hide_instructions.should be true
+      user.save!
+      user.reload
+      user.hide_instructions?.should be true
+      user.hide_instructions.should be true
+
       user.hide_instructions = false
-      user.reload.hide_instructions?.should be_nil
-      user.reload.hide_instructions.should be_nil
+      user.hide_instructions?.should be false
+      user.hide_instructions.should be false
+      user.save!
+      user.reload
+      user.hide_instructions?.should eq(false)
+      user.hide_instructions.should eq(false)
     end
   end
 

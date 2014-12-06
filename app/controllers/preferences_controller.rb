@@ -6,6 +6,7 @@ class PreferencesController < ApplicationController
     value = params[:value]
     status = if User.valid_preference?(preference)
       current_user.send("#{preference}=", value)
+      current_user.save!
       :ok
     else
       :unprocessable_entity

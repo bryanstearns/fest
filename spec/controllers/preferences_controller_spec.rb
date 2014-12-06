@@ -5,7 +5,7 @@ describe PreferencesController, type: :controller do
 
   describe "PUT update" do
     let(:preference) { 'hide_instructions' }
-    let(:value) { "1" }
+    let(:value) { "true" }
     subject { put :update, { id: preference, value: value, format: :js } }
 
     it "requires an authenticated user" do
@@ -18,9 +18,9 @@ describe PreferencesController, type: :controller do
 
       describe "with valid params" do
         it 'updates the signed-in user' do
-          @signed_in_user.send(preference).should be_nil
+          @signed_in_user.send(preference).should be false
           subject
-          @signed_in_user.reload.send(preference).should == "1"
+          @signed_in_user.reload.send(preference).should be true
         end
 
         it "responds with :ok status" do
