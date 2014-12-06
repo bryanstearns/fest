@@ -19,7 +19,7 @@ describe FfffRatingsXlsx do
   end
 
   it "should render both pages" do
-    presenter.should_receive(:make_sheet).twice
+    expect(presenter).to receive(:make_sheet).twice
     presenter.render
   end
 
