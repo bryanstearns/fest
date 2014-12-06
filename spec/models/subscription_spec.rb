@@ -69,12 +69,12 @@ describe Subscription do
     end
 
     it 'reports the list of included location IDs' do
-      subject.stub(:festival_location_ids).and_return([1,2,5,6])
+      allow(subject).to receive(:festival_location_ids).and_return([1,2,5,6])
       subject.excluded_location_ids = [2, 6]
       subject.included_location_ids.should eq([1, 5])
     end
     it 'accepts a list of included location IDs' do
-      subject.stub(:festival_location_ids).and_return([1,2,5,6])
+      allow(subject).to receive(:festival_location_ids).and_return([1,2,5,6])
       subject.included_location_ids = [6, 1]
       subject.excluded_location_ids.should eq([2, 5])
     end

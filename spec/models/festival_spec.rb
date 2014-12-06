@@ -99,8 +99,9 @@ describe Festival do
         end
       end
 
-      before do
-        Time.stub(current: screenings.first.starts_at + 1.minute)
+      before(:each) do
+        allow(Time).to receive(:current).
+                           and_return(screenings.first.starts_at + 1.minute)
       end
 
       it "unselects all by default" do

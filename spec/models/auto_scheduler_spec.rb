@@ -59,7 +59,7 @@ describe AutoScheduler do
     end
 
     it 'keeps a list of pickable screenings' do
-      subject.stub(:film_priority) {|id| id % 2 == 0 ? 4 : 0 }
+      allow(subject).to receive(:film_priority) {|id| id % 2 == 0 ? 4 : 0 }
       subject.current_pickable_screenings.should \
         eq(subject.all_screenings.select {|s| s.film_id % 2 == 0 })
     end
@@ -105,14 +105,16 @@ describe AutoScheduler do
       cost_last = double
       costs = { conflicting_screenings.first => cost_first,
                 conflicting_screenings.last => cost_last }
-      subject.stub(:screening_id_conflicts).and_return(conflicting_screenings)
-      subject.stub(:costs).and_return(costs)
+      allow(subject).to receive(:screening_id_conflicts).
+                            and_return(conflicting_screenings)
+      allow(subject).to receive(:costs).and_return(costs)
       subject.screening_id_conflicts_costs(screening.id).should ==
           [cost_first, cost_last]
     end
 
     it 'returns the number of remaining screenings for a film' do
-      subject.stub(:all_remaining_screening_count_by_film_id).and_return(5 => 3)
+      allow(subject).to receive(:all_remaining_screening_count_by_film_id).
+                            and_return(5 => 3)
       subject.remaining_screenings_count(5).should == 3
     end
 
@@ -134,16 +136,15 @@ describe AutoScheduler do
     subject { autoscheduler }
 
     it 'starts by unselecting old screenings' do
-      subject.stub(:next_best_screening).and_return(nil)
-      festival.should_receive(:reset_screenings).once
+      allow(subject).to receive(:next_best_screening).and_return(nil)
+      expect(festival).to receive(:reset_screenings).once
       subject.run
     end
 
     it 'picks screenings until there are no more to pick' do
-      subject.stub(:next_best_screening).and_return(double(id: -1),
-                                                    double(id: -2),
-                                                    nil)
-      subject.should_receive(:schedule).twice
+      allow(subject).to receive(:next_best_screening).
+                            and_return(double(id: -1), double(id: -2), nil)
+      expect(subject).to receive(:schedule).twice
       subject.run
     end
   end
@@ -154,27 +155,27 @@ describe AutoScheduler do
       middling = double(total_cost: 5.0, screening_id: 0)
       cheapie = double(total_cost: 1.0, screening_id: 0)
       costs = { a: expensive, b: cheapie, c: middling }
-      autoscheduler.stub(:current_pickable_screenings).and_return(costs.keys)
-      autoscheduler.stub(:costs).and_return(costs)
-      costs.each_value {|cost| cost.should_receive(:reset!).once }
+      allow(autoscheduler).to receive(:current_pickable_screenings).and_return(costs.keys)
+      allow(autoscheduler).to receive(:costs).and_return(costs)
+      costs.each_value {|cost| expect(cost).to receive(:reset!).once }
       autoscheduler.find_minimum_cost.should == cheapie
     end
 
     it 'returns the cheapest one if it\'s pickable' do
       screening = double(id: 1000)
       cost = double(:pickable? => true, :screening => screening)
-      autoscheduler.stub(:find_minimum_cost).and_return(cost)
+      allow(autoscheduler).to receive(:find_minimum_cost).and_return(cost)
       autoscheduler.next_best_screening.should == screening
     end
 
     it 'returns nil if there aren\'t any' do
-      autoscheduler.stub(:find_minimum_cost).and_return(nil)
+      allow(autoscheduler).to receive(:find_minimum_cost).and_return(nil)
       autoscheduler.next_best_screening.should be_nil
     end
 
     it 'returns nil if the cheapest one isn\'t pickable' do
       cost = double(:pickable? => false)
-      autoscheduler.stub(:find_minimum_cost).and_return(cost)
+      allow(autoscheduler).to receive(:find_minimum_cost).and_return(cost)
       autoscheduler.next_best_screening.should be_nil
     end
   end

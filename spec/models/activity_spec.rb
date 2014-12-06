@@ -11,7 +11,7 @@ describe Activity do
     end
     context "and an exception happens" do
       it 'should not raise' do
-        Activity.stub(:create!).and_raise('boom')
+        allow(Activity).to receive(:create!).and_raise('boom')
         expect { Activity.record('doomed', {}) }.to_not raise_error
       end
     end
