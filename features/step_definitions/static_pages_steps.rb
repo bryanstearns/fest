@@ -8,9 +8,9 @@ When /^I visit the maintenance page$/ do
 end
 
 Then /^I should see a welcome message$/ do
-  page.should have_content("Get more from your film festival experience!")
+  expect(page).to have_content("Get more from your film festival experience!")
 end
 
 Then /^I should see that we're closed$/ do
-  page.should have_content("Get more from your film festival experience!")
+  expect(page).to have_content("Get more from your film festival experience!")
 end

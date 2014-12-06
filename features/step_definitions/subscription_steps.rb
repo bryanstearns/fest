@@ -8,6 +8,6 @@ end
 Then /^I should see their film ratings$/ do
   @user.picks.where(festival_id: @festival.id).rated\
              .includes(:film).each do |pick|
-    page.find("#rating_#{pick.rating} #film_#{pick.film_id}").should have_content(pick.film.name)
+    expect(page.find("#rating_#{pick.rating} #film_#{pick.film_id}")).to have_content(pick.film.name)
   end
 end

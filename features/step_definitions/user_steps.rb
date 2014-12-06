@@ -6,7 +6,7 @@ def create_visitor
 end
 
 def find_user
-  @user ||= User.first conditions: {:email => @visitor[:email]}
+  @user ||= User.where(:email => @visitor[:email]).first
 end
 
 def create_unconfirmed_user
@@ -23,7 +23,7 @@ def create_user
 end
 
 def delete_user
-  @user ||= User.first conditions: {:email => @visitor[:email]}
+  @user ||= User.where(:email => @visitor[:email]).first
   @user.destroy unless @user.nil?
 end
 
@@ -156,62 +156,62 @@ def field(field)
 end
 
 Then /^I should see the Sign Up button$/ do
-  page.should have_content "Sign up"
+  expect(page).to have_content "Sign up"
 end
 
 Then /^I should be signed in$/ do
-  page.should have_content "Sign out"
-  page.should_not have_content "Sign up"
-  page.should_not have_content "Sign in"
+  expect(page).to have_content "Sign out"
+  expect(page).to_not have_content "Sign up"
+  expect(page).to_not have_content "Sign in"
 end
 
 Then /^I should be signed out$/ do
-  page.should have_content "Sign up"
-  page.should have_content "Sign in"
-  page.should_not have_content "Sign out"
+  expect(page).to have_content "Sign up"
+  expect(page).to have_content "Sign in"
+  expect(page).to_not have_content "Sign out"
 end
 
 Then /^I see an unconfirmed account message$/ do
-  page.should have_content "You have to confirm your account before continuing."
+  expect(page).to have_content "You have to confirm your account before continuing."
 end
 
 Then /^I see a successful sign in message$/ do
-  page.should have_content "Signed in successfully."
+  expect(page).to have_content "Signed in successfully."
 end
 
 Then /^I should see a confirmation email message$/ do
-  page.should have_content "A message with a confirmation link has been sent to your email address."
+  expect(page).to have_content "A message with a confirmation link has been sent to your email address."
 end
 
 Then /^I should see an invalid email message$/ do
-  field('email').should have_content "is invalid"
+  expect(field('email')).to have_content "is invalid"
 end
 
 Then /^I should see a missing password message$/ do
-  field('js-password').should have_content "can't be blank"
+  expect(field('js-password')).to have_content "can't be blank"
 end
 
 Then /^I should see a missing password confirmation message$/ do
-  field('js-password').should have_content "doesn't match confirmation"
+  expect(field('js-password')).to have_content "doesn't match confirmation"
 end
 
 Then /^I should see a mismatched password message$/ do
-  field('js-password').should have_content "doesn't match confirmation"
+  expect(field('js-password')).to have_content "doesn't match confirmation"
 end
 
 Then /^I should see a signed out message$/ do
-  page.should have_content "Signed out successfully."
+  expect(page).to have_content "Signed out successfully."
 end
 
 Then /^I see an invalid login message$/ do
-  page.should have_content "Invalid email or password."
+  expect(page).to have_content "Invalid email or password."
 end
 
 Then /^I should see an account edited message$/ do
-  page.should have_content "You updated your account successfully."
+  expect(page).to have_content "You updated your account successfully."
 end
 
 Then /^I should see my name$/ do
   create_user
-  page.should have_content @user[:name]
+  expect(page).to have_content @user[:name]
 end

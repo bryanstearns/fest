@@ -32,15 +32,15 @@ When /^I visit the festivals index page$/ do
 end
 
 Then(/^I should download a calendar with my films$/) do
-  page.body.should have_content("BEGIN:VCALENDAR")
+  expect(page.body).to have_content("BEGIN:VCALENDAR")
 end
 
 Then /^I should see the festivals listed in groups$/ do
   @grouped_festivals_with_dates.each do |slug, festivals_with_dates|
     group_element = page.find(".festival-group#group-#{slug}")
     festivals_with_dates.each do |dates, festival|
-      group_element.should have_content(festival.name)
-      group_element.find("#festival_#{festival.id}").text.strip.should eq(dates)
+      expect(group_element).to have_content(festival.name)
+      expect(group_element.find("#festival_#{festival.id}").text.strip).to eq(dates)
     end
   end
 end
@@ -52,17 +52,17 @@ end
 Then /^I should( not)? see an Edit link$/ do |notness|
   festival_nav = page.find("header.festival")
   if notness != ' not'
-    festival_nav.should have_link "Edit"
+    expect(festival_nav).to have_link "Edit"
   else
-    festival_nav.should_not have_link "Edit"
+    expect(festival_nav).to_not have_link "Edit"
   end
 end
 
 Then /^I should see a grid for each day of the festival$/ do
   days = page.all("table.day")
-  days.should have_at_least(1).items
+  expect(days).to have_at_least(1).items
 end
 
 Then /^I should see the last\-revised time of the festival$/ do
-  page.find("#as-of").should have_content("Festival as of ")
+  expect(page.find("#as-of")).to have_content("Festival as of ")
 end
