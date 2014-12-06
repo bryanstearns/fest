@@ -33,9 +33,7 @@ describe ApplicationController, type: :controller do
 
   describe 'checking festival access' do
     let(:festival) { build(:festival, published: is_published) }
-    before(:each) do
-      Festival.stub(:find_it).and_return(festival)
-    end
+    before(:each) { allow(Festival).to receive(:find_it).and_return(festival) }
 
     controller do
       def index

@@ -62,17 +62,22 @@ describe User do
       end
       context "of press screenings" do
         let(:is_press) { true }
+        let(:show_press) { false }
+        before(:each) do
+          allow(subject).to receive(:subscription_for).
+                                and_return(build(:subscription, user: subject,
+                                                 show_press: show_press))
+        end
         it "returns false by default" do
           subject.can_see?(screening).should be_false
         end
         context "and the user does't want press screenings" do
-          before { subject.stub(:subscription_for).and_return(build(:subscription, user: subject, show_press: false)) }
           it "returns false" do
             subject.can_see?(screening).should be_false
           end
         end
         context "and the user has asked for press screenings" do
-          before { subject.stub(:subscription_for).and_return(build(:subscription, user: subject, show_press: true)) }
+          let(:show_press) { true }
           it "returns true" do
             subject.can_see?(screening).should be_true
           end

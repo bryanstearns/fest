@@ -11,7 +11,8 @@ describe UserCalendarsController, type: :controller do
     end
 
     before do
-      CalendarFormatter.any_instance.stub(to_ics: 'output')
+      allow_any_instance_of(CalendarFormatter).to receive(:to_ics).
+                                                      and_return('output')
       get 'show', user_id: user.id, id: user.calendar_token
     end
 
