@@ -186,7 +186,7 @@ ActiveRecord::Schema.define(version: 20140202025400) do
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["preferences"], name: "index_users_on_preferences", using: :btree
+  add_index "users", ["preferences"], name: "index_users_on_preferences", using: :gist
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
 
