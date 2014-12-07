@@ -4,7 +4,7 @@
       <h3><%= @festival.name %></h3>
       <%= safe_join [date_range(@festival), @festival.place].compact, ' &mdash; '.html_safe %>
     </div>
-    <ul class="nav nav-tabs hidden-phone hidden-print">
+    <ul class="nav nav-tabs hidden-xs hidden-print">
       <%= link_in_list_to "1. Your Film Priorities", festival_priorities_path(@festival) %>
       <%= link_in_list_to "2. Scheduling Assistant", festival_subscription_path(@festival) %>
       <%= link_in_list_to "3. Your Festival Schedule", festival_path(@festival) %>
@@ -13,7 +13,7 @@
                           class: 'extra-action') \
             if current_user_is_admin? %>
     </ul>
-    <ul class="nav nav-pills visible-phone hidden-print">
+    <ul class="nav nav-pills visible-xs hidden-print">
       <%= link_in_list_to "Priorities", festival_priorities_path(@festival) %>
       <%= link_in_list_to "Assistant", festival_subscription_path(@festival) %>
       <%= link_in_list_to "Schedule", festival_path(@festival) %>

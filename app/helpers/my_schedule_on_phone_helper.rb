@@ -4,10 +4,10 @@ module MyScheduleOnPhoneHelper
   end
 
   def my_schedule_visible_on_phone
-    my_schedule_on_phone? && ' visible-phone'
+    my_schedule_on_phone? && ' visible-xs'
   end
 
   def my_schedule_hidden_on_phone
-    my_schedule_on_phone? && ' hidden-phone'
+    my_schedule_on_phone? && ' hidden-xs'
   end
 end
