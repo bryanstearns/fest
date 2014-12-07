@@ -17,6 +17,12 @@ namespace :db do
     load_data
   end
 
+  desc "Drop and reload the local development database from a previously-" +
+           "downloaded copy of production data"
+  task reload: ['db:drop', 'db:create', 'db:migrate'] do
+    load_data
+  end
+
   def fetch_data
     puts "Retrieving production data"
     cmd = "ssh festprod@festprod \"pg_dump --clean --no-owner --no-privileges fest_prod\""
@@ -34,12 +40,19 @@ namespace :db do
     `psql -d #{db_config[env]["database"]} -f production.sql`
 
     puts "Migrating"
-    Rake::Task['db:migrate'].invoke
+    `rake db:migrate`
+    # Rake::Task['db:migrate'].invoke
     if env == "development"
       puts "Cloning structure to test"
-      Rake::Task['db:test:clone'].invoke
+      `rake db:test:clone`
+      # Rake::Task['db:test:clone'].invoke
     end
     puts "Flushing redis cache"
     Redis.current.flushdb
+
+    if env == "development" && !Festival.upcoming_or_current
+      puts "Cloning last PIFF festival"
+      `rake clone_festival GROUP=piff`
+    end
   end
 end

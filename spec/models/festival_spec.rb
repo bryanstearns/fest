@@ -1,6 +1,21 @@
 require 'spec_helper'
 
 describe Festival do
+  it "finds a current festival" do
+    create(:festival, :past)
+    current_festival = create(:festival, published: true,
+                              starts_on: Date.yesterday)
+    create(:festival, :past)
+    expect(Festival.current).to eq(current_festival)
+  end
+
+  it "finds an upcoming festival" do
+    create(:festival, :past)
+    upcoming_festival = create(:festival, :upcoming)
+    create(:festival, :past)
+    expect(Festival.upcoming).to eq(upcoming_festival)
+  end
+
   context "when built" do
     subject { build(:festival) }
 

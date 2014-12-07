@@ -27,8 +27,30 @@ Feature: Enabling
     And I should be told that signins are off
     And I should be signed out
 
-  Scenario: Disabled signup
+  Scenario: Disabled signup - signup page
     Given I am not logged in
     When sign_up is disabled
     And I visit the signup page
     Then I should be told to try to sign up another time
+
+  Scenario: Enabled signup with a festival - home page
+    Given I am not logged in
+    And an upcoming festival exists
+    When sign_up is enabled
+    And I visit the home page
+    Then I should see the festival "now playing"
+    And I should be able to get started
+
+  Scenario: Disabled signup with a festival - home page
+    Given I am not logged in
+    And an upcoming festival exists
+    When sign_up is disabled
+    And I visit the home page
+    Then I should see the festival "coming soon"
+    And I should not be able to get started
+
+  Scenario: Disabled signup & no festival - home page
+    Given I am not logged in
+    When sign_up is disabled
+    And I visit the home page
+    Then I should not be able to get started

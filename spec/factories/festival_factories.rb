@@ -119,6 +119,7 @@ FactoryGirl.define do
     place "Placeville, Oregon"
     sequence(:slug_group) {|n| "fest#{n}" }
     name {|f| "Festival #{f.slug_group}" }
+    banner_name {|f| "Festival #{f.slug_group}" }
     starts_on Date.yesterday
     ends_on { starts_on.to_date + (day_count - 1) }
     published true

@@ -30,6 +30,7 @@ task clone_festival: :environment do
         slug: new_fest_slug,
         slug_group: old_fest.slug_group,
         name: old_fest.name + " Testing",
+        banner_name: "the #{old_fest.starts_on.year + 1} #{old_fest.name}",
         place: old_fest.place,
         main_url: old_fest.main_url,
         updates_url: old_fest.updates_url,

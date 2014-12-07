@@ -22,6 +22,16 @@ class Festival < ActiveRecord::Base
   RANDOM_UNASSIGNMENT_PERCENTAGE = 0.02
   RANDOM_REJECT_PERCENTAGE = 0.03
 
+  def self.current
+    published.where('starts_on >= ? and ends_on <= ?',
+                    Date.yesterday, Date.tomorrow).
+        order('starts_on').first
+  end
+
+  def self.upcoming
+    where('ends_on >= ?', Date.today).order('starts_on').first
+  end
+
   def to_param
     slug
   end

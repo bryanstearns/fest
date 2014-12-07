@@ -46,9 +46,9 @@ module Admin
   private
     def festival_params
       params.require(:festival).
-          permit(:ends_on, :has_press, :location_ids, :main_url, :name, :place,
-                 :published, :revised_at, :scheduled, :slug, :slug_group,
-                 :starts_on, :updates_url, location_ids: [])
+          permit(:banner_name, :ends_on, :has_press, :location_ids, :main_url,
+                 :name, :place, :published, :revised_at, :scheduled, :slug,
+                 :slug_group, :starts_on, :updates_url, location_ids: [])
     end
   end
 end

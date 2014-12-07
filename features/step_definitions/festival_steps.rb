@@ -1,4 +1,8 @@
 
+Given(/^an upcoming festival exists$/) do
+  create(:festival, :upcoming)
+end
+
 Given(/^I have scheduled at least one film$/) do
   create(:pick, user: @user, festival: @festival,
                 screening: @festival.screenings.first)

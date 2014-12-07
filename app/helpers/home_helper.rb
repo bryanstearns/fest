@@ -21,4 +21,27 @@ module HomeHelper
       end
     end
   end
+
+  def call_to_action
+    festival = Festival.current || Festival.upcoming
+    banner = if festival
+      if enabled?(:sign_up) && festival.published?
+        msg =  "Now playing:"
+        button = link_to("Get Started (it's free!)",
+                         festival_priorities_path(festival),
+                         class: 'btn btn-large btn-success')
+      else
+        msg =  "Coming soon:"
+        button = link_to("Check back in a few weeks!",
+                         festival_priorities_path(festival),
+                         class: 'btn btn-large', disabled: 'disabled',
+                         onclick: 'return false;')
+      end
+      content_tag(:h4, msg) + content_tag(:h2, festival.name) + button
+    else
+      # no current/upcoming festival, even if signups are enabled.
+      content_tag(:h4, "(Closed for the winter - check back soon!)")
+    end
+    content_tag(:div, banner, id: "nowplaying")
+  end
 end
