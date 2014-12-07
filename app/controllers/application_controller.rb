@@ -78,7 +78,8 @@ protected
   def log_session_state
     session_key = Rails.application.config.session_options[:key]
     size = (cookies[session_key] || "").size
-    Rails.logger.info("  Session, #{size} bytes: #{request.session.inspect}")
+    inspection = ": #{request.session.inspect}" if false
+    Rails.logger.info("  Session, #{size} bytes#{inspection}")
   end
 
   def log_memory_usage
