@@ -26,25 +26,36 @@
   font-size: 170%
   line-height: 1em
   text-align: center
-  .span4
+
+  .steps
+    @media (min-width: $screen-sm-min)
+      display: -webkit-box
+      display: -moz-box
+      display: -ms-flexbox
+      display: -webkit-flex
+      display: flex
+      flex: 1 0 auto
+
+  .step
     div
       font-size: 120%
       font-weight: bold
       line-height: 1em
       padding-bottom: 0.2em
+    margin: 0.7em
     padding: 1em
     font-size: 80%
     line-height: 1em
     border-radius: 5px
 
-  .span4.prioritize
+  .step.prioritize
     background-color: $unscheduled_color
 
-  .span4.availability
+  .step.availability
     background-color: $scheduled_color
     border: 2px solid $scheduled_border_color
 
-  .span4.browse
+  .step.browse
     background-color: $other_scheduled_color
 
 #nowplaying

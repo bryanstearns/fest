@@ -29,12 +29,12 @@ module HomeHelper
         msg =  "Now playing:"
         button = link_to("Get Started (it's free!)",
                          festival_priorities_path(festival),
-                         class: 'btn btn-large btn-success')
+                         class: 'btn btn-lg btn-success active')
       else
         msg =  "Coming soon:"
         button = link_to("Check back in a few weeks!",
                          festival_priorities_path(festival),
-                         class: 'btn btn-large', disabled: 'disabled',
+                         class: 'btn btn-lg active', disabled: 'disabled',
                          onclick: 'return false;')
       end
       content_tag(:h4, msg) + content_tag(:h2, festival.name) + button
