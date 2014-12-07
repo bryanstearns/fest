@@ -1,6 +1,9 @@
 
 class FestivalGroup
   extend ActiveModel::Naming
+  include ActiveModel::Conversion
+  include Comparable
+
   attr_accessor :name, :slug
 
   def initialize
@@ -37,5 +40,4 @@ class FestivalGroup
   def <=>(other)
     latest_festival_start <=> other.latest_festival_start
   end
-  include Comparable
 end

@@ -192,11 +192,11 @@ Then /^I should see a missing password message$/ do
 end
 
 Then /^I should see a missing password confirmation message$/ do
-  expect(field('js-password')).to have_content "doesn't match confirmation"
+  expect(field('js-confirmation')).to have_content "doesn't match Password"
 end
 
 Then /^I should see a mismatched password message$/ do
-  expect(field('js-password')).to have_content "doesn't match confirmation"
+  expect(field('js-confirmation')).to have_content "doesn't match Password"
 end
 
 Then /^I should see a signed out message$/ do
