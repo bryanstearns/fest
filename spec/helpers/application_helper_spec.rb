@@ -3,6 +3,22 @@ require 'spec_helper'
 describe ApplicationHelper, type: :helper do
   helper ApplicationHelper
 
+  describe "navbar brand link" do
+    subject { helper.navbar_brand_link }
+    context "when no user is logged in" do
+      before { allow(helper).to receive(:user_signed_in?).and_return(false) }
+      it { is_expected.to eq("<a class=\"navbar-brand\" href=\"/welcome\">Are you a Festival Fanatic?</a>") }
+    end
+    context "when a user is logged in" do
+      let(:user) { build(:user, name: "Dave") }
+      before do
+        allow(helper).to receive(:user_signed_in?).and_return(true)
+        allow(helper).to receive(:current_user).and_return(user)
+      end
+      it { is_expected.to eq("<a class=\"navbar-brand\" href=\"/welcome\">Dave is a Festival Fanatic!</a>") }
+    end
+  end
+
   context "current_user_is_admin?" do
     subject { helper.current_user_is_admin? }
     context "without user logged in" do

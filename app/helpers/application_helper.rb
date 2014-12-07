@@ -2,6 +2,16 @@ module ApplicationHelper
   include EnabledFlags
   include Countries::Helpers
 
+  def navbar_brand_link
+    prefix, suffix = if user_signed_in?
+      ["#{current_user.name} is a", "!"]
+    else
+      ["Are you a", "?"]
+    end
+    link_to("#{prefix} Festival Fanatic#{suffix}", welcome_path,
+            class: "navbar-brand")
+  end
+
   def webfont_link_tag
     families = [
       #"Droid+Serif:400,700,400italic,700italic",
