@@ -13,9 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui/datepicker
-//= require turbolinks
 //= require bootstrap
-//= require jquery.turbolinks
 //= require jquery.cookie
 //= require jquery.form
 //= require jquery.raty
