@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   include ActionView::Helpers::OutputSafetyHelper
   include EnabledFlags::ControllerStuff
 
+  before_filter :configure_permitted_parameters, if: :devise_controller?
   before_filter :log_session_state
   after_filter(:log_memory_usage) unless Rails.env.test?
 
@@ -73,6 +74,11 @@ protected
       heading,
       view_context.link_to(link_title, clear_announcements_path, method: :post)
     ]
+  end
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.for(:sign_up) << :name
+    devise_parameter_sanitizer.for(:account_update) << :name
   end
 
   def log_session_state

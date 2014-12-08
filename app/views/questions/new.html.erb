@@ -9,20 +9,23 @@
 </p>
 <% end %>
 
-<%= simple_form_for(@question) do |f| %>
-  <%= f.error_notification %>
+<%= bootstrap_form_for(@question) do |f| %>
+  <%= f.alert_message "Please fix the errors below.", error_summary: false %>
 
   <div class="form-inputs">
-    <%= f.input :name, label: "Your name",
-                input_html: { readonly: user_signed_in? } %>
-    <%= f.input :email, label: "Your email address", as: :email,
-                input_html: { readonly: user_signed_in? } %>
-    <%= f.input :question, label: "Your comments, suggestions, requests, or complaints",
-                input_html: { rows: 10, cols: 80 }%>
+    <%= f.text_field :name,
+                     label: "Your name",
+                     readonly: user_signed_in? %>
+    <%= f.email_field :email,
+                      label: "Your email address",
+                      readonly: user_signed_in? %>
+    <%= f.text_area :question,
+                    label: "Your comments, suggestions, requests, or complaints",
+                    rows: 10 %>
   </div>
 
-  <div class="form-actions">
-    <%= f.button :submit, 'Send' %>
+  <div class="form-actions well">
+    <%= f.submit 'Send' %>
     Thank you!
   </div>
 <% end %>

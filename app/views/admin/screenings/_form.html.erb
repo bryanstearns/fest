@@ -1,17 +1,15 @@
-<%= simple_form_for(@screening.new_record? ? [:admin, @film, @screening] \
-                                      : [:admin, @screening]) do |f| %>
-  <%= f.error_notification %>
+<%= bootstrap_form_for(@screening.new_record? ? [:admin, @film, @screening] \
+                                              : [:admin, @screening]) do |f| %>
+  <%= f.alert_message "Please fix the errors below.", error_summary: false %>
 
   <div class="form-inputs">
-    <%= f.input :venue_id, collection: @venues, autofocus: true %>
-    <%= f.input :starts_at, label: 'Starts', as: :string,
-                input_html: { value: f.object.starts_at.strftime("%Y-%m-%d %H:%M"),
-                              'data-handler' => 'ScreeningTimePicker' } %>
-    <%= f.input :press if @festival.has_press? %>
+    <%= f.collection_select :venue_id, @venues, :id, :name, autofocus: true %>
+    <%= f.datetime_local_field :starts_at, label: 'Starts' %>
+    <%= f.check_box :press if @festival.has_press? %>
   </div>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
+  <div class="form-actions well">
+    <%= f.submit %>
     <%= cancel_link(admin_film_path(@film)) %>
     <%= destroy_button([:admin, @screening]) %>
     <%= link_to('New Film (alt-n)', new_admin_festival_film_path(@festival),

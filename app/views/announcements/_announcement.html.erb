@@ -2,8 +2,8 @@
   <h4>
     <%= link_to_unless_current announcement.subject.html_safe,
                                announcement_path(announcement) %>
-    <%= link_to 'Edit', edit_admin_announcement_path(announcement),
-                class: "btn btn-sm btn-default" if current_user_is_admin? %>
+    <%= link_to('Edit', edit_admin_announcement_path(announcement),
+                class: "btn btn-xs btn-default") if current_user_is_admin? %>
   </h4>
   <div class="published">
     <% if announcement.published? %>

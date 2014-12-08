@@ -1,13 +1,13 @@
-<%= simple_form_for([:admin, @location]) do |f| %>
-  <%= f.error_notification %>
+<%= bootstrap_form_for([:admin, @location]) do |f| %>
+  <%= f.alert_message "Please fix the errors below.", error_summary: false %>
 
   <div class="form-inputs">
-    <%= f.input :name %>
-    <%= f.input :place %>
+    <%= f.text_field :name %>
+    <%= f.text_field :place %>
   </div>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
+  <div class="form-actions well">
+    <%= f.submit %>
     <%= cancel_link(admin_locations_path) %>
     <%= destroy_button([:admin, @location]) %>
   </div>

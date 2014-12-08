@@ -1,23 +1,30 @@
-<%= simple_form_for([:admin, @festival]) do |f| %>
-  <%= f.error_notification %>
+<%= bootstrap_form_for([:admin, @festival]) do |f| %>
+  <%= f.alert_message "Please fix the errors below.", error_summary: false %>
 
   <div class="form-inputs">
-    <%= f.input :name, :autofocus => true %>
-    <%= f.input :slug_group %>
-    <%= f.input :place %>
-    <%= f.input :starts_on %>
-    <%= f.input :ends_on %>
-    <%= f.input :main_url, label: 'Main URL' %>
-    <%= f.input :updates_url, label: 'Updates URL' %>
-    <%= f.input :published, hint: 'Include festival in the public list' %>
-    <%= f.input :scheduled, hint: 'Show as "Coming soon" unless checked' %>
-    <%= f.input :has_press, label: 'Has press screenings?' %>
-    <%= f.input :revised_at %>
-    <%= f.association :locations, as: :check_boxes, label_method: :label %>
+    <%= f.text_field :name, :autofocus => true %>
+    <%= f.text_field :slug_group %>
+    <%= f.text_field :place %>
+    <%= f.date_field :starts_on %>
+    <%= f.date_field :ends_on %>
+    <%= f.url_field :main_url, label: 'Main URL' %>
+    <%= f.url_field :updates_url, label: 'Updates URL' %>
+    <%= f.check_box :published, hint: 'Include festival in the public list' %>
+    <%= f.check_box :scheduled, hint: 'Show as "Coming soon" unless checked' %>
+    <%= f.check_box :has_press, label: 'Has press screenings?' %>
+    <%= f.datetime_local_field :revised_at %>
+
+    <%= f.label :locations %>
+    <div class="locations">
+      <%= f.collection_check_boxes(:location_ids, Location.order(:place, :name), :id, :name,
+                                   label: '&nbsp;'.html_safe, # suppress the label!
+                                   selected: @festival.location_ids,
+                                   multiple: true) %>
+    </div>
   </div>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
+  <div class="form-actions well">
+    <%= f.submit %>
     <%= cancel_link(festivals_path) %>
     <%= destroy_button([:admin, @festival]) %>
   </div>

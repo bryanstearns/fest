@@ -1,0 +1,17 @@
+<div class="row question">
+  <div class="col-md-3 col-height">
+    <div>
+      <%= link_to "Edit", edit_admin_question_path(question), class: 'btn btn-xs btn-default extra-action' %>
+      <b><%= link_to_if(question.user_id?, question.name, question.user_id? && admin_user_path(question.user)) %></b>
+      &lt;<%= question_mail_to(question) %>&gt;<br/>
+      <%= l question.created_at, format: :dmd_hm %>
+      <%= '(ack\'d)' if question.acknowledged %>
+      <%= '(done)' if question.done %>
+      <br/>
+
+    </div>
+  </div>
+  <div class="col-md-9 col-height">
+    <pre><%= question.question %></pre>
+  </div>
+</div>

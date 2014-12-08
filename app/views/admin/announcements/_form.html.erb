@@ -1,16 +1,16 @@
-<%= simple_form_for([:admin, @announcement],
-                    class: 'announcement') do |f| %>
-  <%= f.error_notification %>
+<%= bootstrap_form_for([:admin, @announcement],
+                       class: 'announcement') do |f| %>
+  <%= f.alert_message "Please fix the errors below.", error_summary: false %>
 
   <div class="form-inputs">
-    <%= f.input :subject %>
-    <%= f.input :contents %>
-    <%= f.input :published %>
-    <%= f.input :published_at, as: :string %>
+    <%= f.text_field :subject %>
+    <%= f.text_area :contents, rows: 6 %>
+    <%= f.check_box :published %>
+    <%= f.datetime_local_field :published_at %>
   </div>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
+  <div class="form-actions well">
+    <%= f.submit %>
     <%= cancel_link(announcements_path) %>
     <%= destroy_button([:admin, @announcement]) %>
   </div>

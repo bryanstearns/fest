@@ -1,20 +1,20 @@
-<%= simple_form_for(@film.new_record? ? [:admin, @festival, @film] \
-                                      : [:admin, @film]) do |f| %>
-  <%= f.error_notification %>
+<%= bootstrap_form_for(@film.new_record? ? [:admin, @festival, @film] \
+                                         : [:admin, @film]) do |f| %>
+  <%= f.alert_message "Please fix the errors below.", error_summary: false %>
 
   <div class="form-inputs">
-    <%= f.input :name, autofocus: true %>
-    <%= f.input :sort_name %>
-    <%= f.input :short_name %>
-    <%= f.input :duration_minutes, label: 'Duration' %>
-    <%= f.input :countries %>
-    <%= f.input :page %>
-    <%= f.input :url_fragment, label: 'URL Fragment' %>
-    <%= f.input :description, input_html: { rows: 4 } %>
+    <%= f.text_field :name, autofocus: true %>
+    <%= f.text_field :sort_name %>
+    <%= f.text_field :short_name %>
+    <%= f.text_field :duration_minutes, label: 'Duration' %>
+    <%= f.text_field :countries %>
+    <%= f.text_field :page %>
+    <%= f.text_field :url_fragment, label: 'URL Fragment' %>
+    <%= f.text_area :description, input_html: { rows: 4 } %>
   </div>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
+  <div class="form-actions well">
+    <%= f.submit %>
     <%= cancel_link(admin_festival_films_path(@festival)) %>
     <%= destroy_button([:admin, @film]) %>
   </div>

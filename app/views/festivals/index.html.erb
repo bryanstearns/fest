@@ -1,6 +1,6 @@
 <% content_for :title do %>Festivals<% end %>
 <%= link_to('New Festival', new_admin_festival_path,
-            class: 'btn btn-sm btn-default extra-action') \
+            class: 'btn btn-xs btn-default extra-action') \
       if current_user_is_admin? %>
 <h2>All Festivals</h2>
 <%= render in_groups(@festivals) %>

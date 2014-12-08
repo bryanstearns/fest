@@ -151,9 +151,6 @@ When /^I look at the list of users$/ do
 end
 
 ### THEN ###
-def field(field)
-  page.find("div.control-group.#{field}")
-end
 
 Then /^I should see the Sign Up button$/ do
   expect(page).to have_content "Sign up"
@@ -184,19 +181,19 @@ Then /^I should see a confirmation email message$/ do
 end
 
 Then /^I should see an invalid email message$/ do
-  expect(field('email')).to have_content "is invalid"
+  expect(page).to have_content "is invalid"
 end
 
 Then /^I should see a missing password message$/ do
-  expect(field('js-password')).to have_content "can't be blank"
+  expect(page).to have_content "can't be blank"
 end
 
 Then /^I should see a missing password confirmation message$/ do
-  expect(field('js-confirmation')).to have_content "doesn't match Password"
+  expect(page).to have_content "doesn't match Password"
 end
 
 Then /^I should see a mismatched password message$/ do
-  expect(field('js-confirmation')).to have_content "doesn't match Password"
+  expect(page).to have_content "doesn't match Password"
 end
 
 Then /^I should see a signed out message$/ do

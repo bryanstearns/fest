@@ -10,23 +10,19 @@
   "Schedule Films!" button, and I'll create a schedule just for you.
 <% end %>
 
-<%= simple_form_for(@subscription, url: festival_subscription_path(@festival),
-                    method: :put) do |f| %>
-  <%= f.error_notification %>
-  <div class="form-inputs">
+<%= bootstrap_form_for(@subscription, url: festival_subscription_path(@festival),
+                       method: :put) do |f| %>
+  <%= f.alert_message "Please fix the errors below.", error_summary: false %>
 
+  <div class="form-inputs">
     <ul>
       <li>
         Are there times you can't attend this festival? Enter them here
         and I won't schedule any screenings for these times (though I'll still
-        show them on the schedule, and you can still pick them manually).
-        <p>
-          This feature is kind of finicky: use dates and time ranges with
-          punctuation like this:<br/>
-          <i>2/5, 2/6 -10am, 2/8 11:30am-2pm & 8pm-10pm</i>
-        </p>
-        <%= f.error :restriction_text %>
-        <p><%= f.text_field :restriction_text, :size => 80 %></p>
+        show them on the schedule, and you can still pick them manually); use
+        dates and time ranges with punctuation like this:<br/>
+        <i>2/5, 2/6 -10am, 2/8 11:30am-2pm & 8pm-10pm</i>
+        <%= f.text_field :restriction_text, :label => '&nbsp;'.html_safe %>
       </li>
 
       <% if @festival.locations.any? %>
@@ -37,7 +33,7 @@
             just uncheck them here: I won't schedule any screenings at those
             theaters (though I'll still show them on the schedule, and you can
             still pick them manually).</p>
-          <%= f.error :excluded_location_ids %>
+          <%= f.errors_on :excluded_location_ids %>
           <%= hidden_field_tag "subscription[included_location_ids][]", "",
                                :name => "subscription[included_location_ids][]" %>
           <% included_ids = @subscription.included_location_ids
@@ -90,8 +86,8 @@
     </ul>
   </div>
 
-  <div class="form-actions">
-    <%= f.button :submit, 'Schedule Films!', 'data-handler' => 'ButtonProgress' %>
+  <div class="form-actions well">
+    <%= f.submit 'Schedule Films!', 'data-handler' => 'ButtonProgress' %>
     <span class="ajax-progress obscured"></span>
     <span class="obscured"> Be patient... this can take a minute!</span>
   </div>

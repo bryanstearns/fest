@@ -5,32 +5,6 @@
   <h3>Open feedback <small><%= link_to("(Show all)", admin_questions_path(all: true)) %></small></h3>
 <% end %>
 
-<table id="questions">
-  <tr>
-    <th>Received</th>
-    <th>From</th>
-    <th>Question</th>
-    <th>Acknowledged</th>
-    <th>Done</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @questions.each do |question| %>
-  <tr>
-    <td><%= l question.created_at, format: :mdy_hms %></td>
-    <td>
-      <%= link_to_if(question.user_id?, question.name, question.user_id? && admin_user_path(question.user)) %>
-      <%= question_mail_to(question) %>
-    </td>
-    <td><pre><%= question.question %></pre></td>
-    <td><%= question.acknowledged %></td>
-    <td><%= question.done %></td>
-    <td><%= link_to 'Show', admin_question_path(question) %></td>
-    <td><%= link_to 'Edit', edit_admin_question_path(question) %></td>
-    <td><%= link_to 'Destroy', admin_question_path(question),
-                    method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
+<div id="questions">
+  <%= render @questions %>
+</div>

@@ -1,13 +1,13 @@
-<%%= simple_form_for(@<%= singular_table_name %>) do |f| %>
-  <%%= f.error_notification %>
+<%%= bootstrap_form_for(@<%= singular_table_name %>) do |f| %>
+  <%%= f.alert_message "Please fix the errors below.", error_summary: false %>
 
   <div class="form-inputs">
   <%- attributes.each do |attribute| -%>
-    <%%= f.<%= attribute.reference? ? :association : :input %> :<%= attribute.name %> %>
+    <%%= f.text_field :<%= attribute.name %> %>
   <%- end -%>
   </div>
 
-  <div class="form-actions">
-    <%%= f.button :submit %>
+  <div class="form-actions well">
+    <%%= f.submit %>
   </div>
 <%% end %>

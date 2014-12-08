@@ -3,7 +3,7 @@
   <%= link_to date_range(festival), festival %>
   <% if current_user_is_admin? %>
     <span class="actions">
-      <%= link_to 'Edit', edit_admin_festival_path(festival), :class => "btn btn-sm btn-default" %>
+      <%= link_to 'Edit', edit_admin_festival_path(festival), :class => "btn btn-xs btn-default" %>
     </span>
   <% end %>
 <% end %>
