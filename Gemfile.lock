@@ -44,6 +44,7 @@ GEM
       railties (>= 3.1)
     bootstrap-sass (3.3.1.0)
       sass (~> 3.2)
+    bootstrap_form (2.2.0)
     builder (3.2.2)
     cache_digests (0.3.1)
       actionpack (>= 3.2)
@@ -272,9 +273,6 @@ GEM
       sprockets-rails (~> 2.0)
     shoulda-matchers (2.7.0)
       activesupport (>= 3.0.0)
-    simple_form (3.1.0)
-      actionpack (~> 4.0)
-      activemodel (~> 4.0)
     sinatra (1.4.5)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -336,6 +334,7 @@ DEPENDENCIES
   axlsx_rails
   bootstrap-modal-rails
   bootstrap-sass
+  bootstrap_form
   cache_digests
   capistrano-ext
   capistrano-unicorn
@@ -366,7 +365,6 @@ DEPENDENCIES
   rspec-rails
   sass-rails
   shoulda-matchers
-  simple_form
   spring
   spring-commands-cucumber
   spring-commands-rspec

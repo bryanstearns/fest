@@ -4,6 +4,7 @@ gem 'rails', '4.1.6'
 
 gem 'airbrake'
 gem 'axlsx_rails'
+gem 'bootstrap_form'
 gem 'cache_digests'
 gem 'capistrano-ext', require: false
 gem 'capistrano-unicorn', require: false
@@ -17,7 +18,6 @@ gem 'pg'
 gem 'prawn'
 gem 'redis-rails'
 gem 'sass-rails'
-gem 'simple_form'
 gem 'underscore-rails'
 gem 'unicorn'
 gem 'unicorn-worker-killer'
