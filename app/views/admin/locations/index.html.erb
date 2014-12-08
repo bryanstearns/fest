@@ -1,5 +1,5 @@
 <%= link_to 'New Location', new_admin_location_path,
-            class: 'admin btn btn-small' %>
+            class: 'admin btn btn-sm btn-default' %>
 <h1>Listing locations</h1>
 
 <% @locations.group_by(&:place).each do |place, locations| %>

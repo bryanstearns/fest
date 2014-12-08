@@ -30,7 +30,7 @@
       <i>Ah, I see you're an FFFF member! I'll share your ratings with Doug.
         <% if allow_ffff_download? %>
           Oh, it's you, Doug: <%= link_to("FFFF Ratings", festival_path(@festival, format: :xlsx),
-                                          class: 'btn btn-small') %>
+                                          class: 'btn btn-sm btn-default') %>
         <% end %>
       </i>
     <% else %>
@@ -50,7 +50,7 @@
         <%= button_to "Discard all priorities and ratings",
                       reset_rankings_festival_path(@festival),
                       :confirm => "Are you sure you want to throw away all your priorities and ratings?",
-                      :class => "btn btn-small" %>
+                      :class => "btn btn-sm btn-default" %>
       </span>
     </div>
 
@@ -61,7 +61,7 @@
           to <%= 100 - (Festival::RANDOM_UNASSIGNMENT_PERCENTAGE * 100).to_i %>% of the films:</i>
           <%= button_to "Assign random priorities",
                         random_priorities_festival_path(@festival),
-                        :class => "btn btn-small" %>
+                        :class => "btn btn-sm btn-default" %>
         </span>
       </div>
     <% end %>

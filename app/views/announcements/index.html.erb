@@ -1,6 +1,6 @@
 <% content_for :title do %>Announcements<% end %>
 <%= link_to "New announcement", new_admin_announcement_path,
-            class: "btn btn-small", id: 'new_announcement' \
+            class: "btn btn-sm btn-default", id: 'new_announcement' \
       if current_user_is_admin? %>
 
 <h3>All News</h3>

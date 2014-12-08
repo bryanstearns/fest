@@ -1,7 +1,7 @@
-<%= link_to 'New', new_admin_user_path, class: 'btn btn-small extra-action' %>
+<%= link_to 'New', new_admin_user_path, class: 'btn btn-sm btn-default extra-action' %>
 <% ['Name', 'Email', 'Activity'].each do |key| %>
   <%= link_to "By #{key}", admin_users_path(order: key.downcase),
-              class: 'btn btn-small extra-action' %>
+              class: 'btn btn-sm btn-default extra-action' %>
 <% end %>
 
 <% if params[:festival_id] %>

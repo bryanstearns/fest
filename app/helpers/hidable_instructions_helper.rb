@@ -23,6 +23,6 @@ module HidableInstructionsHelper
             'data-handler' => 'ToggleInstructions',
             'data-value' => current_user.hide_instructions.to_s,
             id: "instructions_button",
-            class: 'btn btn-small extra-action hidden-print')
+            class: 'btn btn-sm btn-default extra-action hidden-print')
   end
 end

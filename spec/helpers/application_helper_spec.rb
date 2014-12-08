@@ -19,6 +19,22 @@ describe ApplicationHelper, type: :helper do
     end
   end
 
+  describe "compiling a class list" do
+    subject { helper.classes(*args).to_s }
+    context "nils & blanks are removed" do
+      let(:args) { [:foo, nil, '', '  ', :bar] }
+      it { is_expected.to eq("foo bar") }
+    end
+    context "dups are removed and spaces are trimmed" do
+      let(:args) { [:foo, "  foo "] }
+      it { is_expected.to eq("foo") }
+    end
+    context "empty is empty" do
+      let(:args) { [] }
+      it { is_expected.to eq("") }
+    end
+  end
+
   context "current_user_is_admin?" do
     subject { helper.current_user_is_admin? }
     context "without user logged in" do
@@ -167,7 +183,7 @@ describe ApplicationHelper, type: :helper do
     context "when not on the current page" do
       it "should produce a li without class 'active'" do
         allow(helper).to receive(:current_page?).and_return(false)
-        expect(subject).to match(/^<li>/)
+        expect(subject).to_not match(/^<li class="active">/)
       end
     end
   end

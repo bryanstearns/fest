@@ -46,6 +46,9 @@ form select.datetime,select.date
   float: right
   margin-left: 0.7em
 
+.btn-default
+  margin: 0.3em
+
 .obscured
   display: hidden
   visibility: hidden
@@ -67,3 +70,11 @@ form select.datetime,select.date
 
 span.unbreakable
   white-space: nowrap
+
+.festivals-admin
+  // For some reason, the first button in the stack is shifted right a little;
+  // this fixes that:
+  .btn-group-vertical
+    margin: 0.3em
+  .btn-default
+    margin: 0

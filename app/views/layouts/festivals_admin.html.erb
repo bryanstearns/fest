@@ -1,15 +1,14 @@
 <% content_for :festivals_admin_content do %>
-  <div class="container-fluid">
-    <div class="row-fluid">
-      <div class="span2">
-        <ul class="nav nav-tabs nav-stacked">
-          <%= link_in_list_to "Festival", edit_admin_festival_path(@festival) %>
-          <%= link_in_list_to "Films", admin_festival_films_path(@festival) %>
-          <%= link_in_list_to "Users", admin_festival_users_path(@festival) %>
-          <%= link_in_list_to "Statistics", admin_festival_path(@festival) %>
-        </ul>
+  <div class="row festivals-admin">
+      <div class="col-md-2">
+        <div class="btn-group-vertical" role="group">
+          <%= link_to "Festival", edit_admin_festival_path(@festival), class: "btn btn-default" %>
+          <%= link_to "Films", admin_festival_films_path(@festival), class: "btn btn-default" %>
+          <%= link_to "Users", admin_festival_users_path(@festival), class: "btn btn-default" %>
+          <%= link_to "Statistics", admin_festival_path(@festival), class: "btn btn-default" %>
+        </div>
       </div>
-      <div class="span10">
+      <div class="col-md-10">
         <%= yield %>
       </div>
     </div>

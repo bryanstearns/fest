@@ -1,4 +1,4 @@
-<%= link_to 'Edit', edit_admin_film_path(@film), class: 'btn btn-small extra-action' %>
+<%= link_to 'Edit', edit_admin_film_path(@film), class: 'btn btn-sm btn-default extra-action' %>
 <h1><%= @film.name %></h1>
 
 <table id="film" class="table table-condensed">
@@ -39,7 +39,7 @@
     <th>
       <%= pluralize(@film.screenings.count, "Screening") %>
       <%= link_to('New Screening', new_admin_film_screening_path(@film),
-                  class: 'btn btn-small', id: 'new_film_screening') %>
+                  class: 'btn btn-sm btn-default', id: 'new_film_screening') %>
     </th>
     <th>Venue</th>
     <th>Press?</th>

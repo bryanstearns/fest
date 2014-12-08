@@ -89,13 +89,39 @@ module ApplicationHelper
     ]
   end
 
-  def link_in_list_to(title, target, options={})
-    current = options.delete(:current)
-    options[:class] = [options[:class], 'active'].compact.join(' ') \
-      if (current || current_page?(target))
-    link_options = options.delete(:link_options) || {}
+  def classes(*list)
+    # take a list of classes; return a list that:
+    # - omits duplicate/blank/nil elements
+    # - handles to_s like join(' ')
+    [].tap do |ary|
+      ary.define_singleton_method(:<<) do |s|
+        s = s.to_s.strip
+        super(s) unless (s.blank? || self.include?(s))
+        self
+      end
+      ary.define_singleton_method(:to_s) do
+        self.join(' ')
+      end
+      list.each {|s| ary << s }
+    end
+  end
 
-    content_tag(:li, link_to(title, target, link_options.merge('data-no-turbolink' => true)), options)
+  def active_if_current!(target, options={})
+    # the ! is because we modify options to remove :current --
+    current = options.delete(:current)
+    'active' if (current || current_page?(target))
+  end
+
+  def link_to_with_active(title, target, options={})
+    options[:class] = classes(options[:class], options[:more_classes],
+                              active_if_current!(target, options))
+    link_to(title, target, options)
+  end
+
+  def link_in_list_to(title, target, options={})
+    options[:class] = classes(options[:class], active_if_current!(target, options))
+    link_options = options.delete(:link_options) || {}
+    content_tag(:li, link_to(title, target, link_options), options)
   end
 
   def cancel_link(record, options={})
