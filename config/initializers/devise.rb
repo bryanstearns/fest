@@ -4,13 +4,17 @@ Devise.setup do |config|
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
   # confirmation, reset password and unlock tokens in the database.
-  # config.secret_key = '257f61893aa9e8c24a9977140010a53e487ec180dc5471373b38e1aa8e8a144a1f2690d369832b00bdb40eba42b8c8f9e745b559dc5ffef3f0d337d60b984149'
+  config.secret_key = if Rails.env.test? || defined?(Rake)
+    'the stuff that dreams are made of'
+  else
+    File.read('config/devise_key').strip
+  end
 
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = 'please-change-me-at-config-initializers-devise@example.com'
+  config.mailer_sender = 'festfan@festivalfanatic.com'
 
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
@@ -97,7 +101,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 10
 
   # Setup a pepper to generate the encrypted password.
-  # config.pepper = 'f732558388f79f8e3330ece1fe7bb45140d09befa2606044666184ead75fbc3b2966881d12cb982104f75de3a440844d95233b8e58d9ebf7e1bdc9cdd60ffa0f'
+  config.pepper = '249078dfe4a0135177a0f79924828ddcb0878e63d4e88da65d4666e24fd60aca1fc70ff86f2124be88da6acf764fff23b2989169070ba0e770e5d34816c3fbc3'
 
   # ==> Configuration for :confirmable
   # A period that the user is allowed to access the website even without
@@ -113,7 +117,7 @@ Devise.setup do |config|
   # their account can't be confirmed with the token any more.
   # Default is nil, meaning there is no restriction on how long a user can take
   # before confirming their account.
-  # config.confirm_within = 3.days
+  config.confirm_within = 5.days
 
   # If true, requires any email changes to be confirmed (exactly the same way as
   # initial account confirmation) to be applied. Requires additional unconfirmed_email
@@ -140,7 +144,7 @@ Devise.setup do |config|
 
   # ==> Configuration for :validatable
   # Range for password length.
-  config.password_length = 8..128
+  config.password_length = 6..128
 
   # Email regex used to validate email formats. It simply asserts that
   # one (and only one) @ exists in the given string. This is mainly
@@ -170,6 +174,7 @@ Devise.setup do |config|
   # :both  = Enables both strategies
   # :none  = No unlock strategy. You should handle unlocking by yourself.
   # config.unlock_strategy = :both
+  config.unlock_strategy = :time
 
   # Number of authentication tries before locking an account if lock_strategy
   # is failed attempts.
@@ -189,7 +194,7 @@ Devise.setup do |config|
   # Time interval you can reset your password with a reset password key.
   # Don't put a too small interval or your users won't have the time to
   # change their passwords.
-  config.reset_password_within = 6.hours
+  config.reset_password_within = 3.days
 
   # ==> Configuration for :encryptable
   # Allow you to use another encryption algorithm besides bcrypt (default). You can use
@@ -227,7 +232,7 @@ Devise.setup do |config|
   # config.navigational_formats = ['*/*', :html]
 
   # The default HTTP method used to sign out a resource. Default is :delete.
-  config.sign_out_via = :delete
+  config.sign_out_via = [:delete, :get] # (Adding :get allows tests to pass)
 
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
@@ -256,4 +261,11 @@ Devise.setup do |config|
   # When using omniauth, Devise cannot automatically set Omniauth path,
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
+end
+
+# Record sign ins
+Warden::Manager.after_authentication except: :fetch do |record, warden, options|
+  #Rails.logger.info("warden after_authentication: #{record.inspect}, #{options.inspect}")
+  Activity.record("sign_in", user: record)
+  NewRelic::Agent.add_custom_parameters(:user_id => record.id)
 end
