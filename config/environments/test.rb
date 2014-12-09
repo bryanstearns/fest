@@ -20,6 +20,9 @@ Rails.application.configure do
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
 
+  # Raise to help track down unpermitted parameters
+  config.action_controller.action_on_unpermitted_parameters = :raise
+
   # Raise exceptions instead of rendering exception templates.
   config.action_dispatch.show_exceptions = false
 
