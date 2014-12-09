@@ -6,8 +6,17 @@
 
 body.festivals-edit
   .locations
+    label.control-label
+      display: none
     div.checkbox
-      padding-left: 1em
       display: inline-block
       white-space: nowrap
       width: 18em
+
+.festivals-admin
+  // For some reason, the first button in the stack is shifted right a little;
+  // this fixes that:
+  .btn-group-vertical
+    margin: 0.3em
+  .btn-default
+    margin: 0

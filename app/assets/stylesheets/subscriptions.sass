@@ -5,14 +5,15 @@
     margin-bottom: 1.5em
     p
       margin-bottom: 0.7em
-    &.locations div
-      padding-left: 1em
-      display: inline-block
-      white-space: nowrap
-      width: 13em
-    label.box
-      display: inline
-      padding-left: 0.3em
+    &.locations
+      label.control-label
+        display: none
+      div.checkbox
+        display: inline-block
+        white-space: nowrap
+        width: 13em
+      label
+        font-weight: bold
     .help-inline
       display: block
       // color: $errorText

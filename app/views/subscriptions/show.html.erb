@@ -32,21 +32,17 @@
             probably go to all of them, but if any are too inconvenient for you,
             just uncheck them here: I won't schedule any screenings at those
             theaters (though I'll still show them on the schedule, and you can
-            still pick them manually).</p>
+            still pick them manually).
+          </p>
           <%= f.errors_on :excluded_location_ids %>
-          <%= hidden_field_tag "subscription[included_location_ids][]", "",
-                               :name => "subscription[included_location_ids][]" %>
-          <% included_ids = @subscription.included_location_ids
-             @festival.locations.sort_by {|l| l.name }.each do |location| -%>
-            <div>
-              <% id = location.id %>
-              <%= check_box_tag "subscription[included_location_ids][#{id}]", id,
-                                included_ids.include?(id),
-                                :name => "subscription[included_location_ids][]" %>
-              <%= label_tag "subscription_included_location_ids_#{id}", location.name,
-                            class: 'box' %>
-            </div>
-          <% end -%>
+          <div>
+            <%= f.collection_check_boxes(:included_location_ids,
+                                         @festival.locations.sort_by(&:name),
+                                         :id, :name,
+                                         label: 'hidden by css',
+                                         selected: @subscription.included_location_ids,
+                                         multiple: true) %>
+          </div>
         </li>
       <% end -%>
 

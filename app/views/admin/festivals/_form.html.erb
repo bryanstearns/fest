@@ -16,8 +16,9 @@
 
     <%= f.label :locations %>
     <div class="locations">
-      <%= f.collection_check_boxes(:location_ids, Location.order(:place, :name), :id, :name,
-                                   label: '&nbsp;'.html_safe, # suppress the label!
+      <%= f.collection_check_boxes(:location_ids, Location.order(:place, :name),
+                                   :id, :name,
+                                   label: 'hidden by css',
                                    selected: @festival.location_ids,
                                    multiple: true) %>
     </div>
