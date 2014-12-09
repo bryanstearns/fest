@@ -39,10 +39,10 @@ class Restriction
   def self.parse_one_day(text, context_date)
     date_text, times_text = text.split(' ', 2)
     date_text.strip!
-    raise(ArgumentError, "Invalid date: '#{date_text}'") \
+    raise(ArgumentError, "Was expecting '#{date_text}' to be a date like mm/dd.") \
       unless date_text =~ %r/^\d\d?\/\d\d?$/
     date = Time.zone.parse(date_text, context_date) || \
-      raise(ArgumentError, "Invalid date: '#{date_text}'")
+      raise(ArgumentError, "Can't figure out this date: '#{date_text}'.")
     diff = context_date - date.to_date
     if diff > 300
       date += 1.year
@@ -70,9 +70,9 @@ class Restriction
     begin
       parsed = Time.zone.parse(text, date)
     rescue
-      raise(ArgumentError, "Invalid time: '#{time_text}'")
+      raise(ArgumentError, "'#{time_text}' doesn't seem to be a time.")
     end
-    raise(ArgumentError, "Invalid time: '#{time_text}'") \
+    raise(ArgumentError, "'#{time_text}' doesn't seem to be a time.") \
       unless parsed
     parsed
   end
