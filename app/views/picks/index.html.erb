@@ -49,8 +49,8 @@
         start over by clicking this button:
         <%= button_to "Discard all priorities and ratings",
                       reset_rankings_festival_path(@festival),
-                      :confirm => "Are you sure you want to throw away all your priorities and ratings?",
-                      :class => "btn btn-sm btn-default" %>
+                      data: { confirm: "Are you sure you want to throw away all your priorities and ratings?" },
+                      class: "btn btn-sm btn-default" %>
       </span>
     </div>
 
