@@ -19,8 +19,9 @@ Rails.application.configure do
   # For large-scale production use, consider using a caching reverse proxy like nginx, varnish or squid.
   # config.action_dispatch.rack_cache = true
 
-  # Disable Rails's static asset server (Apache or nginx will already do this).
-  config.serve_static_assets = false
+  # Disable Rails's static asset server (Apache or nginx will already do this)
+  # unless we're running LOCAL_STAGING
+  config.serve_static_assets = ENV['LOCAL_STAGING'].present?
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
@@ -39,7 +40,7 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = true
+  config.force_ssl = ENV['LOCAL_STAGING'].blank?
 
   # Set to :debug to see everything in the log.
   config.log_level = :debug
@@ -61,10 +62,16 @@ Rails.application.configure do
   # config.action_mailer.raise_delivery_errors = false
 
   # Make sure URLs in emails will work
-  config.action_mailer.default_url_options = { host: 'staging.festivalfanatic.com',
-                                               protocol: 'https' }
-  Rails.application.routes.default_url_options[:host] = 'staging.festivalfanatic.com'
-  Rails.application.routes.default_url_options[:protocol] = 'https'
+  if ENV['LOCAL_STAGING'].blank?
+    config.action_mailer.default_url_options = { host: 'staging.festivalfanatic.com',
+                                                 protocol: 'https' }
+    Rails.application.routes.default_url_options[:host] = 'staging.festivalfanatic.com'
+    Rails.application.routes.default_url_options[:protocol] = 'https'
+  else
+    config.action_mailer.default_url_options = { host: 'localhost:3000' }
+    Rails.application.routes.default_url_options[:host] = 'localhost:3000'
+  end
+
 
   # Don't send mail by default (our mailcatcher initializer may override this!)
   config.action_mailer.delivery_method = :test
