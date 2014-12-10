@@ -20,7 +20,7 @@ module Admin
       respond_with(:admin, @question = Question.find(params[:id]))
     end
 
-    # PUT /admin/questions/1
+    # PATCH /admin/questions/1
     def update
       @question = Question.find(params[:id])
       if @question.update_attributes(question_params)

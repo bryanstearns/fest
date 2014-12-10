@@ -3,7 +3,7 @@ module Admin
     before_filter :authenticate_admin!
     respond_to :html
     delegate :set_enabled_value, to: :view_context
-    # PUT /admin/enabled_flags/foo
+    # PATCH /admin/enabled_flags/foo
     def update
       updated = %w[site sign_in sign_up].include?(params[:id]) &&
                 set_enabled_value(params[:id].to_sym, params[:value] == 'true')

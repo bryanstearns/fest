@@ -22,7 +22,7 @@ module Admin
       respond_with(:admin, @announcement, location: announcements_path)
     end
 
-    # PUT /admin/announcements/1
+    # PATCH /admin/announcements/1
     def update
       @announcement = Announcement.find(params[:id])
       if @announcement.update_attributes(announcement_params)

@@ -23,7 +23,7 @@ module Admin
       respond_with(:admin, @venue, location: admin_locations_path)
     end
 
-    # PUT /admin/venues/1
+    # PATCH /admin/venues/1
     def update
       @venue = Venue.find(params[:id])
       if @venue.update_attributes(venue_params)

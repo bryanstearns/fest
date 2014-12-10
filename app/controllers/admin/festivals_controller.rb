@@ -26,7 +26,7 @@ module Admin
       respond_with(:admin, @festival, location: festivals_path)
     end
 
-    # PUT /admin/festivals/1
+    # PATCH /admin/festivals/1
     def update
       @festival = Festival.find_by_slug!(params[:id])
       if @festival.update_attributes(festival_params)

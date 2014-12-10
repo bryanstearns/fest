@@ -41,7 +41,7 @@ module Admin
       respond_with(:admin, @film, location: location)
     end
 
-    # PUT /admin/films/1
+    # PATCH /admin/films/1
     def update
       @film = Film.includes(:festival).find(params[:id])
       @festival = @film.festival

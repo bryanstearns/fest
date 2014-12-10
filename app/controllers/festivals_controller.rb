@@ -45,21 +45,21 @@ class FestivalsController < ApplicationController
       if request.format == Mime::Type.lookup_by_extension(:xlsx)
   end
 
-  # PUT /festivals/1/random_priorities
+  # PATCH /festivals/1/random_priorities
   def random_priorities
     @festival.random_priorities(current_user) if user_signed_in?
     flash[:notice] = 'Random priorities have been set.'
     redirect_to festival_priorities_path(@festival)
   end
 
-  # PUT /festivals/1/reset_rankings
+  # PATCH /festivals/1/reset_rankings
   def reset_rankings
     @festival.reset_rankings(current_user) if user_signed_in?
     flash[:notice] = 'Your priorities and ratings have been reset.'
     redirect_to festival_priorities_path(@festival)
   end
 
-  # PUT /festivals/1/reset_screenings
+  # PATCH /festivals/1/reset_screenings
   def reset_screenings
     @festival.reset_screenings(current_user) if user_signed_in?
     flash[:notice] = 'All your screenings have been unselected.'

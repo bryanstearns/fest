@@ -27,7 +27,7 @@ module Admin
       respond_with(:admin, @location, location: admin_locations_path)
     end
 
-    # PUT /admin/locations/1
+    # PATCH /admin/locations/1
     def update
       @location = Location.find(params[:id])
       if @location.update_attributes(location_params)

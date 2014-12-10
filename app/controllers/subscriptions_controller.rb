@@ -13,7 +13,7 @@ class SubscriptionsController < ApplicationController
     respond_with(@subscription)
   end
 
-  # PUT /festivals/1/assistant
+  # PATCH /festivals/1/assistant
   def update
     if @subscription.update_attributes(subscription_params)
       maybe_run_autoscheduler

@@ -42,7 +42,7 @@ module Admin
       respond_with(:admin, @screening, location: location)
     end
 
-    # PUT /admin/screenings/1
+    # PATCH /admin/screenings/1
     def update
       if @screening.update_attributes(screening_params)
         emails = @users.map {|u| u.email }

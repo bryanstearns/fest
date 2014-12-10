@@ -50,7 +50,7 @@ module Admin
       respond_with(:admin, @user)
     end
 
-    # PUT /admin/users/1
+    # PATCH /admin/users/1
     def update
       @user = User.find(params[:id])
       if @user.update_attributes(user_params)
