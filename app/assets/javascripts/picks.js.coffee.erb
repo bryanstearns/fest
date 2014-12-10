@@ -1,5 +1,22 @@
-<% environment.context_class.instance_eval { include PicksHelper } %>
+<%
+  environment.context_class.instance_eval { include PicksHelper }
 
+  # Keep the asset pipeline happy: build a lookup table from name to
+  # (possibly-fingerprinted) filename)
+  raty_image_base, cancel_off_image_name =
+    File.split(image_path('raty/cancel-off.png'))
+  raty_image_name = {
+    cancelOff: cancel_off_image_name,
+    cancelOn: File.basename(image_path('raty/cancel-on.png')),
+    starHalf: File.basename(image_path('raty/star-half.png')),
+    starOff: File.basename(image_path('raty/star-off.png')),
+    starOn: File.basename(image_path('raty/star-on.png')),
+    faceA: File.basename(image_path('raty/face-a.png')),
+    faceAOff: File.basename(image_path('raty/face-a-off.png')),
+    faceB: File.basename(image_path('raty/face-b.png')),
+    faceBOff: File.basename(image_path('raty/face-b-off.png'))
+  }
+%>
 Handlers.register 'Picks', class
   priority_to_index: <%= pick_priority_to_index_in_javascript %>
   index_to_priority: <%= pick_index_to_priority_in_javascript %>
@@ -52,11 +69,16 @@ Handlers.register 'Picks', class
       cancel: true
       cancelHint: 'Forget this priority'
       hints: <%= pick_priority_hints_in_javascript %>
-      path: '<%= File.dirname(image_path('raty/face-a.png')) %>'
+      path: '<%= raty_image_base %>'
+      cancelOff: '<%= raty_image_name[:cancelOff] %>'
+      cancelOn: '<%= raty_image_name[:cancelOn] %>'
+      starHalf: '<%= raty_image_name[:starHalf] %>'
+      starOff: '<%= raty_image_name[:starOff] %>'
+      starOn: '<%= raty_image_name[:starOn] %>'
       size: 18
       iconRange: [
-        { range: 1, on: 'face-a.png', off: 'face-a-off.png' }
-        { range: 5, on: 'face-b.png', off: 'face-b-off.png' }
+        { range: 1, on: '<%= raty_image_name[:faceA] %>', off: '<%= raty_image_name[:faceAOff] %>' }
+        { range: 5, on: '<%= raty_image_name[:faceB] %>', off: '<%= raty_image_name[:faceBOff] %>' }
       ]
       score: ->
         self.priority_to_index[jQuery(this).attr('data-priority')] + 1
@@ -78,7 +100,12 @@ Handlers.register 'Picks', class
       cancelHint: 'Forget this rating'
       number: 5,
       hints: <%= pick_rating_hints_in_javascript %>
-      path: '<%= File.dirname(image_path('raty/face-a.png')) %>'
+      path: '<%= raty_image_base %>'
+      cancelOff: '<%= raty_image_name[:cancelOff] %>'
+      cancelOn: '<%= raty_image_name[:cancelOn] %>'
+      starHalf: '<%= raty_image_name[:starHalf] %>'
+      starOff: '<%= raty_image_name[:starOff] %>'
+      starOn: '<%= raty_image_name[:starOn] %>'
       size: 18
       score: ->
         jQuery(this).attr('data-rating')
