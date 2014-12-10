@@ -11,7 +11,7 @@ class Day
   attr_accessor :page_break_before
 
   # Geometry
-  HOUR_HEIGHT = 50.0 # height of one hour in pixels
+  HOUR_HEIGHT = 60.0 # height of one hour in pixels
   MINUTE_HEIGHT = HOUR_HEIGHT / 60.0
   PADDING_HEIGHT = 9.0 # Padding we add around the screening
   PAGE_HEIGHT = 1000 # height of a page in pixels, for pagination
@@ -32,7 +32,7 @@ class Day
   end
 
   def grid_height
-    (ends_at - starts_at).to_minutes * MINUTE_HEIGHT
+    ((ends_at - starts_at).to_minutes * MINUTE_HEIGHT).ceil
   end
 
   def column_keys
@@ -80,9 +80,9 @@ private
       screenings.each do |screening|
         column_key, time_before = positioner.position_for(screening)
         viewings[column_key] <<
-            Viewing.new(screening, time_before * MINUTE_HEIGHT,
-                        (screening.duration.to_minutes * MINUTE_HEIGHT) -
-                          PADDING_HEIGHT)
+            Viewing.new(screening, (time_before * MINUTE_HEIGHT).ceil,
+                        (screening.duration.to_minutes * MINUTE_HEIGHT).ceil -
+                          0) #PADDING_HEIGHT)
       end
     end
   end

@@ -3,7 +3,8 @@
 // see: http://twitter.github.com/bootstrap/customize.html#variables
 $font-family-base:  "Droid Sans", sans-serif
 $font-family-serif: "Droid Serif", serif
-$dayHourHeight: <%= Day::HOUR_HEIGHT - 1 %>px
+//= depend_on ../../presenters/day.rb
+$dayHourHeight: <%= Day::HOUR_HEIGHT %>px
 
 $navbarCollapseWidth:             800px
 $navbarCollapseDesktopWidth:      $navbarCollapseWidth + 1
@@ -14,6 +15,7 @@ $navbarInverseLinkColor: $navbarBrandColor
 
 $linkColor: #1b1b1b
 
+//= depend_on _bootstrap.scss
 @import "bootstrap"
 
 // Include the rest of our sass files here, where they can see Bootstrap's
