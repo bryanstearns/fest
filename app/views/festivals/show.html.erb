@@ -38,7 +38,12 @@
     <%= festival_revision_info(@festival) %>
   </div>
 
-  <div id="screening-modal" class="modal hide" tabindex="-1"></div>
+  <div id="screening-modal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      </div>
+    </div>
+  </div>
 <% end %>
 
 <%= render partial: 'picks/picks', object: @picks %>
