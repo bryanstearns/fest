@@ -5,23 +5,26 @@ gem 'rails', '4.1.8'
 gem 'airbrake'
 gem 'axlsx_rails'
 gem 'bootstrap_form'
+gem 'bootstrap-modal-rails'
+gem 'bootstrap-sass'
 gem 'cache_digests'
 gem 'capistrano-ext', require: false
 gem 'capistrano-unicorn', require: false
-gem 'jquery-rails'
-gem 'bootstrap-modal-rails'
-gem 'bootstrap-sass'
+gem 'coffee-rails'
 gem 'devise'
 gem 'handlers-js'
+gem 'icalendar'
+gem 'jquery-rails'
+gem 'jquery-ui-rails'
 gem 'newrelic_rpm'
 gem 'pg'
 gem 'prawn'
 gem 'redis-rails'
 gem 'sass-rails'
+gem 'uglifier'
 gem 'underscore-rails'
 gem 'unicorn'
 gem 'unicorn-worker-killer'
-gem 'icalendar'
 
 group :development do
   gem 'listen'
@@ -36,12 +39,6 @@ group :development do
   #gem 'better_errors'
   #gem 'binding_of_caller' # better_errors wants this
   gem 'pry-nav'
-end
-
-group :assets, :development, :test do
-  gem 'coffee-rails'
-  gem 'jquery-ui-rails'
-  gem 'uglifier'
 end
 
 group :test do
