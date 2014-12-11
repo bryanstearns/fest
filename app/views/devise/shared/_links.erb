@@ -11,19 +11,19 @@
 <%- if devise_mapping.recoverable? && controller_name != 'passwords' %>
   Forgot your password?
   <%= link_to "Click here", new_password_path(resource_name), class: 'btn btn-xs btn-default' %>
-  and we'll email you instructions to reset it.<br />
+  and I'll email you instructions to reset it.<br />
 <% end -%>
 
 <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
   Didn't receive confirmation instructions?
   <%= link_to "Click here", new_confirmation_path(resource_name), class: 'btn btn-xs btn-default' %>
-  and we'll fix that.<br />
+  and I'll fix that.<br />
 <% end -%>
 
 <%- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks' %>
   Didn't receive unlock instructions?
   <%= link_to "Click here", new_unlock_path(resource_name), class: 'btn btn-xs btn-default' %>
-  and we'll fix that.<br />
+  and I'll fix that.<br />
 <% end -%>
 
 <%- if devise_mapping.omniauthable? %>
