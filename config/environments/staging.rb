@@ -61,7 +61,7 @@ Rails.application.configure do
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
 
-  # Make sure URLs in emails will work
+  # Make sure URLs in emails will work; send 'em to letter_opener
   if ENV['LOCAL_STAGING'].blank?
     config.action_mailer.default_url_options = { host: 'staging.festivalfanatic.com',
                                                  protocol: 'https' }
@@ -71,10 +71,7 @@ Rails.application.configure do
     config.action_mailer.default_url_options = { host: 'localhost:3000' }
     Rails.application.routes.default_url_options[:host] = 'localhost:3000'
   end
-
-
-  # Don't send mail by default (our mailcatcher initializer may override this!)
-  config.action_mailer.delivery_method = :test
+  config.action_mailer.delivery_method = :letter_opener_web
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).

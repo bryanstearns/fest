@@ -16,6 +16,7 @@ gem 'handlers-js'
 gem 'icalendar'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
+gem 'letter_opener_web'
 gem 'newrelic_rpm'
 gem 'pg'
 gem 'prawn'
@@ -35,7 +36,6 @@ group :development do
   gem 'guard-rspec'
   gem 'guard-cucumber'
 
-  gem 'mailcatcher'
   #gem 'better_errors'
   #gem 'binding_of_caller' # better_errors wants this
   gem 'pry-nav'

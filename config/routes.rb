@@ -63,4 +63,8 @@ Rails.application.routes.draw do
     resources :questions, only: [:index, :show, :edit, :update, :destroy]
     resources :activity, only: [:index]
   end
+
+  if ActionMailer::Base.delivery_method == :letter_opener_web
+    mount LetterOpenerWeb::Engine, at: '/admin/outbox'
+  end
 end
