@@ -28,17 +28,17 @@ gem 'unicorn'
 gem 'unicorn-worker-killer'
 
 group :development do
-  gem 'listen'
-  gem 'spring'
-  gem 'spring-commands-rspec'
-  gem 'spring-commands-cucumber'
-  gem 'guard-spring'
-  gem 'guard-rspec'
-  gem 'guard-cucumber'
-
   #gem 'better_errors'
   #gem 'binding_of_caller' # better_errors wants this
+  gem 'listen'
+  gem 'guard-cucumber'
+  gem 'guard-rspec'
+  gem 'guard-spring'
   gem 'pry-nav'
+  gem 'quiet_assets'
+  gem 'spring'
+  gem 'spring-commands-cucumber'
+  gem 'spring-commands-rspec'
 end
 
 group :test do
