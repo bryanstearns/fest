@@ -15,9 +15,33 @@
       <ul class="nav navbar-nav navbar-right">
         <% unless @hide_site_navigation_controls %>
           <% if user_signed_in? && current_user_is_admin? %>
-            <li><%= link_to "Admin", admin_root_path,
-                            class: (needs_admin_attention? && "attention") %></li>
-          <% end %>
+            <li class="dropdown">
+              <a href="#" data-toggle="dropdown" role="button" aria-expanded="false"
+                 class="<%= classes(needs_admin_attention? && 'attention',
+                                    'dropdown-toggle') %>">
+                Admin
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" role="menu">
+                <li><%= link_to "Announcements", announcements_path %></li>
+                <li><%= link_to "Feedback", admin_questions_path %></li>
+                <li><%= link_to "Festivals", festivals_path %></li>
+                <li><%= link_to "Feature Flags", admin_root_path,
+                                class: (non_default_feature_flags? && "attention") %></li>
+                <li><%= link_to "Locations", admin_locations_path %></li>
+                <li><%= link_to "Users", admin_users_path %></li>
+                <% if ActionMailer::Base.delivery_method == :letter_opener_web %>
+                  <li>
+                    <%= link_to letter_opener_web.letters_path,
+                                class: (any_outbox_messages? && "attention") do %>
+                      Outbox
+                      <%= "(#{outbox_message_count})" if any_outbox_messages? %>
+                    <% end %>
+                  </li>
+                <% end %>
+              </ul>
+            </li>
+      <% end %>
           <li><%= link_to "Festivals", festivals_path %></li>
           <li><%= link_to "Help", help_path %></li>
           <li><%= link_to "Feedback", feedback_path %></li>

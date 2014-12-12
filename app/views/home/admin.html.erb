@@ -1,15 +1,6 @@
-<% content_for :title do %>Admin<% end %>
-<h1>Admin stuff</h1>
+<% content_for :title do %>Admin: Flags<% end %>
+<h1>Flags</h1>
 
-<ul>
-  <li><%= link_to "Announcements", announcements_path %></li>
-  <li><%= link_to "Feedback", admin_questions_path %></li>
-  <li><%= link_to "Festivals", festivals_path %></li>
-  <li><%= link_to "Locations", admin_locations_path %></li>
-  <li><%= link_to "Users", admin_users_path %></li>
-</ul>
-
-<h3>Flags</h3>
 <table id="enabled_flags">
   <% %w[site sign_in sign_up].each do |flag| %>
     <tr>

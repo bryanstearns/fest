@@ -1,6 +1,19 @@
 module HomeHelper
   def needs_admin_attention?
+    non_default_feature_flags? || any_outbox_messages?
+  end
+
+  def non_default_feature_flags?
     !enabled?(:site) || !enabled?(:sign_in) || !enabled?(:sign_up)
+  end
+
+  def outbox_message_count
+    return 0 unless ActionMailer::Base.delivery_method == :letter_opener_web
+    Dir.glob(Rails.root.join("tmp", "letter_opener", "*")).count
+  end
+
+  def any_outbox_messages?
+    outbox_message_count > 0
   end
 
   def form_for_flag(flag)
