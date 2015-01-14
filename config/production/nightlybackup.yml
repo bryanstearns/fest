@@ -1,0 +1,6 @@
+# Back up the fest_prod database
+class: database
+engine: postgresql
+database: fest_prod
+user: fest_prod
+password: fest_prod

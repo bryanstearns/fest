@@ -1,0 +1,6 @@
+#!/bin/bash
+cd /app
+# RAILS_ENV is already in the environment
+
+bin/rails dbconsole -p <fest_prod.sql
+bin/rake db:migrate

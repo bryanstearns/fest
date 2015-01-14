@@ -1,0 +1,43 @@
+upstream fest_prod {
+  server docker0:8111;
+}
+
+server {
+  listen 80;
+  server_name festivalfanatic.com www.festivalfanatic.com;
+  rewrite ^ https://$server_name$request_uri? permanent;
+}
+
+server {
+  # SSL advice from https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html
+  # also https://hynek.me/articles/hardening-your-web-servers-ssl-ciphers/
+  # and http://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security --
+  listen 443 ssl;
+  ssl on;
+  ssl_certificate /etc/nginx/site-files/fest_prod/fest_prod.crt;
+  ssl_certificate_key /etc/nginx/site-files/fest_prod/fest_prod.key;
+  ssl_dhparam /etc/nginx/site-files-common/dhparam.pem;
+  ssl_ciphers 'AES256+EECDH:AES256+EDH:!aNULL';
+  ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+  ssl_session_cache shared:SSL:10m;
+  ssl_stapling on;
+  ssl_stapling_verify on;
+  resolver valid=300s;
+  resolver_timeout 10s;
+  ssl_prefer_server_ciphers On;
+  add_header Strict-Transport-Security "max-age=63072000; includeSubDomains";
+  add_header X-Frame-Options DENY;
+  add_header X-Content-Type-Options nosniff;
+
+  server_name festivalfanatic.com www.festivalfanatic.com;
+  keepalive_timeout 5;
+
+  location / {
+    proxy_set_header   X-Forwarded-Proto $scheme;
+    proxy_set_header   Host              $http_host;
+    proxy_set_header   X-Real-IP         $remote_addr;
+
+    proxy_pass http://fest_prod;
+    proxy_redirect https://fest_prod/ https://festivalfanatic.com/;
+  }
+}
