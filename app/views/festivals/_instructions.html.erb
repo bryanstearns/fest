@@ -75,7 +75,8 @@
     <li>
       <p>
         You can <%= link_to "download a printable PDF",
-                            festival_path(@festival, format: :pdf ) %>
+                            festival_path(@festival, format: :pdf),
+                            id: "pdf_link" %>
         of this schedule, which you can print with
         <a href="http://get.adobe.com/reader/" target="_blank">Adobe Reader</a>.
       </p>

@@ -13,6 +13,10 @@ When(/^I visit the calendar link$/) do
   visit calendar_url
 end
 
+When(/^I visit the PDF link$/) do
+  page.find("#pdf_link").click
+end
+
 When /^there are three festivals in two groups$/ do
   @grouped_festivals_with_dates = {
     'piff' => {
@@ -53,6 +57,10 @@ When /^I visit the festival page$/ do
   visit festival_path(@festival)
 end
 
+When(/^I click the unselect\-all\-screenings button$/) do
+  page.find("#reset-screenings").click
+end
+
 Then /^I should( not)? see an Edit link$/ do |notness|
   festival_nav = page.find("header.festival")
   if notness != ' not'
@@ -69,4 +77,17 @@ end
 
 Then /^I should see the last\-revised time of the festival$/ do
   expect(page.find("#as-of")).to have_content("Festival as of ")
+end
+
+Then(/^I should( not)? have screenings selected$/) do |notness|
+  if notness != ' not'
+    expect(@user).to have_screenings_for(@festival)
+  else
+    expect(@user).not_to have_screenings_for(@festival)
+  end
+end
+
+Then(/^I should download a PDF with my films$/) do
+  expect(page.response_headers["Content-Type"]).to eq("application/pdf")
+  expect(page.body).to start_with("%PDF-1.3\n")
 end
