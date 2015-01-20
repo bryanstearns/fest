@@ -1,4 +1,4 @@
-default_environment "prod"
+default_environment "staging"
 case environment
 when 'prod'
   env "DOMAIN_NAMES" => "festivalfanatic.com www.festivalfanatic.com",
