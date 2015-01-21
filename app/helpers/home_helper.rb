@@ -45,7 +45,7 @@ module HomeHelper
                          class: 'btn btn-lg btn-success active')
       else
         msg =  "Coming soon:"
-        button = link_to("Check back in a few weeks!",
+        button = link_to("Check back soon!",
                          festival_priorities_path(festival),
                          class: 'btn btn-lg active', disabled: 'disabled',
                          onclick: 'return false;')
