@@ -3,7 +3,7 @@
   <%= f.alert_message "Please fix the errors below.", error_summary: false %>
 
   <div class="form-inputs">
-    <%= f.collection_select :venue_id, @venues, :id, :name, autofocus: true %>
+    <%= f.collection_select :venue_id, @venues, :id, :name, {}, autofocus: true %>
     <%= f.datetime_local_field :starts_at, label: 'Starts' %>
     <%= f.check_box :press if @festival.has_press? %>
   </div>
