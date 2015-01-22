@@ -16,7 +16,7 @@ module Admin
     def new
       venue_id = @festival.venues.find_by_id(params[:venue_id]).to_param \
         if params[:venue_id]
-      starts_at = params[:starts_at] || @festival.starts_on.beginning_of_day
+      starts_at = params[:starts_at] || (@festival.starts_on.beginning_of_day + 12.hours)
       @screening = @film.screenings.build(festival: @festival,
                                           venue_id: venue_id,
                                           starts_at: starts_at)
