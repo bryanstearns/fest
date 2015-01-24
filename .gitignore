@@ -6,7 +6,6 @@
 
 /.bundle
 /config/database.yml
-/config/newrelic.yml
 /config/secret_token
 /config/devise_key
 /db/*.sqlite3
