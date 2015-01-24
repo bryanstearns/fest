@@ -32,6 +32,10 @@ class Festival < ActiveRecord::Base
     where('ends_on >= ?', Date.today).order('starts_on').first
   end
 
+  def self.have_testable_festival?
+    upcoming || current
+  end
+
   def to_param
     slug
   end

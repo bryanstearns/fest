@@ -19,7 +19,7 @@ namespace :db do
 
   desc "Drop and reload the local development database from a previously-" +
            "downloaded copy of production data"
-  task reload: ['db:drop', 'db:create', 'db:migrate'] do
+  task reload: ['db:drop', 'db:create'] do
     load_data
   end
 
@@ -37,20 +37,17 @@ namespace :db do
     raise "Can't load data into production" if env == "production"
     puts "Loading data"
     db_config = YAML::load(ERB.new(IO.read("config/database.yml")).result)
-    `psql -d #{db_config[env]["database"]} -f production.sql`
+    `psql -d #{db_config[env]["database"]} -f fest_prod.sql`
 
     puts "Migrating"
     `rake db:migrate`
     # Rake::Task['db:migrate'].invoke
-    if env == "development"
-      puts "Cloning structure to test"
-      `rake db:test:clone`
-      # Rake::Task['db:test:clone'].invoke
-    end
+
     puts "Flushing redis cache"
     Redis.current.flushdb
 
-    if env == "development" && !Festival.upcoming_or_current
+    Rake::Task['environment'].invoke
+    if env == "development" && !Festival.have_testable_festival?
       puts "Cloning last PIFF festival"
       `rake clone_festival GROUP=piff`
     end
