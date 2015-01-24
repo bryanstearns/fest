@@ -63,9 +63,13 @@ Rails.application.configure do
   # Mail configuration
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    address: '127.0.0.1',
-    port: 25,
-    domain: 'festivalfanatic.com'
+    address: 'smtp.gmail.com',
+    port: 587,
+    domain: 'festivalfanatic.com',
+    user_name: 'festfan@festivalfanatic.com',
+    password: ENV['SMTP_PASSWORD'] || raise("SMTP_PASSWORD missing from environment!"),
+    authentication: 'plain',
+    enable_starttls_auto: true
   }
 
   # Make sure URLs in emails will work

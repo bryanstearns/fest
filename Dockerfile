@@ -16,6 +16,6 @@ RUN cd /app && \
     cp /app_deps/.bundle/config .bundle/config && \
     bundle config --local path /app_deps/vendor/bundle && \
     mkdir -p /app/tmp/pids /app/tmp/log && \
-    SECRET_KEY_BASE=facefacefacefacefacefacefacefacefacefaceface \
+    SECRET_KEY_BASE=facefacefacefacefacefacefacefacefacefaceface SMTP_PASSWORD=fake \
       RAILS_ENV=production bin/rake assets:precompile && \
     rm /app/log/*

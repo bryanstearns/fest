@@ -4,7 +4,8 @@ when 'prod'
   env "DOMAIN_NAMES" => "festivalfanatic.com www.festivalfanatic.com",
       "RAILS_ENV" => "production",
       "REDIS_URL" => "redis://docker0/1",
-      "SECRET_KEY_BASE" => secret("fest_prod/secret_key_base")
+      "SECRET_KEY_BASE" => secret("fest_prod/secret_key_base"),
+      "SMTP_PASSWORD" => secret("fest_prod/festfan_smtp")
   port 80 => 8111
 when 'staging'
   env "DOMAIN_NAMES" => "staging.festivalfanatic.com www.staging.festivalfanatic.com",
