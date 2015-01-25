@@ -24,12 +24,37 @@ namespace :db do
   end
 
   def fetch_data
+    # to make this work, ~/.ssh/config has:
+    #   Host fest_prod
+    #     Hostname _internal_production_box_hostname_
+    #     ProxyCommand ssh -W %h:%p -p _gateway_ssh_port_ -L5432:localhost:5432 my_username@my_gateway_domain
     puts "Retrieving production data"
-    cmd = "ssh festprod@festprod \"pg_dump --clean --no-owner --no-privileges fest_prod\""
+    db_config = YAML::load(ERB.new(IO.read("config/database.yml")).result)
+    child = nil
+    loop do
+      sleep 0.2
+      `pg_isready -p 55432 -h localhost`
+      break if $?.success?
+      unless child
+        puts "connecting..."
+        child = fork do
+          exec "ssh fest_prod -N -L55432:localhost:5432 2>/dev/null"
+        end
+      end
+    end
+    cmd = "PGPASSWORD=#{db_config['production']['password']} pg_dump --clean --no-owner --no-privileges #{db_config['production']['database']} -h localhost -p 55432 -U #{db_config['production']['username']}"
     cmd += " | egrep -v ^[^\\']+plpgsql | egrep -v ^[^\\']+SCHEMA\\ public"
     cmd += " | egrep -v ^[^\\']+EXTENSION\\ hstore"
-    cmd += " > production.sql"
+    cmd += " > fest_prod.sql"
+    puts "dumping..."
     `#{cmd}`
+    abort unless $?.success?
+    puts "done."
+  ensure
+    if child
+      puts "disconnecting"
+      Process.kill('TERM', child)
+    end
   end
 
   def load_data
@@ -41,7 +66,6 @@ namespace :db do
 
     puts "Migrating"
     `rake db:migrate`
-    # Rake::Task['db:migrate'].invoke
 
     puts "Flushing redis cache"
     Redis.current.flushdb
