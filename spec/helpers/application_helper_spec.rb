@@ -191,8 +191,8 @@ describe ApplicationHelper, type: :helper do
   context "generating flag icons" do
     it "produce image tags for each country given" do
       helper.flags("us de").should == \
-        "<img alt=\"United States\" class=\"flag flag-us\" src=\"/assets/blank.gif\" title=\"United States\" />" +
-          "<img alt=\"Germany\" class=\"flag flag-de\" src=\"/assets/blank.gif\" title=\"Germany\" />"
+        "<img alt=\"United States\" class=\"flag-icon flag-icon-us\" src=\"/assets/blank.gif\" title=\"United States\" />" +
+          "<img alt=\"Germany\" class=\"flag-icon flag-icon-de\" src=\"/assets/blank.gif\" title=\"Germany\" />"
     end
   end
   context "generating country names" do

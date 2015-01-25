@@ -176,7 +176,7 @@ module Countries
     'om' => "Oman",
     'pk' => "Pakistan",
     'pw' => "Palau",
-    'ps' => "Palestinian Territory", # "Palestinian Territory, Occupied"
+    'ps' => "Palestine", # "Palestinian Territory", # "Palestinian Territory, Occupied"
     'pa' => "Panama",
     'pg' => "Papua New Guinea",
     'py' => "Paraguay",
@@ -267,7 +267,7 @@ module Countries
       return nil if countries.blank?
       safe_join(countries.split(' ').map do |country|
         name = Countries.code_to_name(country)
-        image_tag("blank.gif", class: "flag flag-#{country}",
+        image_tag("blank.gif", class: "flag-icon flag-icon-#{country}",
                   alt: name, title: name)
       end)
     end
