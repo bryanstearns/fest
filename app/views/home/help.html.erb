@@ -26,8 +26,9 @@
   <li>
     <h4>How do I use this thing?</h4>
     <p>First, sign up, so I'll know who you are when you come back to the site.</p>
-    <p>Then, click on a festival in the list on the home page; this will take you
-      to the "Your Film Priorities" page for that festival.</p>
+    <p>Then, pick a festival, either with the big green button on the home page,
+      or from the Festivals page. This will take you to "Your Film Priorities"
+      for that festival.</p>
     <p>(This next part is easier if you've got the paper schedule for
       the festival; alternatively, you can open the festival's own
       website in another browser window.) For each of the films in the festival,
@@ -35,35 +36,41 @@
       choices, from "I don't want to see this" to "I *really* want to see this".
       Enter each choice on that Film Priorities page.</p>
     <p>When you're done prioritizing the films, click the "Scheduling
-      Assistant" tab; if there are times where you can't attend the festival,
-      enter them. Then, click "Schedule Films" - your priorities will be used
+      Assistant" tab. Here's where you guide the assistant: you can specify
+      times when you can't attend the festival, or distant theaters you find
+      inconvenient. Then, click "Schedule Films" - your priorities will be used
       to select screenings of as many of the films you prioritized as possible.
     </p>
     <p>
       After your schedule's been generated (it takes a moment), you'll see
       "Your Festival Schedule": your schedule for each day, with the selected
       screenings color-coded.
-    <p>You can make manual changes to the screening selections by clicking
-      on the grid. If you click on a screening for a film you're scheduled
-      to see at some other time, the other screening will be unselected for
-      you (because why see it twice?); likewise, if you're scheduled for any
-      screenings at the same time as the one you clicked on, they'll be
-      unselected too (because you can't be in two places at once).</p>
+    <p>You can see more information about a film by clicking it; you'll see
+      more details about that film and its other screenings, and you can
+      make manual changes your scheduling: if you're scheduled to see the
+      screening you've clicked on, there'll be an "Unschedule" button that'll
+      unschedule it for you. If it's a screening you're not scheduled to attend,
+      you can click a "Schedule" button to schedule it; if you were already
+      scheduled to see that film at some other time, the other screening will
+      be deselected for you (because why see it twice?), as will any screenings
+      at the same time as the one you clicked on (because you can't be in two
+      places at once).</p>
     <p>As the festival proceeds, as you hear good or bad things from your
-      friends,you can revise your priorities, then ask the Scheduling Assistant
-      to rebuild the rest of your schedule. You can also enter ratings for the
-      films you've seen.
-    </p>
+      friends, you can revise your priorities, then ask the Scheduling Assistant
+      to rebuild the rest of your schedule; it'll leave alone everything you've
+      already seen.</p>
+    <p>You can also use the Priorities page to enter ratings for the films
+      you've seen; and there's a page you can share with friends that shows
+      them which movies you've liked the most.</p>
   </li>
 
   <li>
     <h4>How does the automatic scheduling really work?</h4>
     <p>In computer science, there's this thing called the "traveling salesman
       problem": given a salesman who wants to visit a bunch of cities, how can
-      you determine an optimal route?</p>
-    <p>It turns out that this problem is really hard, and the problem of finding
-      an optimal schedule for seeing preferred movies at a film festival is just
-      as hard.</p>
+      you determine an optimal route? It turns out that this problem is really
+      hard, and the problem of finding an optimal schedule for seeing preferred
+      movies at a film festival is just as hard.</p>
     <p>So, this site takes the easy way out, and doesn't try to solve the
       problem perfectly; it just tries to do a pretty good job: the site makes
       a list of the films you've ranked, but haven't picked screenings for; it
@@ -71,28 +78,31 @@
       by a combination of your ranking and the number of remaining screenings
       (the fewer remaining, the higher in the list the film goes), then tries to
       assign screenings in that order, without ever letting two assigned screenings
-      overlap.</p>
+      overlap &mdash; it even takes travel and parking time into account.</p>
     <p>There are probably better strategies, but this one seems to work pretty
       well.</p>
   </li>
 
   <li>
     <h4>Do you share my information?</h4>
-    <p>First, I'm not going to share your email address with anyone; I'll only use
-      it to contact you about the site, and I try to notify you if the festival
-      announces a screening change that affects your schedule. Next year, I'll
-      probably let you know when next year's festival's schedule appears here.
+    <p>First, I'm not going to share your email address with anyone, or send you
+      excessive email; I'll only use it to contact you about the site, and I'll try to
+      notify you if the festival announces a screening change that affects your
+      schedule. If you think I'm sending you too much mail, please do tell me!
     </p>
     <p>
-      I've always intended to share anonymized summaries of priorities and
-      ratings with film festival organizers, other filmgoers & filmmakers,
-      and here on the site; I've yet to do this, but I might in the future.
+      As far as screening choices and ratings: I've always intended to share
+      anonymized summaries of priorities and ratings with film festival
+      organizers, other filmgoers & filmmakers, and here on the site; I've yet
+      to do this, but I might in the future.
     </p>
     <p>
-      Eventually, I also want to add ways for you to contribute comments, links,
+      Eventually, I want to add ways for you to contribute comments, links,
       and background information (what I call "buzz") to films. These details will
-      be public and visible to other users, and attributed to you by username.
-      (More details on this will come before I roll this feature out.)
+      be public and visible to other users, and attributed to you, but you'll
+      definitely have to choose to participate in advance. (I've been planning
+      this for a while and haven't gotten around to building it, so it's not
+      likely to happen in the next six months.)
     </p>
   </li>
 
@@ -119,9 +129,9 @@
   <li>
     <h4>Where'd you get the nifty icons?</h4>
 
-    <p>The flags (<%= flags "us br dk np ke au" %>) and many of the other icons
-      I use (like <%= image_tag("fam3silk/information.png", height: 16, width: 16) %>)
-      come from web developer Mark James, who asks only that I
+    <p>Many of of the icons I use (like <%= image_tag("fam3silk/information.png", height: 16, width: 16) %>,
+      though not the little flags) come from web developer Mark James, who asks
+      only that I
       <%= link_to "link to his site", "http://www.famfamfam.com/lab/icons/silk/" %>
       to use them - done, and thanks, Mark!
     </p>
