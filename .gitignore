@@ -5,6 +5,7 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 /.bundle
+/vendor/cache
 /config/database.yml
 /config/secret_token
 /config/devise_key
