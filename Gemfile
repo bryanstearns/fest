@@ -12,6 +12,7 @@ gem 'capistrano-ext', require: false
 gem 'capistrano-unicorn', require: false
 gem 'coffee-rails'
 gem 'devise'
+gem 'flag_icon_css_rails'
 gem 'handlers-js'
 gem 'icalendar'
 gem 'jquery-rails'
