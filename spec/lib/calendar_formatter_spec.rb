@@ -3,7 +3,8 @@ require 'spec_helper'
 describe CalendarFormatter do
   let(:screening_time) { 2.weeks.from_now }
   let(:screening) { create(:screening, starts_at: screening_time) }
-  let(:formatter) { CalendarFormatter.new("Bob", [screening]) }
+  let(:screenings) { [screening] }
+  let(:formatter) { CalendarFormatter.new("Bob", screenings) }
   let(:output) { formatter.to_ics }
   let(:calendar) { Icalendar.parse(output).first }
   let(:event) { calendar.events.first }
@@ -26,6 +27,12 @@ describe CalendarFormatter do
       let(:screening_time) { 11.months.ago }
       it "should have a long refresh interval" do
         calendar.x_published_ttl.should eq(["P2D"])
+      end
+    end
+    context "with no screenings at all" do
+      let(:screenings) { [] }
+      it "should still produce a parsable calendar" do
+        expect(calendar).to be_an_instance_of(Icalendar::Calendar)
       end
     end
   end

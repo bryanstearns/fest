@@ -43,26 +43,28 @@ class CalendarFormatter
     # Also someday: calendar.name = "#{@user_name}'s Screenings on Festival Fanatic"
     calendar.x_wr_calname = "#{@user_name}'s Screenings on Festival Fanatic"
 
-    tzid = "America/Los_Angeles"
-    tz = TZInfo::Timezone.get(tzid)
-    timezone = tz.ical_timezone(screenings.first.starts_at)
-    calendar.add_timezone(timezone)
+    unless screenings.empty?
+      tzid = "America/Los_Angeles"
+      tz = TZInfo::Timezone.get(tzid)
+      timezone = tz.ical_timezone(screenings.first.starts_at)
+      calendar.add_timezone(timezone)
 
-    screenings.each do |screening|
-      screening_url = festival_url(screening.festival_id,
-                                   anchor: "s#{screening.id}")
-      calendar.event do |e|
-        e.summary = screening.name
-        e.location = screening.venue_name
+      screenings.each do |screening|
+        screening_url = festival_url(screening.festival_id,
+                                     anchor: "s#{screening.id}")
+        calendar.event do |e|
+          e.summary = screening.name
+          e.location = screening.venue_name
 
-        e.dtstart = Icalendar::Values::DateTime.new(screening.starts_at.to_datetime, 'tzid' => tzid)
-        e.dtend = Icalendar::Values::DateTime.new(screening.ends_at.to_datetime, 'tzid' => tzid)
+          e.dtstart = Icalendar::Values::DateTime.new(screening.starts_at.to_datetime, 'tzid' => tzid)
+          e.dtend = Icalendar::Values::DateTime.new(screening.ends_at.to_datetime, 'tzid' => tzid)
 
-        e.created = Icalendar::Values::DateTime.new(screening.created_at.to_datetime, 'tzid' => tzid)
-        e.last_modified = Icalendar::Values::DateTime.new(screening.updated_at.to_datetime, 'tzid' => tzid)
+          e.created = Icalendar::Values::DateTime.new(screening.created_at.to_datetime, 'tzid' => tzid)
+          e.last_modified = Icalendar::Values::DateTime.new(screening.updated_at.to_datetime, 'tzid' => tzid)
 
-        e.uid = screening_url
-        e.url = screening_url
+          e.uid = screening_url
+          e.url = screening_url
+        end
       end
     end
 
