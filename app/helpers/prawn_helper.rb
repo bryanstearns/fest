@@ -165,10 +165,12 @@ module PrawnHelper
     end
 
     def draw_film(film)
-      font(:bold) do
-        pdf.text_box film.short_name,
-                     :at => [@left, @y], :overflow => :ellipses,
-                     :width => @column_width, :height => pdf.font.height
+      font(:plain) do
+        name_parts = [ { text: film.short_name, styles: [:bold] } ]
+        name_parts << { text: "  p#{film.page_number}", size: @font_size * 0.85 } if film.page_number
+        pdf.formatted_text_box name_parts, :at => [@left, @y],
+           :overflow => :ellipses, :width => @column_width,
+           :height => pdf.font.height
         @y -= pdf.font.height
       end
 
