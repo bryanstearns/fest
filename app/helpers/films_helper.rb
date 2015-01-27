@@ -29,8 +29,9 @@ module FilmsHelper
 
   def film_details(film)
     parts = []
-    parts << (flags(film.countries) + country_names(film.countries)) if film.countries.present?
+    parts << (flags(film.countries) + country_names(film.countries)) if film.countries?
     parts << hours_and_minutes(film.duration)
+    parts << "page #{film.page_number}" if film.page_number?
     safe_join(parts, ", ")
   end
 end

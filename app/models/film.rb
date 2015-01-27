@@ -13,7 +13,11 @@ class Film < ActiveRecord::Base
   scope :by_name, -> { order(:sort_name) }
 
   def page_number
-    page.to_i if page.present?
+    page.to_i if page_number?
+  end
+
+  def page_number?
+    page?
   end
 
   def screenings_with_press(options)
