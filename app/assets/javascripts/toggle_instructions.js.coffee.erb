@@ -16,7 +16,7 @@ Handlers.register 'ToggleInstructions', class
       e.preventDefault()
 
     if $(el).data('value') == 1 # hidden now
-      self.do_hide(true)
+      self.do_hide(false)
 
   do_show: (save_too) ->
     @instructions.show()
