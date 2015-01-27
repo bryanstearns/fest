@@ -71,6 +71,10 @@ class Pick < ActiveRecord::Base
     end.flatten
   end
 
+  def auto_picked?
+    screening_id? && auto?
+  end
+
 protected
   def check_foreign_keys
     self.film ||= screening.film if screening

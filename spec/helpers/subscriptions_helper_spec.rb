@@ -5,20 +5,42 @@ describe SubscriptionsHelper, type: :helper do
 
   describe "unselect_menu_choices" do
     let(:screening) { double("screening") }
-    let(:pick) { double("pick", screening: screening, auto: false) }
-    subject { unselect_menu_choices([pick]) }
+    let(:pick) { double("pick", screening: screening, auto_picked?: true) }
+    let(:choice_values) { unselect_menu_choices([pick]).first.map(&:last) }
+    let(:selected) { unselect_menu_choices([pick]).last }
     context "when there are future screening picks" do
       before { allow(screening).to receive(:future?).and_return(true) }
-      it { is_expected.to include(["Deselect all the future screenings", :future]) }
-      context "when any are automatic" do
-        before { allow(pick).to receive(:auto).and_return(true) }
-        it { is_expected.to include(["Deselect just the future automatically-scheduled screenings - leave the manually-picked ones", :auto]) }
+      it "offers 'deselect all future'" do
+        expect(choice_values).to include(:future)
       end
-      it { is_expected.to include(["Deselect all of them", :all]) }
+      it "selects 'deselect all future'" do
+        expect(selected).to eq(:future)
+      end
+
+      context "when some aren't automatic" do
+        before { allow(pick).to receive(:auto_picked?).and_return(false) }
+        it "offers 'deselect future but leave manual'" do
+          expect(choice_values).to include(:auto)
+        end
+        it "selects 'deselect future but leave manual'" do
+          expect(selected).to eq(:auto)
+        end
+      end
+      it "offers 'deselect all'" do
+        expect(choice_values).to include(:all)
+      end
     end
+
     context "when there are no future picks" do
-      it { is_expected.to include(["Deselect them", :all]) }
+      it "offers 'deselect them'" do
+        expect(choice_values).to include(:all)
+      end
+      it "selects 'leave them'" do
+        expect(selected).to eq(:none)
+      end
     end
-    it { is_expected.to include(["Leave them selected; just fill in around them", :none]) }
+    it "offers 'leave them'" do
+      expect(choice_values).to include(:none)
+    end
   end
 end

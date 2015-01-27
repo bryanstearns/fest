@@ -63,9 +63,7 @@
       <% if user_signed_in? && @user_picks.any?(&:screening_id) %>
         <li>
           <p>You've got some screenings selected already; what should I do with them?</p>
-          <%= f.collection_radio_buttons :unselect,
-                                         unselect_menu_choices(@user_picks),
-                                         :last, :first, checked: :none, hide_label: true %>
+          <%= unselect_menu(f, @user_picks) %>
         </li>
       <% end %>
 
