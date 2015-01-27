@@ -5,7 +5,7 @@ module Admin
 
     # GET /admin/announcements/new
     def new
-      respond_with(:admin, @announcement = Announcement.new)
+      respond_with(:admin, @announcement = Announcement.new(published_at: Time.current))
     end
 
     # GET /admin/announcements/1/edit

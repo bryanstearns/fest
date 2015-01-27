@@ -13,7 +13,8 @@ describe Admin::AnnouncementsController, type: :controller do
   describe "GET new" do
     it "assigns a new announcement as @announcement" do
       get :new, {}
-      assigns(:announcement).should be_a_new(Announcement)
+      expect(assigns(:announcement)).to be_a_new(Announcement)
+      expect(assigns(:announcement).published_at).to be_within(5.seconds).of(Time.current)
     end
   end
 
