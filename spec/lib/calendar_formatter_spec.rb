@@ -63,7 +63,7 @@ describe CalendarFormatter do
     end
 
     it "should point at the screening" do
-      event.url.to_s.should eq("http://localhost:3000/festivals/#{screening.festival_id}#s#{screening.id}")
+      event.url.to_s.should eq("http://localhost:3000/festivals/#{screening.festival.slug}#s#{screening.id}")
     end
   end
 end

@@ -10,7 +10,7 @@ class UserCalendarsController < ApplicationController
     else
       send_data formatter.to_ics,
                 filename: formatter.filename,
-                content_type: 'text/calendar'
+                content_type: 'text/calendar; charset=UTF-8'
     end
   end
 end

@@ -50,7 +50,7 @@ class CalendarFormatter
       calendar.add_timezone(timezone)
 
       screenings.each do |screening|
-        screening_url = festival_url(screening.festival_id,
+        screening_url = festival_url(festival_slugs[screening.festival_id],
                                      anchor: "s#{screening.id}")
         calendar.event do |e|
           e.summary = screening.name
@@ -59,8 +59,9 @@ class CalendarFormatter
           e.dtstart = Icalendar::Values::DateTime.new(screening.starts_at.to_datetime, 'tzid' => tzid)
           e.dtend = Icalendar::Values::DateTime.new(screening.ends_at.to_datetime, 'tzid' => tzid)
 
-          e.created = Icalendar::Values::DateTime.new(screening.created_at.to_datetime, 'tzid' => tzid)
-          e.last_modified = Icalendar::Values::DateTime.new(screening.updated_at.to_datetime, 'tzid' => tzid)
+
+          e.created = Icalendar::Values::DateTime.new(screening.created_at.utc.to_datetime)
+          e.last_modified = Icalendar::Values::DateTime.new(screening.updated_at.utc.to_datetime)
 
           e.uid = screening_url
           e.url = screening_url
@@ -69,5 +70,12 @@ class CalendarFormatter
     end
 
     calendar.to_ical
+  end
+
+  def festival_slugs
+    @festival_slugs ||= Festival.find(screenings.map(&:festival_id).uniq).
+                        each_with_object({}) do |festival, result|
+      result[festival.id] = festival.slug
+    end
   end
 end
