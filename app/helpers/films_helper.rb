@@ -27,11 +27,18 @@ module FilmsHelper
     names
   end
 
-  def film_details(film)
+  def film_details(film, festival=nil)
     parts = []
     parts << (flags(film.countries) + country_names(film.countries)) if film.countries?
     parts << hours_and_minutes(film.duration)
-    parts << "page #{film.page_number}" if film.page_number?
-    safe_join(parts, ", ")
+    if film.page_number?
+      festival ||= film.festival
+      page = "page #{film.page_number}"
+      if film.url_fragment.present? && festival.main_url.present?
+        page = link_to(page, festival.main_url + film.url_fragment, target: "_blank")
+      end
+      parts << page
+    end
+    content_tag(:span, safe_join(parts, ", "), class: "film_details")
   end
 end

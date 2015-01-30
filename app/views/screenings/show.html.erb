@@ -2,7 +2,7 @@
   <div class="modal-header">
     <%= pick_symbols(@film) %>
     <div class="title"><%= @film.name %></div>
-    <p><%= film_details(@film) %></p>
+    <%= film_details(@film, @festival) %>
   </div>
   <%= div_for(@film, class: 'modal-body screening unranked') do %>
     <%= render partial: @screening, locals: { tag: :div, show_actions: true } %>

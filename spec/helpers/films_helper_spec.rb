@@ -21,11 +21,13 @@ describe FilmsHelper, type: :helper do
   describe "film details" do
     let(:countries) { '' }
     let(:page_number) { nil }
+    let(:festival) { double("festival", main_url: "http://example.com/") }
     let(:film) { double("film", countries: countries, countries?: countries.present?,
-                                duration: 90.minutes,
-                                page_number: page_number, page_number?: page_number) }
+                                duration: 90.minutes, festival: festival,
+                                page_number: page_number, page_number?: page_number,
+                                url_fragment: nil) }
     it "shows duration" do
-      expect(film_details(film)).to eq('1 hour 30 minutes')
+      expect(film_details(film)).to match(/1 hour 30 minutes/)
     end
     context "with countries" do
       let(:countries) { 'gb' }
@@ -35,8 +37,14 @@ describe FilmsHelper, type: :helper do
     end
     context "with a page number" do
       let(:page_number) { 12 }
-      it "ends with it" do
-        expect(film_details(film)).to match(/, page 12$/)
+      it "includes it" do
+        expect(film_details(film)).to match(/, page 12/)
+      end
+      context "and a url fragment, when the festival has main_url" do
+        before { allow(film).to receive(:url_fragment).and_return('1234') }
+        it "makes it a link" do
+          expect(film_details(film, festival)).to match(%r{, <a href="http://example.com/1234"})
+        end
       end
     end
   end
