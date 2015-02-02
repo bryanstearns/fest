@@ -51,4 +51,16 @@ describe Film do
       end
     end
   end
+
+  context "when the duration changes" do
+    let(:screening) { create(:screening) }
+    subject { screening.film.reload }
+    it "should update screenings" do
+      expect(screening.ends_at - screening.starts_at).to eq(subject.duration)
+      subject.duration += 2.minutes
+      subject.save!
+      screening.reload
+      expect(screening.ends_at - screening.starts_at).to eq(subject.duration)
+    end
+  end
 end

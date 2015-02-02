@@ -53,6 +53,6 @@ protected
 
   def touch_screenings
     # TODO: consider trying this in a single operation
-    screenings.each {|s| s.touch }
+    screenings.each {|s| s.save! }
   end
 end
