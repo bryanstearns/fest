@@ -28,7 +28,8 @@ module UsersHelper
     def summary
       items = times.map {|k| @details[k] }.flatten
       items.map! {|i| content_tag(:li, i) }
-      content_tag(:ul, safe_join(items))
+      items << failed_sign_in_attempts
+      content_tag(:ul, safe_join(items.compact))
     end
 
     def method_missing(name, *args, &block)
@@ -77,7 +78,6 @@ module UsersHelper
       add_most_recent_pick
       add_reset_sent
       add_confirmation
-      add_failed_sign_in_attempts
       add_locked
     end
 
@@ -124,8 +124,8 @@ module UsersHelper
       end
     end
 
-    def add_failed_sign_in_attempts
-      add(pluralize(user.failed_attempts, "failed attempt")) \
+    def failed_sign_in_attempts
+      pluralize(user.failed_attempts, "failed attempt") \
         if user.failed_attempts > 0
     end
 

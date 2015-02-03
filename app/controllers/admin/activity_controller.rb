@@ -7,7 +7,7 @@ module Admin
     # GET /users/1/activity
     def index
       @user = params[:user_id] && User.find(params[:user_id])
-      @activity = @user ? @user.activity : Activity.all
+      @activity = (@user ? @user.activity : Activity).page(params[:page])
       respond_with(@activity)
     end
   end

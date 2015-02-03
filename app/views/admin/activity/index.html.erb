@@ -1,4 +1,23 @@
 <h1>Activity</h1>
 
-<%= render partial: :list, collection: @activity,
-           locals: { show_user: true } %>
+<table class="table table-condensed">
+  <tr>
+    <th>
+      When
+    </th>
+    <th>
+      User
+    </th>
+    <th>
+      Action
+    </th>
+    <th>
+      Details
+    </th>
+  </tr>
+
+  <%= render partial: :list, collection: @activity,
+             locals: { show_user: true } %>
+</table>
+
+<%= paginate @activity %>
