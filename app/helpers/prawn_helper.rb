@@ -6,9 +6,11 @@ module PrawnHelper
   class SchedulePDF
     include ApplicationHelper
     include FestivalsHelper
+    include FilmsHelper
     include ScreeningsHelper
     include ActionView::Helpers::TranslationHelper
     include ActionView::Helpers::OutputSafetyHelper
+    include ActionView::Helpers::UrlHelper
 
     attr_reader :pdf
 
@@ -111,7 +113,10 @@ module PrawnHelper
       end
 
       font(*name_style(screening)) do
-        pdf.text_box screening.short_name,
+        text_details = { text: screening.short_name }
+        url = festival_site_film_url(screening.film, @festival)
+        text_details[:link] = url if url
+        pdf.formatted_text_box [ text_details ],
                      :at => [@left + @day_time_width, @y], :overflow => :ellipses,
                      :width => @day_name_width, :height => pdf.font.height
         @y -= pdf.font.height
@@ -166,8 +171,11 @@ module PrawnHelper
 
     def draw_film(film)
       font(:plain) do
+        url = festival_site_film_url(film, @festival)
         name_parts = [ { text: film.short_name, styles: [:bold] } ]
+        name_parts[0][:link] = url if url
         name_parts << { text: "  p#{film.page_number}", size: @font_size * 0.85 } if film.page_number
+
         pdf.formatted_text_box name_parts, :at => [@left, @y],
            :overflow => :ellipses, :width => @column_width,
            :height => pdf.font.height
