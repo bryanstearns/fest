@@ -6,7 +6,8 @@
 <ul id="rating_<%= rating %>">
   <% picks.sort_by {|p| p.film_sort_name }.each do |pick| %>
     <%= content_tag_for(:li, pick.film) do %>
-      <%= pick.film_name %> <%= flags(pick.film_countries) %>
+      <%= film_catalog_link(pick.film, nil, @festival) %>
+      <%= flags(pick.film_countries) %>
     <% end %>
   <% end %>
 </ul>

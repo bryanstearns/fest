@@ -18,12 +18,47 @@ describe FilmsHelper, type: :helper do
     end
   end
 
+  describe "film catalog links" do
+    let(:page_number) { nil }
+    let(:festival) { double("festival", main_url: "http://example.com/") }
+    let(:film) { double("film", name: "Rocky 27", festival: festival,
+                        url_fragment: url_fragment) }
+    context "when the film has no url fragment" do
+      let(:url_fragment) { '' }
+      context "and a label is given" do
+        it "produces just the label" do
+          expect(film_catalog_link(film, "hello", festival)).to eq("hello")
+        end
+      end
+      context "and no label is given" do
+        it "produces just the film name" do
+          expect(film_catalog_link(film, nil, festival)).to eq("Rocky 27")
+        end
+      end
+    end
+    context "when the film has a url fragment" do
+      let(:url_fragment) { '1234' }
+      context "and a label is given" do
+        it "produces a link using the label" do
+          expect(film_catalog_link(film, "hello", festival)).
+            to eq('<a href="http://example.com/1234" target="_blank">hello</a>')
+        end
+      end
+      context "and no label is given" do
+        it "produces a link using the film name" do
+          expect(film_catalog_link(film, nil, festival)).
+              to eq('<a href="http://example.com/1234" target="_blank">Rocky 27</a>')
+        end
+      end
+    end
+  end
+
   describe "film details" do
     let(:countries) { '' }
     let(:page_number) { nil }
     let(:festival) { double("festival", main_url: "http://example.com/") }
-    let(:film) { double("film", countries: countries, countries?: countries.present?,
-                                duration: 90.minutes, festival: festival,
+    let(:film) { double("film", name: "Rocky 27", duration: 90.minutes, festival: festival,
+                                countries: countries, countries?: countries.present?,
                                 page_number: page_number, page_number?: page_number,
                                 url_fragment: nil) }
     it "shows duration" do

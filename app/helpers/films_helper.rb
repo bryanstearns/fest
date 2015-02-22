@@ -33,14 +33,17 @@ module FilmsHelper
     festival.main_url + film.url_fragment
   end
 
+  def film_catalog_link(film, label=nil, festival=nil)
+    url = festival_site_film_url(film, festival)
+    label ||= film.name
+    link_to_if(url, label, url, target: "_blank")
+  end
+
   def film_details(film, festival=nil)
     parts = []
     parts << (flags(film.countries) + country_names(film.countries)) if film.countries?
     parts << hours_and_minutes(film.duration)
-    if film.page_number?
-      url = festival_site_film_url(film, festival)
-      parts << link_to_if(url, "page #{film.page_number}", url, target: "_blank")
-    end
+    parts << film_catalog_link(film, "page #{film.page_number}", festival) if film.page_number?
     content_tag(:span, safe_join(parts, ", "), class: "film_details")
   end
 end
