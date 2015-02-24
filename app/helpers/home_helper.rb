@@ -53,7 +53,7 @@ module HomeHelper
       content_tag(:h4, msg) + content_tag(:h2, festival.name) + button
     else
       # no current/upcoming festival, even if signups are enabled.
-      content_tag(:h4, "(Closed for the winter - check back soon!)")
+      content_tag(:h4, "(No upcoming festivals... check back soon!)")
     end
     content_tag(:div, banner, id: "nowplaying")
   end

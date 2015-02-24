@@ -23,13 +23,13 @@ class Festival < ActiveRecord::Base
   RANDOM_REJECT_PERCENTAGE = 0.03
 
   def self.current
-    published.where('starts_on >= ? and ends_on <= ?',
-                    Date.yesterday, Date.tomorrow).
+    published.where('starts_on <= ? and ends_on >= ?',
+                    Date.today, 5.days.ago.to_date).
         order('starts_on').first
   end
 
   def self.upcoming
-    where('ends_on >= ?', Date.today).order('starts_on').first
+    where('starts_on >= ?', Date.tomorrow).order('starts_on').first
   end
 
   def self.have_testable_festival?
