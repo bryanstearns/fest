@@ -30,13 +30,13 @@ describe Admin::VenuesController, type: :controller do
 
   describe "GET index" do
     it "raises" do
-      expect { get :index, {} }.to raise_error
+      expect { get :index, {} }.to raise_error(ActionController::UrlGenerationError)
     end
   end
 
   describe "GET show" do
     it "raises" do
-      expect { get :show, {:id => venue.to_param} }.to raise_error
+      expect { get :show, {:id => 0 } }.to raise_error(ActionController::UrlGenerationError)
     end
   end
 
