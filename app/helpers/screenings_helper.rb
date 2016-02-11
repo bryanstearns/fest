@@ -28,4 +28,8 @@ module ScreeningsHelper
       end
     end.capitalize
   end
+
+  def format_film_description(description)
+    safe_join(description.split("\n"), "<br>".html_safe)
+  end
 end

@@ -3,6 +3,8 @@
     <%= pick_symbols(@film) %>
     <div class="title"><%= @film.name %></div>
     <%= film_details(@film, @festival) %>
+    <%= content_tag(:div, format_film_description(@film.description), class: 'description') \
+          unless @film.description.blank? %>
   </div>
   <%= div_for(@film, class: 'modal-body screening unranked') do %>
     <%= render partial: @screening, locals: { tag: :div, show_actions: true } %>

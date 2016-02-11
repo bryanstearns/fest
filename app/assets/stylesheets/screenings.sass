@@ -16,6 +16,12 @@
   li.screening
     list-style: none
 
+// make the description scroll on tiny devices
+@media (max-width: 767px)
+  #screening-modal
+    div.description
+      height: 7em
+      overflow: scroll
 
 // Hack to get the modal background to show up (without this, it ends up
 // position: absolute and 0-pixels-high because no bottom.
