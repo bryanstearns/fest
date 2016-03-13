@@ -28,6 +28,9 @@ namespace :db do
     #   Host fest_prod
     #     Hostname _internal_production_box_hostname_
     #     ProxyCommand ssh -W %h:%p -p _gateway_ssh_port_ -L5432:localhost:5432 my_username@my_gateway_domain
+    # (note: this doesn't seem to be working; just run this manually in another terminal:
+    #   ssh _internal_production_box_hostname_ -N -L55432:localhost:5432
+    # then run the rake task.)
     puts "Retrieving production data"
     db_config = YAML::load(ERB.new(IO.read("config/database.yml")).result)
     child = nil
