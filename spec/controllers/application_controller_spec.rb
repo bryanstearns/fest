@@ -33,11 +33,11 @@ describe ApplicationController, type: :controller do
 
   describe 'checking festival access' do
     let(:festival) { build(:festival, published: is_published) }
-    before(:each) { allow(Festival).to receive(:find_it).and_return(festival) }
+    before(:each) { allow(Festival).to receive(:find).and_return(festival) }
 
     controller do
       def index
-        @festival = Festival.find_it
+        @festival = Festival.find(nil)
         check_festival_access
         redirect_to '/'
       end
