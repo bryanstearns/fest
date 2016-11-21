@@ -49,7 +49,7 @@ class User < ActiveRecord::Base
     confirmed? && !unsubscribed? && !bounced?
   end
 
-  def confirm!
+  def confirm(args={})
     if super
       self.bounced = nil
       save!

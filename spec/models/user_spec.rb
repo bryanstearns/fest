@@ -135,7 +135,7 @@ describe User do
 
     context "who reconfirms" do
       before do
-        subject.confirm!
+        subject.confirm
         subject.reload
       end
       it { should be_mailable }
