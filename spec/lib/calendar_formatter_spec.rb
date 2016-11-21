@@ -6,7 +6,7 @@ describe CalendarFormatter do
   let(:screenings) { [screening] }
   let(:formatter) { CalendarFormatter.new("Bob", screenings) }
   let(:output) { formatter.to_ics }
-  let(:calendar) { Icalendar.parse(output).first }
+  let(:calendar) { Icalendar::Calendar.parse(output).first }
   let(:event) { calendar.events.first }
 
   context "the calendar" do
