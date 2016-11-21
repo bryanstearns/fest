@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe FilmsHelper, type: :helper do
   helper FilmsHelper

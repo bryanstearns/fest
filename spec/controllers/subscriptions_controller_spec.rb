@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe SubscriptionsController, type: :controller do
   let(:festival) { create(:festival, :with_films_and_screenings) }

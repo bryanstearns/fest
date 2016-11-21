@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe CalendarFormatter do
   let(:screening_time) { 2.weeks.from_now }

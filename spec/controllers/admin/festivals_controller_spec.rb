@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Admin::FestivalsController, type: :controller do
   login_admin

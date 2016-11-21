@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'support/shared_blocked_email_address_examples'
 
 describe User do

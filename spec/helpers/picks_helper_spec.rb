@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe PicksHelper, type: :helper do
   helper PicksHelper

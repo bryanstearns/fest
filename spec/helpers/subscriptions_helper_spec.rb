@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe SubscriptionsHelper, type: :helper do
   helper SubscriptionsHelper

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe PreferencesController, type: :controller do
   let(:user) { create(:confirmed_user) }

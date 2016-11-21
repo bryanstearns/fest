@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe TravelInterval do
   # TODO: it 'sorts referenced locations before save'

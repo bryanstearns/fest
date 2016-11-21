@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Pick do
   it { should validate_presence_of(:user_id) }

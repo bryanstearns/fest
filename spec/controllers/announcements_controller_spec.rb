@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe AnnouncementsController, type: :controller do
   def valid_attributes

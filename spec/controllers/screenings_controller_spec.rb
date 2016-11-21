@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe ScreeningsController, type: :controller do
   describe "GET 'show'" do
