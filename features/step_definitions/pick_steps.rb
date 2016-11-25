@@ -17,7 +17,7 @@ When /^I set a film (priority|rating)$/ do |attr|
   end
   first_image = all("#film_#{@film.id}_#{attr == 'rating' ? 'stars' : 'dots'} img")[1]
   first_image.click
-  find("#film_#{@film.id}_progress.obscured") # wait for ajax
+  find("#film_#{@film.id}_progress.obscured", visible: false) # wait for ajax
 end
 
 Then /^I should see a list of all the films(| sorted by country)$/ do |sorting|
