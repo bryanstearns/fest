@@ -1,7 +1,5 @@
 language: ruby
 bundler_args: --without development
-rvm:
-  - 2.1.5
 notifications:
   recipients:
     - festfan@festivalfanatic.com
