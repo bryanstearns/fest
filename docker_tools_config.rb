@@ -21,7 +21,7 @@ end
 
 setup postgres: [
     "drop database if exists fest_#{environment}",
-    "drop role fest_#{environment}",
+    "drop role if exists fest_#{environment}",
     "create role fest_#{environment} with superuser login createdb password 'fest_#{environment}'",
     "create database fest_#{environment};",
     "grant all privileges on database fest_#{environment} to fest_#{environment};"
