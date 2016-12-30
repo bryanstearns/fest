@@ -1,6 +1,7 @@
 FROM rails-base
 
 ADD . /app
+RUN rm -rf /app/secrets
 ADD secrets/fest_prod/ssl-bundle.crt /app/config/production/nginx/site-files/fest_prod.crt
 ADD secrets/fest_prod/myserver.key /app/config/production/nginx/site-files/fest_prod.key
 ADD secrets/certificates/festivalfanatic.com.crt /app/config/staging/nginx/site-files/fest_staging.crt
