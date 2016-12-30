@@ -1,3 +1,5 @@
+require 'syslogger'
+
 # What ports/sockets to listen on, and what options for them.
 listen "/app/tmp/unicorn_sock", :tcp_nodelay => true, :backlog => 100
 working_directory '/app'
@@ -10,6 +12,9 @@ preload_app true
 
 # How many worker processes
 worker_processes (ENV['UNICORN_COUNT'] || 4).to_i
+
+# Log to syslog
+logger Syslogger.new("fest_#{ENV['RAILS_ENV'] == 'production' ? 'prod' : ENV['RAILS_ENV']}_unicorn")
 
 # What to do before we fork a worker
 before_fork do |server, worker|
@@ -34,12 +39,6 @@ end
 
 # Where to drop a pidfile
 pid '/app/tmp/pids/unicorn.pid'
-
-# Where stderr gets logged
-stderr_path '/app/log/unicorn.err'
-
-# Where stdout gets logged
-stdout_path '/app/log/unicorn.out'
 
 # http://www.rubyenterpriseedition.com/faq.html#adapt_apps_for_cow
 if GC.respond_to?(:copy_on_write_friendly=)

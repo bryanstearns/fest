@@ -10,4 +10,4 @@ RUN cd /app && \
     mkdir -p tmp/pids tmp/log && \
     bundle install --local --deployment --without development deployment test && \
     SECRET_KEY_BASE=face SMTP_PASSWORD=fake RAILS_ENV=production bin/rake assets:precompile && \
-    rm /app/log/*
+    rm -f /app/log/*
