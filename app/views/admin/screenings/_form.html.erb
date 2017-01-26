@@ -3,8 +3,8 @@
   <%= f.alert_message "Please fix the errors below.", error_summary: false %>
 
   <div class="form-inputs">
-    <%= f.collection_select :venue_id, @venues, :id, :name, {}, autofocus: true %>
-    <%= f.datetime_local_field :starts_at, label: 'Starts' %>
+    <%= f.datetime_local_field :starts_at, label: 'Starts', autofocus: true %>
+    <%= f.collection_select :venue_id, @venues, :id, :name, {} %>
     <%= f.check_box :press if @festival.has_press? %>
   </div>
 
@@ -12,8 +12,9 @@
     <%= f.submit %>
     <%= cancel_link(admin_film_path(@film)) %>
     <%= destroy_button([:admin, @screening]) %>
-    <%= link_to('New Film (alt-n)', new_admin_festival_film_path(@festival),
-                class: 'btn btn-sm btn-default extra-action', id: 'new_festival_film') \
+    <%= link_to('New Film (ctrl-opt-n)', new_admin_festival_film_path(@festival),
+                class: 'btn btn-sm btn-default extra-action', id: 'new_festival_film',
+                accesskey: 'n') \
           if @screening.new_record? %>
   </div>
 <% end %>
