@@ -46,7 +46,8 @@ module Admin
 
   private
     def location_params
-      params.require(:location).permit(:name, :place)
+      params.require(:location).permit(:name, :place, :address,
+                                       :parking_minutes)
     end
   end
 end

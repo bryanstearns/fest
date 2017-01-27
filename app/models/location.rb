@@ -8,12 +8,17 @@ class Location < ActiveRecord::Base
            foreign_key: :to_location_id, dependent: :destroy
 
   validates :name, presence: true, uniqueness: { scope: :place }
-  validates :place, presence: true
+  validates :place, :parking_minutes, presence: true
+  validates :parking_minutes, inclusion: 1..60
 
   scope :unused, -> { where('not exists (select 1 from festival_locations ' +
                             'where locations.id = festival_locations.location_id)') }
 
   def label
     "#{name} (#{place})"
+  end
+
+  def googleable_address
+    read_attribute(:address).presence || "#{name}, #{place}"
   end
 end

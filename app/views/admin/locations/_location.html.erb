@@ -8,7 +8,10 @@
                   class: "btn btn-xs btn-default" %>
     </span>
   </h3>
-
+  <p>
+    <%= location.address.presence || "(no address)" %><br />
+    Parking <%= location.parking_minutes %> minutes
+  </p>
   <ul>
     <%= render location.venues %>
   </ul>
