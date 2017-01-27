@@ -14,6 +14,7 @@ gem 'coffee-rails'
 gem 'devise'
 gem 'flag_icon_css_rails'
 gem 'handlers-js'
+gem 'httparty' # only needed for googling travel times
 gem 'icalendar'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'

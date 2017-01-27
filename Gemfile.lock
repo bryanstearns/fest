@@ -147,6 +147,8 @@ GEM
     handlers-js (0.0.1)
     highline (1.7.8)
     htmlentities (4.3.4)
+    httparty (0.14.0)
+      multi_xml (>= 0.5.2)
     i18n (0.7.0)
     icalendar (2.4.1)
     jquery-rails (3.1.4)
@@ -186,6 +188,7 @@ GEM
     minitest (5.9.1)
     multi_json (1.12.1)
     multi_test (0.1.2)
+    multi_xml (0.6.0)
     nenv (0.3.0)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -357,6 +360,7 @@ DEPENDENCIES
   guard-rspec
   guard-spring
   handlers-js
+  httparty
   icalendar
   jquery-rails
   jquery-ui-rails

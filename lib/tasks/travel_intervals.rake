@@ -62,6 +62,86 @@ namespace :intervals do
     end
   end
 
+  desc "Load travel intervals from Google"
+  task :google => :environment do
+    require 'csv'
+    ENV["GOOGLE_MAP_DIRECTIONS_API_KEY"] || abort("Must specify GOOGLE_MAP_DIRECTIONS_API_KEY")
+
+    place = ENV["PLACE"] || "Portland, Oregon"
+    dry_run = ENV["DRY_RUN"]
+    verbose = (ENV["VERBOSE"] || 0).to_i
+
+    ActiveRecord::Base.transaction do
+      TravelInterval.where("user_id is null").destroy_all
+
+      locations = Location.where(place: place).order('name').to_a
+      locations.each do |from_location|
+        locations.each do |to_location|
+          if from_location != to_location
+            location_ids = [from_location.id, to_location.id].sort
+            interval = TravelInterval.where(from_location_id: location_ids.first,
+                                            to_location_id: location_ids.last)\
+                                     .first_or_initialize
+            time = google_travel_time(from_location, to_location, verbose).to_i * 60.seconds
+            if location_ids.first == from_location.id
+              puts "Updating #{from_location.name} #{from_location.id} -> #{to_location.name} #{to_location.id} to #{time.to_duration}" if verbose > 0
+              interval.seconds_from = time
+            else
+              puts "Updating #{to_location.name} #{to_location.id} <- #{from_location.name} #{from_location.id} to #{time.to_duration}" if verbose > 0
+              interval.seconds_to = time
+            end
+            interval.save!
+          end
+        end
+      end
+
+      if dry_run
+        puts "... dry run, rolling back."
+        raise ActiveRecord::Rollback
+      end
+    end
+  end
+
+  def google_travel_time(from_location, to_location, verbose)
+    line_minutes = TravelInterval::DEFAULT_INTRA_INTERVAL / 60
+    if from_location == to_location
+      return line_minutes
+    end
+
+    driving = GoogleTravelTime.new(from_location.googleable_address,
+                                   to_location.googleable_address, :driving)
+    driving_time = driving.duration
+    driving_total = driving_time + to_location.parking_minutes + line_minutes
+    if verbose > 1
+      puts "#{from_location.name} -> #{to_location.name}:"
+      puts "  #{driving_total} = #{driving_time} driving + " +
+           "#{to_location.parking_minutes} parking + " +
+           "#{line_minutes} line from #{driving.url}"
+    end
+
+    walking = nil
+    if driving_time < 10
+      walking = GoogleTravelTime.new(from_location.googleable_address,
+                                     to_location.googleable_address, :walking)
+      walking_time = walking.duration
+      walking_total = walking_time + line_minutes
+      if verbose > 1
+        puts "  #{walking_total} = #{walking_time} walking + #{line_minutes} line " +
+             "from #{walking.url}"
+      end
+      if walking_total < 15
+        puts "  using 15-minute minimum" if verbose > 1
+        return 15
+      end
+      if walking_time < driving_time + to_location.parking_minutes
+        puts "  using walking!" if verbose > 1
+        return walking_total
+      end
+    end
+    puts "  using driving!" if walking && verbose > 1
+    driving_total
+  end
+
   desc "Dump travel intervals to a CSV"
   task :dump => :environment do
     require 'csv'
