@@ -68,10 +68,6 @@ describe Screening do
       let(:other_options) { { starts_at: subject.ends_at + 121.minutes } }
       it { should not_conflict_with(other, user) }
     end
-    context "with another in the same venue" do
-      let(:other_options) { { venue_id: subject.venue_id } }
-      it { should not_conflict_with(other, user) }
-    end
     context "with another at a different festival" do
       let(:other_options) { { festival: nil } }
       it { should not_conflict_with(other, user) }

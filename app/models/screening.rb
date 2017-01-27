@@ -46,7 +46,6 @@ class Screening < ActiveRecord::Base
     # easy tests first:
     return false if
         (self == other) ||
-        (venue_id == other.venue_id) ||
         (festival_id != other.festival_id) ||
         ((starts_at - other.ends_at) > TravelInterval::MAX_INTERVAL) ||
         ((other.starts_at - ends_at) > TravelInterval::MAX_INTERVAL)
