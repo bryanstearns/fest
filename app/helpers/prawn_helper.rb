@@ -59,7 +59,7 @@ module PrawnHelper
       @image_width = 40
       @indent = 5
 
-      @day_name_width = @column_width * 0.56
+      @day_name_width = @column_width * 0.50
       @day_time_width = @column_width - @day_name_width
 
       pdf.repeat(:all) do
@@ -107,8 +107,9 @@ module PrawnHelper
 
     def draw_screening(screening)
       font(:small) do
-        pdf.text_box "#{screening_times(screening)} #{screening.venue_abbreviation}",
-                     :at => [@left, @y - @small_baseline_offset],
+        text = "#{screening_times(screening)} #{screening.venue_abbreviation}"
+        text += " p#{screening.film.page_number}" if screening.film.page_number.present?
+        pdf.text_box text, :at => [@left, @y - @small_baseline_offset],
                      :width => @day_time_width, :height => pdf.font.height
       end
 
@@ -155,12 +156,12 @@ module PrawnHelper
       return unless @festival.films.present?
       films = @festival.films.by_name
       next_column unless have_room_for? \
-        font_height(:h3) + 4 + font_height(:plain) +
+        5 + font_height(:h3) + 4 + font_height(:plain) +
         ((films.first.screenings.size + 1) * font_height(:small))
 
       films.each_with_index do |film, index|
         screenings_count = film.screenings.size
-        force_new_column = !have_room_for?(font_height(:plain) +
+        force_new_column = !have_room_for?(2 + font_height(:plain) +
              font_height(:small) + (screenings_count * font_height(:small)))
         next_column if force_new_column
         draw_films_header(index != 0) if force_new_column || index == 0
@@ -170,6 +171,7 @@ module PrawnHelper
     end
 
     def draw_film(film)
+      @y -= 2
       font(:plain) do
         url = festival_site_film_url(film, @festival)
         name_parts = [ { text: film.short_name, styles: [:bold] } ]
@@ -232,6 +234,7 @@ module PrawnHelper
     end
 
     def draw_films_header(continued)
+      @y -= 5
       font(:h3) do
         heading = "Film Index"
         heading += " (cont'd)" if continued
