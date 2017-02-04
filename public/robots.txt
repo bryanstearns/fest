@@ -1,4 +1,7 @@
 User-Agent: *
 Allow: /*.ics$
-Disallow: /users
+Disallow: /announcements
 Disallow: /feedback
+Disallow: /preferences
+Disallow: /ratings
+Disallow: /users
