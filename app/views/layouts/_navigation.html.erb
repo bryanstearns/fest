@@ -29,6 +29,7 @@
                 <li><%= link_to "Feature Flags", admin_root_path,
                                 class: (non_default_feature_flags? && "attention") %></li>
                 <li><%= link_to "Locations", admin_locations_path %></li>
+                <li><%= link_to "Activity", admin_activity_index_path %></li>
                 <li><%= link_to "Users", admin_users_path %></li>
                 <% if ActionMailer::Base.delivery_method == :letter_opener_web %>
                   <li>
