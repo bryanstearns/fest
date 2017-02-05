@@ -47,26 +47,33 @@ class FestivalsController < ApplicationController
 
   # PATCH /festivals/1/random_priorities
   def random_priorities
-    @festival.random_priorities(current_user) if user_signed_in?
+    reset_action("random_priorities")
     flash[:notice] = 'Random priorities have been set.'
     redirect_to festival_priorities_path(@festival)
   end
 
   # PATCH /festivals/1/reset_rankings
   def reset_rankings
-    @festival.reset_rankings(current_user) if user_signed_in?
+    reset_action("reset_rankings")
     flash[:notice] = 'Your priorities and ratings have been reset.'
     redirect_to festival_priorities_path(@festival)
   end
 
   # PATCH /festivals/1/reset_screenings
   def reset_screenings
-    @festival.reset_screenings(current_user) if user_signed_in?
+    reset_action("reset_screenings")
     flash[:notice] = 'All your screenings have been unselected.'
     redirect_to festival_path(@festival)
   end
 
 protected
+  def reset_action(action)
+    return unless user_signed_in?
+    @festival.send(action, current_user)
+    Activity.record(name: action, festival: @festival,
+                    user: current_user)
+  end
+
   def load_festival
     @festival = Festival.find_by_slug!(params[:id])
   end

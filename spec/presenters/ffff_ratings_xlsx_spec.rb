@@ -3,9 +3,9 @@ require 'axlsx'
 
 describe FfffRatingsXlsx do
   let(:festival)  { create(:festival, :with_films_and_screenings) }
-  let!(:ffff_users) { create_list(:user, 2, :with_ratings, ffff: true,
+  let!(:ffff_users) { create_list(:confirmed_user, 2, :with_ratings, ffff: true,
                                   festival: festival) }
-  let!(:non_ffff_users) { create_list(:user, 1, :with_ratings,
+  let!(:non_ffff_users) { create_list(:confirmed_user, 1, :with_ratings,
                                       festival: @festival) }
   let(:films) { festival.films.by_name }
   let(:workbook) { Axlsx::Workbook.new }

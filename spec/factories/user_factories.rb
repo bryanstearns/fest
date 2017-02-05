@@ -16,17 +16,49 @@ FactoryGirl.define do
       factory :confirmed_admin_user do
         admin true
       end
-    end
 
-    trait :with_ratings do
-      transient { festival nil }
-      after(:create) do |user, ev|
-        festival = ev.festival || create(:festival, :with_films_and_screenings)
-        create(:subscription, festival: festival, user: user)
-        festival.films.order(:id).limit(5).each do |film|
-          rating = (film.id % 5) + 1
-          create(:pick, user: user, festival: festival, film: film,
-                 rating: rating)
+      trait :with_subscription do
+        transient { festival nil }
+        after(:create) do |user, ev|
+          festival = ev.festival || create(:festival, :with_films_and_screenings)
+          create(:subscription, festival: festival, user: user)
+        end
+      end
+
+      trait :with_ratings do
+        with_subscription
+        after(:create) do |user, ev|
+          subscription = user.subscriptions.preload(festival: :films).last
+          festival = subscription.festival
+          festival.films.order(:id).limit(5).each do |film|
+            pick = user.picks.where(festival: festival, film: film).first_or_create
+            pick.rating = (film.id % 5) + 1
+            pick.save!
+          end
+        end
+      end
+
+      trait :with_priorities do
+        with_subscription
+        after(:create) do |user, ev|
+          subscription = user.subscriptions.preload(festival: :films).last
+          festival = subscription.festival
+          festival.films.order(:id).limit(5).each do |film|
+            pick = user.picks.where(festival: festival, film: film).first_or_create
+            pick.priority = Pick::PRIORITY_HINTS.keys[(film.id % 5) + 1]
+            pick.save!
+          end
+        end
+      end
+
+      trait :autoscheduled do
+        with_priorities
+        after(:create) do |user, ev|
+          subscription = user.subscriptions.first
+          AutoScheduler.new(user: user,
+                            festival: subscription.festival,
+                            subscription: subscription,
+                            verbose: true).run
         end
       end
     end

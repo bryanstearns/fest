@@ -6,9 +6,11 @@ Given /^a (\S+)(.*)?$/ do |model, stuff|
 
   raw_traits = ''
   raw_relations = ''
+  factory = model
 
   if stuff =~ /with (.*)/ # has 'with', might have 'for the'
     raw_traits, raw_relations = $1.strip.split(' for the ')
+    factory = "confirmed_user" if factory == "user"
   elsif stuff =~ /for the (.*)/ # might have 'for the'
     raw_relations = $1.strip.split(', ')
   end
@@ -33,5 +35,5 @@ Given /^a (\S+)(.*)?$/ do |model, stuff|
   #puts "Given a #{model}#{with_stuff} --> @#{model} = create(#{model.to_sym.inspect}#{traitdesc}#{optdesc})"
 
   instance_variable_set("@#{model}".to_sym,
-                        create(model.to_sym, *traits, *options))
+                        create(factory.to_sym, *traits, *options))
 end

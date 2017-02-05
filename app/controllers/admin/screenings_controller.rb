@@ -4,7 +4,7 @@ module Admin
     before_filter :load_film_and_festival, only: [:index, :new, :create]
     before_filter :load_screening_film_and_festival, except: [:index, :new, :create]
     before_filter :load_venues_for_select, only: [:new, :edit]
-    before_filter :load_attendees, only: [:edit, :update]
+    before_filter :load_attendees, only: [:edit, :update, :destroy]
     respond_to :html
 
     # GET /admin/screenings/1
@@ -56,11 +56,12 @@ module Admin
     # DELETE /admin/screenings/1
     def destroy
       @screening.destroy
+      record_unpick_activity
       flash[:notice] = 'Screening was successfully destroyed.'
       respond_with(:admin, @screening, location: admin_film_path(@film))
     end
 
-    protected
+  protected
     def load_film_and_festival
       @film = Film.includes(:festival).find(params[:film_id])
       @festival = @film.festival
@@ -86,6 +87,17 @@ module Admin
       params.require(:screening).
           permit(:ends_at, :festival, :film, :location, :press, :starts_at,
                  :venue_id)
+    end
+
+    def record_unpick_activity
+      @picks.each do |pick|
+        Activity.record("screening_deleted",
+          user: pick.user,
+          festival: @festival,
+          subject: @screening,
+          target: pick
+        )
+      end
     end
   end
 end
