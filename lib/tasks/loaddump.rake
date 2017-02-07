@@ -30,7 +30,8 @@ namespace :db do
     #     ProxyCommand ssh -W %h:%p -p _gateway_ssh_port_ -L5432:localhost:5432 my_username@my_gateway_domain
     # (note: this doesn't seem to be working; just run this manually in another terminal:
     #   ssh _internal_production_box_hostname_ -N -L55432:localhost:5432
-    # then run the rake task.)
+    # then run the rake task. For staging, fetch the production data locally,
+    # then copy it to the staging container and load it there.)
     puts "Retrieving production data"
     db_config = YAML::load(ERB.new(IO.read("config/database.yml")).result)
     child = nil
@@ -64,11 +65,17 @@ namespace :db do
     env = ENV["RAILS_ENV"] || 'development'
     raise "Can't load data into production" if env == "production"
     puts "Loading data"
-    db_config = YAML::load(ERB.new(IO.read("config/database.yml")).result)
-    `psql -d #{db_config[env]["database"]} -f fest_prod.sql`
+    db_config = YAML::load(ERB.new(IO.read("config/database.yml")).result)[env]
+    user = db_config["username"] ? "-U #{db_config["username"]} " : ""
+    password = db_config["password"] ? "PGPASSWORD=#{db_config["password"]} " : ""
+    host = db_config["host"] ? "-h #{db_config["host"]} " : ""
+    port = db_config["port"] ? "-p #{db_config["port"]} " : ""
+    `#{password}psql -d #{db_config["database"]} #{host} #{user} #{port}-f fest_prod.sql`
+    abort unless $?.success?
 
     puts "Migrating"
     `rake db:migrate`
+    abort unless $?.success?
 
     puts "Flushing redis cache"
     Redis.current.flushdb
@@ -77,6 +84,8 @@ namespace :db do
     if env == "development" && !Festival.have_testable_festival?
       puts "Cloning last PIFF festival"
       `rake clone_festival GROUP=piff`
+      abort unless $?.success?
     end
+    puts "done."
   end
 end
