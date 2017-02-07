@@ -33,18 +33,5 @@ module Admin
       flash[:error] = "No old screenings to restore!"
       redirect_to(:back)
     end
-
-    # POST /activity/capture/:festival_id
-    def capture
-      ActiveRecord::Base.transaction do
-        festival = Festival.where(slug: params[:festival_slug]).first!
-        festival.users.to_a.select {|u| u.has_screenings_for?(festival) } \
-                      .each do |u|
-          Activity.record("captured_screenings", user: u, festival: festival)
-        end
-      end
-      flash["notice"] = "Activity captured."
-      redirect_to(:back)
-    end
   end
 end

@@ -62,7 +62,6 @@ Rails.application.routes.draw do
     resources :announcements, only: [:new, :create, :edit, :update, :destroy]
     resources :questions, only: [:index, :show, :edit, :update, :destroy]
     resources :activity, only: [:index] do
-      post 'capture/:festival_slug' => "activity#capture", as: :capture, on: :collection
       post :restore, on: :member
     end
   end
