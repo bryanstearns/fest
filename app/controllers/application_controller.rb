@@ -41,6 +41,12 @@ class ApplicationController < ActionController::Base
            )
   end
 
+  def append_info_to_payload(payload)
+    super
+    payload[:request_id] = request.headers["HTTP_X_REQUEST_ID"]
+    payload[:user_id] = current_user.try(:id)
+  end
+
 protected
   def authenticate_admin!
     authenticate_user!

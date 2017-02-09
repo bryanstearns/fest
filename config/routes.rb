@@ -64,6 +64,10 @@ Rails.application.routes.draw do
     resources :activity, only: [:index] do
       post :restore, on: :member
     end
+
+    get 'env' => "debug#env"
+    get 'crash' => "debug#crash"
+    get 'ping' => "debug#ping"
   end
 
   if ActionMailer::Base.delivery_method == :letter_opener_web

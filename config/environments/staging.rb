@@ -55,6 +55,9 @@ Rails.application.configure do
   config.logger = Syslogger.new("fest_prod")
   config.lograge.enabled = true
   config.lograge.formatter = Lograge::Formatters::Json.new
+  config.lograge.custom_options = lambda do |event|
+    event.payload.extract!(:request_id, :user_id)
+  end
 
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
