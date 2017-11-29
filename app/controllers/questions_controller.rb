@@ -16,7 +16,7 @@ class QuestionsController < ApplicationController
     @question = Question.new(question_params)
     if @question.save
       flash[:notice] = 'Thanks for contacting me - I\'ll get back to you shortly.'
-      Mailer.feedback(@question).deliver
+      Mailer.feedback(@question).deliver_now
     end
     respond_with(@question, location: welcome_path)
   end

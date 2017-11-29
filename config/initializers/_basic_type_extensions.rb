@@ -38,7 +38,7 @@ class Date
   end
 end
 
-class Fixnum
+class Integer
   def to_minutes
     (self + 59) / 60
   end

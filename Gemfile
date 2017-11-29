@@ -1,13 +1,13 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.1.9'
+gem 'rails', '4.2.9'
 
 gem 'airbrake'
+gem 'axlsx', '2.1.0.pre'
 gem 'axlsx_rails'
 gem 'bootstrap_form'
 gem 'bootstrap-modal-rails'
 gem 'bootstrap-sass'
-gem 'cache_digests'
 gem 'capistrano-ext', require: false
 gem 'capistrano-unicorn', require: false
 gem 'coffee-rails'

@@ -41,13 +41,13 @@ describe FilmsHelper, type: :helper do
       context "and a label is given" do
         it "produces a link using the label" do
           expect(film_catalog_link(film, "hello", festival)).
-            to eq('<a href="http://example.com/1234" target="_blank">hello</a>')
+            to eq('<a target="_blank" href="http://example.com/1234">hello</a>')
         end
       end
       context "and no label is given" do
         it "produces a link using the film name" do
           expect(film_catalog_link(film, nil, festival)).
-              to eq('<a href="http://example.com/1234" target="_blank">Rocky 27</a>')
+              to eq('<a target="_blank" href="http://example.com/1234">Rocky 27</a>')
         end
       end
     end
@@ -67,7 +67,7 @@ describe FilmsHelper, type: :helper do
     context "with countries" do
       let(:countries) { 'gb' }
       it "has flags" do
-        expect(film_details(film)).to match(%r{<img alt="United Kingdom" class="flag-icon flag-icon-gb".* title="United Kingdom" />})
+        expect(film_details(film)).to match(%r{<img class="flag-icon flag-icon-gb" alt="United Kingdom" title="United Kingdom".*/>})
       end
     end
     context "with a page number" do
@@ -78,7 +78,7 @@ describe FilmsHelper, type: :helper do
       context "and a url fragment, when the festival has main_url" do
         before { allow(film).to receive(:url_fragment).and_return('1234') }
         it "makes it a link" do
-          expect(film_details(film, festival)).to match(%r{, <a href="http://example.com/1234"})
+          expect(film_details(film, festival)).to match(%r{, <a [^>]*href="http://example.com/1234"})
         end
       end
     end

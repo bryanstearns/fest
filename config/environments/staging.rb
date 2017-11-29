@@ -23,7 +23,7 @@ Rails.application.configure do
 
   # Disable Rails's static asset server (Apache or nginx will already do this)
   # unless we're running LOCAL_STAGING
-  config.serve_static_assets = ENV['LOCAL_STAGING'].present?
+  config.serve_static_files = ENV['LOCAL_STAGING'].present?
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
