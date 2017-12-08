@@ -1,3 +1,5 @@
-.git
 log/*
-tmp/cache
+tmp/cache/*
+tmp/pids/*
+tmp/sessions/*
+tmp/socket/*
