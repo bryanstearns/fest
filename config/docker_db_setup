@@ -1,6 +1,8 @@
 #!/bin/bash
 cd /app
-# RAILS_ENV is already in the environment
 
-bin/rails dbconsole -p <fest_prod.sql
+# RAILS_ENV is already in the environment
+ruby -ne 'puts $_.gsub(/fest_prod/, "fest_#{ENV["RAILS_ENV"]}")' <fest_prod.sql | \
+  bin/rails dbconsole -p
+
 bin/rake db:migrate
