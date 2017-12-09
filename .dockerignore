@@ -1,4 +1,9 @@
 log/*
+secrets/*
+!secrets/fest_prod/ssl-bundle.crt
+!secrets/fest_prod/myserver.key
+!secrets/certificates/festivalfanatic.com.crt
+!secrets/certificates/festivalfanatic.com.key
 tmp/cache/*
 tmp/pids/*
 tmp/sessions/*
