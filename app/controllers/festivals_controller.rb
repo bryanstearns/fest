@@ -70,8 +70,7 @@ protected
   def reset_action(action)
     return unless user_signed_in?
     @festival.send(action, current_user)
-    Activity.record(name: action, festival: @festival,
-                    user: current_user)
+    Activity.record(action, festival: @festival, user: current_user)
   end
 
   def load_festival
