@@ -24,12 +24,8 @@ namespace :db do
   end
 
   def fetch_data
-    # to make this work, ~/.ssh/config has:
-    #   Host fest_prod
-    #     Hostname _internal_production_box_hostname_
-    #     ProxyCommand ssh -W %h:%p -p _gateway_ssh_port_ -L5432:localhost:5432 my_username@my_gateway_domain
-    # (note: this doesn't seem to be working; just run this manually in another terminal:
-    #   ssh _internal_production_box_hostname_ -N -L55432:localhost:5432
+    # Run this in another terminal:
+    #   ssh $INTERNAL_PRODUCTION_HOSTNAME -N -L55432:172.17.42.1:5432
     # then run the rake task. For staging, fetch the production data locally,
     # then copy it to the staging container and load it there.)
     puts "Retrieving production data"
