@@ -1,6 +1,7 @@
 <%= content_tag_for(:tr, user.user) do %>
   <td>
     <%= link_to user.name, [:admin, user.user] %>
+    <%= " (ffff)" if user.ffff? %>
   </td>
   <td>
     <%= user.email_with_status %>
