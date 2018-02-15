@@ -29,9 +29,19 @@ class AutoScheduler
     loop do
       log "Pass #{screenings_scheduled}"
       screening = next_best_screening
-      break if screening.nil? || debug_limit_screening?(screening)
+      if screening.nil?
+        log "Stopping because we didn't find another screening"
+        break
+      end
+      if debug_limit_screening?(screening)
+        log "Stopping at screening debug limit"
+        break
+      end
       schedule(screening)
-      break if debug_limit_count?
+      if debug_limit_count?
+        log "Stopping at count debug limit"
+        break
+      end
     end
     log "Done; #{screenings_scheduled} scheduled."
   end
@@ -42,8 +52,14 @@ class AutoScheduler
   end
 
   def debug_limit_screening?(screening)
-    (screening.id.to_s == @up_to_screening_id.to_s) ||
-      (debug == 'free' && costs[screening].total_cost >= -1.0)
+    if (screening.id.to_s == @up_to_screening_id.to_s) ||
+         (debug == 'free' && costs[screening].total_cost >= -1.0)
+      log "debug_limit_screening = true! (#{screening.id.inspect}, #{debug.inspect})"
+      true
+    else
+      log "debug_limit_screening = false (#{screening.id.inspect}, #{debug.inspect})"
+      false
+    end
   end
 
   def debug_limit_count?
@@ -75,7 +91,12 @@ class AutoScheduler
 
     pickable_costs = current_pickable_screenings.map {|s| costs[s] }
     result = if Rails.env.development?
-      all_pickable = pickable_costs.sort_by {|cost| cost.total_cost }
+      all_pickable = pickable_costs.sort_by do |cost|
+        log("start costing #{cost.screening.id}: #{cost.screening.name}")
+        tc = cost.total_cost
+        log("done costing #{cost.screening.id}: #{cost.screening.name} => #{tc}")
+        tc
+      end
       details = all_pickable.map {|c| "#{c.screening_id}: #{c.total_cost.round(3)}"}.join(", ")
       log("#{all_pickable.count} remaining: #{details}")
       all_pickable.first

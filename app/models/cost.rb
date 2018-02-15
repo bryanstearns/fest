@@ -31,8 +31,11 @@ class Cost
         log(@total_cost_message = "film_scheduled, UNPICKABLE")
         UNPICKABLE
       else
-        log(@total_cost_message = "#{total_conflict_cost} - #{calculated_cost} = #{(total_conflict_cost - calculated_cost)}")
-        (total_conflict_cost - calculated_cost)
+        tcc = total_conflict_cost
+        cc = calculated_cost
+        tc = tcc - cc
+        log(@total_cost_message = "calculated, #{tcc} - #{cc} = #{tc}")
+        tc
       end
     end
   end
@@ -73,13 +76,24 @@ class Cost
       log(@cost_as_conflict_message = "(conflict) priority 0, FREE")
       FREE
     else
-      log(@cost_as_conflict_message = "(conflict) calculated, #{calculated_cost}")
-      calculated_cost
+      cc = calculated_cost
+      log(@cost_as_conflict_message = "(conflict) calculated, #{cc}")
+      cc
     end
   end
 
   def calculated_cost
-    priority / remaining_screenings_count.to_f
+    rsc_factor = case remaining_screenings_count
+    when 0
+      1.2
+    when 1
+      1.1
+    else
+      1.0
+    end
+    cc = priority * rsc_factor
+    log("calculated_cost: #{priority} * #{rsc_factor} (#{remaining_screenings_count}) = #{cc}")
+    cc
   end
 
   def reset!
@@ -131,7 +145,9 @@ class Cost
   end
 
   def inspect
-    "<Cost screening_id=#{screening_id} priority=#{priority.inspect} total_cost=#{total_cost.round(3)} " +
+    "<Cost screening_id=#{screening_id} priority=#{priority.inspect} " +
+        "remaining_screenings=#{remaining_screenings_count} " +
+        "total_cost=#{total_cost.round(3)} " +
         "cost_as_conflict=#{cost_as_conflict.round(3)} " +
         "conflicts=#{autoscheduler.all_conflicting_screening_ids_by_screening_id[screening_id].inspect} " +
         "conflict_costs=#{conflict_costs.map{|x| x.round(3)}.inspect}>"
