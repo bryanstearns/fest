@@ -28,16 +28,21 @@ namespace :db do
     #   ssh $INTERNAL_PRODUCTION_HOSTNAME -N -L55432:172.17.42.1:5432
     # then run the rake task. For staging, fetch the production data locally,
     # then copy it to the staging container and load it there.)
+    hostname = ENV["INTERNAL_PRODUCTION_HOSTNAME"]
+    puts "Establishing connection to '#{hostname}'..."
+    ssh_pid = spawn("ssh #{hostname} -N -L55432:172.17.42.1:5432")
+    sleep(1.5)
+
     puts "Retrieving production data"
     db_config = YAML::load(ERB.new(IO.read("config/database.yml")).result)
-    child = nil
+    child_pid = nil
     loop do
       sleep 0.2
       `pg_isready -p 55432 -h localhost`
       break if $?.success?
-      unless child
+      unless child_pid
         puts "connecting..."
-        child = fork do
+        child_pid = fork do
           exec "ssh fest_prod -N -L55432:localhost:5432 2>/dev/null"
         end
       end
@@ -51,9 +56,14 @@ namespace :db do
     abort unless $?.success?
     puts "done."
   ensure
-    if child
-      puts "disconnecting"
-      Process.kill('TERM', child)
+    if child_pid
+      puts "disconnecting from postgres"
+      Process.kill('TERM', child_pid)
+    end
+
+    if ssh_pid
+      puts "disconnecting from '#{hostname}'"
+      Process.kill('TERM', ssh_pid)
     end
   end
 
