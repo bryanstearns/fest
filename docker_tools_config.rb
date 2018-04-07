@@ -1,4 +1,8 @@
 default_environment "staging"
+
+instances "fest_prod" => {environment: :prod, backup: {"fest_prod.sql.gz.enc" => "fest_prod.sql"}},
+          "fest_staging" => {environment: :staging}
+
 case environment
 when 'prod'
   env "DOMAIN_NAMES" => "festivalfanatic.com www.festivalfanatic.com",
@@ -33,4 +37,4 @@ volumes "/data/dnsmasq/dnsmasq" => "/dnsmasq",
         "/data/nginx/etc_nginx_sites-enabled" => "/nginx/sites-enabled",
         "/data/fest_#{environment}/data_nightlybackup" => "/data/nightlybackup"
 
-depends_on :dnsmasq, :nginx, :postgres, :redis
+depends_on :log, :dnsmasq, :nginx, :postgres, :redis
