@@ -2,7 +2,7 @@ require 'pp'
 
 module Admin
   class DebugController < ApplicationController
-    before_filter :authenticate_admin!
+    before_action :authenticate_admin!
 
     # get /admin/env
     def env

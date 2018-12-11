@@ -1,7 +1,7 @@
 module Admin
   class VenuesController < ApplicationController
-    before_filter :authenticate_admin!
-    before_filter :load_location, only: [:new, :create]
+    before_action :authenticate_admin!
+    before_action :load_location, only: [:new, :create]
     respond_to :html
 
     # GET /admin/locations/1/venues/new

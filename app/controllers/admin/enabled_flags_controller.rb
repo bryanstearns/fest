@@ -1,6 +1,6 @@
 module Admin
   class EnabledFlagsController < ApplicationController
-    before_filter :authenticate_admin!
+    before_action :authenticate_admin!
     respond_to :html
     delegate :set_enabled_value, to: :view_context
     # PATCH /admin/enabled_flags/foo

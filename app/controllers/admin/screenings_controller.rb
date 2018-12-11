@@ -1,10 +1,10 @@
 module Admin
   class ScreeningsController < ApplicationController
-    before_filter :authenticate_admin!
-    before_filter :load_film_and_festival, only: [:index, :new, :create]
-    before_filter :load_screening_film_and_festival, except: [:index, :new, :create]
-    before_filter :load_venues_for_select, only: [:new, :edit]
-    before_filter :load_attendees, only: [:edit, :update, :destroy]
+    before_action :authenticate_admin!
+    before_action :load_film_and_festival, only: [:index, :new, :create]
+    before_action :load_screening_film_and_festival, except: [:index, :new, :create]
+    before_action :load_venues_for_select, only: [:new, :edit]
+    before_action :load_attendees, only: [:edit, :update, :destroy]
     respond_to :html
 
     # GET /admin/screenings/1

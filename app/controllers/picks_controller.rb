@@ -1,12 +1,12 @@
 class PicksController < ApplicationController
   layout 'festivals'
-  before_filter :authenticate_user!, only: [:create]
-  before_filter :find_or_initialize_pick, only: [:create]
-  before_filter :load_festival_and_screenings, only: [:index]
-  before_filter :load_film_and_festival_from_pick, only: [:create]
-  before_filter :check_festival_access
-  before_filter :load_subscription_and_picks_for_current_user
-  before_filter :check_for_news, only: [:index]
+  before_action :authenticate_user!, only: [:create]
+  before_action :find_or_initialize_pick, only: [:create]
+  before_action :load_festival_and_screenings, only: [:index]
+  before_action :load_film_and_festival_from_pick, only: [:create]
+  before_action :check_festival_access
+  before_action :load_subscription_and_picks_for_current_user
+  before_action :check_for_news, only: [:index]
 
   respond_to :html
 

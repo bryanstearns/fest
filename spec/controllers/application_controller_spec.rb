@@ -3,7 +3,7 @@ require 'rails_helper'
 describe ApplicationController, type: :controller do
   describe 'requiring an admin' do
     controller do
-      before_filter :authenticate_admin!
+      before_action :authenticate_admin!
       def index; redirect_to '/' end
     end
 

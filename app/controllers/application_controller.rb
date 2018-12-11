@@ -8,9 +8,9 @@ class ApplicationController < ActionController::Base
   include ActionView::Helpers::OutputSafetyHelper
   include EnabledFlags::ControllerStuff
 
-  before_filter :configure_permitted_parameters, if: :devise_controller?
-  before_filter :log_session_state
-  after_filter(:log_memory_usage) unless Rails.env.test?
+  before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :log_session_state
+  after_action(:log_memory_usage) unless Rails.env.test?
 
   delegate :autoscheduler_debugging?, :current_user_is_admin?, :current_page?,
            to: :view_context

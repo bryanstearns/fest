@@ -1,7 +1,7 @@
 module Admin
   class FilmsController < ApplicationController
-    before_filter :authenticate_admin!
-    before_filter :load_festival, only: [:index, :new, :create]
+    before_action :authenticate_admin!
+    before_action :load_festival, only: [:index, :new, :create]
     respond_to :html
     layout 'festivals_admin'
 

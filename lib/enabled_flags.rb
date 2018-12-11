@@ -43,8 +43,8 @@ module EnabledFlags
     end
 
     included do
-      prepend_before_filter :reset_enabled_flags!
-      before_filter :check_for_disabled_features
+      prepend_before_action :reset_enabled_flags!
+      before_action :check_for_disabled_features
       delegate :enabled?, :reset_enabled_flags!, to: :view_context
     end
 

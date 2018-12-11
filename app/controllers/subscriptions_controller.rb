@@ -1,9 +1,9 @@
 class SubscriptionsController < ApplicationController
-  before_filter :authenticate_user!, except: [:show]
-  before_filter :load_festival
-  before_filter :load_or_build_subscription, only: [:show]
-  before_filter :load_subscription, only: [:update]
-  before_filter :load_user_picks, only: [:show]
+  before_action :authenticate_user!, except: [:show]
+  before_action :load_festival
+  before_action :load_or_build_subscription, only: [:show]
+  before_action :load_subscription, only: [:update]
+  before_action :load_user_picks, only: [:show]
 
   layout 'festivals'
   respond_to :html

@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  before_filter :authenticate_admin!, only: [:admin]
+  before_action :authenticate_admin!, only: [:admin]
 
   def landing
     flash.keep
