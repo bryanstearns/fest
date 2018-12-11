@@ -2,23 +2,23 @@ FactoryBot.define do
   factory :user do
     sequence(:name) {|n| "Factory User #{n}" }
     sequence(:email) {|n| "user#{n}@example.com" }
-    password "sw0rdf1sh!"
-    password_confirmation "sw0rdf1sh!"
-    welcomed_at Time.zone.parse("2000-01-01")
+    password { "sw0rdf1sh!" }
+    password_confirmation { "sw0rdf1sh!" }
+    welcomed_at { Time.zone.parse("2000-01-01") }
 
     factory :unconfirmed_user do
       sequence(:unconfirmed_email) {|n| "unconfirmed_user#{n}@example.com" }
     end
 
     factory :confirmed_user do
-      confirmed_at Time.zone.parse("2000-01-01")
+      confirmed_at { Time.zone.parse("2000-01-01") }
 
       factory :confirmed_admin_user do
-        admin true
+        admin { true }
       end
 
       trait :with_subscription do
-        transient { festival nil }
+        transient { festival { nil } }
         after(:create) do |user, ev|
           festival = ev.festival || create(:festival, :with_films_and_screenings)
           create(:subscription, festival: festival, user: user)

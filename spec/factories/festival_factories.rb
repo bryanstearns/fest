@@ -115,30 +115,30 @@ end
 
 FactoryBot.define do
   factory :festival do
-    transient { day_count 1 }
-    place "Placeville, Oregon"
+    transient { day_count { 1 } }
+    place { "Placeville, Oregon" }
     sequence(:slug_group) {|n| "fest#{n}" }
     name {|f| "Festival #{f.slug_group}" }
     banner_name {|f| "Festival #{f.slug_group}" }
-    starts_on Date.yesterday
+    starts_on { Date.yesterday }
     ends_on { starts_on.to_date + (day_count - 1) }
-    published true
-    scheduled true
+    published { true }
+    scheduled { true }
 
     trait :upcoming do
       sequence(:slug_group) {|n| "soon#{n}" }
-      starts_on 40.days.from_now.to_date
-      scheduled false
+      starts_on { 40.days.from_now.to_date }
+      scheduled { false }
     end
 
     trait :past do
       sequence(:slug_group) {|n| "past#{n}" }
-      starts_on 367.days.ago.to_date
+      starts_on { 367.days.ago.to_date }
     end
 
     trait :with_films_and_screenings do
-      transient { film_count nil }
-      transient { press false }
+      transient { film_count { nil } }
+      transient { press { false } }
       after(:create) do |festival, ev|
         FakeFestivalGenerator.new(festival, ev.film_count, ev.press).run
       end
@@ -161,7 +161,7 @@ FactoryBot.define do
     end
 
     trait :with_films do
-      transient { film_count 3 }
+      transient { film_count { 3 } }
       after(:create) do |festival, ev|
         create_list(:film, ev.film_count, festival: festival)
       end
@@ -169,8 +169,8 @@ FactoryBot.define do
 
     trait :with_venues do
       transient do
-        location_count 1
-        venue_count 1
+        location_count { 1 }
+        venue_count { 1 }
       end
       after(:create) do |festival, ev|
         create_list(:festival_location, ev.location_count,

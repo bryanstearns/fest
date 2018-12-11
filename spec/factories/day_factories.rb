@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :day do
-    transient { festival nil }
-    transient { screenings nil }
+    transient { festival { nil } }
+    transient { screenings { nil } }
     initialize_with do
       my_screenings = screenings || begin
         my_festival = festival || \
