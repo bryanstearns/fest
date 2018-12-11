@@ -1,4 +1,4 @@
-class Screening < ActiveRecord::Base
+class Screening < ApplicationRecord
   belongs_to :festival
   belongs_to :film, touch: true
   belongs_to :location

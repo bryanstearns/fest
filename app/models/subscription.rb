@@ -1,4 +1,4 @@
-class Subscription < ActiveRecord::Base
+class Subscription < ApplicationRecord
   belongs_to :festival
   belongs_to :user
   serialize :excluded_location_ids

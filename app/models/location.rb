@@ -1,4 +1,4 @@
-class Location < ActiveRecord::Base
+class Location < ApplicationRecord
   has_many :festival_locations
   has_many :festivals, through: :festival_locations
   has_many :venues, dependent: :destroy

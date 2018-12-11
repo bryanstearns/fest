@@ -1,4 +1,4 @@
-class TravelInterval < ActiveRecord::Base
+class TravelInterval < ApplicationRecord
   DEFAULT_INTRA_INTERVAL = 10.minutes
   DEFAULT_INTER_INTERVAL = 15.minutes
   MAX_INTERVAL = 2.hours

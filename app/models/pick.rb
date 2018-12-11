@@ -1,4 +1,4 @@
-class Pick < ActiveRecord::Base
+class Pick < ApplicationRecord
   belongs_to :festival
   belongs_to :film
   belongs_to :screening

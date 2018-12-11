@@ -1,4 +1,4 @@
-class Venue < ActiveRecord::Base
+class Venue < ApplicationRecord
   belongs_to :location, touch: true
   has_many :screenings
 

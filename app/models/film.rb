@@ -1,4 +1,4 @@
-class Film < ActiveRecord::Base
+class Film < ApplicationRecord
   belongs_to :festival, touch: true
   has_many :screenings, dependent: :destroy
   has_many :picks, dependent: :destroy

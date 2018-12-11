@@ -1,4 +1,4 @@
-class Announcement < ActiveRecord::Base
+class Announcement < ApplicationRecord
   before_save :set_published_at
   validates :subject, :contents, presence: true
 
