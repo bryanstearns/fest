@@ -36,7 +36,7 @@ ActionController::Base.allow_rescue = false
 # Use the phantomjs driver for javascript tests
 Capybara.javascript_driver = :poltergeist
 
-World(FactoryGirl::Syntax::Methods)
+World(FactoryBot::Syntax::Methods)
 World(EnabledFlags)
 
 # Remove/comment out the lines below if your app doesn't have a database.

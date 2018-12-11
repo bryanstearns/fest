@@ -6,7 +6,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-require 'factory_girl_rails'
+require 'factory_bot_rails'
 
 if !Rails.env.production?
   admin = User.where(email: 'admin@example.com').first
@@ -35,18 +35,18 @@ if !Rails.env.production?
   Festival.where(slug_group: 'example').destroy_all
   Location.unused.destroy_all if Location.any?
 
-  example_fest = FactoryGirl.create(:festival, :with_films_and_screenings,
-                                    name: "Example Festival",
-                                    slug_group: 'example',
-                                    day_count: 2, press: true,
-                                    place: "Long Name City, Longstatename")
+  example_fest = FactoryBot.create(:festival, :with_films_and_screenings,
+                                   name: "Example Festival",
+                                   slug_group: 'example',
+                                   day_count: 2, press: true,
+                                   place: "Long Name City, Longstatename")
   example_fest.films.each do |film|
     priority = Pick::PRIORITY_HINTS.keys[film.duration.to_minutes % Pick::PRIORITY_HINTS.count]
     admin.picks.create!(film: film, priority: priority)
   end
 
-  FactoryGirl.create(:festival, :past,
-                     name: "Example Festival", slug_group: 'example',
-                     day_count: 2,
-                     place: "Long Name City, Longstatename")
+  FactoryBot.create(:festival, :past,
+                    name: "Example Festival", slug_group: 'example',
+                    day_count: 2,
+                    place: "Long Name City, Longstatename")
 end

@@ -8,7 +8,7 @@ require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'rspec/collection_matchers'
 require 'email_spec'
-require 'factory_girl'
+require 'factory_bot'
 require 'database_cleaner'
 begin
   require 'pry'
@@ -37,11 +37,11 @@ ActiveRecord::Migration.maintain_test_schema!
 RSpec.configure do |config|
   config.include EmailSpec::Helpers
   config.include EmailSpec::Matchers
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include ControllerMacros, type: :controller
 
-  # Use database_cleaner (& factory_girl) instead of transactional fixtures
+  # Use database_cleaner (& factory_bot) instead of transactional fixtures
   config.use_transactional_fixtures = false
   config.before(:suite) do
     DatabaseCleaner.strategy = :truncation

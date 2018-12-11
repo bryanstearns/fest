@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :film do
     sequence(:name) {|n| "Jaws #{n}" }
     duration_minutes 90
@@ -8,8 +8,8 @@ FactoryGirl.define do
     trait :with_screenings do
       transient { screening_count 3 }
       after(:create) do |film, ev|
-        FactoryGirl.create_list(:screening, ev.screening_count,
-                                film: film, festival: film.festival)
+        FactoryBot.create_list(:screening, ev.screening_count,
+                               film: film, festival: film.festival)
       end
     end
   end

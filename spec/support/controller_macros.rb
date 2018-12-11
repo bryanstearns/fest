@@ -3,13 +3,13 @@ module ControllerMacros
 
   def login_admin
     @request.env["devise.mapping"] = Devise.mappings[:user]
-    @signed_in_user = FactoryGirl.create(:confirmed_admin_user)
+    @signed_in_user = FactoryBot.create(:confirmed_admin_user)
     sign_in @signed_in_user
   end
 
   def login_user
     @request.env["devise.mapping"] = Devise.mappings[:user]
-    @signed_in_user = FactoryGirl.create(:confirmed_user)
+    @signed_in_user = FactoryBot.create(:confirmed_user)
     sign_in @signed_in_user
   end
 

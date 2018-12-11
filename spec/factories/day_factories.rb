@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :day do
     transient { festival nil }
     transient { screenings nil }

@@ -41,12 +41,12 @@ class FakeFestivalGenerator
   end
 
   def make_locations_and_venues
-    locations = FactoryGirl.create_list(:location, (day_count / 3) + 1,
-                                        :with_venues,
-                                        place: festival.place)
+    locations = FactoryBot.create_list(:location, (day_count / 3) + 1,
+                                       :with_venues,
+                                       place: festival.place)
     locations.each do |location|
-      FactoryGirl.create(:festival_location, festival: festival,
-                         location: location)
+      FactoryBot.create(:festival_location, festival: festival,
+                        location: location)
     end
     @venues = festival.venues
     add_cycling_to(@venues)
@@ -57,8 +57,8 @@ class FakeFestivalGenerator
     @films = count.times.zip(HITCHCOCK_FILMS.keys.cycle).map do |i, name|
       suffix = " #{(i / HITCHCOCK_FILMS.count) + 1}" if i >= HITCHCOCK_FILMS.count
       log { "Film #{i}: Creating #{name}#{suffix}" }
-      FactoryGirl.create(:film, festival: festival, name: "#{name}#{suffix}",
-                         duration: HITCHCOCK_FILMS[name].minutes)
+      FactoryBot.create(:film, festival: festival, name: "#{name}#{suffix}",
+                        duration: HITCHCOCK_FILMS[name].minutes)
     end
     add_cycling_to(@films)
   end
@@ -80,9 +80,9 @@ class FakeFestivalGenerator
           tv += film.duration + 10.minutes
           break if tv > limit
           log { "    Added #{film.name} at #{I18n.l tv, format: :mdy_hms}" }
-          FactoryGirl.create(:screening, film: film, venue: venue,
-                             starts_at: starts_at, festival: festival,
-                             press: press && day_index == 0)
+          FactoryBot.create(:screening, film: film, venue: venue,
+                            starts_at: starts_at, festival: festival,
+                            press: press && day_index == 0)
         end
       end
     end
@@ -113,7 +113,7 @@ class FakeFestivalGenerator
   end
 end
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :festival do
     transient { day_count 1 }
     place "Placeville, Oregon"
