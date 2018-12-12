@@ -293,6 +293,8 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
+    record_tag_helper (1.0.0)
+      actionview (~> 5.x)
     redis (4.0.3)
     redis-actionpack (5.0.2)
       actionpack (>= 4.0, < 6)
@@ -435,6 +437,7 @@ DEPENDENCIES
   pry-nav
   rails (= 5.0)
   rails-controller-testing
+  record_tag_helper
   redis-rails
   rspec-collection_matchers
   rspec-rails
