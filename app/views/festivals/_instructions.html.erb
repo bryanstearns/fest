@@ -53,7 +53,7 @@
         can post on Twitter or Facebook - anyone can access it):<br>
         <%= link_to(user_rating_url(current_user, @subscription.ratings_token),
                     user_rating_path(current_user, @subscription.ratings_token),
-                    target: '_blank') %></p>
+                    target: '_blank', rel: 'noopener') %></p>
       </li>
     <% else %>
       <li>
@@ -78,7 +78,7 @@
                             festival_path(@festival, format: :pdf),
                             id: "pdf_link" %>
         of this schedule, which you can print with
-        <a href="http://get.adobe.com/reader/" target="_blank">Adobe Reader</a>.
+        <a href="http://get.adobe.com/reader/" target="_blank" rel="noopener">Adobe Reader</a>.
       </p>
     </li>
 

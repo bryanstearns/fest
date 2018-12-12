@@ -41,13 +41,13 @@ describe FilmsHelper, type: :helper do
       context "and a label is given" do
         it "produces a link using the label" do
           expect(film_catalog_link(film, "hello", festival)).
-            to eq('<a target="_blank" href="http://example.com/1234">hello</a>')
+            to eq('<a target="_blank" rel="noopener" href="http://example.com/1234">hello</a>')
         end
       end
       context "and no label is given" do
         it "produces a link using the film name" do
           expect(film_catalog_link(film, nil, festival)).
-              to eq('<a target="_blank" href="http://example.com/1234">Rocky 27</a>')
+              to eq('<a target="_blank" rel="noopener" href="http://example.com/1234">Rocky 27</a>')
         end
       end
     end

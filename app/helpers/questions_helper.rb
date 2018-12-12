@@ -11,7 +11,7 @@ BODY
     mail_to("\"#{question.name}\" <#{question.email}>", question.email,
             subject: 'Re: your Festival Fanatic feedback',
             body: body,
-            target: '_blank').tap do |x|
+            target: '_blank', rel: 'noopener').tap do |x|
     true
     true
     end

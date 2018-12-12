@@ -36,7 +36,7 @@ module FilmsHelper
   def film_catalog_link(film, label=nil, festival=nil)
     url = festival_site_film_url(film, festival)
     label ||= film.name
-    link_to_if(url, label, url, target: "_blank")
+    link_to_if(url, label, url, target: "_blank", rel: "noopener")
   end
 
   def film_details(film, festival=nil)

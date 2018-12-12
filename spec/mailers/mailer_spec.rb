@@ -12,7 +12,7 @@ describe Mailer, type: :mailer do
     end
 
     it "renders the body" do
-      mail.body.encoded.should match('Feedback received from <a target="_blank" href="mailto:')
+      mail.body.encoded.should match('Feedback received from <a target="_blank" rel="noopener" href="mailto:')
     end
   end
 end
