@@ -40,8 +40,6 @@ module Fest
     # Generate SASS please
     config.sass.preferred_syntax = :sass
 
-    config.active_record.raise_in_transactional_callbacks = true
-
     config.generators do |g|
       g.stylesheet_engine :sass
       g.test_framework :rspec
