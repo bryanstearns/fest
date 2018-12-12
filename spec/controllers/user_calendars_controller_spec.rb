@@ -17,7 +17,7 @@ describe UserCalendarsController, type: :controller do
     end
 
     it "returns http success" do
-      response.should be_success
+      response.should be_successful
     end
 
     it "returns the picks in ICS format" do
