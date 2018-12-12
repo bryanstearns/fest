@@ -3,7 +3,7 @@ source 'https://bundler.rubygems.org'
 gem 'rails', '~> 5.2'
 
 gem 'airbrake'
-gem 'axlsx'
+gem 'axlsx', '3.0.0.pre'
 gem 'axlsx_rails'
 gem 'bootsnap', require: false
 gem 'bootstrap_form'
