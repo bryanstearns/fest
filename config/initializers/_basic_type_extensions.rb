@@ -5,11 +5,12 @@ class Time
     # a string we'll parse, or another time (and we'll ignore its date)
     h, m, s = case time
       when String
-        time.split(":")
+        time.split(":").map {|n| n.present? ? n.to_i : 0 }
       else
         [time.hour, time.min, time.sec]
     end
-    self.change(hour: h, min: m || 0, sec: s || 0)
+    s ||= 0
+    self.change(hour: h, min: m, sec: s)
   end
 
   def round_down(interval=60)
