@@ -274,6 +274,7 @@ GEM
     pry-nav (0.2.4)
       pry (>= 0.9.10, < 0.11.0)
     public_suffix (3.0.3)
+    puma (3.12.0)
     rack (2.0.6)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
@@ -448,6 +449,7 @@ DEPENDENCIES
   poltergeist
   prawn
   pry-nav
+  puma
   rails (= 5.2)
   rails-controller-testing
   record_tag_helper

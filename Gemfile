@@ -55,6 +55,7 @@ group :test do
   gem 'email_spec'
   gem 'factory_bot_rails'
   gem 'poltergeist'
+  gem 'puma' # only for cucumber/capybara
   gem 'rails-controller-testing'
   gem 'rspec-rails'
   gem 'rspec-collection_matchers'
