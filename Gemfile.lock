@@ -1,3 +1,12 @@
+GIT
+  remote: https://github.com/twbs/bootstrap-sass
+  revision: 34989d5402641403abc3807473a6434540bb212b
+  branch: next
+  specs:
+    bootstrap-sass (3.3.7)
+      autoprefixer-rails (>= 5.2.1)
+      sassc (>= 1.12.1)
+
 GEM
   remote: https://bundler.rubygems.org/
   specs:
@@ -57,9 +66,6 @@ GEM
     bcrypt (3.1.12)
     bootstrap-modal-rails (2.2.5)
       railties (>= 3.1)
-    bootstrap-sass (3.3.7)
-      autoprefixer-rails (>= 5.2.1)
-      sass (>= 3.3.4)
     bootstrap_form (4.0.0)
       rails (>= 5.0)
     builder (3.2.3)
@@ -343,11 +349,6 @@ GEM
     rspec-support (3.8.0)
     ruby_dep (1.5.0)
     rubyzip (1.0.0)
-    sass (3.7.2)
-      sass-listen (~> 4.0.0)
-    sass-listen (4.0.0)
-      rb-fsevent (~> 0.9, >= 0.9.4)
-      rb-inotify (~> 0.9, >= 0.9.7)
     sassc (2.0.0)
       ffi (~> 1.9.6)
       rake
@@ -406,7 +407,7 @@ DEPENDENCIES
   axlsx
   axlsx_rails
   bootstrap-modal-rails
-  bootstrap-sass
+  bootstrap-sass!
   bootstrap_form
   capistrano-ext
   capistrano-unicorn
@@ -453,4 +454,4 @@ DEPENDENCIES
   unicorn-worker-killer
 
 BUNDLED WITH
-   1.17.1
+   1.17.2
