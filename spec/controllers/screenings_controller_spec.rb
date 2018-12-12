@@ -4,7 +4,7 @@ describe ScreeningsController, type: :controller do
   describe "GET 'show'" do
     it "assigns @screening, @festival, @film, and @other_screenings" do
       screening = create(:screening)
-      get :show, {:id => screening.to_param}
+      get :show, params: {:id => screening.to_param}
       assigns(:screening).should eq(screening)
       assigns(:festival).should eq(screening.festival)
       assigns(:film).should eq(screening.film)

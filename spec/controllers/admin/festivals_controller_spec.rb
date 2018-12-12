@@ -13,14 +13,14 @@ describe Admin::FestivalsController, type: :controller do
   describe "GET show" do
     it "assigns the requested festival as @festival" do
       festival = create(:festival)
-      get :show, {:id => festival.to_param}
+      get :show, params: {:id => festival.to_param}
       assigns(:festival).should eq(festival)
     end
   end
 
   describe "GET new" do
     it "assigns a new festival as @festival" do
-      get :new, {}
+      get :new, params: {}
       assigns(:festival).should be_a_new(Festival)
     end
   end
@@ -28,7 +28,7 @@ describe Admin::FestivalsController, type: :controller do
   describe "GET edit" do
     it "assigns the requested festival as @festival" do
       festival = create(:festival)
-      get :edit, {:id => festival.to_param}
+      get :edit, params: {:id => festival.to_param}
       assigns(:festival).should eq(festival)
     end
   end
@@ -37,18 +37,18 @@ describe Admin::FestivalsController, type: :controller do
     describe "with valid params" do
       it "creates a new Festival" do
         expect {
-          post :create, {:festival => valid_attributes}
+          post :create, params: {:festival => valid_attributes}
         }.to change(Festival, :count).by(1)
       end
 
       it "assigns a newly created festival as @festival" do
-        post :create, {:festival => valid_attributes}
+        post :create, params: {:festival => valid_attributes}
         assigns(:festival).should be_a(Festival)
         assigns(:festival).should be_persisted
       end
 
       it "redirects to the festivals page" do
-        post :create, {:festival => valid_attributes}
+        post :create, params: {:festival => valid_attributes}
         response.should redirect_to(festivals_path)
       end
     end
@@ -57,7 +57,7 @@ describe Admin::FestivalsController, type: :controller do
       it "assigns a newly created but unsaved festival as @festival" do
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(Festival).to receive(:save).and_return(false)
-        post :create, {:festival => { name: '' }}
+        post :create, params: {:festival => { name: '' }}
         assigns(:festival).should be_a_new(Festival)
       end
 
@@ -65,7 +65,7 @@ describe Admin::FestivalsController, type: :controller do
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(Festival).to receive(:save).and_return(false)
         allow_any_instance_of(Festival).to receive(:errors).and_return(some: ['errors'])
-        post :create, {:festival => { name: '' }}
+        post :create, params: {:festival => { name: '' }}
         response.should render_template("new")
       end
     end
@@ -79,20 +79,22 @@ describe Admin::FestivalsController, type: :controller do
         # specifies that the Festival created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        expect_any_instance_of(Festival).to receive(:update_attributes).with('name' => 'bogus')
-        put :update, {:id => festival.to_param, :festival => {'name' => 'bogus'}}
+        expect_any_instance_of(Festival).
+          to receive(:update_attributes).
+          with(PermittedParams.new('name' => 'bogus'))
+        put :update, params: {:id => festival.to_param, :festival => {'name' => 'bogus'}}
       end
 
       it "assigns the requested festival as @festival" do
         festival = create(:festival)
-        put :update, {:id => festival.to_param,
+        put :update, params: {:id => festival.to_param,
                       :festival => valid_attributes}
         assigns(:festival).should eq(festival.reload)
       end
 
       it "redirects to the festival" do
         festival = create(:festival)
-        put :update, {:id => festival.to_param,
+        put :update, params: {:id => festival.to_param,
                       :festival => valid_attributes}
         response.should redirect_to(festival.reload)
       end
@@ -103,7 +105,7 @@ describe Admin::FestivalsController, type: :controller do
         festival = create(:festival)
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(Festival).to receive(:save).and_return(false)
-        put :update, {:id => festival.to_param, :festival => { name: '' }}
+        put :update, params: {:id => festival.to_param, :festival => { name: '' }}
         assigns(:festival).should eq(festival)
       end
 
@@ -112,7 +114,7 @@ describe Admin::FestivalsController, type: :controller do
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(Festival).to receive(:save).and_return(false)
         allow_any_instance_of(Festival).to receive(:errors).and_return(some: ['errors'])
-        put :update, {:id => festival.to_param, :festival => { name: '' }}
+        put :update, params: {:id => festival.to_param, :festival => { name: '' }}
         response.should render_template("edit")
       end
     end
@@ -122,13 +124,13 @@ describe Admin::FestivalsController, type: :controller do
     it "destroys the requested festival" do
       festival = create(:festival)
       expect {
-        delete :destroy, {:id => festival.to_param}
+        delete :destroy, params: {:id => festival.to_param}
       }.to change(Festival, :count).by(-1)
     end
 
     it "redirects to the festivals list" do
       festival = create(:festival)
-      delete :destroy, {:id => festival.to_param}
+      delete :destroy, params: {:id => festival.to_param}
       response.should redirect_to(festivals_url)
     end
   end

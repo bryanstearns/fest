@@ -13,7 +13,7 @@ describe UserCalendarsController, type: :controller do
     before do
       allow_any_instance_of(CalendarFormatter).to receive(:to_ics).
                                                       and_return('output')
-      get 'show', user_id: user.id, id: user.calendar_token
+      get 'show', params: { user_id: user.id, id: user.calendar_token }
     end
 
     it "returns http success" do

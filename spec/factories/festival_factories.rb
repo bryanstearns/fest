@@ -96,7 +96,7 @@ class FakeFestivalGenerator
         while take_count > 0
           available = count - @cycling_index
           batch_count = take_count > available ? available : take_count
-          result += slice(@cycling_index, batch_count)
+          result += to_ary.slice(@cycling_index, batch_count)
           @cycling_index = (@cycling_index + batch_count) % count
           take_count -= batch_count
         end

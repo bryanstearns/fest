@@ -6,7 +6,7 @@ describe PreferencesController, type: :controller do
   describe "PUT update" do
     let(:preference) { 'hide_instructions' }
     let(:value) { "true" }
-    subject { put :update, { id: preference, value: value, format: :js } }
+    subject { put :update, params: { id: preference, value: value, format: :js } }
 
     it "requires an authenticated user" do
       subject

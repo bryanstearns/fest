@@ -10,7 +10,7 @@ describe AnnouncementsController, type: :controller do
       login_admin
       it "assigns all announcements as @announcements" do
         announcement = create(:announcement) # unpublished!
-        get :index, {}
+        get :index, params: {}
         assigns(:announcements).should eq([announcement])
       end
     end
@@ -18,7 +18,7 @@ describe AnnouncementsController, type: :controller do
       it "assigns published announcements as @announcements" do
         unpublished_announcement = create(:announcement)
         published_announcement = create(:announcement, :published)
-        get :index, {}
+        get :index, params: {}
         assigns(:announcements).should eq([published_announcement])
       end
     end
@@ -29,7 +29,7 @@ describe AnnouncementsController, type: :controller do
       login_admin
       it "assigns the requested announcement as @announcement" do
         announcement = create(:announcement, :published)
-        get :show, {:id => announcement.to_param}
+        get :show, params: {:id => announcement.to_param}
         assigns(:announcement).should eq(announcement)
       end
     end
@@ -37,7 +37,7 @@ describe AnnouncementsController, type: :controller do
       it "doesn't find unpublished announcements" do
         announcement = create(:announcement)
         expect {
-          get :show, {:id => announcement.to_param}
+          get :show, params: {:id => announcement.to_param}
         }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end

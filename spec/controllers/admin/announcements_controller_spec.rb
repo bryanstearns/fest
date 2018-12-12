@@ -12,7 +12,7 @@ describe Admin::AnnouncementsController, type: :controller do
 
   describe "GET new" do
     it "assigns a new announcement as @announcement" do
-      get :new, {}
+      get :new, params: {}
       expect(assigns(:announcement)).to be_a_new(Announcement)
       expect(assigns(:announcement).published_at).to be_within(5.seconds).of(Time.current)
     end
@@ -21,7 +21,7 @@ describe Admin::AnnouncementsController, type: :controller do
   describe "GET edit" do
     it "assigns the requested announcement as @announcement" do
       announcement = Announcement.create! valid_attributes
-      get :edit, {:id => announcement.to_param}
+      get :edit, params: {:id => announcement.to_param}
       assigns(:announcement).should eq(announcement)
     end
   end
@@ -30,18 +30,18 @@ describe Admin::AnnouncementsController, type: :controller do
     describe "with valid params" do
       it "creates a new Announcement" do
         expect {
-          post :create, {:announcement => valid_attributes}
+          post :create, params: {:announcement => valid_attributes}
         }.to change(Announcement, :count).by(1)
       end
 
       it "assigns a newly created announcement as @announcement" do
-        post :create, {:announcement => valid_attributes}
+        post :create, params: {:announcement => valid_attributes}
         assigns(:announcement).should be_a(Announcement)
         assigns(:announcement).should be_persisted
       end
 
       it "redirects to the announcements page" do
-        post :create, {:announcement => valid_attributes}
+        post :create, params: {:announcement => valid_attributes}
         response.should redirect_to(announcements_path)
       end
     end
@@ -51,7 +51,7 @@ describe Admin::AnnouncementsController, type: :controller do
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(Announcement).to receive(:save).and_return(false)
         allow_any_instance_of(Announcement).to receive(:errors).and_return(some: ['errors'])
-        post :create, {:announcement => { "subject" => "" }}
+        post :create, params: {:announcement => { "subject" => "" }}
         assigns(:announcement).should be_a_new(Announcement)
       end
 
@@ -59,7 +59,7 @@ describe Admin::AnnouncementsController, type: :controller do
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(Announcement).to receive(:save).and_return(false)
         allow_any_instance_of(Announcement).to receive(:errors).and_return(some: ['errors'])
-        post :create, {:announcement => { "subject" => "" }}
+        post :create, params: {:announcement => { "subject" => "" }}
         response.should render_template("new")
       end
     end
@@ -73,21 +73,22 @@ describe Admin::AnnouncementsController, type: :controller do
         # specifies that the Announcement created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        allow_any_instance_of(Announcement).to receive(:update_attributes).
-                                               with("subject" => "MyString")
-        put :update, {:id => announcement.to_param,
-                      :announcement => { "subject" => "MyString" }}
+        allow_any_instance_of(Announcement).
+          to receive(:update_attributes).
+          with(PermittedParams.new("subject" => "MyString"))
+        put :update, params: {:id => announcement.to_param,
+                              :announcement => { "subject" => "MyString" }}
       end
 
       it "assigns the requested announcement as @announcement" do
         announcement = Announcement.create! valid_attributes
-        put :update, {:id => announcement.to_param, :announcement => valid_attributes}
+        put :update, params: {:id => announcement.to_param, :announcement => valid_attributes}
         assigns(:announcement).should eq(announcement)
       end
 
       it "redirects to the announcements page" do
         announcement = Announcement.create! valid_attributes
-        put :update, {:id => announcement.to_param, :announcement => valid_attributes}
+        put :update, params: {:id => announcement.to_param, :announcement => valid_attributes}
         response.should redirect_to(announcements_path)
       end
     end
@@ -98,7 +99,7 @@ describe Admin::AnnouncementsController, type: :controller do
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(Announcement).to receive(:save).and_return(false)
         allow_any_instance_of(Announcement).to receive(:errors).and_return(some: ['errors'])
-        put :update, {:id => announcement.to_param, :announcement => { "subject" => "" }}
+        put :update, params: {:id => announcement.to_param, :announcement => { "subject" => "" }}
         assigns(:announcement).should eq(announcement)
       end
 
@@ -107,7 +108,7 @@ describe Admin::AnnouncementsController, type: :controller do
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(Announcement).to receive(:save).and_return(false)
         allow_any_instance_of(Announcement).to receive(:errors).and_return(some: ['errors'])
-        put :update, {:id => announcement.to_param, :announcement => { "subject" => "" }}
+        put :update, params: {:id => announcement.to_param, :announcement => { "subject" => "" }}
         response.should render_template("edit")
       end
     end
@@ -117,13 +118,13 @@ describe Admin::AnnouncementsController, type: :controller do
     it "destroys the requested announcement" do
       announcement = Announcement.create! valid_attributes
       expect {
-        delete :destroy, {:id => announcement.to_param}
+        delete :destroy, params: {:id => announcement.to_param}
       }.to change(Announcement, :count).by(-1)
     end
 
     it "redirects to the announcements list" do
       announcement = Announcement.create! valid_attributes
-      delete :destroy, {:id => announcement.to_param}
+      delete :destroy, params: {:id => announcement.to_param}
       response.should redirect_to(announcements_url)
     end
   end

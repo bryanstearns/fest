@@ -4,7 +4,7 @@ describe UserRatingsController, type: :controller do
   describe "GET 'show'" do
     let(:subscription) { create(:subscription) }
     before do
-      get :show, user_id: subscription.user_id, id: subscription.ratings_token
+      get :show, params: { user_id: subscription.user_id, id: subscription.ratings_token }
     end
 
     context "assigns" do

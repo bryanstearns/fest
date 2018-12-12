@@ -6,7 +6,7 @@ describe PicksController, type: :controller do
   describe "GET index" do
     it "assigns the festival's films as @films" do
       festival = create(:festival, :with_films)
-      get :index, { :festival_id => festival.to_param }
+      get :index, params: { :festival_id => festival.to_param }
       assigns(:films).should eq(festival.films.by_name)
     end
   end
@@ -17,7 +17,7 @@ describe PicksController, type: :controller do
     let(:post_params) { { :film_id => film_id,
                           :pick => { :priority => "2" },
                           :attribute => 'priority' } }
-    subject { post :create, post_params.merge(format: :js) }
+    subject { post :create, params: post_params.merge(format: :js) }
 
     it "requires an authenticated user" do
       logged_out

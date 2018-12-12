@@ -30,19 +30,19 @@ describe Admin::VenuesController, type: :controller do
 
   describe "GET index" do
     it "raises" do
-      expect { get :index, {} }.to raise_error(ActionController::UrlGenerationError)
+      expect { get :index, params: {} }.to raise_error(ActionController::UrlGenerationError)
     end
   end
 
   describe "GET show" do
     it "raises" do
-      expect { get :show, {:id => 0 } }.to raise_error(ActionController::UrlGenerationError)
+      expect { get :show, params: {:id => 0 } }.to raise_error(ActionController::UrlGenerationError)
     end
   end
 
   describe "GET new" do
     it "assigns a new venue as @venue" do
-      get :new, { :location_id => create(:location).to_param }
+      get :new, params: { :location_id => create(:location).to_param }
       assigns(:venue).should be_a_new(Venue)
     end
   end
@@ -50,7 +50,7 @@ describe Admin::VenuesController, type: :controller do
   describe "GET edit" do
     it "assigns the requested venue as @venue" do
       venue = create(:venue)
-      get :edit, {:id => venue.to_param}
+      get :edit, params: {:id => venue.to_param}
       assigns(:venue).should eq(venue)
     end
   end
@@ -59,20 +59,20 @@ describe Admin::VenuesController, type: :controller do
     describe "with valid params" do
       it "creates a new Venue" do
         expect {
-          post :create, { :location_id => create(:location).to_param,
+          post :create, params: { :location_id => create(:location).to_param,
                           :venue => valid_attributes }
         }.to change(Venue, :count).by(1)
       end
 
       it "assigns a newly created venue as @venue" do
-        post :create, { :location_id => create(:location).to_param,
+        post :create, params: { :location_id => create(:location).to_param,
                         :venue => valid_attributes }
         assigns(:venue).should be_a(Venue)
         assigns(:venue).should be_persisted
       end
 
       it "redirects to the locations_list" do
-        post :create, { :location_id => create(:location).to_param,
+        post :create, params: { :location_id => create(:location).to_param,
                         :venue => valid_attributes }
         response.should redirect_to(admin_locations_url)
       end
@@ -83,7 +83,7 @@ describe Admin::VenuesController, type: :controller do
         # Trigger the behavior that occurs when invalid params are submitted
         location = create(:location)
         allow_any_instance_of(Venue).to receive(:save).and_return(false)
-        post :create, { :location_id => location.to_param,
+        post :create, params: { :location_id => location.to_param,
                         :venue => { "name" => "" } }
         assigns(:venue).should be_a_new(Venue)
       end
@@ -91,7 +91,7 @@ describe Admin::VenuesController, type: :controller do
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         location = create(:location)
-        post :create, { :location_id => location.to_param,
+        post :create, params: { :location_id => location.to_param,
                         :venue => { "name" => "" } }
         response.should render_template("new")
       end
@@ -107,19 +107,19 @@ describe Admin::VenuesController, type: :controller do
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
         allow_any_instance_of(Venue).to receive(:update_attributes).
-                                        with("name" => "MyString")
-        put :update, {:id => venue.to_param, :venue => { "name" => "MyString" }}
+                                        with(PermittedParams.new("name" => "MyString"))
+        put :update, params: {:id => venue.to_param, :venue => { "name" => "MyString" }}
       end
 
       it "assigns the requested venue as @venue" do
         venue = create(:venue)
-        put :update, {:id => venue.to_param, :venue => valid_attributes}
+        put :update, params: {:id => venue.to_param, :venue => valid_attributes}
         assigns(:venue).should eq(venue)
       end
 
       it "redirects to the locations list" do
         venue = create(:venue)
-        put :update, {:id => venue.to_param, :venue => valid_attributes}
+        put :update, params: {:id => venue.to_param, :venue => valid_attributes}
         response.should redirect_to(admin_locations_url)
       end
     end
@@ -129,14 +129,14 @@ describe Admin::VenuesController, type: :controller do
         venue = create(:venue)
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(Venue).to receive(:save).and_return(false)
-        put :update, {:id => venue.to_param, :venue => { "name" => "" }}
+        put :update, params: {:id => venue.to_param, :venue => { "name" => "" }}
         assigns(:venue).should eq(venue)
       end
 
       it "re-renders the 'edit' template" do
         venue = create(:venue)
         # Trigger the behavior that occurs when invalid params are submitted
-        put :update, {:id => venue.to_param, :venue => { "name" => "" }}
+        put :update, params: {:id => venue.to_param, :venue => { "name" => "" }}
         response.should render_template("edit")
       end
     end
@@ -146,13 +146,13 @@ describe Admin::VenuesController, type: :controller do
     it "destroys the requested venue" do
       venue = create(:venue)
       expect {
-        delete :destroy, {:id => venue.to_param}
+        delete :destroy, params: {:id => venue.to_param}
       }.to change(Venue, :count).by(-1)
     end
 
     it "redirects to the locations list" do
       venue = create(:venue)
-      delete :destroy, {:id => venue.to_param}
+      delete :destroy, params: {:id => venue.to_param}
       response.should redirect_to(admin_locations_url)
     end
   end

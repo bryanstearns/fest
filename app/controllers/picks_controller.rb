@@ -23,7 +23,7 @@ class PicksController < ApplicationController
   def create
     attribute_name = params[:attribute]
     attribute_value = pick_params[attribute_name]
-    if @pick.new_record? && attribute_value.nil?
+    if @pick.new_record? && attribute_value.blank?
       saved = true # Just pretend we saved if it'd be the default anyway.
     else
       attributes_to_update = { attribute_name => attribute_value }

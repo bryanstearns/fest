@@ -31,7 +31,7 @@ describe Admin::FilmsController, type: :controller do
   describe "GET index" do
     it "assigns all films as @films and festival as @festival" do
       film = create(:film)
-      get :index, { festival_id: film.festival.to_param }
+      get :index, params: { festival_id: film.festival.to_param }
       assigns(:films).should eq([film])
       assigns(:festival).should eq(film.festival)
     end
@@ -40,7 +40,7 @@ describe Admin::FilmsController, type: :controller do
   describe "GET show" do
     it "assigns the film as @film and festival as @festival" do
       film = create(:film)
-      get :show, {:id => film.to_param}
+      get :show, params: {:id => film.to_param}
       assigns(:film).should eq(film)
       assigns(:festival).should eq(film.festival)
     end
@@ -49,7 +49,7 @@ describe Admin::FilmsController, type: :controller do
   describe "GET new" do
     it "assigns a new film as @film and festival as @festival" do
       festival = create(:festival)
-      get :new, { festival_id: festival.to_param }
+      get :new, params: { festival_id: festival.to_param }
       assigns(:film).should be_a_new(Film)
       assigns(:festival).should eq(festival)
     end
@@ -58,7 +58,7 @@ describe Admin::FilmsController, type: :controller do
   describe "GET edit" do
     it "assigns the requested film as @film and festival as @festival" do
       film = create(:film)
-      get :edit, {:id => film.to_param}
+      get :edit, params: {:id => film.to_param}
       assigns(:film).should eq(film)
       assigns(:festival).should eq(film.festival)
     end
@@ -68,13 +68,13 @@ describe Admin::FilmsController, type: :controller do
     describe "with valid params" do
       it "creates a new Film" do
         expect {
-          post :create, { festival_id: create(:festival).to_param,
+          post :create, params: { festival_id: create(:festival).to_param,
                           film: valid_attributes }
         }.to change(Film, :count).by(1)
       end
 
       it "assigns a newly created film as @film" do
-        post :create, { festival_id: create(:festival).to_param,
+        post :create, params: { festival_id: create(:festival).to_param,
                         film: valid_attributes }
         assigns(:film).should be_a(Film)
         assigns(:film).should be_persisted
@@ -82,7 +82,7 @@ describe Admin::FilmsController, type: :controller do
 
       it "redirects to the film's new-screening form" do
         festival = create(:festival)
-        post :create, { festival_id: festival,
+        post :create, params: { festival_id: festival,
                         film: valid_attributes }
         response.should redirect_to(new_admin_film_screening_url(Film.last))
       end
@@ -94,7 +94,7 @@ describe Admin::FilmsController, type: :controller do
         # Trigger the behavior that occurs when invalid params are submitted
         festival = create(:festival)
         allow_any_instance_of(Film).to receive(:save).and_return(false)
-        post :create, { festival_id: festival.to_param,
+        post :create, params: { festival_id: festival.to_param,
                         film: { "name" => "" } }
         assigns(:film).should be_a_new(Film)
         assigns(:festival).should eq(festival)
@@ -105,7 +105,7 @@ describe Admin::FilmsController, type: :controller do
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(Film).to receive(:save).and_return(false)
         allow_any_instance_of(Film).to receive(:errors).and_return(some: ['errors'])
-        post :create, { festival_id: festival.to_param,
+        post :create, params: { festival_id: festival.to_param,
                         film: { "name" => "" } }
         response.should render_template("new")
       end
@@ -120,20 +120,22 @@ describe Admin::FilmsController, type: :controller do
         # specifies that the Film created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        allow_any_instance_of(Film).to receive(:update_attributes).with("name" => "MyString")
-        put :update, {:id => film.to_param, :film => { "name" => "MyString" }}
+        allow_any_instance_of(Film).
+          to receive(:update_attributes).
+          with(PermittedParams.new("name" => "MyString"))
+        put :update, params: {:id => film.to_param, :film => { "name" => "MyString" }}
       end
 
       it "assigns the requested film as @film and festival as @festival" do
         film = create(:film)
-        put :update, {:id => film.to_param, :film => valid_attributes}
+        put :update, params: {:id => film.to_param, :film => valid_attributes}
         assigns(:film).should eq(film)
         assigns(:festival).should eq(film.festival)
       end
 
       it "redirects to the festival films list" do
         film = create(:film)
-        put :update, {:id => film.to_param, :film => valid_attributes}
+        put :update, params: {:id => film.to_param, :film => valid_attributes}
         response.should redirect_to(admin_festival_films_url(film.festival))
       end
     end
@@ -143,7 +145,7 @@ describe Admin::FilmsController, type: :controller do
         film = create(:film)
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(Film).to receive(:save).and_return(false)
-        put :update, {:id => film.to_param, :film => { "name" => "" }}
+        put :update, params: {:id => film.to_param, :film => { "name" => "" }}
         assigns(:film).should eq(film)
         assigns(:festival).should eq(film.festival)
       end
@@ -153,7 +155,7 @@ describe Admin::FilmsController, type: :controller do
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(Film).to receive(:save).and_return(false)
         allow_any_instance_of(Film).to receive(:errors).and_return(some: ['errors'])
-        put :update, {:id => film.to_param, :film => { "name" => "" }}
+        put :update, params: {:id => film.to_param, :film => { "name" => "" }}
         response.should render_template("edit")
       end
     end
@@ -163,13 +165,13 @@ describe Admin::FilmsController, type: :controller do
     it "destroys the requested film" do
       film = create(:film)
       expect {
-        delete :destroy, {:id => film.to_param}
+        delete :destroy, params: {:id => film.to_param}
       }.to change(Film, :count).by(-1)
     end
 
     it "redirects to the festival films list" do
       film = create(:film)
-      delete :destroy, {:id => film.to_param}
+      delete :destroy, params: {:id => film.to_param}
       response.should redirect_to(admin_festival_films_url(film.festival))
     end
   end

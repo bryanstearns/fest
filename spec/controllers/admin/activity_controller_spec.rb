@@ -14,13 +14,13 @@ describe Admin::ActivityController, type: :controller do
                         create(:activity, user: another_user) ] }
     context "with a user id" do
       it "assigns that user's activity as @activity newest first" do
-        get :index, { user_id: user.id }
+        get :index, params: { user_id: user.id }
         assigns(:activity).should eq(activity[0..1].reverse)
       end
     end
     context "without a user id" do
       it "assigns all activity as @activities newest first" do
-        get :index, {}
+        get :index, params: {}
         assigns(:activity).should eq(activity.reverse)
       end
     end

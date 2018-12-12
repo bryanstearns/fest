@@ -10,7 +10,7 @@ describe Admin::QuestionsController, type: :controller do
   describe "GET index" do
     it "assigns all questions as @questions" do
       question = Question.create! valid_attributes
-      get :index, {}
+      get :index, params: {}
       assigns(:questions).should eq([question])
     end
   end
@@ -18,7 +18,7 @@ describe Admin::QuestionsController, type: :controller do
   describe "GET show" do
     it "assigns the requested question as @question" do
       question = Question.create! valid_attributes
-      get :show, {:id => question.to_param}
+      get :show, params: {:id => question.to_param}
       assigns(:question).should eq(question)
     end
   end
@@ -26,7 +26,7 @@ describe Admin::QuestionsController, type: :controller do
   describe "GET edit" do
     it "assigns the requested question as @question" do
       question = Question.create! valid_attributes
-      get :edit, {:id => question.to_param}
+      get :edit, params: {:id => question.to_param}
       assigns(:question).should eq(question)
     end
   end
@@ -40,20 +40,20 @@ describe Admin::QuestionsController, type: :controller do
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
         allow_any_instance_of(Question).to receive(:update_attributes).
-                                           with("email" => "MyString")
-        put :update, {:id => question.to_param,
+                                           with(PermittedParams.new("email" => "MyString"))
+        put :update, params: {:id => question.to_param,
                       :question => { "email" => "MyString" }}
       end
 
       it "assigns the requested question as @question" do
         question = Question.create! valid_attributes
-        put :update, {:id => question.to_param, :question => valid_attributes}
+        put :update, params: {:id => question.to_param, :question => valid_attributes}
         assigns(:question).should eq(question)
       end
 
       it "redirects to the questions page" do
         question = Question.create! valid_attributes
-        put :update, {:id => question.to_param, :question => valid_attributes}
+        put :update, params: {:id => question.to_param, :question => valid_attributes}
         response.should redirect_to(admin_questions_url)
       end
     end
@@ -64,7 +64,7 @@ describe Admin::QuestionsController, type: :controller do
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(Question).to receive(:save).and_return(false)
         allow_any_instance_of(Question).to receive(:errors).and_return(some: ['errors'])
-        put :update, {:id => question.to_param, :question => { "email" => "" }}
+        put :update, params: {:id => question.to_param, :question => { "email" => "" }}
         assigns(:question).should eq(question)
       end
 
@@ -73,7 +73,7 @@ describe Admin::QuestionsController, type: :controller do
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(Question).to receive(:save).and_return(false)
         allow_any_instance_of(Question).to receive(:errors).and_return(some: ['errors'])
-        put :update, {:id => question.to_param, :question => { "email" => "" }}
+        put :update, params: {:id => question.to_param, :question => { "email" => "" }}
         response.should render_template("edit")
       end
     end
@@ -83,13 +83,13 @@ describe Admin::QuestionsController, type: :controller do
     it "destroys the requested question" do
       question = Question.create! valid_attributes
       expect {
-        delete :destroy, {:id => question.to_param}
+        delete :destroy, params: {:id => question.to_param}
       }.to change(Question, :count).by(-1)
     end
 
     it "redirects to the questions list" do
       question = Question.create! valid_attributes
-      delete :destroy, {:id => question.to_param}
+      delete :destroy, params: {:id => question.to_param}
       response.should redirect_to(admin_questions_url)
     end
   end

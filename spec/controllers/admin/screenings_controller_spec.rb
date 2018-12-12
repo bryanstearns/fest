@@ -33,7 +33,7 @@ describe Admin::ScreeningsController, type: :controller do
 
   describe "GET new" do
     it "assigns a new screening as @screening, plus @film & @festival" do
-      get :new, { film_id: film.to_param }
+      get :new, params: { film_id: film.to_param }
       assigns(:screening).should be_a_new(Screening)
       assigns(:film).should eq(film)
       assigns(:festival).should eq(festival)
@@ -42,7 +42,7 @@ describe Admin::ScreeningsController, type: :controller do
 
   describe "GET edit" do
     it "assigns the requested screening as @screening" do
-      get :edit, {:id => screening.to_param}
+      get :edit, params: {:id => screening.to_param}
       assigns(:screening).should eq(screening)
       assigns(:film).should eq(film)
       assigns(:festival).should eq(festival)
@@ -53,7 +53,7 @@ describe Admin::ScreeningsController, type: :controller do
     describe "with valid params" do
       it "creates a new Screening" do
         expect {
-          post :create, {
+          post :create, params: {
             :film_id => film.to_param,
             :screening => valid_attributes
           }
@@ -61,7 +61,7 @@ describe Admin::ScreeningsController, type: :controller do
       end
 
       it "assigns a newly created screening as @screening" do
-        post :create, {
+        post :create, params: {
           :film_id => film.to_param,
           :screening => valid_attributes
         }
@@ -70,7 +70,7 @@ describe Admin::ScreeningsController, type: :controller do
       end
 
       it "redirects back to the new screening page" do
-        post :create, {
+        post :create, params: {
             :film_id => film.to_param,
             :screening => valid_attributes
         }
@@ -84,7 +84,7 @@ describe Admin::ScreeningsController, type: :controller do
       it "assigns a newly created but unsaved screening as @screening" do
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(Screening).to receive(:save).and_return(false)
-        post :create, {
+        post :create, params: {
             :film_id => film.to_param,
             :screening => { "starts_at" => "" }
         }
@@ -93,7 +93,7 @@ describe Admin::ScreeningsController, type: :controller do
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
-        post :create, {
+        post :create, params: {
             :film_id => film.to_param,
             :screening => { "starts_at" => "" }
         }
@@ -110,18 +110,18 @@ describe Admin::ScreeningsController, type: :controller do
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
         allow_any_instance_of(Screening).to receive(:update_attributes).
-                                            with("press" => false)
-        put :update, {:id => screening.to_param,
-                      :screening => { "press" => false}}
+                                            with(PermittedParams.new("press" => "false"))
+        put :update, params: {:id => screening.to_param,
+                      :screening => { "press" => "false"}}
       end
 
       it "assigns the requested screening as @screening" do
-        put :update, {:id => screening.to_param, :screening => valid_attributes}
+        put :update, params: {:id => screening.to_param, :screening => valid_attributes}
         assigns(:screening).should eq(screening)
       end
 
       it "redirects to the film page" do
-        put :update, {:id => screening.to_param, :screening => valid_attributes}
+        put :update, params: {:id => screening.to_param, :screening => valid_attributes}
         response.should redirect_to([:admin, film])
       end
     end
@@ -130,13 +130,13 @@ describe Admin::ScreeningsController, type: :controller do
       it "assigns the screening as @screening" do
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(Screening).to receive(:save).and_return(false)
-        put :update, {:id => screening.to_param, :screening => { "starts_at" => "" }}
+        put :update, params: {:id => screening.to_param, :screening => { "starts_at" => "" }}
         assigns(:screening).should eq(screening)
       end
 
       it "re-renders the 'edit' template" do
         # Trigger the behavior that occurs when invalid params are submitted
-        put :update, {:id => screening.to_param, :screening => { "starts_at" => "" }}
+        put :update, params: {:id => screening.to_param, :screening => { "starts_at" => "" }}
         response.should render_template("edit")
       end
     end
@@ -146,12 +146,12 @@ describe Admin::ScreeningsController, type: :controller do
     it "destroys the requested screening" do
       screening # force creation
       expect {
-        delete :destroy, {:id => screening.to_param}
+        delete :destroy, params: {:id => screening.to_param}
       }.to change(Screening, :count).by(-1)
     end
 
     it "redirects to the film page" do
-      delete :destroy, {:id => screening.to_param}
+      delete :destroy, params: {:id => screening.to_param}
       response.should redirect_to([:admin, film])
     end
   end

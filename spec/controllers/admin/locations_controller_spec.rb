@@ -31,14 +31,14 @@ describe Admin::LocationsController, type: :controller do
   describe "GET index" do
     it "assigns all locations as @locations" do
       location = Location.create! valid_attributes
-      get :index, {}
+      get :index, params: {}
       assigns(:locations).should eq([location])
     end
   end
 
   describe "GET new" do
     it "assigns a new location as @location" do
-      get :new, {}
+      get :new, params: {}
       assigns(:location).should be_a_new(Location)
     end
   end
@@ -46,7 +46,7 @@ describe Admin::LocationsController, type: :controller do
   describe "GET edit" do
     it "assigns the requested location as @location" do
       location = Location.create! valid_attributes
-      get :edit, {:id => location.to_param}
+      get :edit, params: {:id => location.to_param}
       assigns(:location).should eq(location)
     end
   end
@@ -55,18 +55,18 @@ describe Admin::LocationsController, type: :controller do
     describe "with valid params" do
       it "creates a new Location" do
         expect {
-          post :create, {:location => valid_attributes}
+          post :create, params: {:location => valid_attributes}
         }.to change(Location, :count).by(1)
       end
 
       it "assigns a newly created location as @location" do
-        post :create, {:location => valid_attributes}
+        post :create, params: {:location => valid_attributes}
         assigns(:location).should be_a(Location)
         assigns(:location).should be_persisted
       end
 
       it "redirects to the locations list" do
-        post :create, {:location => valid_attributes}
+        post :create, params: {:location => valid_attributes}
         response.should redirect_to(admin_locations_url)
       end
     end
@@ -75,7 +75,7 @@ describe Admin::LocationsController, type: :controller do
       it "assigns a newly created but unsaved location as @location" do
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(Location).to receive(:save).and_return(false)
-        post :create, {:location => { "name" => "" }}
+        post :create, params: {:location => { "name" => "" }}
         assigns(:location).should be_a_new(Location)
       end
 
@@ -83,7 +83,7 @@ describe Admin::LocationsController, type: :controller do
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(Location).to receive(:save).and_return(false)
         allow_any_instance_of(Location).to receive(:errors).and_return(some: ['errors'])
-        post :create, {:location => { "name" => "" }}
+        post :create, params: {:location => { "name" => "" }}
         response.should render_template("new")
       end
     end
@@ -97,19 +97,19 @@ describe Admin::LocationsController, type: :controller do
         # specifies that the Location created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        allow_any_instance_of(Location).to receive(:update_attributes).with("name" => "MyString")
-        put :update, {:id => location.to_param, :location => { "name" => "MyString" }}
+        allow_any_instance_of(Location).to receive(:update_attributes).with(PermittedParams.new("name" => "MyString"))
+        put :update, params: {:id => location.to_param, :location => { "name" => "MyString" }}
       end
 
       it "assigns the requested location as @location" do
         location = Location.create! valid_attributes
-        put :update, {:id => location.to_param, :location => valid_attributes}
+        put :update, params: {:id => location.to_param, :location => valid_attributes}
         assigns(:location).should eq(location)
       end
 
       it "redirects to the locations list" do
         location = Location.create! valid_attributes
-        put :update, {:id => location.to_param, :location => valid_attributes}
+        put :update, params: {:id => location.to_param, :location => valid_attributes}
         response.should redirect_to(admin_locations_url)
       end
     end
@@ -119,7 +119,7 @@ describe Admin::LocationsController, type: :controller do
         location = Location.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(Location).to receive(:save).and_return(false)
-        put :update, {:id => location.to_param, :location => { "name" => "" }}
+        put :update, params: {:id => location.to_param, :location => { "name" => "" }}
         assigns(:location).should eq(location)
       end
 
@@ -128,7 +128,7 @@ describe Admin::LocationsController, type: :controller do
         # Trigger the behavior that occurs when invalid params are submitted
         allow_any_instance_of(Location).to receive(:save).and_return(false)
         allow_any_instance_of(Location).to receive(:errors).and_return(some: ['errors'])
-        put :update, {:id => location.to_param, :location => { "name" => "" }}
+        put :update, params: {:id => location.to_param, :location => { "name" => "" }}
         response.should render_template("edit")
       end
     end
@@ -138,13 +138,13 @@ describe Admin::LocationsController, type: :controller do
     it "destroys the requested location" do
       location = Location.create! valid_attributes
       expect {
-        delete :destroy, {:id => location.to_param}
+        delete :destroy, params: {:id => location.to_param}
       }.to change(Location, :count).by(-1)
     end
 
     it "redirects to the locations list" do
       location = Location.create! valid_attributes
-      delete :destroy, {:id => location.to_param}
+      delete :destroy, params: {:id => location.to_param}
       response.should redirect_to(admin_locations_url)
     end
   end
