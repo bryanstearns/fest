@@ -8,7 +8,7 @@ end
 
 class Hash
   def to_hwia
-    HashWithIndifferentAccess.new(self)
+    ActiveSupport::HashWithIndifferentAccess.new(self)
   end
 end
 
