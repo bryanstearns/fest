@@ -68,6 +68,8 @@ GEM
       axlsx (>= 2.0.1)
     backports (3.11.4)
     bcrypt (3.1.12)
+    bootsnap (1.3.2)
+      msgpack (~> 1.0)
     bootstrap-modal-rails (2.2.5)
       railties (>= 3.1)
     bootstrap_form (4.0.0)
@@ -236,6 +238,7 @@ GEM
     mini_mime (1.0.1)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
+    msgpack (1.2.4)
     multi_json (1.13.1)
     multi_test (0.1.2)
     multi_xml (0.6.0)
@@ -414,6 +417,7 @@ DEPENDENCIES
   airbrake
   axlsx
   axlsx_rails
+  bootsnap
   bootstrap-modal-rails
   bootstrap-sass!
   bootstrap_form

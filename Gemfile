@@ -5,6 +5,7 @@ gem 'rails', '5.2'
 gem 'airbrake'
 gem 'axlsx'
 gem 'axlsx_rails'
+gem 'bootsnap', require: false
 gem 'bootstrap_form'
 gem 'bootstrap-modal-rails'
 # https://github.com/twbs/bootstrap-sass/issues/1171
