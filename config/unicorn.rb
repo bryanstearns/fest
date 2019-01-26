@@ -34,7 +34,6 @@ end
 # What to do after we fork a worker
 after_fork do |server, worker|
   ActiveRecord::Base.establish_connection if defined?(ActiveRecord::Base)
-  Redis.current.client.reconnect if defined?(Redis)
 end
 
 # Where to drop a pidfile
