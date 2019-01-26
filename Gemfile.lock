@@ -1,12 +1,3 @@
-GIT
-  remote: https://github.com/twbs/bootstrap-sass
-  revision: 34989d5402641403abc3807473a6434540bb212b
-  branch: next
-  specs:
-    bootstrap-sass (3.3.7)
-      autoprefixer-rails (>= 5.2.1)
-      sassc (>= 1.12.1)
-
 GEM
   remote: https://bundler.rubygems.org/
   specs:
@@ -57,7 +48,7 @@ GEM
       airbrake-ruby (~> 2.12)
     airbrake-ruby (2.12.0)
     arel (9.0.0)
-    autoprefixer-rails (9.4.2)
+    autoprefixer-rails (9.4.6)
       execjs
     axlsx (3.0.0.pre)
       htmlentities (~> 4.3, >= 4.3.4)
@@ -73,6 +64,9 @@ GEM
       msgpack (~> 1.0)
     bootstrap-modal-rails (2.2.5)
       railties (>= 3.1)
+    bootstrap-sass (3.4.0)
+      autoprefixer-rails (>= 5.2.1)
+      sassc (>= 2.0.0)
     bootstrap_form (4.0.0)
       rails (>= 5.0)
     builder (3.2.3)
@@ -421,7 +415,7 @@ DEPENDENCIES
   axlsx_rails
   bootsnap
   bootstrap-modal-rails
-  bootstrap-sass!
+  bootstrap-sass
   bootstrap_form
   capistrano-ext
   capistrano-unicorn

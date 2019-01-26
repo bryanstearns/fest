@@ -8,8 +8,7 @@ gem 'axlsx_rails'
 gem 'bootsnap', require: false
 gem 'bootstrap_form'
 gem 'bootstrap-modal-rails'
-# https://github.com/twbs/bootstrap-sass/issues/1171
-gem 'bootstrap-sass', git: 'https://github.com/twbs/bootstrap-sass', branch: 'next'
+gem 'bootstrap-sass'
 gem 'capistrano-ext', require: false
 gem 'capistrano-unicorn', require: false
 gem 'coffee-rails'
