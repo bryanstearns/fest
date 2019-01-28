@@ -34,9 +34,6 @@ module Fest
     # Always use Redis, namespaced by our environment
     config.cache_store = :redis_cache_store, {url: ENV['REDIS_URL'] || "redis://localhost:6379/#{ENV['REDIS_DB'] || 0}/#{Rails.env}"}
 
-    # Autoload lib stuff
-    config.autoload_paths << Rails.root.join('lib')
-
     # Generate SASS please
     config.sass.preferred_syntax = :sass
 
