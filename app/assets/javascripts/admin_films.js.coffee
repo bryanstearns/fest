@@ -6,3 +6,6 @@ $ ->
       field = $("#film_" + f)[0]
       if field.value == ''
         field.value = name
+    field = $("#film_url_fragment")[0]
+    if field.value == ''
+      field.value = name_field.value.toLowerCase().replace(/\s/g, '-')
