@@ -1,0 +1,36 @@
+<% environment.context_class.instance_eval { include CountryCodesHelper } %>
+
+$ ->
+  country_code_list = <%= raw country_codes_for_autocomplete().to_json %>
+
+  $("#film_countries")
+  .on "keydown", (event) ->
+    if (event.keyCode == $.ui.keyCode.TAB && $(this).autocomplete("instance").menu.active)
+      event.preventDefault()
+  .autocomplete {
+    source: (request, response) ->
+      lastElement = request.term.split(/\s+/).pop()
+      response(if lastElement then $.ui.autocomplete.filter(country_code_list, lastElement) else [])
+
+    focus: (event, ui) ->
+      false
+
+    select: (event, ui) ->
+      terms = this.value.split(/\s+/)
+      terms.pop()
+      terms.push(ui.item.value)
+      terms.push("")
+      this.value = terms.join(" ")
+      false
+  }
+
+  $("#film_name").change (e) ->
+    name_field = e.target
+    name = name_field.value.replace(/^(the )(.*)/i, "$2")
+    $.each ['sort_name', 'short_name'], (i, f) ->
+      field = $("#film_" + f)[0]
+      if field.value == ''
+        field.value = name
+    field = $("#film_url_fragment")[0]
+    if field.value == ''
+      field.value = name_field.value.toLowerCase().replace(/\s/g, '-')
