@@ -3,6 +3,8 @@ FactoryBot.define do
     sequence(:name) {|n| "Jaws #{n}" }
     duration_minutes { 90 }
     sequence(:countries) {|n| Countries::CODES[(n ^ 5) % Countries::CODES.length]}
+    description { "description" }
+    url_fragment { "fragment" }
     association :festival
 
     trait :with_screenings do

@@ -31,8 +31,8 @@ class Screening < ApplicationRecord
           6.months.ago, 6.months.from_now)
   }
 
-  delegate :name, :abbreviation, to: :venue, prefix: true
-  delegate :name, :short_name, :countries, to: :film
+  delegate :abbreviation, :name, to: :venue, prefix: true
+  delegate :countries, :description, :name, :short_name, :url_fragment, to: :film
 
   def duration
     (ends_at - starts_at).to_i rescue film.try(:duration)

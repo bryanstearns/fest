@@ -50,8 +50,10 @@ class CalendarFormatter
       calendar.add_timezone(timezone)
 
       screenings.each do |screening|
-        screening_url = festival_url(festival_slugs[screening.festival_id],
+        screening_url = festival_url(slug_for(screening.festival_id),
                                      anchor: "s#{screening.id}")
+        description = [screening.description, festival_site_film_url_for(screening)].compact.join("\n\n")
+
         calendar.event do |e|
           e.summary = screening.name
           e.location = screening.venue_name
@@ -59,9 +61,9 @@ class CalendarFormatter
           e.dtstart = Icalendar::Values::DateTime.new(screening.starts_at.to_datetime, 'tzid' => tzid)
           e.dtend = Icalendar::Values::DateTime.new(screening.ends_at.to_datetime, 'tzid' => tzid)
 
-
           e.created = Icalendar::Values::DateTime.new(screening.created_at.utc.to_datetime)
           e.last_modified = Icalendar::Values::DateTime.new(screening.updated_at.utc.to_datetime)
+          e.description = description
 
           e.uid = screening_url
           e.url = screening_url
@@ -72,10 +74,22 @@ class CalendarFormatter
     calendar.to_ical
   end
 
-  def festival_slugs
-    @festival_slugs ||= Festival.find(screenings.map(&:festival_id).uniq).
+  def festival_info
+    @festival_info ||= Festival.find(screenings.map(&:festival_id).uniq).
                         each_with_object({}) do |festival, result|
-      result[festival.id] = festival.slug
+      result[festival.id] = {
+        slug: festival.slug,
+        main_url: festival.main_url
+      }
     end
+  end
+
+  def slug_for(festival_id)
+    festival_info[festival_id][:slug]
+  end
+
+  def festival_site_film_url_for(screening)
+    main_url = festival_info[screening.festival_id][:main_url]
+    screening.url_fragment.present? && main_url.present? ? main_url + screening.url_fragment : nil
   end
 end
