@@ -1,4 +1,4 @@
-class AddNameAndUserToQuestion < ActiveRecord::Migration
+class AddNameAndUserToQuestion < ActiveRecord::Migration[4.2]
   def change
     add_column :questions, :name, :string
     add_column :questions, :user_id, :integer

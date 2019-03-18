@@ -1,4 +1,4 @@
-class AddHasPressToFestivals < ActiveRecord::Migration
+class AddHasPressToFestivals < ActiveRecord::Migration[4.2]
   def change
     add_column :festivals, :has_press, :boolean, default: false
     Festival.reset_column_information

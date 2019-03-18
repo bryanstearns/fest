@@ -1,4 +1,4 @@
-class CreateFestivals < ActiveRecord::Migration
+class CreateFestivals < ActiveRecord::Migration[4.2]
   def change
     create_table :festivals do |t|
       t.string :slug, null: false

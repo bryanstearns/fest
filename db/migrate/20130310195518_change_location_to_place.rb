@@ -1,4 +1,4 @@
-class ChangeLocationToPlace < ActiveRecord::Migration
+class ChangeLocationToPlace < ActiveRecord::Migration[4.2]
   def change
     rename_column :festivals, :location, :place
     add_column :locations, :place, :string

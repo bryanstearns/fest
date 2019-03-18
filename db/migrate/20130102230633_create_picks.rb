@@ -1,4 +1,4 @@
-class CreatePicks < ActiveRecord::Migration
+class CreatePicks < ActiveRecord::Migration[4.2]
   def change
     create_table :picks do |t|
       t.references :user, null: false

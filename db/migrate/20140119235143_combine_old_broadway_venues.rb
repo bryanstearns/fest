@@ -1,4 +1,4 @@
-class CombineOldBroadwayVenues < ActiveRecord::Migration
+class CombineOldBroadwayVenues < ActiveRecord::Migration[4.2]
   def up
     old_location = Location.where(place: "Portland, Oregon", name: "Regal Broadway").first
     if old_location

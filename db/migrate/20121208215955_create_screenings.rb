@@ -1,4 +1,4 @@
-class CreateScreenings < ActiveRecord::Migration
+class CreateScreenings < ActiveRecord::Migration[4.2]
   def change
     create_table :screenings do |t|
       t.references :festival, null: false

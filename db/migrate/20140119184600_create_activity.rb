@@ -1,4 +1,4 @@
-class CreateActivity < ActiveRecord::Migration
+class CreateActivity < ActiveRecord::Migration[4.2]
   def change
     create_table :activity do |t|
       t.string :name

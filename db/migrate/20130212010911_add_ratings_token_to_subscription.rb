@@ -1,4 +1,4 @@
-class AddRatingsTokenToSubscription < ActiveRecord::Migration
+class AddRatingsTokenToSubscription < ActiveRecord::Migration[4.2]
   def change
     add_column :subscriptions, :ratings_token, :string, unique: true
 

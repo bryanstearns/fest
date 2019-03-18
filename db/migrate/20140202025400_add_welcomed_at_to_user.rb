@@ -1,4 +1,4 @@
-class AddWelcomedAtToUser < ActiveRecord::Migration
+class AddWelcomedAtToUser < ActiveRecord::Migration[4.2]
   def change
     add_column :users, :welcomed_at, :datetime
 

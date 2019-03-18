@@ -1,4 +1,4 @@
-class CreateFilms < ActiveRecord::Migration
+class CreateFilms < ActiveRecord::Migration[4.2]
   def change
     create_table :films do |t|
       t.references :festival, null: false

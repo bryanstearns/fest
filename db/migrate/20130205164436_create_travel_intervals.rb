@@ -1,4 +1,4 @@
-class CreateTravelIntervals < ActiveRecord::Migration
+class CreateTravelIntervals < ActiveRecord::Migration[4.2]
   def change
     create_table :travel_intervals do |t|
       t.references :from_location, null: false
