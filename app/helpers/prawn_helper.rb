@@ -59,7 +59,7 @@ module PrawnHelper
       @image_width = 40
       @indent = 5
 
-      @day_name_width = @column_width * 0.50
+      @day_name_width = @column_width * 0.48
       @day_time_width = @column_width - @day_name_width
 
       pdf.repeat(:all) do
@@ -215,7 +215,7 @@ module PrawnHelper
 
       film.screenings.with_press(show_press).each do |screening|
         font(*time_style(screening)) do
-          text = "#{screening_times(screening)} #{screening.venue_abbreviation}"
+          text = "#{screening_times(screening, with_date: true)} #{screening.venue_abbreviation}"
           text += ' (press)' if screening.press?
           pdf.text_box text,
                        :at => [@left + @indent, @y],
